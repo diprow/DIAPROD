@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIA PROD — Infrastructure Rack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1013;
+    --panel:#15181d;
+    --panel-2:#1b1f26;
+    --line:#2a2f38;
+    --text:#eee9e0;
+    --muted:#8b93a0;
+    --amber:#e8a33d;
+    --teal:#2bb6a8;
+    --red:#e0556b;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --sans:'Inter', -apple-system, sans-serif;
+  }
+  html[data-theme="light"]{
+    --bg:#f4f2ec;
+    --panel:#ffffff;
+    --panel-2:#f0eee6;
+    --line:#e0ddd2;
+    --text:#191a1d;
+    --muted:#6b7280;
+    --amber:#b97a1e;
+    --teal:#1c8378;
+    --red:#c8384f;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(232,163,61,0.06), transparent 40%),
+      radial-gradient(circle at 85% 60%, rgba(43,182,168,0.05), transparent 45%);
+    transition:background-color .3s, color .3s;
+    padding-bottom:78px; /* room for the fixed bottom bar */
+  }
+  a{color:inherit;}
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:100px 24px 60px; max-width:980px; margin:0 auto; text-align:left; }
+  .eyebrow{
+    font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--amber); display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:""; width:7px; height:7px; border-radius:50%; background:var(--amber);
+    box-shadow:0 0 0 3px rgba(232,163,61,.18);
+    animation:blink 2.4s ease-in-out infinite;
+  }
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.35;}}
+  h1{
+    font-family:var(--mono); font-weight:700; font-size:clamp(32px,5vw,56px);
+    line-height:1.05; margin:0 0 22px; letter-spacing:-.01em;
+  }
+  h1 span{color:var(--muted); font-weight:400;}
+  .hero p{ font-size:17px; line-height:1.65; color:var(--muted); max-width:620px; margin:0 0 8px; }
+  .hero p strong{color:var(--text); font-weight:600;}
+
+  /* ---------- SIGNAL CHAIN OVERVIEW ---------- */
+  .chain{ max-width:980px; margin:36px auto 0; padding:0 24px 20px; display:flex; align-items:stretch; gap:0; overflow-x:auto; }
+  .chain-node{
+    flex:1; min-width:150px; background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:16px 14px; position:relative; z-index:2;
+  }
+  .chain-node .num{ font-family:var(--mono); font-size:10px; color:var(--amber); letter-spacing:.14em;}
+  .chain-node .name{ font-family:var(--mono); font-size:13.5px; font-weight:700; margin-top:6px;}
+  .chain-node .sub{ font-size:11.5px; color:var(--muted); margin-top:4px; line-height:1.4;}
+  .chain-wire{ flex:0 0 46px; position:relative; align-self:center; height:2px; background:var(--line); margin:0 -1px; z-index:1; }
+  .chain-wire .pulse{
+    position:absolute; top:-3px; width:8px; height:8px; border-radius:50%;
+    background:var(--teal); box-shadow:0 0 8px 2px rgba(43,182,168,.7);
+    animation:travel 2.6s linear infinite;
+  }
+  @keyframes travel{ 0%{ left:-4px; opacity:0;} 8%{opacity:1;} 92%{opacity:1;} 100%{ left:calc(100% - 4px); opacity:0;} }
+
+  /* ---------- SECTIONS / RACK UNITS ---------- */
+  .rack{ max-width:980px; margin:20px auto 0; padding:0 24px 100px; position:relative;}
+  .unit{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:32px 30px; position:relative; }
+  .connector{ display:flex; justify-content:center; height:52px; position:relative; }
+  .unit-grid{ display:grid; grid-template-columns:220px 1fr; gap:28px; }
+  @media (max-width:680px){ .unit-grid{grid-template-columns:1fr;} }
+  .unit-label .tag{ font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--amber); }
+  .unit-label h2{ font-family:var(--mono); font-size:21px; margin:10px 0 6px; font-weight:700; line-height:1.25; }
+  .unit-label p{ font-size:13.5px; color:var(--muted); line-height:1.55; margin:0;}
+  .rows{ display:flex; flex-direction:column; gap:0; }
+  .row{ display:grid; grid-template-columns:160px 1fr; gap:16px; padding:13px 0; border-top:1px solid var(--line); }
+  .row:first-child{ border-top:none; }
+  .row .k{ font-family:var(--mono); font-size:11.5px; color:var(--muted); letter-spacing:.03em; padding-top:2px;}
+  .row .v{ font-size:14px; line-height:1.55; }
+  .row .v code{
+    font-family:var(--mono); font-size:12.5px; background:var(--panel-2);
+    border:1px solid var(--line); padding:2px 7px; border-radius:6px; color:var(--teal);
+  }
+  .row .v .status{
+    display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:11px;
+    letter-spacing:.08em; text-transform:uppercase; padding:2px 8px; border-radius:20px; border:1px solid;
+  }
+  .status.ok{ color:var(--teal); border-color:rgba(43,182,168,.4); background:rgba(43,182,168,.08);}
+  .status.dns{ color:var(--amber); border-color:rgba(232,163,61,.4); background:rgba(232,163,61,.08);}
+
+  /* ---------- FLOW SECTION ---------- */
+  .flow{ margin-top:20px; }
+  .flow h2{ font-family:var(--mono); font-size:22px; margin:0 0 8px;}
+  .flow > p{ color:var(--muted); font-size:14px; max-width:640px; margin:0 0 26px; line-height:1.6;}
+  .flow-paths{ display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+  .fpath{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px; }
+  .fpath .ftitle{ font-family:var(--mono); font-size:12px; color:var(--teal); letter-spacing:.06em; margin-bottom:12px;}
+  .fpath ol{ margin:0; padding-left:18px; font-size:13.5px; line-height:1.9; color:var(--text);}
+  .fpath ol li::marker{ color:var(--muted); font-family:var(--mono); font-size:12px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{ border-top:1px solid var(--line); padding:34px 24px 40px; text-align:center; }
+  footer .links{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; margin-bottom:16px;}
+  footer a{
+    font-family:var(--mono); font-size:12px; color:var(--muted); text-decoration:none;
+    border-bottom:1px solid transparent; padding-bottom:2px; transition:color .2s, border-color .2s;
+  }
+  footer a:hover{ color:var(--teal); border-color:var(--teal); }
+  footer .meta{ font-size:11.5px; color:var(--muted); font-family:var(--mono); opacity:.7; }
+
+  /* ---------- BOTTOM CONTROL BAR ---------- */
+  .controlbar{
+    position:fixed; left:50%; bottom:20px; transform:translateX(-50%);
+    display:flex; align-items:center; gap:10px;
+    background:var(--panel); border:1px solid var(--line); border-radius:999px;
+    padding:6px; box-shadow:0 10px 30px -10px rgba(0,0,0,.5);
+    z-index:50; backdrop-filter:blur(6px);
+  }
+  .langswitch{ display:flex; background:var(--panel-2); border-radius:999px; padding:3px; }
+  .langswitch button{
+    font-family:var(--mono); font-size:11px; letter-spacing:.06em; font-weight:700;
+    border:none; background:transparent; color:var(--muted); padding:7px 13px; border-radius:999px;
+    cursor:pointer; transition:background .2s, color .2s;
+  }
+  .langswitch button.active{ background:var(--teal); color:#08201d; }
+  .themeswitch{
+    display:flex; align-items:center; justify-content:center; width:34px; height:34px;
+    border-radius:50%; border:1px solid var(--line); background:var(--panel-2); cursor:pointer;
+    color:var(--amber); transition:transform .25s ease, background .2s;
+  }
+  .themeswitch:hover{ transform:rotate(20deg); }
+  .themeswitch svg{ width:16px; height:16px; }
+  .divider{ width:1px; height:20px; background:var(--line); }
+</style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="eyebrow" data-i18n="eyebrow">Documentazione interna — non pubblica</div>
+    <h1 data-i18n="h1">Il rack di <span>diaprod.it</span></h1>
+    <p data-i18n="hero_p1"><strong>Come sono collegati dominio, sito, email e il Report Giornaliero</strong> — ogni servizio che tiene in piedi lo studio, spiegato come una catena di segnale: un pezzo alimenta il successivo.</p>
+    <p data-i18n="hero_p2">Aggiornato dopo la migrazione DNS a Cloudflare e l'introduzione del backend Supabase per il Report Giornaliero.</p>
+  </section>
+
+  <div class="chain">
+    <div class="chain-node">
+      <div class="num">01</div>
+      <div class="name">Register.it</div>
+      <div class="sub" data-i18n="chain1_sub">Registrar del dominio + casella email</div>
+    </div>
+    <div class="chain-wire"><div class="pulse" style="animation-delay:0s"></div></div>
+    <div class="chain-node">
+      <div class="num">02</div>
+      <div class="name">Cloudflare</div>
+      <div class="sub" data-i18n="chain2_sub">DNS, proxy, Worker</div>
+    </div>
+    <div class="chain-wire"><div class="pulse" style="animation-delay:.65s"></div></div>
+    <div class="chain-node">
+      <div class="num">03</div>
+      <div class="name">GitHub Pages</div>
+      <div class="sub" data-i18n="chain3_sub">Hosting del sito statico</div>
+    </div>
+    <div class="chain-wire"><div class="pulse" style="animation-delay:1.3s"></div></div>
+    <div class="chain-node">
+      <div class="num">04</div>
+      <div class="name">Supabase</div>
+      <div class="sub" data-i18n="chain4_sub">Backend del Report Giornaliero</div>
+    </div>
+  </div>
+
+  <div class="rack">
+
+    <!-- UNIT 01 -->
+    <div class="unit">
+      <div class="unit-grid">
+        <div class="unit-label">
+          <div class="tag" data-i18n="u1_tag">Unit 01</div>
+          <h2 data-i18n="u1_h2">Dominio &amp; registrazione</h2>
+          <p data-i18n="u1_p">Register.it resta il proprietario legale del dominio. Da qui parte tutta la catena.</p>
+        </div>
+        <div class="rows">
+          <div class="row"><div class="k" data-i18n="u1_r1_k">Dominio</div><div class="v"><code>diaprod.it</code></div></div>
+          <div class="row"><div class="k" data-i18n="u1_r2_k">Registrar</div><div class="v" data-i18n="u1_r2_v">Register.it — pannello &ldquo;Configurazione DNS&rdquo; &rarr; &ldquo;Cambio DNS&rdquo;</div></div>
+          <div class="row"><div class="k" data-i18n="u1_r3_k">Nameserver</div><div class="v"><span class="status ok" data-i18n="status_cf">Cloudflare</span><br><code>christian.ns.cloudflare.com</code><br><code>delilah.ns.cloudflare.com</code></div></div>
+          <div class="row"><div class="k" data-i18n="u1_r4_k">Casella email</div><div class="v" data-i18n="u1_r4_v">Prodotto mailbox attivo su Register.it (2GB, 500 invii/giorno) — <code>studio@diaprod.it</code></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><svg width="2" height="52" viewBox="0 0 2 52"><line x1="1" y1="0" x2="1" y2="52" stroke="var(--line)" stroke-width="2"/><circle r="3.5" fill="var(--teal)"><animateMotion dur="2.2s" repeatCount="indefinite" path="M1,0 L1,52"/></circle></svg></div>
+
+    <!-- UNIT 02 -->
+    <div class="unit">
+      <div class="unit-grid">
+        <div class="unit-label">
+          <div class="tag" data-i18n="u2_tag">Unit 02</div>
+          <h2 data-i18n="u2_h2">DNS &amp; routing — Cloudflare</h2>
+          <p data-i18n="u2_p">Cloudflare gestisce ora tutta la risoluzione DNS del dominio, sostituendo i nameserver di default di Register.it.</p>
+        </div>
+        <div class="rows">
+          <div class="row"><div class="k" data-i18n="u2_r1_k">Sito (A record x4)</div><div class="v"><span class="status ok" data-i18n="status_proxied">Proxied</span><span data-i18n="u2_r1_v"> &rarr; IP di GitHub Pages (185.199.108/109/110/111.153)</span></div></div>
+          <div class="row"><div class="k">www</div><div class="v"><span class="status ok" data-i18n="status_proxied">Proxied</span><span> &rarr; </span><code>diaprod.github.io</code></div></div>
+          <div class="row"><div class="k" data-i18n="u2_r3_k">Posta (MX)</div><div class="v"><span class="status dns" data-i18n="status_dnsonly">DNS only</span><span> &rarr; </span><code>mail.register.it</code><span data-i18n="u2_r3_v"> — deve restare non-proxied o la posta si rompe</span></div></div>
+          <div class="row"><div class="k" data-i18n="u2_r4_k">DKIM / autoconfig</div><div class="v"><span class="status dns" data-i18n="status_dnsonly">DNS only</span><span data-i18n="u2_r4_v"> — firma email e autoconfigurazione client di posta</span></div></div>
+          <div class="row"><div class="k" data-i18n="u2_r5_k">SPF &amp; DMARC</div><div class="v" data-i18n="u2_r5_v">TXT record per l'autenticazione email, per aiutare la consegna in Primaria su Gmail</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><svg width="2" height="52" viewBox="0 0 2 52"><line x1="1" y1="0" x2="1" y2="52" stroke="var(--line)" stroke-width="2"/><circle r="3.5" fill="var(--teal)"><animateMotion dur="2.2s" repeatCount="indefinite" path="M1,0 L1,52" begin="0.6s"/></circle></svg></div>
+
+    <!-- UNIT 03 -->
+    <div class="unit">
+      <div class="unit-grid">
+        <div class="unit-label">
+          <div class="tag" data-i18n="u3_tag">Unit 03</div>
+          <h2 data-i18n="u3_h2">Hosting del sito — GitHub Pages</h2>
+          <p data-i18n="u3_p">Il sito &ldquo;coming soon&rdquo; di diaprod.it &egrave; una pagina statica ospitata gratuitamente su GitHub Pages.</p>
+        </div>
+        <div class="rows">
+          <div class="row"><div class="k" data-i18n="u3_r1_k">Origine</div><div class="v"><code>diaprod.github.io</code></div></div>
+          <div class="row"><div class="k" data-i18n="u3_r2_k">Servito tramite</div><div class="v" data-i18n="u3_r2_v">Cloudflare in modalit&agrave; proxy (nasconde l&rsquo;IP di origine, aggiunge cache/velocit&agrave;)</div></div>
+          <div class="row"><div class="k" data-i18n="u3_r3_k">Form di iscrizione</div><div class="v" data-i18n="u3_r3_v">Invia le email a un Cloudflare Worker, non direttamente a MailerLite</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><svg width="2" height="52" viewBox="0 0 2 52"><line x1="1" y1="0" x2="1" y2="52" stroke="var(--line)" stroke-width="2"/><circle r="3.5" fill="var(--teal)"><animateMotion dur="2.2s" repeatCount="indefinite" path="M1,0 L1,52" begin="1.2s"/></circle></svg></div>
+
+    <!-- UNIT 04 -->
+    <div class="unit">
+      <div class="unit-grid">
+        <div class="unit-label">
+          <div class="tag" data-i18n="u4_tag">Unit 04</div>
+          <h2 data-i18n="u4_h2">Worker — raccolta email</h2>
+          <p data-i18n="u4_p">Un Cloudflare Worker fa da intermediario sicuro tra il form del sito e MailerLite, cos&igrave; la chiave API di MailerLite non &egrave; mai visibile nel frontend.</p>
+        </div>
+        <div class="rows">
+          <div class="row"><div class="k" data-i18n="u4_r1_k">Worker</div><div class="v"><code>dia-prod-notify.dyko-moradi.workers.dev</code></div></div>
+          <div class="row"><div class="k" data-i18n="u4_r2_k">Destinazione</div><div class="v" data-i18n="u4_r2_v">API di MailerLite — gruppo <code>191289864457553562</code></div></div>
+          <div class="row"><div class="k" data-i18n="u4_r3_k">Perch&eacute; un Worker</div><div class="v" data-i18n="u4_r3_v">Il form pubblico chiama il Worker; solo il Worker conosce la chiave API di MailerLite</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector"><svg width="2" height="52" viewBox="0 0 2 52"><line x1="1" y1="0" x2="1" y2="52" stroke="var(--line)" stroke-width="2"/><circle r="3.5" fill="var(--teal)"><animateMotion dur="2.2s" repeatCount="indefinite" path="M1,0 L1,52" begin="1.8s"/></circle></svg></div>
+
+    <!-- UNIT 05 -->
+    <div class="unit">
+      <div class="unit-grid">
+        <div class="unit-label">
+          <div class="tag" data-i18n="u5_tag">Unit 05</div>
+          <h2 data-i18n="u5_h2">Report Giornaliero — backend Supabase</h2>
+          <p data-i18n="u5_p">L&rsquo;area riservata dello studio. La password non &egrave; pi&ugrave; scritta nel file HTML: viene verificata da una funzione sul server Supabase.</p>
+        </div>
+        <div class="rows">
+          <div class="row"><div class="k" data-i18n="u5_r1_k">Progetto</div><div class="v" data-i18n="u5_r1_v">Supabase — <code>convkywqutizvkwmgcda.supabase.co</code></div></div>
+          <div class="row"><div class="k" data-i18n="u5_r2_k">Login</div><div class="v" data-i18n="u5_r2_v">Nome + password condivisa &rarr; chiamata RPC a <code>check_studio_password()</code>, che risponde solo <code>true</code>/<code>false</code></div></div>
+          <div class="row"><div class="k" data-i18n="u5_r3_k">Tabella log</div><div class="v" data-i18n="u5_r3_v"><code>Login_events</code> — registra ogni login/logout: nome, tipo evento, orario</div></div>
+          <div class="row"><div class="k" data-i18n="u5_r4_k">Sicurezza</div><div class="v" data-i18n="u5_r4_v">Row Level Security attiva; la chiave &ldquo;publishable&rdquo; nel file &egrave; pubblica per design, le regole RLS decidono cosa pu&ograve; fare</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <section class="rack flow" style="margin-top:0;">
+    <h2 data-i18n="flow_h2">Come viaggia una richiesta</h2>
+    <p data-i18n="flow_p">Due percorsi diversi partono dallo stesso dominio, a seconda di cosa sta facendo il visitatore.</p>
+    <div class="flow-paths">
+      <div class="fpath">
+        <div class="ftitle" data-i18n="fp1_title">PERCORSO — Sito pubblico</div>
+        <ol data-i18n-list="fp1">
+          <li>Il browser cerca <strong>diaprod.it</strong></li>
+          <li>Cloudflare risolve il DNS e fa da proxy</li>
+          <li>La richiesta arriva a GitHub Pages</li>
+          <li>Se qualcuno si iscrive, il form chiama il Worker</li>
+          <li>Il Worker inoltra a MailerLite</li>
+        </ol>
+      </div>
+      <div class="fpath">
+        <div class="ftitle" data-i18n="fp2_title">PERCORSO — Report Giornaliero</div>
+        <ol data-i18n-list="fp2">
+          <li>Si apre la pagina del report (HTML)</li>
+          <li>Nome + password vengono inviati a Supabase</li>
+          <li>Supabase verifica la password lato server</li>
+          <li>Se corretta, si accede e l&rsquo;evento viene loggato</li>
+          <li>Al logout, un secondo evento viene loggato</li>
+        </ol>
+      </div>
+      <div class="fpath">
+        <div class="ftitle" data-i18n="fp3_title">PERCORSO — Email in arrivo</div>
+        <ol data-i18n-list="fp3">
+          <li>Un&rsquo;email arriva per <strong>studio@diaprod.it</strong></li>
+          <li>Il record MX (DNS only) punta a Register.it</li>
+          <li>SPF/DKIM/DMARC autenticano il mittente</li>
+          <li>Register.it consegna nella mailbox</li>
+          <li>Accessibile via IMAP/webmail o client di posta</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="links">
+      <a href="https://dash.cloudflare.com" target="_blank" rel="noopener" data-i18n="link_cf">Cloudflare dashboard</a>
+      <a href="https://www.register.it" target="_blank" rel="noopener" data-i18n="link_reg">Register.it pannello</a>
+      <a href="https://supabase.com/dashboard" target="_blank" rel="noopener">Supabase dashboard</a>
+      <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="meta" data-i18n="footer_meta">DIA PROD — mappa infrastruttura · uso interno</div>
+  </footer>
+
+  <div class="controlbar">
+    <div class="langswitch">
+      <button type="button" data-lang="it" id="btn-it">IT</button>
+      <button type="button" data-lang="en" id="btn-en">EN</button>
+    </div>
+    <div class="divider"></div>
+    <button type="button" class="themeswitch" id="theme-toggle" aria-label="Toggle day/night" title="Toggle day/night">
+      <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+    </button>
+  </div>
+
+<script>
+  // ---------------- i18n ----------------
+  const translations = {
+    en: {
+      eyebrow: "Internal documentation — not public",
+      h1: 'The <span>diaprod.it</span> rack',
+      hero_p1: '<strong>How the domain, site, email, and Report Giornaliero connect</strong> — every service keeping the studio running, explained like a signal chain: one piece feeds the next.',
+      hero_p2: "Updated after the DNS migration to Cloudflare and the introduction of the Supabase backend for the Report Giornaliero.",
+      chain1_sub: "Domain registrar + email mailbox",
+      chain2_sub: "DNS, proxy, Worker",
+      chain3_sub: "Static site hosting",
+      chain4_sub: "Report Giornaliero backend",
+      u1_tag: "Unit 01", u1_h2: "Domain &amp; registration",
+      u1_p: "Register.it remains the legal owner of the domain. This is where the whole chain starts.",
+      u1_r1_k: "Domain", u1_r2_k: "Registrar", u1_r2_v: 'Register.it — "DNS Configuration" panel &rarr; "Change DNS"',
+      u1_r3_k: "Nameservers", u1_r4_k: "Email mailbox",
+      u1_r4_v: 'Active mailbox product on Register.it (2GB, 500 sends/day) — <code>studio@diaprod.it</code>',
+      status_cf: "Cloudflare",
+      u2_tag: "Unit 02", u2_h2: "DNS &amp; routing — Cloudflare",
+      u2_p: "Cloudflare now handles all DNS resolution for the domain, replacing Register.it's default nameservers.",
+      u2_r1_k: "Site (4x A records)", u2_r1_v: " &rarr; GitHub Pages IPs (185.199.108/109/110/111.153)",
+      status_proxied: "Proxied",
+      u2_r3_k: "Mail (MX)", u2_r3_v: " — must stay non-proxied or mail breaks",
+      status_dnsonly: "DNS only",
+      u2_r4_k: "DKIM / autoconfig", u2_r4_v: " — email signing and mail client autoconfiguration",
+      u2_r5_k: "SPF &amp; DMARC", u2_r5_v: "TXT records for email authentication, helping delivery land in Gmail's Primary tab",
+      u3_tag: "Unit 03", u3_h2: "Site hosting — GitHub Pages",
+      u3_p: 'The "coming soon" site at diaprod.it is a static page hosted for free on GitHub Pages.',
+      u3_r1_k: "Origin", u3_r2_k: "Served through",
+      u3_r2_v: "Cloudflare in proxy mode (hides the origin IP, adds caching/speed)",
+      u3_r3_k: "Signup form", u3_r3_v: "Sends emails to a Cloudflare Worker, not directly to MailerLite",
+      u4_tag: "Unit 04", u4_h2: "Worker — email capture",
+      u4_p: "A Cloudflare Worker sits between the site's form and MailerLite, so the MailerLite API key is never exposed in the frontend.",
+      u4_r1_k: "Worker", u4_r2_k: "Destination", u4_r2_v: 'MailerLite API — group <code>191289864457553562</code>',
+      u4_r3_k: "Why a Worker", u4_r3_v: "The public form calls the Worker; only the Worker knows the MailerLite API key",
+      u5_tag: "Unit 05", u5_h2: "Report Giornaliero — Supabase backend",
+      u5_p: "The studio's private area. The password is no longer written in the HTML file: it's verified by a function on the Supabase server.",
+      u5_r1_k: "Project", u5_r1_v: 'Supabase — <code>convkywqutizvkwmgcda.supabase.co</code>',
+      u5_r2_k: "Login", u5_r2_v: 'Name + shared password &rarr; RPC call to <code>check_studio_password()</code>, which only replies <code>true</code>/<code>false</code>',
+      u5_r3_k: "Log table", u5_r3_v: "<code>Login_events</code> — logs every login/logout: name, event type, timestamp",
+      u5_r4_k: "Security", u5_r4_v: 'Row Level Security is on; the "publishable" key in the file is public by design — RLS rules decide what it can actually do',
+      flow_h2: "How a request travels", flow_p: "Two different paths leave the same domain, depending on what the visitor is doing.",
+      fp1_title: "PATH — Public site", fp2_title: "PATH — Report Giornaliero", fp3_title: "PATH — Incoming email",
+      link_cf: "Cloudflare dashboard", link_reg: "Register.it panel",
+      footer_meta: "DIA PROD — infrastructure map · internal use",
+    },
+    it_lists: null // placeholder, real lists below
+  };
+
+  const listTranslations = {
+    fp1: {
+      it: ["Il browser cerca <strong>diaprod.it</strong>","Cloudflare risolve il DNS e fa da proxy","La richiesta arriva a GitHub Pages","Se qualcuno si iscrive, il form chiama il Worker","Il Worker inoltra a MailerLite"],
+      en: ["The browser looks up <strong>diaprod.it</strong>","Cloudflare resolves the DNS and proxies it","The request reaches GitHub Pages","If someone signs up, the form calls the Worker","The Worker forwards it to MailerLite"]
+    },
+    fp2: {
+      it: ["Si apre la pagina del report (HTML)","Nome + password vengono inviati a Supabase","Supabase verifica la password lato server","Se corretta, si accede e l&rsquo;evento viene loggato","Al logout, un secondo evento viene loggato"],
+      en: ["The report page opens (HTML)","Name + password are sent to Supabase","Supabase verifies the password server-side","If correct, access is granted and the event is logged","On logout, a second event is logged"]
+    },
+    fp3: {
+      it: ["Un&rsquo;email arriva per <strong>studio@diaprod.it</strong>","Il record MX (DNS only) punta a Register.it","SPF/DKIM/DMARC autenticano il mittente","Register.it consegna nella mailbox","Accessibile via IMAP/webmail o client di posta"],
+      en: ["An email arrives for <strong>studio@diaprod.it</strong>","The MX record (DNS only) points to Register.it","SPF/DKIM/DMARC authenticate the sender","Register.it delivers it to the mailbox","Accessible via IMAP/webmail or a mail client"]
+    }
+  };
+
+  // capture original (Italian) text for every data-i18n element on first load
+  const originals = {};
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    originals[el.getAttribute('data-i18n')] = originals[el.getAttribute('data-i18n')] || el.innerHTML;
+  });
+  const originalLists = {};
+  document.querySelectorAll('[data-i18n-list]').forEach(ol => {
+    originalLists[ol.getAttribute('data-i18n-list')] = Array.from(ol.children).map(li => li.innerHTML);
+  });
+
+  function setLanguage(lang){
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (lang === 'it') { el.innerHTML = originals[key]; }
+      else { el.innerHTML = (translations.en[key] !== undefined) ? translations.en[key] : originals[key]; }
+    });
+    document.querySelectorAll('[data-i18n-list]').forEach(ol => {
+      const key = ol.getAttribute('data-i18n-list');
+      const src = (lang === 'it') ? originalLists[key] : (listTranslations[key] ? listTranslations[key].en : originalLists[key]);
+      Array.from(ol.children).forEach((li, i) => { if (src[i] !== undefined) li.innerHTML = src[i]; });
+    });
+    document.getElementById('btn-it').classList.toggle('active', lang === 'it');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    try { localStorage.setItem('diaprod_lang', lang); } catch(e){}
+  }
+
+  document.getElementById('btn-it').addEventListener('click', () => setLanguage('it'));
+  document.getElementById('btn-en').addEventListener('click', () => setLanguage('en'));
+
+  // ---------------- theme ----------------
+  const sunPath = '<circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"></line><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"></line><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"></line>';
+  const moonPath = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>';
+
+  function setTheme(theme){
+    document.documentElement.setAttribute('data-theme', theme);
+    document.getElementById('theme-icon').innerHTML = (theme === 'dark') ? moonPath : sunPath;
+    try { localStorage.setItem('diaprod_theme', theme); } catch(e){}
+  }
+
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    setTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  // ---------------- init from saved prefs ----------------
+  let savedLang = 'it', savedTheme = 'dark';
+  try { savedLang = localStorage.getItem('diaprod_lang') || 'it'; } catch(e){}
+  try { savedTheme = localStorage.getItem('diaprod_theme') || 'dark'; } catch(e){}
+  setLanguage(savedLang);
+  setTheme(savedTheme);
+</script>
+
+</body>
+</html>
