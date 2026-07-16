@@ -1,225 +1,278 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Preventivatore AI · 3KT Impianti</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<title>Preventivatore &middot; 3KT Impianti</title>
 <style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+
   :root{
-    --bg:#f1f5f9; --panel:#ffffff; --ink:#1e293b; --muted:#64748b; --line:#e2e8f0;
-    --navy:#0f172a; --cyan:#0891b2; --cyan-soft:#cffafe; --amber:#f59e0b;
+    --ac:#0071e3;
+    --surface:#ffffff; --text:#1d1d1f; --muted:#6e6e73; --dim:#86868b;
+    --faint:#a1a1a6; --hint:#d2d2d7; --note:#424245;
+    --border:rgba(0,0,0,.08); --border-strong:rgba(0,0,0,.14);
+    --track:#f5f5f7; --page-bg:#f5f5f7; --page-bg-solid:#f5f5f7;
+    --glow1:color-mix(in oklab, var(--ac) 14%, transparent);
+    --glow2:color-mix(in oklab, var(--ac) 8%, transparent);
+    --glow-blur:60px;
   }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
-  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-  .mono{font-family:'JetBrains Mono',monospace}
+  :root.night{
+    --surface:#1c1c1e; --text:#f5f5f7; --muted:#a1a1a6; --dim:#98989d;
+    --faint:#6e6e73; --hint:#48484a; --note:#e5e5e5;
+    --border:rgba(255,255,255,.14); --border-strong:rgba(255,255,255,.22);
+    --track:rgba(255,255,255,.08); --page-bg:#000000; --page-bg-solid:#000000;
+    --glow1:rgba(10,132,255,.32); --glow2:rgba(94,92,230,.24); --glow-blur:70px;
+  }
 
-  /* header */
-  .top{background:var(--navy);color:#fff}
-  .top-in{max-width:1080px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:12px}
-  .logo{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;
-        font-weight:800;color:var(--navy);background:linear-gradient(135deg,#22d3ee,#34d399 55%,#fbbf24)}
-  .brand{line-height:1}
-  .brand b{font-weight:800;letter-spacing:-.01em}
-  .brand span{display:block;font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
-  .back{margin-left:auto;color:#cbd5e1;text-decoration:none;font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:6px}
-  .back:hover{color:#fff}
+  body{
+    background:var(--page-bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;
+    transition:background .6s ease,color .6s ease;min-height:100vh;min-height:100dvh;
+  }
+  [role="button"],a[href]{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;
+    transition:transform .18s cubic-bezier(.28,.11,.32,1),filter .18s ease,color .25s ease,background .25s ease;}
 
-  /* layout */
-  .wrap{max-width:1080px;margin:0 auto;padding:22px 20px;display:grid;gap:18px;grid-template-columns:1.15fr 1fr}
-  @media(max-width:860px){.wrap{grid-template-columns:1fr}}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:0 1px 2px rgba(15,23,42,.04);display:flex;flex-direction:column;overflow:hidden;height:min(74vh,660px)}
-  @media(max-width:860px){.card{height:70vh}}
+  @keyframes riseIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  @keyframes rowIn{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:none;}}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.45;transform:scale(.82);}}
+  @keyframes bokehDrift1{0%,100%{transform:translate(0,0) scale(1);opacity:.75;}50%{transform:translate(30px,-38px) scale(1.12);opacity:1;}}
+  @keyframes bokehDrift2{0%,100%{transform:translate(0,0) scale(1);opacity:.6;}50%{transform:translate(-38px,30px) scale(.9);opacity:.85;}}
+  @keyframes bokehDrift3{0%,100%{transform:translate(0,0) scale(1);opacity:.65;}50%{transform:translate(22px,-26px) scale(1.1);opacity:.92;}}
+  @keyframes bounceDot{0%,80%,100%{transform:translateY(0);opacity:.5;}40%{transform:translateY(-5px);opacity:1;}}
+  @media (prefers-reduced-motion: reduce){.bg-anim{animation:none !important;}}
 
-  /* chat */
-  .stream{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-  .row{display:flex}
-  .row.me{justify-content:flex-end}
-  .bub{max-width:82%;padding:10px 14px;border-radius:16px;font-size:14.5px;line-height:1.5;white-space:pre-wrap}
-  .bub.ai{background:#f1f5f9;color:var(--ink);border-bottom-left-radius:5px}
-  .bub.me{background:var(--cyan);color:#fff;border-bottom-right-radius:5px}
-  .typing{display:flex;gap:4px;padding:12px 14px;background:#f1f5f9;border-radius:16px;border-bottom-left-radius:5px}
-  .dot{width:7px;height:7px;border-radius:50%;background:#94a3b8;animation:b 1s infinite}
-  .dot:nth-child(2){animation-delay:.15s}.dot:nth-child(3){animation-delay:.3s}
-  @keyframes b{0%,80%,100%{transform:translateY(0);opacity:.5}40%{transform:translateY(-5px);opacity:1}}
-  .composer{border-top:1px solid var(--line);padding:12px;display:flex;gap:8px}
-  .composer input{flex:1;padding:11px 14px;border:none;border-radius:12px;background:#f1f5f9;font-size:14.5px;outline:none;font-family:inherit}
-  .composer input:focus{box-shadow:0 0 0 2px #67e8f9}
-  .composer button{padding:11px 20px;border:none;border-radius:12px;background:var(--navy);color:#fff;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit}
-  .composer button:hover{background:#1e293b}
-  .composer button:disabled{opacity:.4;cursor:default}
+  .bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
+  .bg .g1{position:absolute;top:-260px;right:-160px;width:620px;height:620px;border-radius:50%;
+    background:radial-gradient(circle,var(--glow1),transparent 72%);filter:blur(var(--glow-blur));transition:background .6s,filter .6s;}
+  .bg .g2{position:absolute;bottom:-260px;left:-200px;width:560px;height:560px;border-radius:50%;
+    background:radial-gradient(circle,var(--glow2),transparent 72%);filter:blur(var(--glow-blur));transition:background .6s,filter .6s;}
+  .bg .b{position:absolute;border-radius:50%;}
+  .bg .b1{top:14%;left:9%;width:170px;height:170px;background:radial-gradient(circle,color-mix(in oklab,var(--ac) 46%,transparent),transparent 70%);filter:blur(12px);animation:bokehDrift1 16s ease-in-out infinite;}
+  .bg .b2{top:58%;right:14%;width:130px;height:130px;background:radial-gradient(circle,color-mix(in oklab,var(--ac) 40%,transparent),transparent 70%);filter:blur(11px);animation:bokehDrift2 20s ease-in-out infinite;}
+  .bg .b3{bottom:10%;left:32%;width:100px;height:100px;background:radial-gradient(circle,color-mix(in oklab,var(--ac) 42%,transparent),transparent 70%);filter:blur(10px);animation:bokehDrift3 18s ease-in-out infinite;}
 
-  /* preventivo */
-  .q-head{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
-  .q-head .lab{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
-  .q-head .cfg{font-size:18px;font-weight:800;margin-top:2px;letter-spacing:-.01em}
-  .q-reset{background:none;border:none;color:#94a3b8;font-size:11px;text-decoration:underline;cursor:pointer}
-  .q-body{flex:1;overflow-y:auto;padding:12px 20px}
-  .q-empty{height:100%;display:flex;align-items:center;justify-content:center;text-align:center;color:#94a3b8;font-size:14px;padding:0 24px}
-  .q-line{display:flex;align-items:baseline;gap:8px;padding:7px 0;border-bottom:1px dashed #f1f5f9;font-size:13px}
-  .q-line .nm{flex:1}
-  .q-line .qt{color:#94a3b8}
-  .q-line .nt{color:#cbd5e1;font-size:11px}
-  .q-line .pr{color:var(--ink);font-weight:500}
-  .q-line .pr.zero{color:#cbd5e1;font-weight:400}
-  .q-foot{border-top:1px solid var(--line);padding:16px 20px;background:#f8fafc}
-  .q-foot .r{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);padding:2px 0}
-  .q-total{display:flex;justify-content:space-between;align-items:baseline;padding-top:6px}
-  .q-total b{font-size:15px;font-weight:800;color:var(--navy)}
-  .q-total .big{font-size:26px;font-weight:800;color:var(--navy)}
-  .q-note{font-size:10.5px;color:#94a3b8;margin-top:6px;line-height:1.4}
-  .warn{background:#fef3c7;color:#92400e;border:1px solid #fde68a;border-radius:12px;padding:10px 14px;margin:14px 20px;font-size:13px;line-height:1.45}
+  .page{position:relative;z-index:1;width:100%;max-width:1080px;margin:0 auto;
+    padding:calc(clamp(20px,4vw,40px) + env(safe-area-inset-top)) calc(clamp(16px,4vw,28px) + env(safe-area-inset-right)) calc(48px + env(safe-area-inset-bottom)) calc(clamp(16px,4vw,28px) + env(safe-area-inset-left));}
+
+  .bar{position:sticky;top:calc(6px + env(safe-area-inset-top));z-index:90;display:flex;align-items:center;gap:6px;
+    width:fit-content;max-width:calc(100vw - 32px);margin:0 auto;padding:9px 12px 9px 18px;
+    background:color-mix(in oklab, var(--surface) 78%, transparent);
+    -webkit-backdrop-filter:blur(24px) saturate(1.6);backdrop-filter:blur(24px) saturate(1.6);
+    border:1px solid var(--border);border-radius:999px;
+    box-shadow:0 1px 2px rgba(0,0,0,.04),0 20px 40px -30px rgba(0,0,0,.25);
+    animation:riseIn .7s cubic-bezier(.28,.11,.32,1) both;}
+  .bar .brand{display:flex;align-items:center;gap:9px;font-size:14px;letter-spacing:-.01em;color:var(--text);font-weight:600;white-space:nowrap;}
+  .bar .brand i{width:8px;height:8px;border-radius:50%;background:var(--ac);box-shadow:0 0 10px color-mix(in oklab,var(--ac) 60%,transparent);animation:pulse 2.6s ease-in-out infinite;font-style:normal;}
+  .bar .brand span{color:var(--faint);font-weight:400;}
+  .bar .sep{width:1px;height:20px;background:var(--border);margin:0 4px;}
+  .pillbtn{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text);
+    background:transparent;border-radius:999px;padding:9px 14px;white-space:nowrap;text-decoration:none;}
+  .pillbtn:hover{background:var(--track);color:var(--ac);transform:scale(1.035);}
+  .pillbtn:active{transform:scale(.96);}
+
+  .head{margin-top:38px;animation:riseIn .8s cubic-bezier(.28,.11,.32,1) both;animation-delay:.06s;}
+  .head h1{margin:0;font-weight:600;font-size:clamp(30px,5vw,48px);letter-spacing:-.035em;line-height:1.05;}
+  .head p{margin:12px 0 0;font-size:16px;color:var(--muted);max-width:560px;line-height:1.5;}
+
+  .grid{margin-top:30px;display:grid;gap:20px;grid-template-columns:1.15fr 1fr;}
+  @media (max-width:880px){.grid{grid-template-columns:1fr;}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:20px;
+    box-shadow:0 1px 2px rgba(0,0,0,.04),0 20px 40px -28px rgba(0,0,0,.16);
+    display:flex;flex-direction:column;overflow:hidden;height:min(72vh,640px);
+    transition:background .5s,color .5s,border-color .5s;animation:riseIn .8s cubic-bezier(.28,.11,.32,1) both;}
+  .card.c1{animation-delay:.12s;}
+  .card.c2{animation-delay:.18s;}
+  @media (max-width:880px){.card{height:68vh;}}
+
+  .stream{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px;}
+  .row{display:flex;animation:rowIn .45s cubic-bezier(.28,.11,.32,1) both;}
+  .row.me{justify-content:flex-end;}
+  .bub{max-width:82%;padding:11px 15px;border-radius:18px;font-size:15px;line-height:1.5;white-space:pre-wrap;}
+  .bub.ai{background:var(--track);color:var(--text);border-bottom-left-radius:6px;}
+  .bub.me{background:var(--ac);color:#fff;border-bottom-right-radius:6px;}
+  .typing{display:flex;gap:5px;padding:13px 15px;background:var(--track);border-radius:18px;border-bottom-left-radius:6px;}
+  .typing i{width:7px;height:7px;border-radius:50%;background:var(--dim);animation:bounceDot 1s infinite;}
+  .typing i:nth-child(2){animation-delay:.15s;}
+  .typing i:nth-child(3){animation-delay:.3s;}
+  .composer{border-top:1px solid var(--border);padding:12px;display:flex;gap:8px;}
+  .composer input{flex:1;font-size:16px;color:var(--text);background:var(--track);border:1px solid var(--border);
+    border-radius:12px;padding:12px 15px;outline:none;font-family:inherit;transition:border-color .3s,box-shadow .3s;}
+  .composer input:focus{border-color:var(--ac);box-shadow:0 0 0 4px color-mix(in oklab,var(--ac) 16%,transparent);}
+  .send{cursor:pointer;font-weight:600;font-size:15px;letter-spacing:-.005em;color:#fff;background:var(--ac);
+    border:none;border-radius:12px;padding:12px 20px;font-family:inherit;transition:transform .3s cubic-bezier(.28,.11,.32,1),filter .3s;}
+  .send:hover{transform:translateY(-1px);filter:brightness(1.1);}
+  .send:active{transform:scale(.97);}
+  .send:disabled{opacity:.4;cursor:default;filter:none;transform:none;}
+
+  .qhead{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .qhead .lab{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:600;}
+  .qhead .cfg{margin-top:3px;font-weight:600;font-size:19px;letter-spacing:-.02em;}
+  .qreset{cursor:pointer;font-size:11px;color:var(--faint);text-decoration:underline;background:none;border:none;}
+  .qreset:hover{color:var(--ac);}
+  .qbody{flex:1;overflow-y:auto;padding:12px 22px;}
+  .qempty{height:100%;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--faint);font-size:14px;padding:0 24px;line-height:1.5;}
+  .qline{display:flex;align-items:baseline;gap:8px;padding:9px 0;border-bottom:1px solid var(--border);font-size:14px;animation:rowIn .4s cubic-bezier(.28,.11,.32,1) both;}
+  .qline .nm{flex:1;color:var(--text);}
+  .qline .qt{color:var(--faint);}
+  .qline .nt{color:var(--hint);font-size:11px;}
+  .qline .pr{font-variant-numeric:tabular-nums;font-weight:500;color:var(--text);}
+  .qline .pr.zero{color:var(--hint);font-weight:400;}
+  .qfoot{border-top:1px solid var(--border);padding:18px 22px;background:color-mix(in oklab,var(--track) 60%, var(--surface));}
+  .qfoot .r{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);padding:3px 0;font-variant-numeric:tabular-nums;}
+  .qtot{display:flex;justify-content:space-between;align-items:baseline;padding-top:8px;}
+  .qtot b{font-weight:600;font-size:16px;letter-spacing:-.01em;}
+  .qtot .big{font-weight:300;font-size:34px;letter-spacing:-.03em;color:var(--ac);font-variant-numeric:tabular-nums;line-height:1;}
+  .qnote{margin-top:8px;font-size:11px;color:var(--faint);line-height:1.45;}
+
+  .foot{margin-top:36px;text-align:center;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);
+    animation:riseIn .8s cubic-bezier(.28,.11,.32,1) both;animation-delay:.3s;}
 </style>
 </head>
 <body>
-  <header class="top">
-    <div class="top-in">
-      <div class="logo">3</div>
-      <div class="brand"><b>3KT Impianti</b><span>Preventivatore Pompa di Calore</span></div>
-      <!-- Cambia l'href con la pagina da cui si apre (es. gerrynew.html) -->
-      <a class="back" href="gerrynew.html">← Torna al sito</a>
+  <div class="bg"><div class="g1"></div><div class="g2"></div><div class="b bg-anim b1"></div><div class="b bg-anim b2"></div><div class="b bg-anim b3"></div></div>
+
+  <div class="page">
+    <div class="bar">
+      <div class="brand"><i></i>3KT Impianti<span>&nbsp;Preventivo</span></div>
+      <div class="sep"></div>
+      <div class="pillbtn" id="themeBtn" role="button" tabindex="0"><span id="themeIcon">&#9728;</span><span id="themeLabel">Giorno</span></div>
+      <a class="pillbtn" href="gerrynew.html">&lsaquo; Sito</a>
     </div>
-  </header>
 
-  <div class="wrap">
-    <!-- CHAT -->
-    <section class="card">
-      <div class="stream" id="stream"></div>
-      <div class="composer">
-        <input id="input" placeholder="Scriva qui la sua risposta…" autocomplete="off" />
-        <button id="send">Invia</button>
-      </div>
-    </section>
+    <div class="head">
+      <h1>Preventivo Pompa di Calore</h1>
+      <p>Rispondi a qualche domanda dell'assistente: il preventivo si costruisce da solo, in tempo reale.</p>
+    </div>
 
-    <!-- PREVENTIVO -->
-    <section class="card">
-      <div class="q-head">
-        <div>
-          <div class="lab">Preventivo indicativo</div>
-          <div class="cfg" id="cfg">In compilazione…</div>
+    <div class="grid">
+      <section class="card c1">
+        <div class="stream" id="stream"></div>
+        <div class="composer">
+          <input id="input" placeholder="Scriva qui la sua risposta&hellip;" autocomplete="off">
+          <button class="send" id="send">Invia</button>
         </div>
-        <button class="q-reset" id="reset">azzera</button>
-      </div>
-      <div class="q-body" id="qbody">
-        <div class="q-empty">Il preventivo si costruisce qui, riga per riga, man mano che l'assistente raccoglie le informazioni.</div>
-      </div>
-      <div id="qfoot"></div>
-    </section>
+      </section>
+
+      <section class="card c2">
+        <div class="qhead">
+          <div><div class="lab">Preventivo indicativo</div><div class="cfg" id="cfg">In compilazione&hellip;</div></div>
+          <button class="qreset" id="reset">azzera</button>
+        </div>
+        <div class="qbody" id="qbody">
+          <div class="qempty">Il preventivo si costruisce qui, riga per riga, man mano che l'assistente raccoglie le informazioni.</div>
+        </div>
+        <div id="qfoot"></div>
+      </section>
+    </div>
+
+    <div class="foot">3KT Impianti &middot; Preventivo indicativo &middot; non vincolante</div>
   </div>
 
 <script>
-/* ===== CONFIGURAZIONE ===================================================
-   Metti qui l'URL del tuo Cloudflare Worker (endpoint /api/chat).
-   Finché resta il placeholder, la pagina mostra un avviso. */
 const WORKER_URL = "https://3kt-preventivi.dyko-moradi.workers.dev/api/chat";
 const REPARTO = "POMPA_DI_CALORE";
-/* ======================================================================= */
 
-const GREETING = "Ciao! Sono l'assistente di 3KT Impianti 👋 La aiuto a farsi un'idea del costo per l'installazione di una pompa di calore. Per iniziare: nella sua casa c'è già una caldaia che vorrebbe mantenere, oppure partiamo da zero?";
+const GREETING = "Ciao! Sono l'assistente di 3KT Impianti \uD83D\uDC4B La aiuto a farsi un'idea del costo per l'installazione di una pompa di calore. Per iniziare: nella sua casa c'\u00e8 gi\u00e0 una caldaia che vorrebbe mantenere, oppure partiamo da zero?";
 
 const eur = n => new Intl.NumberFormat("it-IT",{style:"currency",currency:"EUR"}).format(n||0);
 const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 let messages = [{role:"assistant", content:GREETING}];
 let spec = null, quote = null, done = false, loading = false;
 
+function applyTheme(night){
+  document.documentElement.classList.toggle("night", night);
+  document.documentElement.style.backgroundColor = night ? "#000" : "#f5f5f7";
+  document.body.style.backgroundColor = night ? "#000" : "#f5f5f7";
+  $("themeIcon").innerHTML = night ? "&#9790;" : "&#9728;";
+  $("themeLabel").textContent = night ? "Notte" : "Giorno";
+}
+let night = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+applyTheme(night);
+$("themeBtn").addEventListener("click", function(){ night=!night; applyTheme(night); });
+
 function renderChat(){
-  const s = $("stream"); s.innerHTML = "";
-  messages.forEach(m=>{
-    const row = document.createElement("div");
-    row.className = "row" + (m.role==="user"?" me":"");
-    const b = document.createElement("div");
-    b.className = "bub " + (m.role==="user"?"me":"ai");
-    b.textContent = m.content;
-    row.appendChild(b); s.appendChild(row);
+  const s=$("stream"); s.innerHTML="";
+  messages.forEach(function(m){
+    const row=document.createElement("div"); row.className="row"+(m.role==="user"?" me":"");
+    const b=document.createElement("div"); b.className="bub "+(m.role==="user"?"me":"ai");
+    b.textContent=m.content; row.appendChild(b); s.appendChild(row);
   });
   if(loading){
     const row=document.createElement("div"); row.className="row";
-    row.innerHTML='<div class="typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>';
+    row.innerHTML='<div class="typing"><i></i><i></i><i></i></div>';
     s.appendChild(row);
   }
-  s.scrollTop = s.scrollHeight;
+  s.scrollTop=s.scrollHeight;
 }
 
 function renderQuote(){
-  $("cfg").textContent = (spec && spec.config) ? spec.config : "In compilazione…";
-  const body = $("qbody"), foot = $("qfoot");
+  $("cfg").textContent=(spec&&spec.config)?spec.config:"In compilazione\u2026";
+  const body=$("qbody"), foot=$("qfoot");
   if(!quote){
-    body.innerHTML = '<div class="q-empty">Il preventivo si costruisce qui, riga per riga, man mano che l\'assistente raccoglie le informazioni.</div>';
-    foot.innerHTML = ""; return;
+    body.innerHTML='<div class="qempty">Il preventivo si costruisce qui, riga per riga, man mano che l\'assistente raccoglie le informazioni.</div>';
+    foot.innerHTML=""; return;
   }
-  body.innerHTML = "";
-  quote.lines.forEach(l=>{
-    const row = document.createElement("div"); row.className="q-line";
-    row.innerHTML =
-      '<span class="nm mono">'+escapeHtml(l.name)+
-      (l.qty>1?' <span class="qt">×'+l.qty+'</span>':'')+
-      (l.note?' <span class="nt">· '+escapeHtml(l.note)+'</span>':'')+'</span>'+
-      '<span class="pr mono'+(l.total===0?' zero':'')+'">'+eur(l.total)+'</span>';
+  body.innerHTML="";
+  quote.lines.forEach(function(l,i){
+    const row=document.createElement("div"); row.className="qline"; row.style.animationDelay=(i*0.03)+"s";
+    row.innerHTML='<span class="nm">'+esc(l.name)+(l.qty>1?' <span class="qt">\u00d7'+l.qty+'</span>':'')+
+      (l.note?' <span class="nt">\u00b7 '+esc(l.note)+'</span>':'')+'</span>'+
+      '<span class="pr'+(l.total===0?' zero':'')+'">'+eur(l.total)+'</span>';
     body.appendChild(row);
   });
-  foot.innerHTML =
-    '<div class="q-foot">'+
-      '<div class="r mono"><span>Imponibile</span><span>'+eur(quote.subtotal)+'</span></div>'+
-      '<div class="r mono"><span>IVA 10%*</span><span>'+eur(quote.iva)+'</span></div>'+
-      '<div class="q-total"><b>Totale</b><span class="big mono">'+eur(quote.total)+'</span></div>'+
-      '<div class="q-note">'+(done?'Preventivo completo. ':'')+
-        'Stima preliminare non vincolante, da confermare con sopralluogo. *IVA agevolata 10% da verificare per il singolo intervento.</div>'+
-    '</div>';
-}
-
-function escapeHtml(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
-
-function showWarn(msg){
-  const w=document.createElement("div"); w.className="warn"; w.textContent=msg;
-  $("stream").parentElement.insertBefore(w, $("stream").nextSibling);
+  foot.innerHTML='<div class="qfoot">'+
+    '<div class="r"><span>Imponibile</span><span>'+eur(quote.subtotal)+'</span></div>'+
+    '<div class="r"><span>IVA 10%*</span><span>'+eur(quote.iva)+'</span></div>'+
+    '<div class="qtot"><b>Totale</b><span class="big">'+eur(quote.total)+'</span></div>'+
+    '<div class="qnote">'+(done?'Preventivo completo. ':'')+
+      'Stima preliminare non vincolante, da confermare con sopralluogo. *IVA agevolata 10% da verificare per il singolo intervento.</div>'+
+  '</div>';
 }
 
 async function send(){
-  const inp = $("input"); const text = inp.value.trim();
-  if(!text || loading) return;
-  if(WORKER_URL.includes("TUO-SUBDOMINIO")){
-    messages.push({role:"assistant", content:"⚠️ La pagina non è ancora collegata al backend. Imposta WORKER_URL nel codice con l'indirizzo del Worker."});
-    renderChat(); return;
-  }
-  messages.push({role:"user", content:text}); inp.value="";
+  const inp=$("input"); const text=inp.value.trim();
+  if(!text||loading) return;
+  messages.push({role:"user",content:text}); inp.value="";
   loading=true; renderChat();
   try{
-    const res = await fetch(WORKER_URL,{
-      method:"POST",
-      headers:{"content-type":"application/json"},
-      body:JSON.stringify({reparto:REPARTO, messages:messages.map(m=>({role:m.role,content:m.content}))})
+    const res=await fetch(WORKER_URL,{
+      method:"POST",headers:{"content-type":"application/json"},
+      body:JSON.stringify({reparto:REPARTO,messages:messages.map(function(m){return {role:m.role,content:m.content};})})
     });
-    const data = await res.json();
-    loading=false;
-    messages.push({role:"assistant", content:data.reply || "…"});
-    if(data.spec) spec = Object.assign({}, spec||{}, data.spec);
-    if(data.quote) quote = data.quote;
-    if(data.done) done = true;
+    const data=await res.json(); loading=false;
+    messages.push({role:"assistant",content:data.reply||"\u2026"});
+    if(data.spec) spec=Object.assign({},spec||{},data.spec);
+    if(data.quote) quote=data.quote;
+    if(data.done) done=true;
     renderChat(); renderQuote();
   }catch(e){
     loading=false;
-    messages.push({role:"assistant", content:"Errore di connessione. Riprovi tra un momento."});
+    messages.push({role:"assistant",content:"Errore di connessione. Riprovi tra un momento."});
     renderChat();
   }
 }
 
 function reset(){
   spec=null; quote=null; done=false;
-  messages=[{role:"assistant", content:"Ricominciamo. C'è già una caldaia da mantenere, oppure partiamo da zero?"}];
+  messages=[{role:"assistant",content:"Ricominciamo. C'\u00e8 gi\u00e0 una caldaia da mantenere, oppure partiamo da zero?"}];
   renderChat(); renderQuote();
 }
 
 $("send").addEventListener("click", send);
-$("input").addEventListener("keydown", e=>{ if(e.key==="Enter") send(); });
+$("input").addEventListener("keydown", function(e){ if(e.key==="Enter") send(); });
 $("reset").addEventListener("click", reset);
 
 renderChat(); renderQuote();
-if(WORKER_URL.includes("TUO-SUBDOMINIO")){
-  showWarn("Backend non ancora configurato: imposta WORKER_URL nel codice con l'indirizzo del tuo Cloudflare Worker per attivare l'assistente.");
-}
 </script>
 </body>
 </html>
