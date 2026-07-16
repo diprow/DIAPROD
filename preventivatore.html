@@ -119,6 +119,15 @@
   .mic:active{transform:scale(.95);}
   .mic.live{background:var(--ac);color:#fff;border-color:var(--ac);animation:micPulse 1.4s ease-in-out infinite;}
   @keyframes micPulse{0%,100%{box-shadow:0 0 0 3px color-mix(in oklab,var(--ac) 26%,transparent);}50%{box-shadow:0 0 0 9px color-mix(in oklab,var(--ac) 6%,transparent);}}
+  .bimg{max-width:220px;width:100%;border-radius:12px;display:block;margin-bottom:6px;}
+  .pending{display:flex;gap:8px;flex-wrap:wrap;padding:0 12px;}
+  .pending:not(:empty){padding-top:10px;}
+  .chip{display:inline-flex;align-items:center;gap:8px;background:var(--track);border:1px solid var(--border);
+    border-radius:12px;padding:6px 8px 6px 6px;animation:rowIn .35s cubic-bezier(.28,.11,.32,1) both;}
+  .chip img{width:38px;height:38px;object-fit:cover;border-radius:8px;display:block;}
+  .chip .x{cursor:pointer;width:22px;height:22px;display:flex;align-items:center;justify-content:center;
+    border-radius:50%;background:var(--surface);color:var(--muted);font-size:14px;line-height:1;border:1px solid var(--border);}
+  .chip .x:hover{color:#fff;background:var(--ac);border-color:var(--ac);}
 
   .qhead{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;}
   .qhead .lab{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:600;}
@@ -163,8 +172,13 @@
     <div class="grid">
       <section class="card c1">
         <div class="stream" id="stream"></div>
+        <div id="pending" class="pending"></div>
         <div class="composer">
           <input id="input" placeholder="Scriva o parli&hellip;" autocomplete="off">
+          <input type="file" id="file" accept="image/*" style="display:none">
+          <button class="mic" id="attach" aria-label="Allega piantina o foto" title="Allega piantina o foto">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="M21 15l-5-5L5 21"></path></svg>
+          </button>
           <button class="mic" id="mic" aria-label="Parla" title="Parla">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><line x1="12" y1="18" x2="12" y2="21"></line></svg>
           </button>
@@ -198,7 +212,7 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 let messages = [{role:"assistant", content:GREETING}];
-let spec = null, quote = null, done = false, loading = false;
+let spec = null, quote = null, done = false, loading = false, pendingImage = null;
 
 function applyTheme(night){
   document.documentElement.classList.toggle("night", night);
@@ -216,7 +230,9 @@ function renderChat(){
   messages.forEach(function(m){
     const row=document.createElement("div"); row.className="row"+(m.role==="user"?" me":"");
     const b=document.createElement("div"); b.className="bub "+(m.role==="user"?"me":"ai");
-    b.textContent=m.content; row.appendChild(b); s.appendChild(row);
+    if(m.image){ const im=document.createElement("img"); im.className="bimg"; im.src=m.image; b.appendChild(im); }
+    if(m.content){ const tx=document.createElement("div"); tx.textContent=m.content; b.appendChild(tx); }
+    row.appendChild(b); s.appendChild(row);
   });
   if(loading){
     const row=document.createElement("div"); row.className="row";
@@ -250,15 +266,27 @@ function renderQuote(){
   '</div>';
 }
 
+function toApiMsg(m){
+  if(m.imgData){
+    const blocks=[];
+    blocks.push({type:"text", text: m.content || "Ecco la piantina/foto della casa."});
+    blocks.push({type:"image", source:{type:"base64", media_type:m.imgType, data:m.imgData}});
+    return {role:m.role, content:blocks};
+  }
+  return {role:m.role, content:m.content};
+}
+
 async function send(){
   const inp=$("input"); const text=inp.value.trim();
-  if(!text||loading) return;
-  messages.push({role:"user",content:text}); inp.value="";
+  if((!text && !pendingImage)||loading) return;
+  const um={role:"user", content:text};
+  if(pendingImage){ um.image=pendingImage.dataUrl; um.imgType=pendingImage.mediaType; um.imgData=pendingImage.data; }
+  messages.push(um); inp.value=""; pendingImage=null; renderPending();
   loading=true; renderChat();
   try{
     const res=await fetch(WORKER_URL,{
       method:"POST",headers:{"content-type":"application/json"},
-      body:JSON.stringify({reparto:REPARTO,messages:messages.map(function(m){return {role:m.role,content:m.content};})})
+      body:JSON.stringify({reparto:REPARTO,messages:messages.map(toApiMsg)})
     });
     const data=await res.json(); loading=false;
     messages.push({role:"assistant",content:data.reply||"\u2026"});
@@ -316,6 +344,38 @@ $("reset").addEventListener("click", reset);
     catch(err){ /* start chiamato troppo presto: ignora */ }
   });
 })();
+
+/* ---- allega piantina/foto (ridimensionata nel browser) ---- */
+function renderPending(){
+  const p=$("pending"); p.innerHTML="";
+  if(!pendingImage) return;
+  const chip=document.createElement("div"); chip.className="chip";
+  const im=document.createElement("img"); im.src=pendingImage.dataUrl; chip.appendChild(im);
+  const x=document.createElement("div"); x.className="x"; x.textContent="\u00d7";
+  x.addEventListener("click", function(){ pendingImage=null; renderPending(); });
+  chip.appendChild(x); p.appendChild(chip);
+}
+$("attach").addEventListener("click", function(){ $("file").click(); });
+$("file").addEventListener("change", function(e){
+  const file=e.target.files && e.target.files[0];
+  if(!file) return;
+  const img=new Image();
+  const url=URL.createObjectURL(file);
+  img.onload=function(){
+    URL.revokeObjectURL(url);
+    const maxEdge=1568; // limite consigliato Anthropic
+    const scale=Math.min(1, maxEdge/Math.max(img.width,img.height));
+    const w=Math.round(img.width*scale), h=Math.round(img.height*scale);
+    const c=document.createElement("canvas"); c.width=w; c.height=h;
+    c.getContext("2d").drawImage(img,0,0,w,h);
+    const dataUrl=c.toDataURL("image/jpeg",0.85);
+    pendingImage={ dataUrl:dataUrl, mediaType:"image/jpeg", data:dataUrl.split(",")[1] };
+    renderPending(); $("input").focus();
+  };
+  img.onerror=function(){ URL.revokeObjectURL(url); };
+  img.src=url;
+  e.target.value="";
+});
 
 renderChat(); renderQuote();
 </script>
