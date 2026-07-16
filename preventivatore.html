@@ -111,6 +111,14 @@
   .send:hover{transform:translateY(-1px);filter:brightness(1.1);}
   .send:active{transform:scale(.97);}
   .send:disabled{opacity:.4;cursor:default;filter:none;transform:none;}
+  .mic{flex-shrink:0;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+    color:var(--text);background:var(--track);border:1px solid var(--border);border-radius:12px;
+    transition:transform .3s cubic-bezier(.28,.11,.32,1),background .25s,color .25s,box-shadow .25s;}
+  .mic svg{width:19px;height:19px;display:block;}
+  .mic:hover{color:var(--ac);transform:translateY(-1px);}
+  .mic:active{transform:scale(.95);}
+  .mic.live{background:var(--ac);color:#fff;border-color:var(--ac);animation:micPulse 1.4s ease-in-out infinite;}
+  @keyframes micPulse{0%,100%{box-shadow:0 0 0 3px color-mix(in oklab,var(--ac) 26%,transparent);}50%{box-shadow:0 0 0 9px color-mix(in oklab,var(--ac) 6%,transparent);}}
 
   .qhead{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;}
   .qhead .lab{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:600;}
@@ -156,7 +164,10 @@
       <section class="card c1">
         <div class="stream" id="stream"></div>
         <div class="composer">
-          <input id="input" placeholder="Scriva qui la sua risposta&hellip;" autocomplete="off">
+          <input id="input" placeholder="Scriva o parli&hellip;" autocomplete="off">
+          <button class="mic" id="mic" aria-label="Parla" title="Parla">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><line x1="12" y1="18" x2="12" y2="21"></line></svg>
+          </button>
           <button class="send" id="send">Invia</button>
         </div>
       </section>
@@ -271,6 +282,40 @@ function reset(){
 $("send").addEventListener("click", send);
 $("input").addEventListener("keydown", function(e){ if(e.key==="Enter") send(); });
 $("reset").addEventListener("click", reset);
+
+/* ---- riconoscimento vocale (Web Speech API) ---- */
+(function(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const micBtn = $("mic");
+  if(!SR){ micBtn.style.display="none"; return; }   // browser non supportato: nascondi il microfono
+
+  const recog = new SR();
+  recog.lang = "it-IT";
+  recog.interimResults = true;
+  recog.continuous = false;
+  let listening = false, baseText = "";
+
+  recog.onresult = function(e){
+    let out = "";
+    for(let i=e.resultIndex;i<e.results.length;i++){ out += e.results[i][0].transcript; }
+    $("input").value = (baseText + out).replace(/\s+/g," ").trimStart();
+  };
+  recog.onerror = function(e){
+    listening=false; micBtn.classList.remove("live");
+    if(e.error==="not-allowed" || e.error==="service-not-allowed"){
+      messages.push({role:"assistant",content:"Per usare la voce, consenta l'accesso al microfono dalle impostazioni del browser."});
+      renderChat();
+    }
+  };
+  recog.onend = function(){ listening=false; micBtn.classList.remove("live"); };
+
+  micBtn.addEventListener("click", function(){
+    if(listening){ recog.stop(); return; }
+    baseText = $("input").value ? $("input").value.trim()+" " : "";
+    try{ recog.start(); listening=true; micBtn.classList.add("live"); $("input").focus(); }
+    catch(err){ /* start chiamato troppo presto: ignora */ }
+  });
+})();
 
 renderChat(); renderQuote();
 </script>
