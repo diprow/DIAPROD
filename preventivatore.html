@@ -7,6 +7,7 @@
 <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <title>Preventivatore &middot; 3KT Impianti</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -151,6 +152,26 @@
 
   .foot{margin-top:36px;text-align:center;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);
     animation:riseIn .8s cubic-bezier(.28,.11,.32,1) both;animation-delay:.3s;}
+
+  /* lead form */
+  .lead{margin-top:20px;display:none;animation:riseIn .6s cubic-bezier(.28,.11,.32,1) both;}
+  .lead .leadhead{padding:20px 22px 0;}
+  .lead .lab{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);font-weight:600;}
+  .lead .cfg{margin-top:3px;font-weight:600;font-size:20px;letter-spacing:-.02em;}
+  .lead .leadbody{padding:16px 22px 22px;}
+  .lead .fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .lead .fields input{font-size:16px;color:var(--text);background:var(--track);border:1px solid var(--border);
+    border-radius:12px;padding:12px 15px;outline:none;font-family:inherit;transition:border-color .3s,box-shadow .3s;width:100%;}
+  .lead .fields input:focus{border-color:var(--ac);box-shadow:0 0 0 4px color-mix(in oklab,var(--ac) 16%,transparent);}
+  .lead .fields .full{grid-column:1 / -1;}
+  @media(max-width:520px){.lead .fields{grid-template-columns:1fr;}}
+  .consent{display:flex;align-items:flex-start;gap:9px;margin:14px 0 16px;font-size:12.5px;line-height:1.45;color:var(--muted);cursor:pointer;}
+  .consent input{margin-top:2px;width:16px;height:16px;accent-color:var(--ac);flex-shrink:0;}
+  .consent a{color:var(--ac);text-decoration:none;}
+  .lead-send{width:100%;}
+  .lstatus{margin-top:12px;font-size:13px;line-height:1.5;text-align:center;color:var(--muted);min-height:18px;}
+  .lstatus.ok{color:var(--ac);font-weight:600;}
+  .lstatus.err{color:#d70015;}
 </style>
 </head>
 <body>
@@ -197,6 +218,20 @@
         <div id="qfoot"></div>
       </section>
     </div>
+
+    <section class="card lead" id="leadCard">
+      <div class="leadhead">
+        <div class="lab">Preventivo pronto</div>
+        <div class="cfg">Scarica il tuo preventivo</div>
+      </div>
+      <div class="leadbody">
+        <div class="fields">
+          <input id="ln" class="full" placeholder="Nome e cognome (facoltativo, comparir&agrave; sul PDF)" autocomplete="name">
+        </div>
+        <button class="send lead-send" id="lpdf">Scarica il preventivo (PDF)</button>
+        <div class="lstatus" id="lstatus"></div>
+      </div>
+    </section>
 
     <div class="foot">3KT Impianti &middot; Preventivo indicativo &middot; non vincolante</div>
   </div>
@@ -292,7 +327,7 @@ async function send(){
     messages.push({role:"assistant",content:data.reply||"\u2026"});
     if(data.spec) spec=Object.assign({},spec||{},data.spec);
     if(data.quote) quote=data.quote;
-    if(data.done) done=true;
+    if(data.done){ done=true; showLead(); }
     renderChat(); renderQuote();
   }catch(e){
     loading=false;
@@ -303,6 +338,7 @@ async function send(){
 
 function reset(){
   spec=null; quote=null; done=false;
+  $("leadCard").style.display="none";
   messages=[{role:"assistant",content:"Ricominciamo. C'\u00e8 gi\u00e0 una caldaia da mantenere, oppure partiamo da zero?"}];
   renderChat(); renderQuote();
 }
@@ -376,6 +412,88 @@ $("file").addEventListener("change", function(e){
   img.src=url;
   e.target.value="";
 });
+
+/* ---- preventivo pronto -> genera PDF (lato client) ---- */
+function showLead(){
+  const c=$("leadCard");
+  if(c.style.display==="flex") return;
+  c.style.display="flex";
+  setTimeout(function(){ c.scrollIntoView({behavior:"smooth", block:"center"}); }, 120);
+}
+function lstatus(msg, cls){ const s=$("lstatus"); s.textContent=msg||""; s.className="lstatus"+(cls?(" "+cls):""); }
+function euro(n){ return new Intl.NumberFormat("it-IT",{style:"currency",currency:"EUR"}).format(n||0); }
+
+function generatePDF(){
+  if(!spec||!quote){ lstatus("Preventivo non ancora pronto.","err"); return; }
+  if(!window.jspdf || !window.jspdf.jsPDF){ lstatus("Attenda un istante e riprovi.","err"); return; }
+  const jsPDF = window.jspdf.jsPDF;
+  const doc = new jsPDF({unit:"pt", format:"a4"});
+  const W = doc.internal.pageSize.getWidth();
+  const H = doc.internal.pageSize.getHeight();
+  const M = 48;
+  const name = $("ln").value.trim();
+  let y = 64;
+
+  // intestazione
+  doc.setFont("helvetica","bold"); doc.setFontSize(22); doc.setTextColor(0,113,227);
+  doc.text("3KT Impianti", M, y);
+  doc.setFont("helvetica","normal"); doc.setFontSize(11); doc.setTextColor(110,110,115);
+  doc.text("Preventivo indicativo", M, y+18);
+  const today = new Date().toLocaleDateString("it-IT",{day:"2-digit",month:"long",year:"numeric"});
+  doc.text(today, W-M, y, {align:"right"});
+  y += 48;
+
+  // cliente + configurazione
+  if(name){ doc.setFont("helvetica","bold"); doc.setFontSize(12); doc.setTextColor(29,29,31); doc.text("Cliente: "+name, M, y); y += 20; }
+  doc.setFont("helvetica","normal"); doc.setFontSize(10); doc.setTextColor(110,110,115);
+  doc.text("CONFIGURAZIONE", M, y);
+  doc.setFont("helvetica","bold"); doc.setFontSize(14); doc.setTextColor(29,29,31);
+  doc.text(spec.config||"", M, y+16); y += 40;
+
+  // intestazione tabella
+  doc.setDrawColor(220); doc.line(M,y,W-M,y); y += 16;
+  doc.setFont("helvetica","bold"); doc.setFontSize(9); doc.setTextColor(150,150,155);
+  doc.text("SERVIZIO", M, y); doc.text("IMPORTO", W-M, y, {align:"right"}); y += 8;
+  doc.line(M,y,W-M,y); y += 16;
+
+  // righe
+  doc.setFont("helvetica","normal"); doc.setFontSize(10.5);
+  const maxLabelW = W - M*2 - 100;
+  quote.lines.forEach(function(l){
+    if(y > H - 130){ doc.addPage(); y = 64; }
+    const label = (l.name || l.servizio || "") + (l.qty>1 ? "  x"+l.qty : "");
+    const wrapped = doc.splitTextToSize(label, maxLabelW);
+    doc.setTextColor(29,29,31); doc.text(wrapped, M, y);
+    if(l.total===0){ doc.setTextColor(165,165,170); doc.text("incluso", W-M, y, {align:"right"}); }
+    else { doc.setTextColor(29,29,31); doc.text(euro(l.total), W-M, y, {align:"right"}); }
+    y += (wrapped.length*13) + 6;
+    doc.setDrawColor(238); doc.line(M, y-8, W-M, y-8);
+  });
+
+  // totali
+  if(y > H - 150){ doc.addPage(); y = 64; }
+  y += 10;
+  const lx = W - M - 150;
+  doc.setFont("helvetica","normal"); doc.setFontSize(10.5); doc.setTextColor(110,110,115);
+  doc.text("Imponibile", lx, y); doc.text(euro(quote.subtotal), W-M, y, {align:"right"}); y += 16;
+  doc.text("IVA 10%*", lx, y); doc.text(euro(quote.iva), W-M, y, {align:"right"}); y += 24;
+  doc.setFont("helvetica","bold"); doc.setFontSize(13); doc.setTextColor(29,29,31);
+  doc.text("Totale", lx, y);
+  doc.setFontSize(16); doc.setTextColor(0,113,227); doc.text(euro(quote.total), W-M, y, {align:"right"});
+
+  // piè di pagina
+  doc.setFont("helvetica","normal"); doc.setFontSize(8.5); doc.setTextColor(165,165,170);
+  const disc = "Preventivo preliminare non vincolante, da confermare con sopralluogo tecnico. *IVA agevolata 10% da verificare per il singolo intervento.";
+  doc.text(doc.splitTextToSize(disc, W-M*2), M, H-52);
+  doc.setFont("helvetica","bold"); doc.setFontSize(9); doc.setTextColor(0,113,227);
+  doc.text("3KT Impianti", M, H-28);
+
+  const fname = "Preventivo-3KT" + (name ? "-"+name.replace(/\s+/g,"_") : "") + ".pdf";
+  doc.save(fname);
+  lstatus("\u2713 Preventivo scaricato.","ok");
+}
+
+$("lpdf").addEventListener("click", generatePDF);
 
 renderChat(); renderQuote();
 </script>
