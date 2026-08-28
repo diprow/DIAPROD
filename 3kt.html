@@ -2070,6 +2070,23 @@
     .stage{ padding-bottom: calc(40px + env(safe-area-inset-bottom)); }
   }
 
+
+  /* Pulsante "riascolta": su iOS l'audio parte sempre se nasce da un tocco */
+  .ai-msg.is-bot{ position: relative; padding-right: 40px; }
+  .ai-replay{
+    position: absolute;
+    top: 8px; right: 8px;
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--glass-edge-dim);
+    background: var(--card-tag-bg);
+    color: var(--ink-dim);
+    cursor: pointer;
+    transition: color .25s ease, transform .25s ease;
+  }
+  .ai-replay:hover{ color: var(--brand); transform: scale(1.08); }
+  .ai-replay svg{ width: 13px; height: 13px; }
 </style>
 </head>
 <body>
@@ -3257,6 +3274,20 @@ function bolla(chi, testo, rows){
   const d = document.createElement('div');
   d.className = 'ai-msg is-' + chi;
   d.innerHTML = '<p>' + String(testo).replace(/</g, '&lt;') + '</p>';
+
+  // Su iOS l'audio parte sempre se nasce da un tocco: questo è il salvagente.
+  if (chi === 'bot'){
+    const b = document.createElement('button');
+    b.className = 'ai-replay';
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Riascolta la risposta');
+    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+                + 'stroke-linecap="round" stroke-linejoin="round">'
+                + '<path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M16 9a4 4 0 0 1 0 6"/>'
+                + '<path d="M18.5 6.5a8 8 0 0 1 0 11"/></svg>';
+    b.addEventListener('click', () => { vocePronta = true; parla(testo); });
+    d.appendChild(b);
+  }
   if (rows && rows.length){
     const top = rows.slice(0, 6);
     d.insertAdjacentHTML('beforeend',
@@ -3286,24 +3317,47 @@ let vocePronta = false;
 function sbloccaVoce(){
   if (vocePronta || !window.speechSynthesis) return;
   try{
+    // ATTENZIONE: su iOS un'utterance con volume 0 NON sblocca il sintetizzatore.
+    // Serve una frase reale a volume pieno: uno spazio è inudibile ma valido.
     const u = new SpeechSynthesisUtterance(' ');
-    u.volume = 0; u.lang = 'it-IT';
+    u.lang = 'it-IT';
+    u.volume = 1;
     speechSynthesis.speak(u);
     vocePronta = true;
   }catch(e){}
 }
 
+let vocePartita = false;   // true appena il sintetizzatore emette davvero audio
+let avvisoAudio = false;
+
 function parla(testo){
   if (!window.speechSynthesis) return;
   try{
     speechSynthesis.cancel();
+    speechSynthesis.resume();   // iOS e Chrome a volte restano in pausa
+
     const u = new SpeechSynthesisUtterance(testo);
     u.lang = 'it-IT';
     const v = voceItaliana();
     if (v) u.voice = v;
     u.rate = 1.02;
-    u.onerror = ev => { if (ev.error !== 'interrupted' && ev.error !== 'canceled') stato('Non riesco a riprodurre la voce (' + ev.error + ').'); };
+    u.volume = 1;
+
+    u.onstart = () => { vocePartita = true; };
+    u.onerror = ev => {
+      if (ev.error === 'interrupted' || ev.error === 'canceled') return;
+      stato('Non riesco a riprodurre la voce (' + ev.error + ').');
+    };
     speechSynthesis.speak(u);
+
+    // Se dopo un secondo non è partito nulla, quasi sempre è il tasto
+    // silenzioso dell'iPhone o il volume a zero: lo dico una volta sola.
+    setTimeout(() => {
+      if (!vocePartita && !avvisoAudio){
+        avvisoAudio = true;
+        stato('Nessun audio? Su iPhone controlla il tasto silenzioso e alza il volume, poi tocca 🔊 sulla risposta.');
+      }
+    }, 1200);
   }catch(e){
     stato('Sintesi vocale non disponibile su questo browser.');
   }
@@ -3343,14 +3397,47 @@ let recog = null, inAscolto = false;
 function stato(msg){ aiStatus.textContent = msg || ''; }
 
 /* Perché il microfono non può partire, in una frase sola */
+const inIframe = (() => { try{ return window.self !== window.top; }catch(e){ return true; } })();
+
 function motivoBlocco(){
   if (location.protocol === 'file:')
     return 'Il microfono non funziona aprendo il file dal computer. Pubblica la pagina e aprila da https://diaprod.it/3kt';
   if (!window.isSecureContext)
     return 'Il microfono richiede una connessione sicura (https). Apri la pagina in https.';
+  // Dentro un iframe (anteprima, sito incorporato) Safari nega il microfono
+  // senza mostrare nessuna richiesta: è la causa più frequente del "blocco muto".
+  if (inIframe)
+    return 'La pagina è dentro una cornice e Safari blocca il microfono senza chiedere. Aprila direttamente su https://diaprod.it/3kt';
   if (!SR)
     return 'Questo browser non ha il riconoscimento vocale. Usa Safari o Chrome — su Firefox non è disponibile.';
   return null;
+}
+
+/* Su iOS `recog.start()` da solo spesso NON mostra la richiesta di permesso.
+   getUserMedia invece la mostra sempre: la uso come apripista quando serve. */
+let micConcesso = false;
+async function chiediPermessoMicrofono(){
+  if (micConcesso) return true;
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    stato('Questo browser non espone il microfono alle pagine web.');
+    return false;
+  }
+  try{
+    stato('Richiesta permesso microfono…');
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    stream.getTracks().forEach(t => t.stop());
+    micConcesso = true;
+    return true;
+  }catch(err){
+    const n = err && err.name;
+    stato(
+      n === 'NotAllowedError'  ? 'Permesso negato. Su iPhone: tocca “aA” nella barra indirizzi › Impostazioni sito › Microfono › Consenti.' :
+      n === 'NotFoundError'    ? 'Nessun microfono disponibile su questo dispositivo.' :
+      n === 'SecurityError'    ? 'Il browser blocca il microfono su questa pagina (contesto non sicuro).' :
+      'Microfono non accessibile (' + (n || 'errore') + ').'
+    );
+    return false;
+  }
 }
 
 function initVoce(){
@@ -3383,8 +3470,8 @@ function initVoce(){
     if (finale) chiedi(finale.trim());
   };
   const MESSAGGI = {
-    'not-allowed':    'Permesso microfono negato. Consentilo dal lucchetto accanto all\u2019indirizzo, poi riprova.',
-    'service-not-allowed': 'Il sistema blocca il riconoscimento vocale. Su iPhone attiva Impostazioni \u203a Generali \u203a Tastiera \u203a Abilita dettatura.',
+    'not-allowed':    'PROMPT',
+    'service-not-allowed': 'Il sistema blocca la dettatura. Su iPhone attiva Impostazioni \u203a Generali \u203a Tastiera \u203a Abilita dettatura, poi riprova.',
     'no-speech':      'Non ho sentito niente. Premi di nuovo e parla vicino al microfono.',
     'audio-capture':  'Nessun microfono rilevato su questo dispositivo.',
     'network':        'Il riconoscimento vocale non riesce a raggiungere la rete. Controlla la connessione.',
@@ -3394,6 +3481,13 @@ function initVoce(){
     inAscolto = false;
     aiMic.classList.remove('is-listening');
     const m = MESSAGGI[e.error];
+    if (m === 'PROMPT'){
+      // Safari ha rifiutato senza chiedere: provoco io la richiesta nativa.
+      chiediPermessoMicrofono().then(ok => {
+        if (ok) stato('Permesso concesso. Tocca di nuovo il microfono e parla.');
+      });
+      return;
+    }
     stato(m !== undefined ? m : 'Non sono riuscito ad ascoltare (' + e.error + '). Riprova o scrivi.');
   };
   recog.onend = () => {
@@ -3481,6 +3575,9 @@ document.addEventListener('keydown', e => {
       vociItaliane:    window.speechSynthesis
                          ? speechSynthesis.getVoices().filter(v => /^it/i.test(v.lang)).map(v => v.name)
                          : [],
+      inIframe:        inIframe,
+      micConcesso:     micConcesso,
+      vocePartita:     vocePartita,
       dati:            dataSource,
       userAgent:       navigator.userAgent
     })
