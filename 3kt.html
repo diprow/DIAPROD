@@ -3273,9 +3273,25 @@ function bolla(chi, testo, rows){
 function voceItaliana(){
   if (!window.speechSynthesis) return null;
   const v = speechSynthesis.getVoices();
-  return v.find(x => /^it/i.test(x.lang)) || null;
+  return v.find(x => /^it[-_]/i.test(x.lang))
+      || v.find(x => /^it/i.test(x.lang))
+      || null;
 }
-if (window.speechSynthesis) speechSynthesis.onvoiceschanged = voceItaliana;
+if (window.speechSynthesis) speechSynthesis.addEventListener('voiceschanged', voceItaliana);
+
+/* Safari (macOS e iOS) lascia parlare la pagina solo se la sintesi è stata
+   "sbloccata" durante un gesto dell'utente. La sblocco al primo tocco con
+   una frase muta: da lì in poi può parlare anche dopo il riconoscimento. */
+let vocePronta = false;
+function sbloccaVoce(){
+  if (vocePronta || !window.speechSynthesis) return;
+  try{
+    const u = new SpeechSynthesisUtterance(' ');
+    u.volume = 0; u.lang = 'it-IT';
+    speechSynthesis.speak(u);
+    vocePronta = true;
+  }catch(e){}
+}
 
 function parla(testo){
   if (!window.speechSynthesis) return;
@@ -3286,16 +3302,23 @@ function parla(testo){
     const v = voceItaliana();
     if (v) u.voice = v;
     u.rate = 1.02;
+    u.onerror = ev => { if (ev.error !== 'interrupted' && ev.error !== 'canceled') stato('Non riesco a riprodurre la voce (' + ev.error + ').'); };
     speechSynthesis.speak(u);
-  }catch(e){}
+  }catch(e){
+    stato('Sintesi vocale non disponibile su questo browser.');
+  }
 }
 
+/* NIENTE setTimeout qui: su Safari interrompe la catena del gesto utente e
+   la voce viene bloccata senza errori. La risposta esce subito. */
 function chiedi(testo){
   if (!testo || !testo.trim()) return;
+  sbloccaVoce();
   bolla('user', testo);
   aiText.value = '';
   const r = rispondi(testo);
-  setTimeout(() => { bolla('bot', r.say, r.rows); parla(r.say); }, 220);
+  bolla('bot', r.say, r.rows);
+  parla(r.say);
 }
 
 const ESEMPI = [
@@ -3317,11 +3340,25 @@ function renderEsempi(){
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recog = null, inAscolto = false;
 
+function stato(msg){ aiStatus.textContent = msg || ''; }
+
+/* Perché il microfono non può partire, in una frase sola */
+function motivoBlocco(){
+  if (location.protocol === 'file:')
+    return 'Il microfono non funziona aprendo il file dal computer. Pubblica la pagina e aprila da https://diaprod.it/3kt';
+  if (!window.isSecureContext)
+    return 'Il microfono richiede una connessione sicura (https). Apri la pagina in https.';
+  if (!SR)
+    return 'Questo browser non ha il riconoscimento vocale. Usa Safari o Chrome — su Firefox non è disponibile.';
+  return null;
+}
+
 function initVoce(){
-  if (!SR){
+  const blocco = motivoBlocco();
+  if (blocco){
     aiMic.classList.add('is-unavailable');
-    aiMic.title = 'Riconoscimento vocale non supportato da questo browser';
-    aiStatus.textContent = 'Microfono non disponibile qui — scrivi pure la domanda.';
+    aiMic.title = blocco;
+    stato(blocco + ' — intanto puoi scrivere la domanda qui sotto.');
     return;
   }
   recog = new SR();
@@ -3333,8 +3370,9 @@ function initVoce(){
   recog.onstart = () => {
     inAscolto = true;
     aiMic.classList.add('is-listening');
-    aiStatus.textContent = 'Ti ascolto…';
+    stato('Ti ascolto…');
   };
+  recog.onspeechend = () => stato('Sto capendo…');
   recog.onresult = e => {
     let parziale = '', finale = '';
     for (let i = e.resultIndex; i < e.results.length; i++){
@@ -3344,24 +3382,48 @@ function initVoce(){
     aiText.value = (finale || parziale).trim();
     if (finale) chiedi(finale.trim());
   };
+  const MESSAGGI = {
+    'not-allowed':    'Permesso microfono negato. Consentilo dal lucchetto accanto all\u2019indirizzo, poi riprova.',
+    'service-not-allowed': 'Il sistema blocca il riconoscimento vocale. Su iPhone attiva Impostazioni \u203a Generali \u203a Tastiera \u203a Abilita dettatura.',
+    'no-speech':      'Non ho sentito niente. Premi di nuovo e parla vicino al microfono.',
+    'audio-capture':  'Nessun microfono rilevato su questo dispositivo.',
+    'network':        'Il riconoscimento vocale non riesce a raggiungere la rete. Controlla la connessione.',
+    'aborted':        ''
+  };
   recog.onerror = e => {
     inAscolto = false;
     aiMic.classList.remove('is-listening');
-    aiStatus.textContent = e.error === 'not-allowed'
-      ? 'Permesso microfono negato: abilitalo nelle impostazioni del browser.'
-      : 'Non sono riuscito ad ascoltare. Riprova, oppure scrivi.';
+    const m = MESSAGGI[e.error];
+    stato(m !== undefined ? m : 'Non sono riuscito ad ascoltare (' + e.error + '). Riprova o scrivi.');
   };
   recog.onend = () => {
     inAscolto = false;
     aiMic.classList.remove('is-listening');
-    if (aiStatus.textContent === 'Ti ascolto…') aiStatus.textContent = '';
+    if (aiStatus.textContent === 'Ti ascolto…' || aiStatus.textContent === 'Sto capendo…') stato('');
   };
 }
 
 aiMic.addEventListener('click', () => {
+  // Va sbloccata qui, dentro il gesto: dopo non sarebbe più permesso.
+  sbloccaVoce();
+
+  const blocco = motivoBlocco();
+  if (blocco){ stato(blocco); return; }
   if (!recog) return;
   if (inAscolto){ recog.stop(); return; }
-  try{ if (window.speechSynthesis) speechSynthesis.cancel(); recog.start(); }catch(e){}
+
+  try{
+    if (window.speechSynthesis) speechSynthesis.cancel();
+    recog.start();          // deve restare sincrono: niente await prima
+  }catch(err){
+    // start() lanciato due volte di fila: rimetto in piedi il riconoscitore
+    if (/already started|InvalidState/i.test(err.message || '')){
+      try{ recog.stop(); }catch(e){}
+      stato('Riprova tra un istante.');
+    } else {
+      stato('Non riesco ad avviare il microfono: ' + (err.message || err.name));
+    }
+  }
 });
 aiSend.addEventListener('click', () => chiedi(aiText.value));
 aiText.addEventListener('keydown', e => { if (e.key === 'Enter') chiedi(aiText.value); });
@@ -3373,8 +3435,10 @@ function apri(){
   if (!aiLog.children.length){
     const marche = new Set(inventory.map(r => r.brand)).size;
     const pezzi  = inventory.reduce((s, r) => s + r.qty, 0);
-    bolla('bot', 'Ciao! Conosco il magazzino: ' + marche + ' marche e ' + pezzi
-               + ' pezzi. Premi il microfono e chiedimi quello che ti serve.');
+    const blocco = motivoBlocco();
+    bolla('bot', 'Ciao! Conosco il magazzino: ' + marche + ' marche e ' + pezzi + ' pezzi. '
+               + (blocco ? 'Il microfono però non è utilizzabile: ' + blocco.charAt(0).toLowerCase() + blocco.slice(1)
+                         : 'Premi il microfono e chiedimi quello che ti serve.'));
   }
   setTimeout(() => aiText.focus({ preventScroll: true }), 350);
 }
@@ -3385,7 +3449,7 @@ function chiudi(){
   if (recog && inAscolto) recog.stop();
   if (window.speechSynthesis) speechSynthesis.cancel();
 }
-aiFab.addEventListener('click', apri);
+aiFab.addEventListener('click', () => { sbloccaVoce(); apri(); });
 el('aiClose').addEventListener('click', chiudi);
 aiSheet.addEventListener('click', e => { if (e.target === aiSheet) chiudi(); });
 document.addEventListener('keydown', e => {
@@ -3402,7 +3466,25 @@ document.addEventListener('keydown', e => {
   aiSource.classList.toggle('is-live', dataSource === 'live');
   renderEsempi();
   initVoce();
-  window.__3ktAI = { rispondi, inventario: () => inventory, fonte: () => dataSource };
+  // Utile per capire al volo perché la voce non parte, da console:
+  //   copy(JSON.stringify(__3ktAI.diagnostica()))
+  window.__3ktAI = {
+    rispondi,
+    inventario: () => inventory,
+    fonte: () => dataSource,
+    diagnostica: () => ({
+      protocollo:      location.protocol,
+      contestoSicuro:  !!window.isSecureContext,
+      riconoscimento:  !!SR,
+      motivoBlocco:    motivoBlocco(),
+      sintesi:         !!window.speechSynthesis,
+      vociItaliane:    window.speechSynthesis
+                         ? speechSynthesis.getVoices().filter(v => /^it/i.test(v.lang)).map(v => v.name)
+                         : [],
+      dati:            dataSource,
+      userAgent:       navigator.userAgent
+    })
+  };
 })();
 
 })();
