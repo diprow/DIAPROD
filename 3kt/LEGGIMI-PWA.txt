@@ -1,0 +1,48 @@
+3KT — APP INSTALLABILE (PWA)
+============================
+
+CARICA TUTTA LA CARTELLA, non solo index.html:
+
+  3kt/
+    index.html
+    manifest.webmanifest
+    sw.js
+    icons/  (5 file png)
+
+Serve tutto: senza manifest.webmanifest e sw.js l'app non è installabile.
+Deve stare su HTTPS (GitHub Pages lo è).
+
+COME SI INSTALLA
+----------------
+iPhone (Safari): apri diaprod.it/3kt -> Condividi -> "Aggiungi a Home".
+Android (Chrome): compare da solo il banner "Installa", oppure
+                  menu (tre puntini) -> "Installa app".
+Desktop (Chrome/Edge): icona di installazione nella barra indirizzi.
+
+Una volta aggiunta, si apre a schermo intero: niente barra indirizzi,
+niente barra di ricerca, icona 3KT sulla schermata Home.
+
+CAMBIARE L'ICONA
+----------------
+Sostituisci i png in icons/ mantenendo gli stessi nomi e le stesse misure:
+  icon-192.png            192x192
+  icon-512.png            512x512
+  icon-maskable-512.png   512x512  (il logo deve stare nel cerchio centrale
+                                    all'80%: Android ritaglia i bordi)
+  apple-touch-icon.png    180x180  (iOS arrotonda da solo gli angoli)
+  favicon-32.png          32x32
+
+DOPO OGNI MODIFICA AL SITO
+--------------------------
+Il service worker tiene una copia in cache. Se pubblichi una versione nuova
+e sui telefoni resta la vecchia, apri sw.js e cambia la riga:
+
+  const CACHE = '3kt-v1';   ->   '3kt-v2'
+
+Cosi' la vecchia cache viene buttata e tutti prendono la versione nuova.
+
+NOTA SULLE GIACENZE
+-------------------
+Le chiamate a Supabase non vengono mai messe in cache: i numeri di magazzino
+sono sempre quelli veri. Senza rete l'app si apre lo stesso e usa la copia
+locale inclusa nella pagina.
