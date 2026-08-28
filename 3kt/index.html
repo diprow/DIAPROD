@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="/3kt/icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/3kt/icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/3kt/icons/icon-192.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <title>3KT — Catalogo e Magazzino</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1794,8 +1794,13 @@
     position: relative;
     width: min(560px, 100%);
     max-height: min(78dvh, 680px);
-    display: flex;
-    flex-direction: column;
+    /* Griglia e non flex: con `minmax(0,1fr)` la riga dei messaggi è l'unica
+       che può cedere spazio. Su Safari il flex-shrink non è affidabile e le
+       righe sotto (suggerimenti, barra) finivano schiacciate o fuori dal
+       pannello. `overflow:hidden` è la rete di sicurezza: niente può uscire. */
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);   /* le righe successive sono auto */
+    overflow: hidden;
     gap: 12px;
     padding: 18px 18px calc(16px + env(safe-area-inset-bottom));
     border-radius: var(--r-xl) var(--r-xl) 0 0;
@@ -1819,6 +1824,7 @@
   }
 
   .ai-head{
+    flex-shrink: 0;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -1859,9 +1865,12 @@
   .ai-close svg{ width: 15px; height: 15px; }
 
   .ai-log{
-    flex: 1;
-    min-height: 120px;
+    /* min-height:0 è indispensabile: senza, un elemento flex non scende
+       sotto il suo contenuto e a stringersi finiscono i fratelli. */
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
+    overscroll-behavior: contain;
     display: flex;
     flex-direction: column;
     gap: 9px;
@@ -1927,11 +1936,20 @@
   .ai-more{ margin: 6px 0 0; font-size: 11.5px; color: var(--ink-dim); }
 
   .ai-chips{
+    min-height: 34px;      /* la riga dei suggerimenti non deve mai schiacciarsi */
+    align-items: center;
     display: flex;
     gap: 7px;
     overflow-x: auto;
+    overflow-y: hidden;
     scrollbar-width: none;
-    padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+    /* scorre da bordo a bordo: esco dal padding del pannello e lo rimetto
+       come spaziatura interna, così l'ultimo suggerimento non sembra tagliato */
+    margin: 0 -18px;
+    padding: 0 18px 2px;
+    -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 26px), transparent 100%);
+            mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 26px), transparent 100%);
   }
   .ai-chips::-webkit-scrollbar{ display: none; }
   .ai-chips button{
@@ -1951,6 +1969,7 @@
   .ai-chips button:hover{ color: var(--ink); transform: translateY(-1px); }
 
   .ai-bar{
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 9px;
@@ -2028,8 +2047,9 @@
   }
   .ai-mic.is-listening .ai-mic-pulse::after{ animation-delay: .9s; }
   @keyframes mic-ring{
+    /* max 1.55: oltre, l'onda uscirebbe dal pannello (che ora ritaglia) */
     0%   { opacity: .65; transform: scale(1); }
-    100% { opacity: 0;   transform: scale(1.9); }
+    100% { opacity: 0;   transform: scale(1.55); }
   }
   @keyframes mic-breathe{
     0%, 100% { transform: scale(1); }
@@ -2038,11 +2058,14 @@
 
   .ai-status{
     margin: 0;
-    min-height: 16px;
     font-size: 11.5px;
+    line-height: 1.35;
     color: var(--ink-dim);
     text-align: center;
   }
+  /* quando non c'è nessun avviso la riga sparisce del tutto,
+     invece di lasciare uno spazio vuoto sopra il bordo inferiore */
+  .ai-status:empty{ display: none; }
 
   @media (prefers-reduced-motion: reduce){
     .ai-fab-ring, .ai-mic.is-listening, .ai-mic-pulse::before, .ai-mic-pulse::after{ animation: none; }
@@ -3539,6 +3562,12 @@ function stato(msg){ aiStatus.textContent = msg || ''; }
 /* Perché il microfono non può partire, in una frase sola */
 const inIframe = (() => { try{ return window.self !== window.top; }catch(e){ return true; } })();
 
+/* Nell'app installata (schermata Home) iOS non eredita il permesso concesso a
+   Safari: il riconoscimento parte e fallisce subito con "audio-capture",
+   senza chiedere niente. Va chiesto prima a mano con getUserMedia. */
+const inApp = window.navigator.standalone === true
+           || window.matchMedia('(display-mode: standalone)').matches;
+
 function motivoBlocco(){
   if (location.protocol === 'file:')
     return 'Il microfono non funziona aprendo il file dal computer. Pubblica la pagina e aprila da https://diaprod.it/3kt';
@@ -3613,7 +3642,7 @@ function initVoce(){
     'not-allowed':    'PROMPT',
     'service-not-allowed': 'Il sistema blocca la dettatura. Su iPhone attiva Impostazioni \u203a Generali \u203a Tastiera \u203a Abilita dettatura, poi riprova.',
     'no-speech':      'Non ho sentito niente. Premi di nuovo e parla vicino al microfono.',
-    'audio-capture':  'Nessun microfono rilevato su questo dispositivo.',
+    'audio-capture':  'PROMPT',
     'network':        'Il riconoscimento vocale non riesce a raggiungere la rete. Controlla la connessione.',
     'aborted':        ''
   };
@@ -3622,7 +3651,9 @@ function initVoce(){
     aiMic.classList.remove('is-listening');
     const m = MESSAGGI[e.error];
     if (m === 'PROMPT'){
-      // Safari ha rifiutato senza chiedere: provoco io la richiesta nativa.
+      // Safari (o l'app installata) ha rifiutato senza chiedere:
+      // provoco io la richiesta nativa e poi invito a ritoccare.
+      micConcesso = false;
       chiediPermessoMicrofono().then(ok => {
         if (ok) stato('Permesso concesso. Tocca di nuovo il microfono e parla.');
       });
@@ -3645,6 +3676,21 @@ aiMic.addEventListener('click', () => {
   if (blocco){ stato(blocco); return; }
   if (!recog) return;
   if (inAscolto){ recog.stop(); return; }
+
+  // App installata su iPhone: chiedo prima il permesso, altrimenti
+  // recog.start() muore all'istante con "audio-capture".
+  if (inApp && !micConcesso){
+    chiediPermessoMicrofono().then(ok => {
+      if (!ok) return;
+      try{
+        if (window.speechSynthesis) speechSynthesis.cancel();
+        recog.start();
+      }catch(err){
+        stato('Permesso concesso. Tocca di nuovo il microfono e parla.');
+      }
+    });
+    return;
+  }
 
   try{
     if (window.speechSynthesis) speechSynthesis.cancel();
@@ -3674,7 +3720,10 @@ function apri(){
                + (blocco ? 'Il microfono però non è utilizzabile: ' + blocco.charAt(0).toLowerCase() + blocco.slice(1)
                          : 'Premi il microfono e chiedimi quello che ti serve.'));
   }
-  setTimeout(() => aiText.focus({ preventScroll: true }), 350);
+  // Su telefono NON metto il fuoco nel campo: aprirebbe subito la tastiera,
+  // che copre metà pannello e schiaccia suggerimenti e barra. Qui si parla.
+  const touch = window.matchMedia('(pointer: coarse)').matches;
+  if (!touch) setTimeout(() => aiText.focus({ preventScroll: true }), 350);
 }
 function chiudi(){
   aiSheet.classList.remove('is-open');
