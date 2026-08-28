@@ -2,8 +2,10 @@
 <html lang="it" dir="ltr" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="theme-color" content="#eaeef5">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" id="themeColor" content="#eceff4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>I nostri prodotti</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +21,7 @@
     color-scheme: light;
 
     /* --- Base --- */
-    --bg: #eaeef5;
+    --bg: #eceff4;
     --bg-2: #f6f8fc;
     --ink: #101720;
     --ink-soft: #46505e;
@@ -33,10 +35,10 @@
     --sun: 255, 190, 48;
 
     /* --- Vetro (superficie principale) --- */
-    --glass-top: rgba(255,255,255,0.72);
-    --glass-bottom: rgba(255,255,255,0.38);
+    --glass-top: rgba(255,255,255,0.78);
+    --glass-bottom: rgba(255,255,255,0.52);
     --glass-edge: rgba(255,255,255,0.85);
-    --glass-edge-dim: rgba(255,255,255,0.45);
+    --glass-edge-dim: rgba(255,255,255,0.62);
     --glass-inner-hi: rgba(255,255,255,0.95);
     --glass-inner-lo: rgba(255,255,255,0.30);
     --glass-blur: 28px;
@@ -66,12 +68,13 @@
     --font-body: 'Inter', 'Segoe UI', sans-serif;
     --ease: cubic-bezier(.22,.9,.3,1);
     --ease-pop: cubic-bezier(.34,1.45,.5,1);
+    --spring: cubic-bezier(.16,1,.3,1);
   }
 
   /* ===== TEMA SCURO — stesso vetro, ma su fondo notturno ===== */
   html[data-theme="dark"]{
     color-scheme: dark;
-    --bg: #0b0f16;
+    --bg: #0d1117;
     --bg-2: #111823;
     --ink: #f1f4f8;
     --ink-soft: #a8b3c1;
@@ -80,10 +83,10 @@
     --brand: #24d183;
     --brand-soft: #6ff2b4;
 
-    --glass-top: rgba(255,255,255,0.12);
-    --glass-bottom: rgba(255,255,255,0.04);
+    --glass-top: rgba(255,255,255,0.10);
+    --glass-bottom: rgba(255,255,255,0.05);
     --glass-edge: rgba(255,255,255,0.24);
-    --glass-edge-dim: rgba(255,255,255,0.10);
+    --glass-edge-dim: rgba(255,255,255,0.14);
     --glass-inner-hi: rgba(255,255,255,0.28);
     --glass-inner-lo: rgba(255,255,255,0.05);
 
@@ -112,66 +115,29 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
-  /* IMPORTANTE: il colore di base sta su <html>, non su <body>.
-     I livelli mesh (body::before/::after) hanno z-index negativo:
-     se <body> avesse un fondo opaco, li coprirebbe completamente. */
   html{
     background: var(--bg);
     transition: background .6s ease;
   }
 
   /* ============================================================
-     SFONDO — mesh gradient animata: è la "cosa viva" che si vede
-     attraverso il vetro. Senza questa, il glassmorphism non legge.
+     SFONDO — tinta unita.
+     Il colore sta su <html> così Safari lo estende anche all'area di
+     rimbalzo (overscroll) sopra e sotto la pagina: nessun taglio bianco
+     quando si trascina oltre il bordo.
      ============================================================ */
-  body::before,
-  body::after{
-    content: "";
-    position: fixed;
-    inset: -20%;
-    z-index: -2;
-    pointer-events: none;
-    will-change: transform;
+  html{
+    background-color: var(--bg);
+    transition: background-color .6s ease;
+    /* niente rimbalzo che scopra la tela bianca del browser */
+    overscroll-behavior-y: none;
+    /* Safari iOS non deve ingrandire il testo ruotando il telefono */
+    -webkit-text-size-adjust: 100%;
   }
-  /* Le posizioni sono calcolate per cadere DENTRO la viewport,
-     tenendo conto dell'inset negativo che allarga il livello */
-  body::before{
-    background:
-      radial-gradient(40% 44% at 15% 30%, rgba(var(--warm), 0.42), transparent 62%),
-      radial-gradient(44% 48% at 85% 32%, rgba(var(--cool), 0.40), transparent 64%),
-      radial-gradient(48% 52% at 46% 72%, rgba(0, 200, 120, 0.36), transparent 66%);
-    animation: mesh-drift-a 26s ease-in-out infinite;
-  }
-  body::after{
-    background:
-      radial-gradient(36% 40% at 76% 64%, rgba(var(--sun), 0.34), transparent 62%),
-      radial-gradient(42% 42% at 22% 62%, rgba(150, 120, 255, 0.24), transparent 66%);
-    animation: mesh-drift-b 34s ease-in-out infinite;
-  }
-  html[data-theme="dark"] body::before{ opacity: .85; }
-  html[data-theme="dark"] body::after{ opacity: .70; }
-
-  @keyframes mesh-drift-a{
-    0%, 100% { transform: translate3d(0,0,0) scale(1); }
-    33%      { transform: translate3d(3%, -3%, 0) scale(1.08); }
-    66%      { transform: translate3d(-3%, 2%, 0) scale(1.04); }
-  }
-  @keyframes mesh-drift-b{
-    0%, 100% { transform: translate3d(0,0,0) scale(1.05); }
-    50%      { transform: translate3d(-4%, 3%, 0) scale(1); }
-  }
-
-  /* Velo che smorza la mesh, così il testo resta leggibile ovunque.
-     Sta sopra la mesh e sotto il contenuto. */
   body{
     position: relative;
-    background-color: transparent;
-    background-image: linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0.26));
-    background-attachment: fixed;
-    transition: background-image .6s ease;
-  }
-  html[data-theme="dark"] body{
-    background-image: linear-gradient(180deg, rgba(8,12,18,0.52), rgba(8,12,18,0.64));
+    background-color: var(--bg);
+    overscroll-behavior-y: none;
   }
 
   /* ============================================================
@@ -240,14 +206,17 @@
      STAGE
      ============================================================ */
   .stage{
-    min-height: 100vh;
-    min-height: 100dvh;
+    min-height: 100vh;                  /* fallback */
+    min-height: -webkit-fill-available; /* Safari iOS 14–15 */
+    min-height: 100dvh;                 /* moderno: esclude la barra dinamica */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 44px 20px 76px;
     gap: 30px;
+    padding:
+      calc(44px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right))
+      calc(76px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));
   }
 
   .stage-head{
@@ -740,7 +709,6 @@
 
   @media (prefers-reduced-motion: reduce){
     .card-fx{ display: none; }
-    body::before, body::after{ animation: none; }
   }
 
   /* ============================================================
@@ -854,6 +822,38 @@
   }
 
   /* ============================================================
+     SCHERMI BASSI (iPhone piccoli, landscape, Safari con barre a vista)
+     Tutto si compatta finché deck + dots stanno in una schermata:
+     se la pagina non scorre, non c'è rimbalzo e non c'è nulla da tagliare.
+     ============================================================ */
+  @media (max-height: 750px){
+    .stage{
+      gap: 16px;
+      padding-top: calc(18px + env(safe-area-inset-top));
+      padding-bottom: calc(28px + env(safe-area-inset-bottom));
+    }
+    .stage-head h1{ font-size: clamp(20px, 5vw, 27px); margin-bottom: 4px; }
+    .stage-head p{ font-size: 13px; }
+    .eyebrow{ margin-bottom: 8px; padding: 5px 12px; font-size: 10.5px; }
+    .deck{ height: 372px; }
+    .card{ padding: 18px 18px; }
+    .card .photo-glow{ width: 96px; height: 96px; }
+    .card.is-active .photo-glow{ width: 112px; height: 112px; }
+    .card .photo-frame{ width: 104px; height: 84px; }
+    .card.is-active .photo-frame{ width: 118px; height: 96px; }
+    .card .body{ margin-top: 10px; }
+    .card .body h2{ font-size: 18px; }
+    .card .price b{ font-size: 23px; }
+    .cat-toggle button{ padding: 7px 13px; font-size: 12px; }
+    .swipe-hint{ font-size: 11.5px; }
+  }
+  @media (max-height: 640px){
+    .stage-head p{ display: none; }
+    .deck{ height: 320px; }
+    .card.is-active .photo-glow{ width: 96px; height: 96px; }
+  }
+
+  /* ============================================================
      LANDING SCREEN
      ============================================================ */
   .landing{
@@ -864,9 +864,11 @@
     align-items: center;
     justify-content: center;
     gap: 28px;
-    padding: 40px 20px;
     z-index: 100;
     background: transparent;
+    padding:
+      calc(40px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right))
+      calc(40px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));
     transition: opacity .55s ease, visibility .55s ease, transform .55s var(--ease);
   }
   .landing.is-hidden{
@@ -1279,8 +1281,10 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
-    padding: 32px 22px;
     pointer-events: none;
+    padding:
+      calc(32px + env(safe-area-inset-top)) calc(22px + env(safe-area-inset-right))
+      calc(32px + env(safe-area-inset-bottom)) calc(22px + env(safe-area-inset-left));
     opacity: 0;
     -webkit-backdrop-filter: blur(0px);
             backdrop-filter: blur(0px);
@@ -1303,10 +1307,27 @@
     width: 230px;
     height: 230px;
     cursor: pointer;
-    transition: transform .65s var(--ease);
-    transform: scale(.4) translateY(60px);
+    transform: scale(.62) translateY(52px);
+    opacity: 0;
+    filter: blur(10px);
+    transition:
+      transform .85s var(--spring),
+      opacity .5s ease,
+      filter .6s ease;
   }
-  .zoom-overlay.is-visible .zoom-photo{ transform: scale(1) translateY(0); }
+  .zoom-overlay.is-visible .zoom-photo{
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+  /* respiro lentissimo: il prodotto sembra sospeso, non incollato */
+  .zoom-overlay.is-visible .zoom-photo img{
+    animation: zoom-float 6s ease-in-out .9s infinite;
+  }
+  @keyframes zoom-float{
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
   .zoom-photo img{
     width: 100%;
     height: 100%;
@@ -1339,9 +1360,14 @@
     text-align: center;
     padding: 24px 26px 26px;
     border-radius: var(--r-xl);
+    /* il pannello sale e "mette a fuoco": clip-path + blur invece del solito fade */
     opacity: 0;
-    transform: translateY(14px);
-    transition: opacity .45s ease .2s, transform .45s var(--ease) .2s;
+    transform: translateY(26px) scale(.94);
+    filter: blur(14px);
+    transition:
+      opacity .5s ease .12s,
+      transform .9s var(--spring) .12s,
+      filter .6s ease .12s;
 
     background: linear-gradient(150deg, var(--glass-top), var(--glass-bottom));
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
@@ -1354,7 +1380,39 @@
   }
   .zoom-overlay.is-visible .zoom-text{
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+
+  /* --- Cascata interna: titolo, poi prezzo, poi descrizione --- */
+  .zoom-text h2,
+  .zoom-text .zoom-price{
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(8px);
+    transition:
+      opacity .55s ease,
+      transform .8s var(--spring),
+      filter .55s ease;
+  }
+  .zoom-overlay.is-visible .zoom-text h2{
+    opacity: 1; transform: none; filter: blur(0);
+    transition-delay: .26s;
+  }
+  .zoom-overlay.is-visible .zoom-text .zoom-price{
+    opacity: 1; transform: none; filter: blur(0);
+    transition-delay: .36s;
+  }
+  /* il prezzo "atterra" con un piccolo rimbalzo dopo essere comparso */
+  .zoom-overlay.is-visible .zoom-text .zoom-price b{
+    animation:
+      price-land .9s var(--spring) .40s backwards,
+      offer-shine 3.6s ease-in-out 1.3s infinite;
+  }
+  @keyframes price-land{
+    0%   { transform: scale(.72); opacity: 0; }
+    55%  { transform: scale(1.06); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
   }
   .zoom-text h2{
     font-family: var(--font-display);
@@ -1408,18 +1466,27 @@
     min-height: 4.5em;
     margin: 0;
   }
-  .zoom-desc .cursor{
+  /* Ogni parola entra da sotto sfocandosi in nitidezza, sfalsata nel tempo:
+     più elegante della macchina da scrivere e molto più veloce da leggere */
+  .zoom-desc .w{
     display: inline-block;
-    width: 2px;
-    height: 1em;
-    background: var(--brand);
-    margin-left: 2px;
-    vertical-align: -2px;
-    animation: zoom-cursor-blink 0.9s step-end infinite;
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(7px);
+    animation: word-in .62s var(--spring) forwards;
   }
-  @keyframes zoom-cursor-blink{
-    0%, 50%{ opacity: 1; }
-    51%, 100%{ opacity: 0; }
+  @keyframes word-in{
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .zoom-photo,
+    .zoom-text,
+    .zoom-text h2,
+    .zoom-text .zoom-price{ transition-duration: .01ms; filter: none; }
+    .zoom-desc .w{ animation: none; opacity: 1; transform: none; filter: none; }
+    .zoom-overlay.is-visible .zoom-photo img,
+    .zoom-overlay.is-visible .zoom-text .zoom-price b{ animation: none; }
   }
 
   .zoom-tap-hint{
@@ -1522,8 +1589,8 @@
      ============================================================ */
   .theme-switch{
     position: fixed;
-    top: 18px;
-    right: 18px;
+    top: calc(18px + env(safe-area-inset-top));
+    right: calc(18px + env(safe-area-inset-right));
     z-index: 300;
     width: 60px;
     height: 32px;
@@ -1565,7 +1632,27 @@
   html[data-theme="dark"] .theme-switch-knob .icon-sun{ display: none; }
 
   @media (max-width: 480px){
-    .theme-switch{ top: 12px; right: 12px; }
+    .theme-switch{
+      top: calc(12px + env(safe-area-inset-top));
+      right: calc(12px + env(safe-area-inset-right));
+    }
+  }
+
+  /* ============================================================
+     AGGIUSTAMENTI FINALI — stanno in fondo perché devono vincere
+     sulle media query precedenti a parità di specificità.
+     ============================================================ */
+
+  /* Su schermo stretto il toggle categorie e l'interruttore tema
+     stanno alla stessa altezza e si sovrappongono: abbasso lo stage. */
+  @media (max-width: 560px){
+    .stage{ padding-top: calc(58px + env(safe-area-inset-top)); }
+  }
+
+  /* Con poca altezza il deck sale e la prima bolla finisce sopra
+     il sottotitolo: la riporto dentro l'area della carta. */
+  @media (max-height: 750px){
+    .brand-bubble:nth-child(1){ top: 3%; }
   }
 
 </style>
@@ -1876,7 +1963,7 @@
   <div class="zoom-text">
     <h2 id="zoomTitle"></h2>
     <p class="zoom-price" id="zoomPrice"></p>
-    <p class="zoom-desc" id="zoomDesc"><span class="cursor"></span></p>
+    <p class="zoom-desc" id="zoomDesc"></p>
   </div>
 
   <p class="zoom-tap-hint">Tocca il prodotto per chiudere</p>
@@ -1887,9 +1974,22 @@
   // ----- Theme switch (scuro / chiaro) -----
   const themeSwitch = document.getElementById('themeSwitch');
   const htmlEl = document.documentElement;
+  const themeColorMeta = document.getElementById('themeColor');
+
+  // Su iOS la barra di stato (e l'area attorno alla Dynamic Island) prende il
+  // colore da <meta name="theme-color">: va aggiornato a ogni cambio di tema,
+  // altrimenti in tema scuro resta una fascia chiara in cima.
+  const THEME_COLORS = { light: '#eceff4', dark: '#0d1117' };
+  function applyTheme(mode){
+    htmlEl.setAttribute('data-theme', mode);
+    if (themeColorMeta) themeColorMeta.setAttribute('content', THEME_COLORS[mode]);
+    if (themeSwitch) themeSwitch.setAttribute('aria-pressed', String(mode === 'dark'));
+  }
+  applyTheme(htmlEl.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+
   themeSwitch.addEventListener('click', () => {
-    const isLight = htmlEl.getAttribute('data-theme') === 'light';
-    htmlEl.setAttribute('data-theme', isLight ? 'dark' : 'light');
+    const isLight = htmlEl.getAttribute('data-theme') !== 'dark';
+    applyTheme(isLight ? 'dark' : 'light');
   });
 
   const landing  = document.getElementById('landing');
@@ -2088,24 +2188,28 @@
   const zoomPrice    = document.getElementById('zoomPrice');
   const zoomDesc     = document.getElementById('zoomDesc');
 
-  let typeTimer = null;
   let isZoomed = false;
 
-  function typeText(text, el, speed){
-    if (typeTimer) clearInterval(typeTimer);
-    let i = 0;
-    const cursor = document.createElement('span');
-    cursor.className = 'cursor';
+  // Ogni parola diventa uno <span> che entra sfalsato nel tempo.
+  // Niente timer in JS: l'animazione la fa la GPU, quindi resta fluida
+  // anche su iPhone mentre il pannello sta ancora salendo.
+  function revealWords(text, el, step){
     el.textContent = '';
-    el.appendChild(cursor);
-    typeTimer = setInterval(() => {
-      if (i >= text.length){
-        clearInterval(typeTimer);
-        return;
-      }
-      cursor.insertAdjacentText('beforebegin', text[i]);
-      i++;
-    }, speed || 22);
+    const words = String(text || '').split(/\s+/).filter(Boolean);
+    const delay = step || 34;
+    const frag = document.createDocumentFragment();
+
+    words.forEach((word, i) => {
+      const span = document.createElement('span');
+      span.className = 'w';
+      span.textContent = word;
+      // le ultime parole accelerano: la coda non si trascina
+      span.style.animationDelay = (i * delay * (i > 14 ? 0.55 : 1)) + 'ms';
+      frag.appendChild(span);
+      if (i < words.length - 1) frag.appendChild(document.createTextNode(' '));
+    });
+
+    el.appendChild(frag);
   }
 
   function openZoom(card){
@@ -2130,16 +2234,17 @@
       zoomOverlay.classList.add('is-visible');
     });
 
+    // parte dopo titolo e prezzo, così la cascata si legge dall'alto in basso
     setTimeout(() => {
-      typeText(desc ? desc.textContent : '', zoomDesc, 22);
-    }, 380);
+      revealWords(desc ? desc.textContent : '', zoomDesc, 34);
+    }, 430);
   }
 
   function closeZoom(){
     if (!isZoomed) return;
     isZoomed = false;
 
-    if (typeTimer) clearInterval(typeTimer);
+    zoomDesc.textContent = '';
     zoomOverlay.classList.remove('is-visible');
     deck.classList.remove('is-zoomed-out');
     stage.classList.remove('is-zoomed');
