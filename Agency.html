@@ -22,8 +22,8 @@
 :root{
   --bg:#f5f5f7; --card:#fff; --sunk:#e9e9ed; --hair:rgba(0,0,0,.035);
   --glass:rgba(245,245,247,.76); --barglass:rgba(255,255,255,.8);
-  --ink:#1d1d1f; --ink2:#4b4b4f; --ink3:#86868b; --line:rgba(0,0,0,.1);
-  --blue:#0071e3; --blue-soft:rgba(0,113,227,.11);
+  --ink:#1d1d1f; --ink2:#4b4b4f; --ink3:#69696e; --line:rgba(0,0,0,.1);
+  --blue:#005ec8; --blue-soft:rgba(0,94,200,.11);
   --green:#0f7b3d; --green-soft:rgba(48,160,90,.14);
   --amber:#8a5300; --amber-soft:rgba(255,159,10,.16);
   --shadow:0 1px 1px rgba(0,0,0,.03), 0 6px 20px rgba(0,0,0,.06);
@@ -37,7 +37,7 @@
   :root{
     --bg:#000; --card:#1c1c1e; --sunk:#2c2c2e; --hair:rgba(255,255,255,.04);
     --glass:rgba(0,0,0,.72); --barglass:rgba(28,28,30,.82);
-    --ink:#f5f5f7; --ink2:#b0b0b5; --ink3:#8e8e93; --line:rgba(255,255,255,.14);
+    --ink:#f5f5f7; --ink2:#b0b0b5; --ink3:#939398; --line:rgba(255,255,255,.14);
     --blue:#0a84ff; --blue-soft:rgba(10,132,255,.2);
     --green:#4fd57f; --green-soft:rgba(48,209,88,.17);
     --amber:#ffcf70; --amber-soft:rgba(255,159,10,.17);
@@ -301,6 +301,9 @@ td:last-child{text-align:end;font-weight:600;font-variant-numeric:tabular-nums;w
 kbd{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:11.5px;background:var(--sunk);
   border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:1.5px 6px;color:var(--ink2);direction:ltr;display:inline-block}
 footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--ink3);font-size:12.5px;line-height:1.9}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .topbar,.toolbar,.tabbar{background:var(--bg)}
+}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -333,13 +336,13 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--ink3);fo
 const D=[
 {n:"UNCUT Studio SRL",c:"Turin",t:["Video production","Video marketing","Corporate"],min:1000,p:"From €1,000",
  d:"Founded in 2014 by Gianluca Guidone and Tazio Massimi. Corporate video built for marketing, delivered by coordinated videomaker teams.",
- a:"Via Boston 118a, 10137 Turin",ph:"",e:"",w:"https://uncutstudio.it",v:false,h:false,
+ a:"Via Fratelli Carando 4, 10137 Turin",ph:"",e:"info@uncutstudio.it",w:"https://uncutstudio.it",v:true,h:false,
  x:"Also registered as a rentable studio space in Turin. The team-based structure makes it one of the more realistic targets for freelance collaboration."},
 
 {n:"Company Trailer Srl",c:"Turin",t:["Corporate","Industrial","Advertising","Events"],min:1000,p:"From €1,000",
  d:"Emotional corporate films, industrial video, reportage, event coverage and advertising spots.",
- a:"Turin",ph:"",e:"",w:"https://www.companytrailer.it",v:false,h:false,
- x:"One of only two Turin agencies with a declared floor this low. Well known for industrial work across Piedmont."},
+ a:"Strada del Lionetto 27, 10146 Turin",ph:"+39 011 411 9368",e:"info@companytrailer.com",w:"https://www.companytrailer.com",v:true,h:false,
+ x:"One of only two Turin agencies with a declared floor this low. Well known for industrial work across Piedmont. Mobile +39 334 875 7560 · VAT 12681500018."},
 
 {n:"Born Human",c:"Turin",t:["Creative","Social","Video","360 VR"],min:5000,p:"From €5,000",
  d:"Creative agency covering video and 360-degree VR, brand identity, visual design and ad campaign management. National and international clients.",
@@ -353,13 +356,13 @@ const D=[
 
 {n:"Mailander",c:"Turin",t:["Communication","PR","Video production"],min:3000,p:"From €3,000",
  d:"Independent integrated communication agency with more than 35 years of practice. Public relations, crisis management, internal communication and events.",
- a:"Turin",ph:"",e:"",w:"https://www.mailander.it",v:false,h:false,
- x:"Member of the PROI Worldwide independent agency network since 2016, certified ISO 9001 and ISO 27001. The most established name on this list."},
+ a:"Via Cavour 21, 10123 Turin",ph:"+39 011 552 7311",e:"info@mailander.it",w:"https://www.mailander.it",v:true,h:false,
+ x:"Founded 1987, around 25 people. Member of the PROI Worldwide independent agency network since 2016, certified ISO 9001 and ISO 27001. Milan office: Via Monte di Pietà 21, +39 02 4507 6459. The most established name on this list."},
 
 {n:"Domino Interaction Agency",c:"Turin",t:["Digital","Communication","Production"],min:5000,p:"From €5,000",
  d:"Four practice areas: service design, digital marketing and lead generation, digital products and production, and IT.",
- a:"Turin and Venice",ph:"",e:"",w:"https://www.domino.it",v:false,h:false,
- x:"Operating since 1996, around 50 people, B Corp certified as of 2025. Two offices, Turin and Venice."},
+ a:"Via Agostino da Montefeltro 2, 10134 Turin",ph:"",e:"jobs@domino.it",w:"https://www.domino.it/en/contacts",v:true,h:false,
+ x:"Operating since 1996, around 50 people, B Corp certified as of 2025. Two offices, Turin and Venice. They invite speculative applications by email to jobs@domino.it — one of the few here with a published hiring address."},
 
 {n:"Magma Marketing",c:"Turin",t:["Digital marketing","Video","Photography"],min:0,p:"Quote required",
  d:"Communication agency in Turin and Alba supporting small and mid-size businesses across photography, video, brand identity, websites, e-commerce and social.",
@@ -429,8 +432,8 @@ const D=[
 
 {n:"ORBIS Production",c:"Milan",t:["Full service","Commercial","Fashion","Documentary"],min:0,p:"Quote required",
  d:"Full-service film, photo and video house with more than 15 years of work. TV and digital commercials, corporate films, branded content, documentaries and events.",
- a:"Milan, with offices in Rome and Venice",ph:"",e:"",w:"https://orbispro.it",v:false,h:false,
- x:"Teams in Vienna, Zurich, Paris, Amsterdam, London, Munich, Dubai, Tokyo and Los Angeles. They sell crew sourcing, equipment rental, location scouting and casting as services, which means they are constantly looking for local crew. The strongest single lead here."},
+ a:"Bastioni di Porta Nuova 21, 20121 Milan",ph:"+39 02 8230 0224",e:"",w:"https://orbispro.it/contact",v:true,h:false,
+ x:"Ask for Mike Lisjak; mobile +39 391 416 2216. Operating since 2009 with 50+ in-house staff. Teams in Vienna, Zurich, Paris, Amsterdam, London, Munich, Dubai, Tokyo and Los Angeles. They sell crew sourcing, equipment rental, location scouting and casting as services, which means they are constantly looking for local crew. The strongest single lead here."},
 
 {n:"Courage Production",c:"Milan",t:["Fashion","Luxury","Commercial"],min:0,p:"Quote required",
  d:"Award-winning high-end video and photo production for fashion, luxury and eyewear.",
@@ -712,12 +715,12 @@ it:{
 
 const AT = {
 fa:{
-"UNCUT Studio SRL":["تأسیس ۲۰۱۴ توسط Gianluca Guidone و Tazio Massimi. ویدیوی شرکتی ساخته‌شده برای مارکتینگ، با تیم‌های هماهنگ ویدیومیکر.","به‌عنوان فضای استودیویی اجاره‌ای در تورین هم ثبت شده. ساختار تیم‌محورش آن را به یکی از واقع‌بینانه‌ترین گزینه‌ها برای همکاری فریلنس تبدیل می‌کند.","خیابان Boston ۱۱۸a، ۱۰۱۳۷ تورین"],
-"Company Trailer Srl":["فیلم شرکتی احساسی، ویدیوی صنعتی، رپورتاژ، پوشش رویداد و اسپات تبلیغاتی.","یکی از تنها دو ایجنسی تورین با کف اعلامی به این پایینی. برای کارهای صنعتی در سراسر پیمونته شناخته‌شده است.","تورین"],
+"UNCUT Studio SRL":["تأسیس ۲۰۱۴ توسط Gianluca Guidone و Tazio Massimi. ویدیوی شرکتی ساخته‌شده برای مارکتینگ، با تیم‌های هماهنگ ویدیومیکر.","به‌عنوان فضای استودیویی اجاره‌ای در تورین هم ثبت شده. ساختار تیم‌محورش آن را به یکی از واقع‌بینانه‌ترین گزینه‌ها برای همکاری فریلنس تبدیل می‌کند.","خیابان Fratelli Carando ۴، ۱۰۱۳۷ تورین"],
+"Company Trailer Srl":["فیلم شرکتی احساسی، ویدیوی صنعتی، رپورتاژ، پوشش رویداد و اسپات تبلیغاتی.","یکی از تنها دو ایجنسی تورین با کف اعلامی به این پایینی. برای کارهای صنعتی در سراسر پیمونته شناخته‌شده است. موبایل: ۷۵۶۰ ۸۷۵ ۳۳۴ ۳۹+ · شماره مالیاتی ۱۲۶۸۱۵۰۰۰۱۸.","خیابان Strada del Lionetto ۲۷، ۱۰۱۴۶ تورین"],
 "Born Human":["ایجنسی کریتیو با ویدیو و واقعیت مجازی ۳۶۰ درجه، هویت برند، طراحی بصری و مدیریت کمپین تبلیغاتی. مشتریان ملی و بین‌المللی.","ایمیل و آدرس روی پروفایل خودشان منتشر شده. با کف ۵٬۰۰۰ یورویی تقریباً حتماً کارهای کوچک‌تر را به فریلنسرها می‌سپارند — راه ورود خوبی است.","خیابان Buttigliera ۱۱، ۱۰۱۳۲ تورین"],
 "Sixeleven":["ایجنسی ارتباطات و دیجیتال با بخش تولید ویدیو داخلی.","یک مجموعه فول‌سرویس: ویدیو یکی از خدمات متعدد است، نه تخصص اصلی.","تورین"],
-"Mailander":["ایجنسی مستقل ارتباطات یکپارچه با بیش از ۳۵ سال سابقه. روابط عمومی، مدیریت بحران، ارتباطات داخلی و رویداد.","عضو شبکه بین‌المللی ایجنسی‌های مستقل PROI Worldwide از ۲۰۱۶، دارای گواهی ISO 9001 و ISO 27001. جاافتاده‌ترین نام این فهرست.","تورین"],
-"Domino Interaction Agency":["چهار حوزه تخصصی: سرویس دیزاین، دیجیتال مارکتینگ و لید جنریشن، محصولات دیجیتال و پروداکشن، و فناوری اطلاعات.","از ۱۹۹۶ فعال، حدود ۵۰ نفر، دارای گواهی B Corp از ۲۰۲۵. دو دفتر: تورین و ونیز.","تورین و ونیز"],
+"Mailander":["ایجنسی مستقل ارتباطات یکپارچه با بیش از ۳۵ سال سابقه. روابط عمومی، مدیریت بحران، ارتباطات داخلی و رویداد.","تأسیس ۱۹۸۷، حدود ۲۵ نفر. عضو شبکه بین‌المللی ایجنسی‌های مستقل PROI Worldwide از ۲۰۱۶، دارای گواهی ISO 9001 و ISO 27001. دفتر میلان: Via Monte di Pietà ۲۱، ۶۴۵۹ ۴۵۰۷ ۰۲ ۳۹+. جاافتاده‌ترین نام این فهرست.","خیابان Cavour ۲۱، ۱۰۱۲۳ تورین"],
+"Domino Interaction Agency":["چهار حوزه تخصصی: سرویس دیزاین، دیجیتال مارکتینگ و لید جنریشن، محصولات دیجیتال و پروداکشن، و فناوری اطلاعات.","از ۱۹۹۶ فعال، حدود ۵۰ نفر، دارای گواهی B Corp از ۲۰۲۵. دو دفتر: تورین و ونیز. خودشان دعوت کرده‌اند رزومه خودجوش به jobs@domino.it بفرستی — یکی از معدود موارد این فهرست با آدرس استخدام منتشرشده.","خیابان Agostino da Montefeltro ۲، ۱۰۱۳۴ تورین"],
 "Magma Marketing":["ایجنسی ارتباطات در تورین و آلبا، پشتیبان کسب‌وکارهای کوچک و متوسط در عکاسی، ویدیو، هویت برند، وب‌سایت، ای‌کامرس و سوشال.","صریحاً می‌گویند فیلم‌برداری و تولید ویدیو با پارتنرهای بیرونی انجام می‌شود. این یک فرصت مستقیم برای ویدیوگرافر فریلنس است.","تورین و آلبا"],
 "The Basket":["مدیریت شبکه‌های اجتماعی، فیلم‌برداری شامل سه‌بعدی و درون، تبلیغات محیطی و وب‌سایت، با پشتیبانی کمپین‌های Google Ads.","اگر گواهی پرواز درون داری، این یکی از معدود ایجنسی‌های تورین است که صریحاً کار هوایی تبلیغ می‌کند.","تورین"],
 "Reelab Studio":["ترکیبی از ایجنسی ارتباطات و خانه تولید ویدیو.","مدل هیبریدی ایجنسی به‌علاوه پروداکشن معمولاً یعنی کار پایدارتر و احتمال بیشتر برای قرارداد سوشال دوره‌ای.","تورین"],
@@ -739,7 +742,7 @@ fa:{
 "Luigi Naro Videomaker":["ویدیومیکر مستقل.","فریلنسر انفرادی. برای فیلم‌برداری دونفره ارزش شناختن دارد.","تورین"],
 "Silvia Pesce Videomaker":["ویدیومیکر مستقل.","فریلنسر انفرادی.","تورین"],
 "Thirty Seconds Milano":["بیش از ۲۵ سال سابقه. مستند و رپورتاژ، ویدیوی تبلیغاتی و شرکتی، کنفرانس و کنگره، شوی موسیقی، فیلم‌برداری هوایی و مصاحبه به زبان بومی در سراسر ایتالیا و اروپا.","خط دفتر ۰۲۸۷۱۸۶۰۴۰ ۳۹+. شماره مالیاتی ۰۷۰۶۴۴۵۰۹۶۳. مشتریان شامل Samsung Italia، Nintendo، General Electric، Electronic Arts، Savills و CEIA. برای ایجنسی‌های دیگر هم به‌صورت B2B کار می‌کنند، که یک راه ورود است.","خیابان Vincenzo Monti ۵۴، ۲۰۱۲۳ میلان"],
-"ORBIS Production":["خانه فول‌سرویس فیلم، عکس و ویدیو با بیش از ۱۵ سال کار. اسپات تلویزیونی و دیجیتال، فیلم شرکتی، برندد کانتنت، مستند و رویداد.","تیم در وین، زوریخ، پاریس، آمستردام، لندن، مونیخ، دبی، توکیو و لس‌آنجلس. تأمین کرو، اجاره تجهیزات، لوکیشن اسکاوتینگ و کستینگ را به‌عنوان سرویس می‌فروشند، یعنی مدام دنبال کرو محلی هستند. قوی‌ترین سرنخ این فهرست.","میلان، با دفاتر رم و ونیز"],
+"ORBIS Production":["خانه فول‌سرویس فیلم، عکس و ویدیو با بیش از ۱۵ سال کار. اسپات تلویزیونی و دیجیتال، فیلم شرکتی، برندد کانتنت، مستند و رویداد.","سراغ Mike Lisjak را بگیر؛ موبایل ۲۲۱۶ ۴۱۶ ۳۹۱ ۳۹+. از ۲۰۰۹ فعال با بیش از ۵۰ نفر تیم داخلی. تیم در وین، زوریخ، پاریس، آمستردام، لندن، مونیخ، دبی، توکیو و لس‌آنجلس. تأمین کرو، اجاره تجهیزات، لوکیشن اسکاوتینگ و کستینگ را به‌عنوان سرویس می‌فروشند، یعنی مدام دنبال کرو محلی هستند. قوی‌ترین سرنخ این فهرست.","Bastioni di Porta Nuova ۲۱، ۲۰۱۲۱ میلان"],
 "Courage Production":["تولید ویدیو و عکس های‌اند و جایزه‌گرفته برای فشن، لاکچری و صنعت عینک.","دفتر مرکزی در میلان اما فیلم‌برداری در دریاچه کومو، ونیز، فلورانس، توسکانی، سیسیل، پولیا، ساحل آمالفی و ناپل. کستینگ، لوکیشن اسکاوتینگ و اجاره کرو و تجهیزات ارائه می‌دهند.","میلان"],
 "Dare Studio":["استودیو کریتیو میلانی در ارتباطات بصری و محتوای مولتی‌مدیا: ویدیوی تبلیغاتی، فشن فیلم، موزیک ویدیو و فیلم نهادی.","تیمی یکپارچه از ویدیومیکر، عکاس، استایلیست و دیجیتال استراتژیست — دقیقاً همان ساختاری که مدام به آدم پشت دوربین نیاز دارد.","میلان"],
 "Bliss Agency":["ایجنسی یکپارچه مارکتینگ و ارتباطات، متخصص پوزیشنینگ برندهای پریمیوم. دفاتر رم و میلان.","مشتریان شامل Pandora، Laura Biagiotti، Profumum Roma، Doreca و Charles Philip Milano. کیس‌استادی‌هایشان اعداد سخت گزارش می‌کند، مثل ۶٫۳ میلیون بازدید در ۶۰ روز برای Doreca — این سطح از خروجی به تولید حجمی نیاز دارد.","میلان و رم"],
@@ -783,12 +786,12 @@ fa:{
 "Jumpcutmedia srl":["خانه تولید لومباردی، فعال در پرومو، اسپات تبلیغاتی، برنامه تلویزیونی و ویدیوی شرکتی.","خروجی تجاری گسترده بدون تخصص اعلام‌شده. دقیقاً به همین دلیل ارزش ارسال رزومه خودجوش را دارد، چون مجموعه‌های همه‌کاره کروی متنوع‌تری می‌گیرند.","لومباردی"]
 },
 it:{
-"UNCUT Studio SRL":["Fondata nel 2014 da Gianluca Guidone e Tazio Massimi. Video corporate pensati per il marketing, realizzati da team coordinati di videomaker.","Registrata anche come spazio studio affittabile a Torino. La struttura per team la rende uno dei bersagli più realistici per una collaborazione freelance.","Via Boston 118a, 10137 Torino"],
-"Company Trailer Srl":["Film aziendali emozionali, video industriali, reportage, riprese di eventi e spot pubblicitari.","Una delle due sole agenzie torinesi con una soglia dichiarata così bassa. Molto conosciuta per il lavoro industriale in tutto il Piemonte.","Torino"],
+"UNCUT Studio SRL":["Fondata nel 2014 da Gianluca Guidone e Tazio Massimi. Video corporate pensati per il marketing, realizzati da team coordinati di videomaker.","Registrata anche come spazio studio affittabile a Torino. La struttura per team la rende uno dei bersagli più realistici per una collaborazione freelance.","Via Fratelli Carando 4, 10137 Torino"],
+"Company Trailer Srl":["Film aziendali emozionali, video industriali, reportage, riprese di eventi e spot pubblicitari.","Una delle due sole agenzie torinesi con una soglia dichiarata così bassa. Molto conosciuta per il lavoro industriale in tutto il Piemonte. Mobile +39 334 875 7560 · P.IVA 12681500018.","Strada del Lionetto 27, 10146 Torino"],
 "Born Human":["Agenzia creativa che copre video e VR a 360 gradi, brand identity, design visivo e gestione di campagne pubblicitarie. Clienti nazionali e internazionali.","Email e indirizzo sono pubblicati sul loro profilo. Con una soglia di €5.000 è quasi certo che i lavori più piccoli finiscano a freelance — una buona via d'ingresso.","Via Buttigliera 11, 10132 Torino"],
 "Sixeleven":["Agenzia di comunicazione e digitale con un reparto di produzione video interno.","Una realtà full-service: il video è uno dei tanti servizi, non il mestiere centrale.","Torino"],
-"Mailander":["Agenzia indipendente di comunicazione integrata con oltre 35 anni di attività. Relazioni pubbliche, crisis management, comunicazione interna ed eventi.","Membro del network internazionale di agenzie indipendenti PROI Worldwide dal 2016, certificata ISO 9001 e ISO 27001. Il nome più consolidato di questo elenco.","Torino"],
-"Domino Interaction Agency":["Quattro aree di competenza: service design, digital marketing e lead generation, prodotti digitali e produzione, e IT.","Attiva dal 1996, circa 50 persone, certificata B Corp dal 2025. Due sedi, Torino e Venezia.","Torino e Venezia"],
+"Mailander":["Agenzia indipendente di comunicazione integrata con oltre 35 anni di attività. Relazioni pubbliche, crisis management, comunicazione interna ed eventi.","Fondata nel 1987, circa 25 persone. Membro del network internazionale PROI Worldwide dal 2016, certificata ISO 9001 e ISO 27001. Sede di Milano: Via Monte di Pietà 21, +39 02 4507 6459. Il nome più consolidato di questo elenco.","Via Cavour 21, 10123 Torino"],
+"Domino Interaction Agency":["Quattro aree di competenza: service design, digital marketing e lead generation, prodotti digitali e produzione, e IT.","Attiva dal 1996, circa 50 persone, certificata B Corp dal 2025. Due sedi, Torino e Venezia. Invitano candidature spontanee a jobs@domino.it — una delle poche qui con un indirizzo per le assunzioni pubblicato.","Via Agostino da Montefeltro 2, 10134 Torino"],
 "Magma Marketing":["Agenzia di comunicazione a Torino e Alba che supporta piccole e medie imprese su fotografia, video, brand identity, siti, e-commerce e social.","Dichiarano apertamente che riprese e produzione video sono gestite con partner esterni. È un'apertura diretta per un videomaker freelance.","Torino e Alba"],
 "The Basket":["Gestione social media, riprese video compresi 3D e drone, affissioni e siti web, supportati da campagne Google Ads.","Se hai il patentino per il drone, è una delle poche agenzie torinesi che pubblicizza esplicitamente il lavoro aereo.","Torino"],
 "Reelab Studio":["Un'agenzia di comunicazione e una casa di produzione video insieme.","Il modello ibrido agenzia più produzione di solito significa lavoro più costante e più probabilità di un contratto social ricorrente.","Torino"],
@@ -810,7 +813,7 @@ it:{
 "Luigi Naro Videomaker":["Videomaker indipendente.","Freelance singolo. Vale la pena conoscerlo per le riprese in due.","Torino"],
 "Silvia Pesce Videomaker":["Videomaker indipendente.","Freelance singolo.","Torino"],
 "Thirty Seconds Milano":["Oltre 25 anni di attività. Documentari e reportage, video commerciali e corporate, conferenze e congressi, spettacoli musicali, riprese aeree e interviste in lingua madre in Italia e in Europa.","Linea ufficio +39 02 8718 6040. P.IVA 07064450963. Tra i clienti Samsung Italia, Nintendo, General Electric, Electronic Arts, Savills e CEIA. Lavorano anche in B2B per altre agenzie, che è una via d'ingresso.","Via Vincenzo Monti 54, 20123 Milano"],
-"ORBIS Production":["Casa full-service di produzione film, foto e video con oltre 15 anni di lavoro. Spot TV e digital, corporate film, branded content, documentari ed eventi.","Team a Vienna, Zurigo, Parigi, Amsterdam, Londra, Monaco, Dubai, Tokyo e Los Angeles. Vendono reperimento troupe, noleggio attrezzature, location scouting e casting come servizi, il che significa che cercano costantemente troupe locali. Il contatto singolo più promettente.","Milano, con sedi a Roma e Venezia"],
+"ORBIS Production":["Casa full-service di produzione film, foto e video con oltre 15 anni di lavoro. Spot TV e digital, corporate film, branded content, documentari ed eventi.","Chiedi di Mike Lisjak; cellulare +39 391 416 2216. Attiva dal 2009 con oltre 50 persone interne. Team a Vienna, Zurigo, Parigi, Amsterdam, Londra, Monaco, Dubai, Tokyo e Los Angeles. Vendono reperimento troupe, noleggio attrezzature, location scouting e casting come servizi, il che significa che cercano costantemente troupe locali. Il contatto singolo più promettente.","Bastioni di Porta Nuova 21, 20121 Milano"],
 "Courage Production":["Produzione video e fotografica di alto profilo e pluripremiata per moda, lusso e occhialeria.","Quartier generale a Milano ma riprese sul Lago di Como, a Venezia, Firenze, in Toscana, Sicilia, Puglia, Costiera Amalfitana e Napoli. Offrono casting, location scouting, noleggio troupe e attrezzature.","Milano"],
 "Dare Studio":["Studio creativo milanese di comunicazione visiva e contenuti multimediali: video promozionali, fashion film, videoclip e film istituzionali.","Un team integrato di videomaker, fotografi, stylist e digital strategist — esattamente la struttura che continua ad aver bisogno di persone dietro la camera.","Milano"],
 "Bliss Agency":["Agenzia integrata di marketing e comunicazione specializzata nel posizionamento di brand premium. Sedi a Roma e Milano.","Tra i clienti Pandora, Laura Biagiotti, Profumum Roma, Doreca e Charles Philip Milano. I loro case study riportano numeri concreti, come 6,3 milioni di visualizzazioni in 60 giorni per Doreca — un volume così richiede produzione continua.","Milano e Roma"],
@@ -1221,7 +1224,18 @@ const CITY_LIST=[...new Set(D.map(r=>r.c))]
 const rp=r=>r.min>0?(lang==='en'?'From '+eur(r.min):lang==='fa'?'از '+eur(r.min):'Da '+eur(r.min))
           :r.p==='Open role'?L.sh.open
           :(lang==='en'?'Quote required':lang==='fa'?'استعلام قیمت':'Preventivo su richiesta');
-const hay=r=>(r.n+' '+r.d+' '+r.x+' '+r.a+' '+r.t.join(' ')+' '+rd(r)+' '+rx(r)+' '+ra(r)+' '+rt(r).join(' ')).toLowerCase();
+const HAY=new Map();
+const hay=r=>{
+  if(HAY.has(r.n)) return HAY.get(r.n);
+  let s=r.n+' '+r.d+' '+r.x+' '+r.a+' '+r.c+' '+r.t.join(' ');
+  for(const l of ['fa','it']){
+    const tr=AT[l][r.n]; if(tr) s+=' '+tr.join(' ');
+    s+=' '+r.t.filter(x=>x!=='Hiring').map(x=>TG[l][x]||x).join(' ');
+    s+=' '+((CITY[l]&&CITY[l][r.c])||'');
+  }
+  s+=' '+((CITY.en&&CITY.en[r.c])||'');
+  s=s.toLowerCase(); HAY.set(r.n,s); return s;
+};
 
 /* ==================== CHROME ==================== */
 function renderChrome(){
