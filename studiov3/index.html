@@ -16,8 +16,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://accounts.google.com">
+<link rel="preconnect" href="https://aznelawjlyoklmjcxylq.supabase.co">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
 <style>
 /* ============================================================
    DIA PROD — obsidian gallery vitrine
@@ -439,12 +441,13 @@ textarea.input{border-radius:var(--r-card);line-height:1.47}
 .acct-head .who{display:flex;flex-direction:column;gap:2px;min-width:0}
 .acct-head .who strong{font-family:var(--display);font-size:var(--t-h-sm);font-weight:600;color:var(--frost-white)}
 .acct-head .who span{font-size:var(--t-xs);color:var(--platinum);overflow-wrap:anywhere}
-.btn-ghost{
+.btn-line{
   background:none;border:1px solid var(--graphite);color:var(--frost-white);
   border-radius:var(--r-pill);padding:10px 20px;cursor:pointer;
   font-size:var(--t-xs);transition:background .2s ease;
 }
-.btn-ghost:hover{background:var(--graphite)}
+.btn-line:hover{background:var(--graphite)}
+.btn-line:disabled{opacity:.4;cursor:default}
 .gsi-slot{min-height:44px;display:flex;justify-content:flex-start;color-scheme:light}
 .or-rule{display:flex;align-items:center;gap:var(--s12);color:var(--platinum);font-size:var(--t-caption);
   letter-spacing:.06em;text-transform:uppercase}
@@ -454,6 +457,32 @@ textarea.input{border-radius:var(--r-card);line-height:1.47}
   padding:var(--s20);display:flex;flex-direction:column;gap:var(--s8);
 }
 .setup-note code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:var(--t-caption);color:var(--halo-blue)}
+
+/* ---------- brief cards, studio controls ---------- */
+.job-head{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s16);
+  width:100%;background:none;border:none;cursor:pointer;padding:0;color:inherit;text-align:left;
+}
+.job-head:hover .h-md{color:var(--paper-white)}
+.sub{display:flex;flex-direction:column;gap:var(--s8);padding-top:var(--s20);border-top:1px solid var(--graphite)}
+.sub .kicker{color:var(--platinum)}
+.kvs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--s12) var(--s20);margin-top:var(--s8)}
+.kv{display:flex;flex-direction:column;gap:2px;min-width:0}
+.kv span{font-size:var(--t-caption);letter-spacing:.06em;text-transform:uppercase;color:var(--platinum)}
+.kv b{font-size:var(--t-xs);font-weight:400;color:var(--frost-white);overflow-wrap:anywhere}
+.filelist{display:flex;flex-wrap:wrap;gap:var(--s8);margin-top:var(--s8)}
+.filechip{
+  display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+  background:var(--carbon);border:1px solid var(--graphite);border-radius:var(--r-pill);
+  padding:8px 16px;color:var(--frost-white);font-size:var(--t-xs);transition:border-color .2s ease;
+}
+.filechip:hover{border-color:var(--silver-mist)}
+.filechip span{color:var(--platinum);font-size:var(--t-caption)}
+.timeline{list-style:none;margin:var(--s12) 0 0;padding:0;display:flex;flex-direction:column;gap:var(--s16)}
+.timeline li{display:flex;gap:var(--s12);align-items:flex-start}
+.timeline .dot{width:7px;height:7px;border-radius:50%;background:var(--apple-blue);margin-top:7px;flex:0 0 auto}
+.timeline li:not(:first-child) .dot{background:var(--smoke)}
+.timeline p{margin:0;font-size:var(--t-xs);color:var(--frost-white);line-height:1.5}
 </style>
 </head>
 <body>
@@ -741,6 +770,15 @@ var STUDIO = "DIA PROD";
    Leave it empty and the sign-in screen shows setup instructions instead.      */
 var GOOGLE_CLIENT_ID = '614475438696-h79m4gqihui5ru4bhfpl3j9dm0bcugd9.apps.googleusercontent.com';
 
+/* ============================== BACKEND ==============================
+   Supabase project "diaprod-site". Both values below are public by
+   design — the anon key only ever grants what the row-level security
+   policies allow, which is: send a brief, read your own briefs, look a
+   reference up by code. Everything else is refused by the database.   */
+var SUPABASE_URL      = 'https://aznelawjlyoklmjcxylq.supabase.co';
+var SUPABASE_ANON_KEY = 'sb_publishable_4Lhz2fJueL6UuRYHcmMWGA_bDmZZ6-R';
+var BUCKET            = 'brief-files';
+
 /* Each project can carry `img` — a real frame in photos/ — and `pos`, the
    background-position that keeps the subject in shot when a tall photograph
    is cropped into a wide slot. Remove `img` and the generated placeholder
@@ -888,6 +926,20 @@ var T = {
     acEmpty:'No briefs yet. Send one and it appears here with its reference and stage.',
     acLocal:'Briefs are held in this browser — sign in on another device and this list starts empty.',
     acSignout:'Sign out', acNew:'Start a brief', acSignedIn:'Signed in with Google',
+    acLoading:'Loading your projects…', acFiles:'Reference files', acTimeline:'Activity',
+    acNoteBy:'DIA PROD', acOpened:'Brief received',
+    siBackend:'The studio backend is not reachable right now. Please try again in a moment.',
+    navAdmin:'Studio',
+    adKicker:'Studio', adTitle:'Briefs.',
+    adAll:'All', adOpen:'Open', adDone:'Delivered',
+    adEmpty:'No briefs yet.', adLoading:'Loading briefs…',
+    adContact:'Contact', adDetails:'Details', adSetStage:'Move to',
+    adNote:'Add a note the client will see', adNotePh:'Write an update…', adNoteSend:'Post',
+    adNoFiles:'No files attached', adOpenBrief:'Open', adCloseBrief:'Close',
+    trFound:'Found', trNotFound:'No project with that reference.',
+    trLookup:'Look up', trHint:'Enter the reference from your confirmation, e.g. DIA-7K2P.',
+    rqSending:'Sending…', rqFailed:'We could not save that. Please try again.',
+    rqSignedFiles:'Sign in to attach reference files.',
     rqKicker:'New project', rqStep:'Step',
     step0:'What are we making?', step1:'What do you need delivered?', step2:'What is the budget range?',
     step3:'When do you need it?', step4:'Where does it shoot?', step5:'Tell us about it.',
@@ -952,6 +1004,20 @@ var T = {
     acEmpty:'Nessun brief per ora. Inviane uno e comparirà qui con riferimento e stato.',
     acLocal:'I brief sono salvati in questo browser — accedendo da un altro dispositivo la lista sarà vuota.',
     acSignout:'Esci', acNew:'Inizia un brief', acSignedIn:'Accesso con Google',
+    acLoading:'Caricamento dei tuoi progetti…', acFiles:'File di riferimento', acTimeline:'Attività',
+    acNoteBy:'DIA PROD', acOpened:'Brief ricevuto',
+    siBackend:'Il backend dello studio non è raggiungibile. Riprova fra un momento.',
+    navAdmin:'Studio',
+    adKicker:'Studio', adTitle:'Brief.',
+    adAll:'Tutti', adOpen:'Aperti', adDone:'Consegnati',
+    adEmpty:'Nessun brief per ora.', adLoading:'Caricamento dei brief…',
+    adContact:'Contatti', adDetails:'Dettagli', adSetStage:'Sposta a',
+    adNote:'Aggiungi una nota visibile al cliente', adNotePh:'Scrivi un aggiornamento…', adNoteSend:'Invia',
+    adNoFiles:'Nessun file allegato', adOpenBrief:'Apri', adCloseBrief:'Chiudi',
+    trFound:'Trovato', trNotFound:'Nessun progetto con quel riferimento.',
+    trLookup:'Cerca', trHint:'Inserisci il riferimento della conferma, es. DIA-7K2P.',
+    rqSending:'Invio…', rqFailed:'Non siamo riusciti a salvare. Riprova.',
+    rqSignedFiles:'Accedi per allegare file di riferimento.',
     rqKicker:'Nuovo progetto', rqStep:'Passo',
     step0:'Cosa realizziamo?', step1:'Cosa ti serve consegnato?', step2:'Qual è il budget?',
     step3:'Quando ti serve?', step4:'Dove si gira?', step5:'Raccontaci il progetto.',
@@ -976,12 +1042,17 @@ var S = {
   step:0,
   draft:emptyDraft(),
   files:[],
-  requests:[],
   submittedRef:null,
   lookup:'',
   slot:'', callName:'', callEmail:'', callBooked:false,
   signinEmail:'', signinSent:false,
-  user:null, authError:''
+
+  /* backend-backed */
+  user:null, isAdmin:false, authError:'', authBusy:false,
+  briefs:[], adminBriefs:[], loadingBriefs:false, loadingAdmin:false,
+  saving:false, dataError:'', busyId:null,
+  trackResult:null, trackBusy:false, trackDone:false,
+  adminFilter:'open', openBrief:null, noteDraft:{}
 };
 function emptyDraft(){
   var u = (typeof S !== 'undefined' && S) ? S.user : null;
@@ -994,73 +1065,246 @@ function loc(o, key){ return S.lang === 'it' ? (o[key+'It'] || o.it || o[key]) :
 try{
   var lg = localStorage.getItem('diaprod.lang');
   if(lg === 'it' || lg === 'en') S.lang = lg;
-  var rq = JSON.parse(localStorage.getItem('diaprod.requests') || '[]');
-  if(Array.isArray(rq)) S.requests = rq;
-  var us = JSON.parse(localStorage.getItem('diaprod.user') || 'null');
-  if(us && us.email && us.exp && us.exp * 1000 > Date.now()){
-    S.user = us;
-    S.draft.name = S.draft.name || us.name;
-    S.draft.email = S.draft.email || us.email;
-  } else if(us){
-    localStorage.removeItem('diaprod.user');   /* the Google token has expired */
-  }
+  /* briefs used to live here; they are in the database now. Clear the
+     old key so a returning visitor is not shown stale local copies.   */
+  localStorage.removeItem('diaprod.requests');
+  localStorage.removeItem('diaprod.user');
 }catch(e){}
 function persist(){
   try{
-    localStorage.setItem('diaprod.lang', S.lang);
-    localStorage.setItem('diaprod.requests', JSON.stringify(S.requests));
-    if(S.user) localStorage.setItem('diaprod.user', JSON.stringify(S.user));
-    else localStorage.removeItem('diaprod.user');
+    localStorage.setItem('diaprod.lang', S.lang);   /* the only thing kept locally */
   }catch(e){}
 }
 
-/* ============================== AUTH ==============================
-   Google Identity Services. The browser gets a signed ID token (a JWT)
-   straight from Google; we read the name / email / picture out of it to
-   personalise the client area. Nothing here is a security boundary —
-   the token is not verified server-side because this site has no server.
-   Keep anything genuinely confidential out of the signed-in screens
-   until there is a backend to check the token against Google.          */
+/* ============================== BACKEND / AUTH ==============================
+   Supabase does the real work now. Google Identity Services still renders
+   the button, but the token it produces is handed to Supabase, which
+   verifies it against Google and issues a session. Every read and write
+   below goes through row-level security, so what a visitor can see is
+   decided by the database, not by this file.                             */
 
-function parseJwt(token){
-  try{
-    var p = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
-    while(p.length % 4) p += '=';
-    var json = decodeURIComponent(atob(p).split('').map(function(c){
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    return JSON.parse(json);
-  }catch(e){ return null; }
+var sb = null;
+
+function backendReady(){ return !!sb; }
+
+function initBackend(){
+  if(sb || !window.supabase || !SUPABASE_URL || !SUPABASE_ANON_KEY) return;
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:false }
+  });
+  sb.auth.onAuthStateChange(function(evt, session){ applySession(session); });
+  sb.auth.getSession().then(function(r){
+    applySession(r && r.data ? r.data.session : null);
+  });
 }
 
+function applySession(session){
+  var u = session && session.user;
+  if(u){
+    var m = u.user_metadata || {};
+    var name = m.full_name || m.name || (u.email || '').split('@')[0];
+    S.user = {
+      id: u.id,
+      email: u.email || '',
+      name: name,
+      given: (m.given_name || name || '').split(' ')[0],
+      picture: m.avatar_url || m.picture || ''
+    };
+    if(!S.draft.name)  S.draft.name  = S.user.name;
+    if(!S.draft.email) S.draft.email = S.user.email;
+    refreshAdminFlag();
+    loadMyBriefs();
+  } else {
+    S.user = null; S.isAdmin = false; S.briefs = []; S.adminBriefs = [];
+    if(S.route === 'account' || S.route === 'admin') S.route = 'home';
+  }
+  render(true);
+}
+
+function refreshAdminFlag(){
+  sb.rpc('is_admin').then(function(r){
+    var next = !!(r && r.data);
+    if(next !== S.isAdmin){ S.isAdmin = next; render(true); }
+    if(next) loadAdminBriefs();
+  });
+}
+
+/* ---------- sign in / out ---------- */
 function onGoogleCredential(resp){
-  var c = parseJwt(resp && resp.credential);
-  if(!c || !c.email){ S.authError = t().siError; render(true); return; }
-  S.user = {
-    sub:c.sub, email:c.email, name:c.name || c.email.split('@')[0],
-    given:c.given_name || (c.name||'').split(' ')[0] || '',
-    picture:c.picture || '', exp:c.exp || 0
-  };
-  S.authError = ''; S.signinSent = false;
-  if(!S.draft.name)  S.draft.name  = S.user.name;
-  if(!S.draft.email) S.draft.email = S.user.email;
-  persist();
-  S.route = 'account'; S.menu = false;
-  render();
+  if(!sb){ S.authError = t().siBackend; render(true); return; }
+  S.authBusy = true; S.authError = ''; render(true);
+  sb.auth.signInWithIdToken({ provider:'google', token: resp && resp.credential })
+    .then(function(r){
+      S.authBusy = false;
+      if(r.error){ S.authError = r.error.message || t().siError; render(true); return; }
+      S.route = 'account'; S.menu = false; render();
+    })
+    .catch(function(e){
+      S.authBusy = false; S.authError = (e && e.message) || t().siError; render(true);
+    });
 }
 
 function signOut(){
   try{ if(window.google && google.accounts) google.accounts.id.disableAutoSelect(); }catch(e){}
-  S.user = null; S.authError = ''; gsiReady = false;
-  if(S.draft.email) S.draft.email = '';
-  if(S.draft.name)  S.draft.name  = '';
-  persist();
+  gsiReady = false;
+  S.draft.name = ''; S.draft.email = '';
+  if(sb) sb.auth.signOut();
+  S.user = null; S.isAdmin = false; S.briefs = []; S.adminBriefs = [];
   S.route = 'home'; S.menu = false;
   render();
 }
 
-/* GIS loads async — wait for it, then mount the button wherever the
-   current screen has left a slot for it. render() calls mountGoogle(). */
+/* ---------- reading ---------- */
+var BRIEF_COLS = '*, brief_events(id,stage,note,created_at), brief_files(id,name,path,size,mime)';
+
+function loadMyBriefs(){
+  if(!sb || !S.user) return;
+  S.loadingBriefs = true;
+  sb.from('briefs').select(BRIEF_COLS).order('created_at', {ascending:false})
+    .then(function(r){
+      S.loadingBriefs = false;
+      S.briefs = (r.data || []).map(normaliseBrief);
+      S.dataError = r.error ? r.error.message : '';
+      render(true);
+    });
+}
+
+function loadAdminBriefs(){
+  if(!sb || !S.isAdmin) return;
+  S.loadingAdmin = true;
+  sb.from('briefs').select(BRIEF_COLS).order('created_at', {ascending:false}).limit(300)
+    .then(function(r){
+      S.loadingAdmin = false;
+      S.adminBriefs = (r.data || []).map(normaliseBrief);
+      S.dataError = r.error ? r.error.message : '';
+      render(true);
+    });
+}
+
+function normaliseBrief(b){
+  b.brief_events = (b.brief_events || []).sort(function(x, y){
+    return new Date(x.created_at) - new Date(y.created_at);
+  });
+  b.brief_files = b.brief_files || [];
+  return b;
+}
+
+function briefById(id){
+  var all = (S.adminBriefs || []).concat(S.briefs || []);
+  for(var i=0;i<all.length;i++){ if(all[i].id === id) return all[i]; }
+  return null;
+}
+
+/* ---------- tracking by reference, no account needed ---------- */
+function trackLookup(){
+  var ref = (S.lookup || '').trim().toUpperCase();
+  if(!sb || ref.length < 4){ S.trackResult = null; S.trackDone = false; render(true); return; }
+  S.trackBusy = true; render(true);
+  sb.rpc('track_brief', { p_ref: ref }).then(function(r){
+    S.trackBusy = false; S.trackDone = true;
+    S.trackResult = (r.data && r.data.length) ? r.data[0] : null;
+    render(true);
+  });
+}
+
+/* ---------- sending a brief ---------- */
+function submitBrief(){
+  if(!sb){ S.dataError = t().siBackend; render(true); return; }
+  if(S.saving) return;
+  S.saving = true; S.dataError = ''; render(true);
+
+  var d = S.draft;
+  var row = {
+    user_id: S.user ? S.user.id : null,
+    name: d.name.trim(), email: d.email.trim(),
+    phone: d.phone.trim(), company: d.company.trim(),
+    type: d.type, deliverables: d.deliverables,
+    budget: d.budget, timeline: d.timeline,
+    shoot_date: d.date || null,
+    location: d.location.trim(), remote: !!d.remote,
+    brief: d.brief.trim()
+  };
+
+  sb.from('briefs').insert(row).select('id,ref').single()
+    .then(function(r){
+      if(r.error) throw r.error;
+      return uploadFiles(r.data).then(function(){ return r.data; });
+    })
+    .then(function(saved){
+      /* the brief is safe at this point; the email is best-effort on top */
+      sb.functions.invoke('notify-brief', { body:{ brief_id: saved.id } })
+        .catch(function(){});
+      S.saving = false;
+      S.submittedRef = saved.ref;
+      S.files = [];
+      if(S.user) loadMyBriefs();
+      render();
+    })
+    .catch(function(e){
+      S.saving = false;
+      S.dataError = (e && e.message) || t().rqFailed;
+      render(true);
+    });
+}
+
+function safeName(n){
+  return String(n || 'file').normalize('NFKD')
+    .replace(/[^\w.\- ]+/g, '').replace(/\s+/g, '-').slice(-80) || 'file';
+}
+
+function uploadFiles(saved){
+  /* attachments need an account, so the bucket is never open to the public */
+  if(!S.user || !S.files.length) return Promise.resolve();
+  var rows = [];
+  var chain = S.files.reduce(function(p, f, i){
+    return p.then(function(){
+      var path = S.user.id + '/' + saved.ref + '/' + i + '-' + safeName(f.name);
+      return sb.storage.from(BUCKET).upload(path, f, {upsert:false, contentType:f.type || undefined})
+        .then(function(up){
+          if(up.error) return;                      /* skip the file, keep the brief */
+          rows.push({ brief_id:saved.id, user_id:S.user.id, path:path,
+                      name:f.name, size:f.size || 0, mime:f.type || '' });
+        });
+    });
+  }, Promise.resolve());
+  return chain.then(function(){
+    return rows.length ? sb.from('brief_files').insert(rows) : null;
+  });
+}
+
+function openFile(path){
+  if(!sb) return;
+  sb.storage.from(BUCKET).createSignedUrl(path, 120).then(function(r){
+    if(r.data && r.data.signedUrl) window.open(r.data.signedUrl, '_blank', 'noopener');
+  });
+}
+
+/* ---------- admin writes ---------- */
+function setStage(id, stage){
+  if(!sb || !S.isAdmin) return;
+  S.busyId = id; render(true);
+  sb.from('briefs').update({ stage: stage }).eq('id', id).then(function(r){
+    S.busyId = null;
+    S.dataError = r.error ? r.error.message : '';
+    loadAdminBriefs();
+  });
+}
+
+function addNote(id){
+  var text = (S.noteDraft[id] || '').trim();
+  if(!sb || !S.isAdmin || !text) return;
+  var b = briefById(id);
+  S.busyId = id; render(true);
+  sb.from('brief_events').insert({ brief_id:id, stage:(b ? b.stage : null), note:text })
+    .then(function(r){
+      S.busyId = null;
+      S.dataError = r.error ? r.error.message : '';
+      S.noteDraft[id] = '';
+      loadAdminBriefs();
+    });
+}
+
+/* ---------- the Google button ---------- */
 var gsiReady = false, gsiWaiting = false;
 function whenGoogle(cb){
   if(window.google && google.accounts && google.accounts.id){ cb(); return; }
@@ -1199,7 +1443,7 @@ function workById(id){ for(var i=0;i<WORK.length;i++){ if(WORK[i].id===id) retur
 function workTag(w){ return S.lang==='it' ? w.tagIt : w.tagEn; }
 function accentClass(a){ return a==='violet' ? ' violet' : a==='teal' ? ' teal' : ''; }
 function pad(n){ return (n<10?'0':'')+n; }
-function newRef(){
+function unusedNewRef(){   /* references are issued by the database now */
   var chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789', s='';
   for(var i=0;i<4;i++) s += chars[Math.floor(Math.random()*chars.length)];
   return 'DIA-'+s;
@@ -1220,7 +1464,8 @@ var ROUTES = [
 
 function renderNav(){
   var L = t();
-  var links = ROUTES.map(function(r){
+  var routes = S.isAdmin ? ROUTES.slice(0, -1).concat([{id:'admin', key:'navAdmin'}, ROUTES[ROUTES.length-1]]) : ROUTES;
+  var links = routes.map(function(r){
     /* signed in: the Sign in link becomes the account chip */
     if(r.id === 'signin' && S.user){
       var u = S.user;
@@ -1247,7 +1492,8 @@ function renderSheet(){
   var L = t(), el = document.getElementById('sheet');
   el.hidden = !S.menu;
   if(!S.menu){ el.innerHTML=''; return; }
-  var links = [{id:'home', key:'navHome'}].concat(ROUTES).map(function(r){
+  var sheetRoutes = S.isAdmin ? ROUTES.slice(0, -1).concat([{id:'admin', key:'navAdmin'}, ROUTES[ROUTES.length-1]]) : ROUTES;
+  var links = [{id:'home', key:'navHome'}].concat(sheetRoutes).map(function(r){
     if(r.id === 'signin' && S.user) return '';   /* replaced by the account row below */
     return '<button data-go="'+r.id+'">'+esc(L[r.key])+'</button>';
   }).join('');
@@ -1258,7 +1504,7 @@ function renderSheet(){
         '<span class="small" style="overflow-wrap:anywhere">'+esc(S.user.email)+'</span></span></button>'
     : '';
   var out = S.user
-    ? '<button class="btn-ghost" data-signout="1" style="width:100%;margin-top:12px">'+esc(L.acSignout)+'</button>'
+    ? '<button class="btn-line" data-signout="1" style="width:100%;margin-top:12px">'+esc(L.acSignout)+'</button>'
     : '';
   el.innerHTML =
     '<div class="sheet-top"><button class="iconbtn" data-menu="0" aria-label="Close">&times;</button></div>'+
@@ -1463,46 +1709,95 @@ function screenPackages(){
   '</div></section>';
 }
 
-/* one brief, with its four-stage rail — shared by Track and the client area */
-function jobCard(r){
-  var L = t();
-  var stages = STAGES.map(function(s, i){
-    return '<div class="stage-step" data-on="'+(i<=r.stage?1:0)+'"><div class="rail"></div>'+
+/* one brief's four-stage rail */
+function stageRail(stage){
+  return '<div class="stages">'+STAGES.map(function(s, i){
+    return '<div class="stage-step" data-on="'+(i<=stage?1:0)+'"><div class="rail"></div>'+
       '<span>'+esc(S.lang==='it'?s.it:s.en)+'</span></div>';
-  }).join('');
-  var st = STAGES[r.stage];
+  }).join('')+'</div>';
+}
+
+function stageBadge(stage){
+  var st = STAGES[stage] || STAGES[0];
+  return '<span class="status" data-done="'+(stage===3?1:0)+'"><i></i>'+
+    esc(S.lang==='it'?st.it:st.en)+'</span>';
+}
+
+/* the client's view of one brief: header, rail, files, activity */
+function jobCard(b){
+  var L = t();
+  var files = (b.brief_files || []).length
+    ? '<div class="sub"><span class="kicker">'+esc(L.acFiles)+'</span><div class="filelist">'+
+        b.brief_files.map(function(f){
+          return '<button class="filechip" data-file="'+esc(f.path)+'">'+esc(f.name)+
+            '<span>'+fmtSize(f.size)+'</span></button>';
+        }).join('')+'</div></div>'
+    : '';
+
+  var events = (b.brief_events || []).length
+    ? '<div class="sub"><span class="kicker">'+esc(L.acTimeline)+'</span><ol class="timeline">'+
+        b.brief_events.map(function(e){
+          var label = e.note
+            ? esc(e.note)
+            : (e.stage === 0 ? esc(L.acOpened)
+                             : esc(S.lang==='it' ? STAGES[e.stage].it : STAGES[e.stage].en));
+          return '<li><span class="dot"></span><div><p>'+label+'</p>'+
+            '<span class="small tnum">'+esc(fmtDate(e.created_at))+'</span></div></li>';
+        }).join('')+'</ol></div>'
+    : '';
+
   return '<div class="job">'+
     '<div class="job-top">'+
       '<div style="display:flex;flex-direction:column;gap:4px">'+
-        '<span class="h-md">'+esc(r.type || L.notSet)+'</span>'+
-        '<span class="small tnum">'+esc(r.ref)+' · '+esc(fmtDate(r.date))+'</span>'+
+        '<span class="h-md">'+esc(b.type || L.notSet)+'</span>'+
+        '<span class="small tnum">'+esc(b.ref)+' · '+esc(fmtDate(b.created_at))+'</span>'+
       '</div>'+
-      '<span class="status" data-done="'+(r.stage===3?1:0)+'"><i></i>'+esc(S.lang==='it'?st.it:st.en)+'</span>'+
+      stageBadge(b.stage)+
     '</div>'+
-    '<div class="stages">'+stages+'</div>'+
+    stageRail(b.stage)+
+    files + events +
   '</div>';
 }
 
+function fmtSize(n){
+  n = Number(n) || 0;
+  if(n < 1024) return n + ' B';
+  if(n < 1048576) return Math.round(n/1024) + ' KB';
+  return (n/1048576).toFixed(1) + ' MB';
+}
+
+/* ---------- Track: a reference code, looked up on the server ---------- */
 function screenTrack(){
   var L = t();
-  var q = S.lookup.trim().toLowerCase();
-  var list = S.requests.filter(function(r){
-    return !q || r.ref.toLowerCase().indexOf(q) > -1 || (r.type||'').toLowerCase().indexOf(q) > -1;
-  });
   var body;
-  if(!S.requests.length){
-    body = '<div class="notice" style="margin-top:40px">'+
-      '<p class="body-copy">'+esc(L.trEmpty)+'</p>'+
-      '<div><button class="btn btn-primary" data-go="request" style="margin-top:8px">'+esc(L.start)+'</button></div></div>';
+
+  if(S.trackBusy){
+    body = '<p class="body-copy" style="margin-top:40px">'+esc(L.acLoading)+'</p>';
+  } else if(S.trackResult){
+    var r = S.trackResult;
+    body = '<div style="margin-top:40px"><div class="job">'+
+      '<div class="job-top">'+
+        '<div style="display:flex;flex-direction:column;gap:4px">'+
+          '<span class="h-md">'+esc(r.type || L.notSet)+'</span>'+
+          '<span class="small tnum">'+esc(r.ref)+' · '+esc(fmtDate(r.created_at))+'</span>'+
+        '</div>'+
+        stageBadge(r.stage)+
+      '</div>'+
+      stageRail(r.stage)+
+    '</div></div>';
+  } else if(S.trackDone){
+    body = '<div class="notice" style="margin-top:40px"><p class="body-copy">'+esc(L.trNotFound)+'</p></div>';
   } else {
-    body = '<div style="margin-top:40px">'+ (list.length ? list.map(jobCard).join('')
-      : '<p class="body-copy">'+esc(L.notSet)+' — '+esc(q)+'</p>') + '</div>';
+    body = '<p class="small" style="margin-top:24px">'+esc(L.trHint)+'</p>';
   }
 
   return '<section class="stage"><div class="wrap band"><div class="form-col">'+
     '<p class="kicker">'+esc(L.trKicker)+'</p>'+
     '<h1 class="hero-type" style="margin:16px 0 32px">'+esc(L.trTitle)+'</h1>'+
-    '<input class="input" id="lookup" data-input="lookup" value="'+esc(S.lookup)+'" placeholder="'+esc(L.trSearch)+'" aria-label="'+esc(L.trSearch)+'">'+
+    '<div style="display:flex;gap:12px;flex-wrap:wrap">'+
+      '<input class="input" id="lookup" data-input="lookup" style="flex:1;min-width:200px" value="'+esc(S.lookup)+'" placeholder="'+esc(L.trSearch)+'" aria-label="'+esc(L.trSearch)+'">'+
+      '<button class="btn btn-primary" data-track="1"'+((S.lookup||'').trim().length>3?'':' disabled')+'>'+esc(L.trLookup)+'</button>'+
+    '</div>'+
     body+
   '</div></div></section>';
 }
@@ -1578,17 +1873,20 @@ function screenSignin(){
   '</div></div></section>';
 }
 
-/* signed-in client area — the briefs belonging to this person */
+/* signed-in client area — briefs come from the database, filtered by RLS */
 function screenAccount(){
   var L = t();
   if(!S.user){ S.route = 'signin'; return screenSignin(); }
   var u = S.user;
 
-  var mine = S.requests.filter(function(r){ return !r.owner || r.owner === u.email; });
-  var body = mine.length
-    ? '<div style="margin-top:8px">'+ mine.map(jobCard).join('') +'</div>'+
-      '<p class="small" style="margin-top:20px">'+esc(L.acLocal)+'</p>'
-    : '<div class="notice" style="margin-top:8px"><p class="body-copy">'+esc(L.acEmpty)+'</p></div>';
+  var body;
+  if(S.loadingBriefs && !S.briefs.length){
+    body = '<p class="body-copy">'+esc(L.acLoading)+'</p>';
+  } else if(S.briefs.length){
+    body = S.briefs.map(jobCard).join('');
+  } else {
+    body = '<div class="notice"><p class="body-copy">'+esc(L.acEmpty)+'</p></div>';
+  }
 
   return '<section class="stage"><div class="wrap band"><div class="form-col">'+
     '<p class="kicker">'+esc(L.acKicker)+'</p>'+
@@ -1599,11 +1897,131 @@ function screenAccount(){
         '<span style="color:var(--smoke)">'+esc(L.acSignedIn)+'</span></div>'+
       '<div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">'+
         '<button class="btn btn-primary" data-go="request">'+esc(L.acNew)+'</button>'+
-        '<button class="btn-ghost" data-signout="1">'+esc(L.acSignout)+'</button>'+
+        '<button class="btn-line" data-signout="1">'+esc(L.acSignout)+'</button>'+
       '</div>'+
     '</div>'+
+    errBar()+
     '<div style="margin-top:40px">'+body+'</div>'+
   '</div></div></section>';
+}
+
+function errBar(){
+  return S.dataError
+    ? '<p class="small" role="alert" style="color:var(--signal-orange);margin-top:16px">'+esc(S.dataError)+'</p>'
+    : '';
+}
+
+/* ---------- Studio: every brief, and the controls to move it along ---------- */
+function screenAdmin(){
+  var L = t();
+  if(!S.user)   { S.route = 'signin'; return screenSignin(); }
+  if(!S.isAdmin){ S.route = 'account'; return screenAccount(); }
+
+  var all = S.adminBriefs || [];
+  var list = all.filter(function(b){
+    if(S.adminFilter === 'open') return b.stage < 3;
+    if(S.adminFilter === 'done') return b.stage === 3;
+    return true;
+  });
+
+  var counts = {all:all.length, open:0, done:0};
+  all.forEach(function(b){ b.stage === 3 ? counts.done++ : counts.open++; });
+
+  var tabs = [['open', L.adOpen], ['done', L.adDone], ['all', L.adAll]].map(function(x){
+    return '<button class="tag" data-afilter="'+x[0]+'" aria-pressed="'+(S.adminFilter===x[0])+'">'+
+      esc(x[1])+' <span class="tnum" style="opacity:.6">'+counts[x[0]]+'</span></button>';
+  }).join('');
+
+  var body;
+  if(S.loadingAdmin && !all.length){
+    body = '<p class="body-copy">'+esc(L.adLoading)+'</p>';
+  } else if(!list.length){
+    body = '<div class="notice"><p class="body-copy">'+esc(L.adEmpty)+'</p></div>';
+  } else {
+    body = list.map(adminCard).join('');
+  }
+
+  return '<section class="stage"><div class="wrap band"><div class="form-col">'+
+    '<p class="kicker">'+esc(L.adKicker)+'</p>'+
+    '<h1 class="hero-type" style="margin:16px 0 24px">'+esc(L.adTitle)+'</h1>'+
+    '<div class="tagwrap">'+tabs+'</div>'+
+    errBar()+
+    '<div style="margin-top:32px">'+body+'</div>'+
+  '</div></div></section>';
+}
+
+function adminCard(b){
+  var L = t();
+  var open = S.openBrief === b.id;
+  var busy = S.busyId === b.id;
+
+  var head = '<button class="job-head" data-abrief="'+esc(b.id)+'" aria-expanded="'+open+'">'+
+    '<span style="display:flex;flex-direction:column;gap:4px;text-align:left;min-width:0">'+
+      '<span class="h-md">'+esc(b.name || b.email || L.notSet)+'</span>'+
+      '<span class="small tnum">'+esc(b.ref)+' · '+esc(b.type || L.notSet)+' · '+esc(fmtDate(b.created_at))+'</span>'+
+    '</span>'+
+    stageBadge(b.stage)+
+  '</button>';
+
+  if(!open) return '<div class="job">'+head+'</div>';
+
+  var pair = function(k, v){
+    if(!v || (Array.isArray(v) && !v.length)) return '';
+    return '<div class="kv"><span>'+esc(k)+'</span><b>'+esc(Array.isArray(v)?v.join(', '):v)+'</b></div>';
+  };
+
+  var contact = '<div class="sub"><span class="kicker">'+esc(L.adContact)+'</span><div class="kvs">'+
+    pair(L.fullName, b.name)+
+    '<div class="kv"><span>'+esc(L.email)+'</span><b><a class="linky" href="mailto:'+esc(b.email)+'">'+esc(b.email)+'</a></b></div>'+
+    pair(L.phone, b.phone)+ pair(L.company, b.company)+
+  '</div></div>';
+
+  var details = '<div class="sub"><span class="kicker">'+esc(L.adDetails)+'</span><div class="kvs">'+
+    pair(L.lType, b.type)+ pair(L.lDeliverables, b.deliverables)+
+    pair(L.lBudget, b.budget)+ pair(L.lTimeline, b.timeline + (b.shoot_date ? ' · ' + b.shoot_date : ''))+
+    pair(L.lLocation, b.remote ? (b.location ? b.location + ' · ' + L.remote : L.remote) : b.location)+
+  '</div>'+
+  '<p class="body-copy" style="margin-top:16px;white-space:pre-wrap">'+esc(b.brief)+'</p></div>';
+
+  var files = '<div class="sub"><span class="kicker">'+esc(L.acFiles)+'</span>'+
+    ((b.brief_files || []).length
+      ? '<div class="filelist">'+b.brief_files.map(function(f){
+          return '<button class="filechip" data-file="'+esc(f.path)+'">'+esc(f.name)+
+            '<span>'+fmtSize(f.size)+'</span></button>';
+        }).join('')+'</div>'
+      : '<p class="small">'+esc(L.adNoFiles)+'</p>')+
+  '</div>';
+
+  var moves = '<div class="sub"><span class="kicker">'+esc(L.adSetStage)+'</span><div class="tagwrap">'+
+    STAGES.map(function(st, i){
+      return '<button class="tag" data-stageset="'+esc(b.id)+'" data-stagenum="'+i+'"'+
+        ' aria-pressed="'+(b.stage===i)+'"'+(busy?' disabled':'')+'>'+
+        esc(S.lang==='it'?st.it:st.en)+'</button>';
+    }).join('')+
+  '</div></div>';
+
+  var noteVal = S.noteDraft[b.id] || '';
+  var note = '<div class="sub"><span class="kicker">'+esc(L.adNote)+'</span>'+
+    '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">'+
+      '<input class="input" id="note-'+esc(b.id)+'" data-note="'+esc(b.id)+'" style="flex:1;min-width:200px" value="'+esc(noteVal)+'" placeholder="'+esc(L.adNotePh)+'" aria-label="'+esc(L.adNote)+'">'+
+      '<button class="btn btn-primary" data-noteadd="'+esc(b.id)+'"'+((noteVal.trim() && !busy)?'':' disabled')+'>'+esc(L.adNoteSend)+'</button>'+
+    '</div>'+
+  '</div>';
+
+  var events = (b.brief_events || []).length
+    ? '<div class="sub"><span class="kicker">'+esc(L.acTimeline)+'</span><ol class="timeline">'+
+        b.brief_events.map(function(e){
+          var label = e.note ? esc(e.note)
+            : (e.stage === 0 ? esc(L.acOpened)
+                             : esc(S.lang==='it' ? STAGES[e.stage].it : STAGES[e.stage].en));
+          return '<li><span class="dot"></span><div><p>'+label+'</p>'+
+            '<span class="small tnum">'+esc(fmtDate(e.created_at))+'</span></div></li>';
+        }).join('')+'</ol></div>'
+    : '';
+
+  return '<div class="job" data-openjob="1">'+head+ stageRail(b.stage)+
+    contact + details + files + moves + note + events +
+  '</div>';
 }
 
 /* ---------- request wizard ---------- */
@@ -1663,14 +2081,18 @@ function screenRequest(){
     '</div>';
   } else if(i===5){
     var chips = S.files.map(function(f, k){
-      return '<span class="tag" style="cursor:default">'+esc(f)+
-        ' <button data-unfile="'+k+'" aria-label="Remove '+esc(f)+'" style="background:none;border:none;cursor:pointer;color:inherit;padding:0 0 0 6px">&times;</button></span>';
+      return '<span class="tag" style="cursor:default">'+esc(f.name)+' <span style="opacity:.6">'+fmtSize(f.size)+'</span>'+
+        ' <button data-unfile="'+k+'" aria-label="Remove '+esc(f.name)+'" style="background:none;border:none;cursor:pointer;color:inherit;padding:0 0 0 6px">&times;</button></span>';
     }).join('');
+    var picker = S.user
+      ? '<label class="opt" style="cursor:pointer"><span class="mark" style="border-radius:8px"></span>'+
+          '<span class="label"><b>'+esc(L.refs)+'</b><span class="small">'+esc(L.refsHint)+'</span></span>'+
+          '<input type="file" id="files" multiple style="display:none" data-files="1"></label>'
+      : '<button class="opt" data-go="signin"><span class="mark" style="border-radius:8px"></span>'+
+          '<span class="label"><b>'+esc(L.refs)+'</b><span class="small">'+esc(L.rqSignedFiles)+'</span></span></button>';
     body = '<div style="display:flex;flex-direction:column;gap:16px">'+
       '<textarea class="input" id="brief" rows="6" data-input="brief" placeholder="'+esc(L.briefPlaceholder)+'" aria-label="'+esc(L.refs)+'">'+esc(d.brief)+'</textarea>'+
-      '<label class="opt" style="cursor:pointer"><span class="mark" style="border-radius:8px"></span>'+
-        '<span class="label"><b>'+esc(L.refs)+'</b><span class="small">'+esc(L.refsHint)+'</span></span>'+
-        '<input type="file" id="files" multiple style="display:none" data-files="1"></label>'+
+      picker +
       (chips ? '<div class="tagwrap">'+chips+'</div>' : '')+
     '</div>';
   } else if(i===6){
@@ -1712,9 +2134,11 @@ function screenRequest(){
     '<div class="stepnav">'+
       '<button class="btn btn-ghost" data-stepmove="-1">&#8592; '+esc(L.back)+'</button>'+
       (last
-        ? '<button class="btn btn-primary btn-lg" data-submit="1"'+(canGo?'':' disabled')+'>'+esc(L.submit)+'</button>'
+        ? '<button class="btn btn-primary btn-lg" data-submit="1"'+((canGo && !S.saving)?'':' disabled')+'>'+
+            esc(S.saving ? L.rqSending : L.submit)+'</button>'
         : '<button class="btn btn-primary btn-lg" data-stepmove="1"'+(canGo?'':' disabled')+'>'+esc(L.cont)+'</button>')+
     '</div>'+
+    errBar()+
   '</div></div></section>';
 }
 
@@ -1758,7 +2182,7 @@ function renderLightbox(){
 /* ============================== RENDER / ROUTER ============================== */
 var SCREENS = {home:screenHome, work:screenWork, packages:screenPackages,
   track:screenTrack, call:screenCall, signin:screenSignin, account:screenAccount,
-  request:screenRequest};
+  admin:screenAdmin, request:screenRequest};
 
 function render(keepScroll){
   var y = window.scrollY;
@@ -1785,9 +2209,16 @@ function render(keepScroll){
 function go(route){
   if(route === 'account' && !S.user) route = 'signin';
   if(route === 'signin' && S.user) route = 'account';
+  if(route === 'admin' && !S.isAdmin) route = S.user ? 'account' : 'signin';
+  if(route === 'admin') loadAdminBriefs();
+  if(route === 'track'){ S.trackDone = false; S.trackResult = null; }
   if(route === S.route && route !== 'request'){ S.menu = false; render(); return; }
+  /* arriving at the wizard from anywhere else starts a new brief — the
+     confirmation screen keeps its own state through data-restart instead */
+  if(route === 'request' && S.submittedRef){
+    S.submittedRef = null; S.draft = emptyDraft(); S.files = []; S.step = 0; S.dataError = '';
+  }
   S.route = route; S.menu = false;
-  if(route === 'request' && S.submittedRef){ /* keep confirmation */ }
   render();
 }
 
@@ -1795,6 +2226,7 @@ function go(route){
 document.addEventListener('click', function(e){
   var el = e.target.closest('[data-go],[data-lang],[data-menu],[data-reel],[data-reelstep],[data-open],'+
     '[data-filter],[data-pkg],[data-slot],[data-book],[data-signin],[data-signout],[data-type],[data-deliv],[data-budget],'+
+    '[data-track],[data-file],[data-afilter],[data-abrief],[data-stageset],[data-noteadd],'+
     '[data-timeline],[data-remote],[data-step],[data-stepmove],[data-submit],[data-restart],[data-close],[data-unfile]');
 
   if(!el){
@@ -1830,6 +2262,12 @@ document.addEventListener('click', function(e){
   }
   if(d.signin){ if(S.signinEmail){ S.signinSent = true; render(); } return; }
   if(d.signout){ signOut(); return; }
+  if(d.track){ trackLookup(); return; }
+  if(d.file){ openFile(d.file); return; }
+  if(d.afilter){ S.adminFilter = d.afilter; render(true); return; }
+  if(d.abrief){ S.openBrief = (S.openBrief === d.abrief ? null : d.abrief); render(true); return; }
+  if(d.stageset != null && el.hasAttribute('data-stageset')){ setStage(d.stageset, Number(d.stagenum)); return; }
+  if(d.noteadd){ addNote(d.noteadd); return; }
 
   if(d.type != null && el.hasAttribute('data-type')){
     var ty2 = TYPES[Number(d.type)];
@@ -1860,13 +2298,8 @@ document.addEventListener('click', function(e){
     render(); return;
   }
   if(d.submit){
-    if(!stepReady(STEP_COUNT - 1)) return;
-    var ref = newRef();
-    S.requests.unshift({ref:ref, type:S.draft.type, date:new Date().toISOString(), stage:0,
-                        owner:(S.user ? S.user.email : '')});
-    persist();
-    S.submittedRef = ref;
-    render(); return;
+    if(!stepReady(STEP_COUNT - 1) || S.saving) return;
+    submitBrief(); return;
   }
   if(d.restart){
     S.draft = emptyDraft(); S.files = []; S.step = 0; S.submittedRef = null; render(); return;
@@ -1875,6 +2308,12 @@ document.addEventListener('click', function(e){
 
 document.addEventListener('input', function(e){
   var el = e.target;
+  if(el.dataset && el.dataset.note){
+    S.noteDraft[el.dataset.note] = el.value;
+    var send = document.querySelector('[data-noteadd="'+el.dataset.note+'"]');
+    if(send) send.disabled = !el.value.trim();
+    return;
+  }
   if(el.dataset && el.dataset.input){
     var key = el.dataset.input;
     if(key in S.draft){
@@ -1883,7 +2322,11 @@ document.addEventListener('input', function(e){
       if(nav){ nav.disabled = !stepReady(S.step); }
     } else {
       S[key] = el.value;
-      if(key === 'lookup'){ render(true); return; }
+      if(key === 'lookup'){
+        var tb = document.querySelector('[data-track]');
+        if(tb) tb.disabled = S.lookup.trim().length < 4;
+        return;
+      }
       var bookBtn = document.querySelector('[data-book]');
       if(bookBtn) bookBtn.disabled = !(S.slot !== '' && S.callName && S.callEmail);
       var siBtn = document.querySelector('[data-signin]');
@@ -1894,9 +2337,9 @@ document.addEventListener('input', function(e){
 
 document.addEventListener('change', function(e){
   if(e.target.dataset && e.target.dataset.files){
-    var names = [];
-    for(var i=0;i<e.target.files.length;i++) names.push(e.target.files[i].name);
-    S.files = S.files.concat(names).slice(0, 8);
+    var picked = [];
+    for(var i=0;i<e.target.files.length;i++) picked.push(e.target.files[i]);
+    S.files = S.files.concat(picked).slice(0, 8);
     render(true);
   }
 });
@@ -1912,6 +2355,7 @@ document.addEventListener('keydown', function(e){
   }
 });
 
+initBackend();
 render();
 })();
 </script>

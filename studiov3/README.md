@@ -11,10 +11,11 @@ containing the markup, styles and script. Open it in a browser and it runs.
 
 - Bilingual EN / IT, switched from the nav (choice is remembered per browser)
 - Screens: Home, Portfolio, Packages, Track, Book a call, Sign in, and an 8-step project brief
-- Project briefs get a reference (`DIA-XXXX`) and are stored in the visitor's own browser
-  via `localStorage` — nothing is sent anywhere
-- Placeholder film stills are generated on a `<canvas>` at load, so the page ships with
-  no image files
+- Sign in with Google, verified server-side by Supabase
+- Project briefs get a reference (`DIA-XXXX`) and are stored in Postgres; clients see
+  their own, the studio sees all of them and moves them through four stages
+- Reference files upload to private storage; the studio gets an email on every brief
+- Backend: Supabase project `diaprod-site` — see BACKEND-SETUP.md
 
 ## Design system
 
