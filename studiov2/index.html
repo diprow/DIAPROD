@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="theme-color" content="#ffffff">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600&family=Raleway:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    html,body{ margin:0; padding:0; background:#ffffff; }
+    body{ font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif; }
+    input,textarea,button,select{ font-family:inherit; }
+    textarea{ resize:none; }
+    ::placeholder{ color:#9a9a9a; }
+    ::selection{ background:#000000; color:#ffffff; }
+    a{ color:#000000; text-decoration:none; }
+    a:hover{ color:#6d6d6d; }
+    *::-webkit-scrollbar{ width:9px; height:9px; }
+    *::-webkit-scrollbar-thumb{ background:#d8d8d8; }
+    @keyframes irid { 0%{ transform:translate3d(-6%,0,0) scale(1.25); } 50%{ transform:translate3d(6%,-3%,0) scale(1.4); } 100%{ transform:translate3d(-6%,0,0) scale(1.25); } }
+    @keyframes spinSlow { from{ transform:rotate(0deg); } to{ transform:rotate(360deg); } }
+    @keyframes riseIn { from{ opacity:0; transform:translateY(46px); } to{ opacity:1; transform:none; } }
+    @keyframes clipIn { from{ opacity:0; clip-path:inset(0 0 100% 0); } to{ opacity:1; clip-path:inset(0 0 0 0); } }
+    @keyframes fadeIn { from{ opacity:0; } to{ opacity:1; } }
+  </style>
+  <script src="./image-slot.js"></script>
+</helmet>
+
+<div style="min-height:100dvh; display:flex; flex-direction:column; background:#ffffff; color:#000000; font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif; font-weight:400; overflow-x:clip;">
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <mask id="diaMark" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+      <g fill="#ffffff">
+      <path d="M 356.61 521.98 A 0.28 0.27 -0.0 0 1 356.89 521.71 Q 471.60 521.77 542.74 521.67 Q 553.63 521.66 565.47 518.96 C 608.67 509.13 635.26 468.84 632.03 425.99 C 629.24 389.07 604.28 356.69 568.44 346.82 Q 554.44 342.97 537.75 342.96 Q 357.76 342.92 357.51 342.92 A 0.86 0.85 -0.7 0 1 356.63 342.07 L 356.61 263.24 A 0.55 0.55 0.0 0 1 357.16 262.69 Q 471.27 262.77 530.16 262.66 Q 552.65 262.62 564.28 264.25 C 604.97 269.95 642.66 290.34 668.15 322.82 Q 693.32 354.87 700.78 395.52 C 708.30 436.49 702.37 481.40 682.59 517.10 C 653.62 569.39 600.44 601.30 540.50 601.43 Q 518.35 601.48 357.42 601.45 A 0.81 0.81 0.0 0 1 356.61 600.64 L 356.61 521.98 Z"></path>
+      <path d="M 712.45 384.37 L 774.10 346.19 A 0.42 0.42 0.0 0 1 774.74 346.54 L 774.74 527.38 A 0.42 0.42 0.0 0 1 774.09 527.73 L 712.44 488.00 A 0.42 0.42 0.0 0 1 712.25 487.65 L 712.25 384.72 A 0.42 0.42 0.0 0 1 712.45 384.37 Z"></path>
+      <path d="M 299.54 366.41 L 358.79 386.63 A 0.31 0.31 0.0 0 1 359.00 386.92 L 359.00 489.10 A 0.31 0.31 0.0 0 1 358.84 489.37 L 299.59 522.69 A 0.31 0.31 0.0 0 1 299.13 522.42 L 299.13 366.70 A 0.31 0.31 0.0 0 1 299.54 366.41 Z"></path>
+      </g>
+    </mask>
+  </defs></svg>
+
+  <header style="position:fixed; top:0; left:0; right:0; z-index:50; height:66px; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:0 clamp(20px,4vw,48px); background:{{ headBg }}; color:{{ headInk }}; transition:background 1.25s cubic-bezier(.19,1,.22,1), color .8s cubic-bezier(.19,1,.22,1);">
+    <button onclick="{{ goHome }}" style="display:flex; align-items:center; gap:10px; background:none; border:none; cursor:pointer; padding:0; color:inherit; border-radius:0;">
+      <svg viewBox="255 248 528 372" width="26" style="display:block; overflow:visible;">
+        <rect x="250" y="250" width="540" height="470" fill="{{ headInk }}" mask="url(#diaMark)"></rect>
+      </svg>
+      <span style="font-size:16px; font-weight:400; letter-spacing:0.01em;">{{ studioName }}</span>
+    </button>
+
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <sc-for list="{{ langOptions }}" as="lo" hint-placeholder-count="2">
+          <button onclick="{{ lo.onClick }}" style="background:none; border:none; padding:0; cursor:pointer; border-radius:0; font-size:12px; line-height:1.19; color:inherit; opacity:{{ lo.op }}; transition:opacity .4s ease;">{{ lo.label }}</button>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+      <nav style="display:flex; align-items:center; gap:clamp(16px,2vw,28px);">
+        <sc-for list="{{ navLinks }}" as="lnk" hint-placeholder-count="5">
+          <button onclick="{{ lnk.onClick }}" style="background:none; border:none; padding:0; cursor:pointer; border-radius:0; font-size:12px; line-height:1.19; letter-spacing:0.04em; text-transform:uppercase; color:inherit; opacity:{{ lnk.op }}; transition:opacity .4s ease;" style-hover="opacity:1">{{ lnk.label }}</button>
+        </sc-for>
+        <button onclick="{{ goBrief }}" style="background:none; cursor:pointer; border:1px solid currentColor; border-radius:75px; padding:11px 26px; font-size:14px; font-weight:400; color:inherit; letter-spacing:0.01em; white-space:nowrap; transition:letter-spacing .8s cubic-bezier(.19,1,.22,1), opacity .4s ease;" style-hover="letter-spacing:0.08em">{{ t.cta }}</button>
+      </nav>
+    </sc-if>
+
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <sc-for list="{{ langOptions }}" as="lo" hint-placeholder-count="2">
+          <button onclick="{{ lo.onClick }}" style="background:none; border:none; padding:0; cursor:pointer; border-radius:0; font-size:12px; color:inherit; opacity:{{ lo.op }};">{{ lo.label }}</button>
+        </sc-for>
+        <button onclick="{{ toggleMenu }}" aria-label="Menu" style="background:none; border:none; padding:0; cursor:pointer; border-radius:0; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:inherit;">{{ menuWord }}</button>
+      </div>
+    </sc-if>
+  </header>
+
+  <main style="flex:1;">
+
+    <!-- ============================ HOME ============================ -->
+    <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Home">
+
+        <!-- ---- A: INDEX hero ---- -->
+        <sc-if value="{{ dirA }}" hint-placeholder-val="{{ true }}">
+          <section data-screen-label="Hero — Index" style="position:relative; min-height:100dvh; display:flex; flex-direction:column; justify-content:flex-end; background:#ffffff;">
+            <div style="flex:1; display:grid; grid-template-columns:{{ heroCols }}; align-items:end; gap:40px; max-width:1078px; width:100%; margin:0 auto; padding:120px clamp(20px,4vw,48px) 48px;">
+              <h1 style="margin:0; font-size:clamp(56px,11vw,150px); font-weight:300; line-height:0.78; letter-spacing:-0.02em; animation:clipIn 1.25s cubic-bezier(.19,1,.22,1) both;">{{ t.heroA }}</h1>
+              <p style="margin:0 0 12px; font-size:16px; line-height:1.58; color:#181818; max-width:32ch; animation:riseIn 1.25s cubic-bezier(.19,1,.22,1) both .2s;">{{ t.heroSub }}</p>
+            </div>
+            <div style="max-width:1078px; width:100%; margin:0 auto; padding:0 clamp(20px,4vw,48px) 28px; display:flex; align-items:center; gap:28px;">
+              <svg viewBox="0 0 100 100" width="88" height="88" style="flex:0 0 auto; overflow:visible; animation:{{ spinAnim }};">
+                <path id="scrollRing" d="M 50 50 m -34 0 a 34 34 0 1 1 68 0 a 34 34 0 1 1 -68 0" fill="none"></path>
+                <text fill="#000000" style="font-size:9.4px; letter-spacing:0.24em; text-transform:uppercase;"><textPath href="#scrollRing">SCROLL DOWN · SCROLL DOWN · </textPath></text>
+              </svg>
+              <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#000000;">{{ t.heroBand }}</span>
+            </div>
+            <div style="position:relative; height:152px; overflow:hidden; background:#000000;">
+              <div style="position:absolute; inset:-25%; background:{{ iridWash }}; filter:blur(28px); opacity:{{ iridOn }}; animation:{{ iridAnim }};"></div>
+            </div>
+          </section>
+        </sc-if>
+
+        <!-- ---- B: LEDGER hero ---- -->
+        <sc-if value="{{ dirB }}" hint-placeholder-val="{{ false }}">
+          <section data-screen-label="Hero — Ledger" style="position:relative; min-height:100dvh; display:flex; align-items:center; justify-content:center; background:#000000; overflow:hidden;">
+            <div style="position:absolute; left:-20%; right:-20%; bottom:-30%; height:85%; background:{{ iridWash }}; filter:blur(80px); opacity:{{ iridOn }}; animation:{{ iridAnim }};"></div>
+            <div style="position:absolute; inset:0; background:linear-gradient(180deg,#000000 0%,rgba(0,0,0,0.62) 45%,rgba(0,0,0,0.6) 100%);"></div>
+            <div style="position:relative; max-width:1078px; padding:0 clamp(20px,4vw,48px); display:flex; flex-direction:column; align-items:center; gap:48px; text-align:center;">
+              <h1 style="margin:0; font-size:clamp(52px,10.5vw,150px); font-weight:400; line-height:0.76; letter-spacing:-0.02em; color:#ffffff; animation:clipIn 1.25s cubic-bezier(.19,1,.22,1) both;">{{ t.heroB }}</h1>
+              <button onclick="{{ goBrief }}" style="background:none; cursor:pointer; border:1px solid rgba(255,255,255,0.3); border-radius:75px; padding:11px 33px; font-size:16px; white-space:nowrap; font-weight:400; color:#ffffff; animation:fadeIn 1.25s cubic-bezier(.19,1,.22,1) both .4s; transition:letter-spacing .8s cubic-bezier(.19,1,.22,1), border-color .8s cubic-bezier(.19,1,.22,1);" style-hover="letter-spacing:0.08em; border-color:#ffffff">{{ t.cta }}</button>
+            </div>
+            <svg viewBox="0 0 100 100" width="88" height="88" style="position:absolute; left:clamp(20px,4vw,48px); bottom:40px; overflow:visible; animation:{{ spinAnim }};">
+              <path id="scrollRingB" d="M 50 50 m -34 0 a 34 34 0 1 1 68 0 a 34 34 0 1 1 -68 0" fill="none"></path>
+              <text fill="#ffffff" style="font-size:9.4px; letter-spacing:0.24em; text-transform:uppercase;"><textPath href="#scrollRingB">SCROLL DOWN · SCROLL DOWN · </textPath></text>
+            </svg>
+          </section>
+        </sc-if>
+
+        <!-- ---- C: CONTACT SHEET hero ---- -->
+        <sc-if value="{{ dirC }}" hint-placeholder-val="{{ false }}">
+          <section data-screen-label="Hero — Contact sheet" style="display:grid; grid-template-columns:{{ splitCols }}; min-height:100dvh; background:#ffffff;">
+            <div style="display:flex; flex-direction:column; justify-content:flex-end; gap:40px; padding:120px clamp(20px,4vw,48px) 48px;">
+              <h1 style="margin:0; font-size:clamp(48px,7.4vw,94px); font-weight:400; line-height:0.76; letter-spacing:-0.02em; animation:clipIn 1.25s cubic-bezier(.19,1,.22,1) both;">{{ t.heroC }}</h1>
+              <p style="margin:0; font-size:18px; line-height:1.58; color:#181818; max-width:34ch; animation:riseIn 1.25s cubic-bezier(.19,1,.22,1) both .2s;">{{ t.heroSub }}</p>
+              <button onclick="{{ goBrief }}" style="align-self:flex-start; background:none; cursor:pointer; border:1px solid #000000; border-radius:75px; padding:11px 33px; font-size:16px; white-space:nowrap; font-weight:400; color:#000000; transition:letter-spacing .8s cubic-bezier(.19,1,.22,1);" style-hover="letter-spacing:0.08em">{{ t.cta }}</button>
+            </div>
+            <div style="padding-top:66px; background:#ffffff;">
+              <div style="position:relative; min-height:52vh; height:100%; background:#000000;">
+                <image-slot id="v2-hero-split" shape="rect" placeholder="Hero frame — full-bleed still" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+              </div>
+            </div>
+          </section>
+        </sc-if>
+
+        <!-- ---- manifesto (shared) ---- -->
+        <section data-screen-label="Manifesto" style="max-width:1078px; margin:0 auto; padding:clamp(64px,10vw,152px) clamp(20px,4vw,48px);">
+          <h2 style="margin:0; max-width:20ch; font-size:clamp(32px,6vw,78px); font-weight:300; line-height:1.1; letter-spacing:-0.01em; animation:riseIn 1s cubic-bezier(.19,1,.22,1) both; animation-timeline:view(); animation-range:entry 0% entry 60%;">{{ t.manifesto }}</h2>
+          <div style="display:grid; grid-template-columns:{{ twoCols }}; gap:clamp(28px,5vw,68px); margin-top:64px;">
+            <p style="margin:0; font-size:18px; line-height:1.58; color:#181818;">{{ t.manifestoA }}</p>
+            <p style="margin:0; font-size:18px; line-height:1.58; color:#181818;">{{ t.manifestoB }}</p>
+          </div>
+        </section>
+
+        <!-- ---- work preview, per direction ---- -->
+        <sc-if value="{{ dirA }}" hint-placeholder-val="{{ true }}">
+          <section data-screen-label="Selected work" style="max-width:1078px; margin:0 auto; padding:0 clamp(20px,4vw,48px) clamp(64px,10vw,152px);">
+            <div style="display:flex; align-items:baseline; justify-content:space-between; gap:24px; padding-bottom:28px; border-bottom:1px solid #000000;">
+              <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase;">{{ t.workKicker }}</span>
+              <button onclick="{{ goWork }}" style="background:none; border:none; padding:0; cursor:pointer; border-radius:0; font-size:12px; letter-spacing:0.04em; text-transform:uppercase;" style-hover="color:#6d6d6d">{{ t.workAll }}</button>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:clamp(40px,7vw,152px); margin-top:46px;">
+              <sc-for list="{{ homeWork }}" as="w" hint-placeholder-count="3">
+                <button onclick="{{ w.onOpen }}" style="display:block; width:100%; text-align:left; background:none; border:none; padding:0; cursor:pointer; border-radius:0; color:#000000; animation:clipIn 1.25s cubic-bezier(.19,1,.22,1) both; animation-timeline:view(); animation-range:entry 0% entry 55%;">
+                  <div style="position:relative; width:100%; aspect-ratio:16/9; background:#000000;">
+                    <image-slot id="{{ w.slotA }}" shape="rect" placeholder="{{ w.placeholder }}" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+                  </div>
+                  <div style="display:flex; align-items:baseline; justify-content:space-between; gap:24px; margin-top:14px;">
+                    <span style="font-size:18px; line-height:1.21; font-weight:400;">{{ w.title }}</span>
+                    <span style="font-size:12px; line-height:1.19; color:#6d6d6d; letter-spacing:0.04em; text-transform:uppercase;">{{ w.disc }} — {{ w.year }}</span>
+                  </div>
+                </button>
+              </sc-for>
+            </div>
+          </section>
+        </sc-if>
+
+        <sc-if value="{{ dirB }}" hint-placeholder-val="{{ false }}">
+          <section data-screen-label="Index" style="max-width:1078px; margin:0 auto; padding:0 clamp(20px,4vw,48px) clamp(64px,10vw,152px);">
+            <div style="display:flex; align-items:baseline; justify-content:space-between; gap:24px; padding-bottom:28px;">
+              <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase;">{{ t.workKicker }}</span>
+              <button onclick="{{ goWork }}" style="background:none; border:none; padding:0; cursor:pointer; border-radius:0; font-size:12px; letter-spacing:0.04em; text-transform:uppercase;" style-hover="color:#6d6d6d">{{ t.workAll }}</button>
+            </div>
+            <sc-for list="{{ homeWork }}" as="w" hint-placeholder-count="4">
+              <button onclick="{{ w.onOpen }}" style="display:grid; grid-template-columns:{{ ledgerCols }}; align-items:center; gap:clamp(12px,3vw,40px); width:100%; text-align:left; background:none; border:none; border-top:1px solid #000000; border-radius:0; padding:20px 0; cursor:pointer; color:#000000; transition:padding-left .8s cubic-bezier(.19,1,.22,1), color .4s ease;" style-hover="padding-left:14px; color:#6d6d6d">
+                <span style="font-size:11px; line-height:1.36; color:#6d6d6d;">{{ w.no }}</span>
+                <span style="font-size:clamp(20px,3vw,39px); line-height:1.19; font-weight:300; letter-spacing:-0.01em;">{{ w.title }}</span>
+                <span style="font-size:12px; line-height:1.19; letter-spacing:0.04em; text-transform:uppercase; color:#6d6d6d;">{{ w.disc }}</span>
+                <span style="font-size:12px; line-height:1.19; color:#6d6d6d;">{{ w.year }}</span>
+                <span style="position:relative; width:{{ thumbW }}; aspect-ratio:16/10; background:#000000; display:block;">
+                  <image-slot id="{{ w.slotB }}" shape="rect" placeholder="Frame" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+                </span>
+              </button>
+            </sc-for>
+            <div style="border-top:1px solid #000000;"></div>
+          </section>
+        </sc-if>
+
+        <sc-if value="{{ dirC }}" hint-placeholder-val="{{ false }}">
+          <section data-screen-label="Contact sheet" style="background:#000000; color:#ffffff; padding:clamp(48px,8vw,68px) 0 clamp(64px,10vw,152px);">
+            <div style="max-width:1078px; margin:0 auto; padding:0 clamp(20px,4vw,48px);">
+              <div style="display:flex; align-items:baseline; justify-content:space-between; gap:24px; padding-bottom:28px; border-bottom:1px solid rgba(255,255,255,0.3);">
+                <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase;">{{ t.workKicker }}</span>
+                <button onclick="{{ goWork }}" style="background:none; border:none; padding:0; cursor:pointer; border-radius:0; font-size:12px; letter-spacing:0.04em; text-transform:uppercase; color:#ffffff;" style-hover="color:#9a9a9a">{{ t.workAll }}</button>
+              </div>
+              <div style="display:grid; grid-template-columns:{{ sheetCols }}; gap:28px; margin-top:40px;">
+                <sc-for list="{{ homeWork }}" as="w" hint-placeholder-count="6">
+                  <button onclick="{{ w.onOpen }}" style="display:block; text-align:left; background:none; border:none; padding:0; cursor:pointer; border-radius:0; color:#ffffff;">
+                    <div style="position:relative; width:100%; aspect-ratio:3/2; background:#181818;">
+                      <image-slot id="{{ w.slotC }}" shape="rect" placeholder="{{ w.placeholder }}" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; gap:12px; margin-top:8px;">
+                      <span style="font-size:11px; line-height:1.36; letter-spacing:0.04em;">{{ w.no }} {{ w.title }}</span>
+                      <span style="font-size:11px; line-height:1.36; color:#9a9a9a;">{{ w.year }}</span>
+                    </div>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </section>
+        </sc-if>
+
+        <!-- ---- recognition strip ---- -->
+        <section data-screen-label="Recognition" style="max-width:1078px; margin:0 auto; padding:0 clamp(20px,4vw,48px) clamp(64px,10vw,152px);">
+          <span style="display:block; font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; padding-bottom:28px; border-bottom:1px solid #000000;">{{ t.awardsKicker }}</span>
+          <div style="display:flex; flex-wrap:wrap; gap:8px 40px; padding-top:28px;">
+            <sc-for list="{{ awards }}" as="a" hint-placeholder-count="5">
+              <span style="font-size:16px; line-height:1.15; color:#181818;">{{ a }}</span>
+            </sc-for>
+          </div>
+        </section>
+
+        <!-- ---- cases ---- -->
+        <section data-screen-label="Case studies" style="max-width:1078px; margin:0 auto; padding:0 clamp(20px,4vw,48px) clamp(64px,10vw,152px); display:flex; flex-direction:column; gap:clamp(48px,8vw,152px);">
+          <sc-for list="{{ caseStudies }}" as="cs" hint-placeholder-count="3">
+            <div style="display:grid; grid-template-columns:{{ cs.cols }}; gap:clamp(24px,4vw,64px); align-items:end; animation:riseIn 1s cubic-bezier(.19,1,.22,1) both; animation-timeline:view(); animation-range:entry 0% entry 55%;">
+              <div style="order:{{ cs.mediaOrder }}; position:relative; width:100%; aspect-ratio:4/3; background:#000000;">
+                <image-slot id="{{ cs.slotId }}" shape="rect" placeholder="Case still" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+              </div>
+              <div style="order:{{ cs.textOrder }}; display:flex; flex-direction:column; gap:14px;">
+                <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">{{ cs.cat }}</span>
+                <h3 style="margin:0; font-family:'Raleway',sans-serif; font-size:clamp(28px,4.4vw,54px); font-weight:400; line-height:1.1; letter-spacing:-0.01em;">{{ cs.client }}</h3>
+                <p style="margin:0; font-size:18px; line-height:1.58; color:#181818; max-width:38ch;">{{ cs.result }}</p>
+                <div style="display:flex; align-items:baseline; gap:12px; margin-top:14px;">
+                  <span style="font-size:clamp(32px,4.4vw,54px); font-weight:400; line-height:1;">{{ cs.metric }}</span>
+                  <span style="font-size:12px; line-height:1.19; letter-spacing:0.04em; text-transform:uppercase; color:#6d6d6d;">{{ cs.metricLabel }}</span>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </section>
+
+        <!-- ---- closing band ---- -->
+        <section data-screen-label="Closing" style="background:#000000; color:#ffffff; padding:clamp(80px,12vw,152px) clamp(20px,4vw,48px);">
+          <div style="max-width:1078px; margin:0 auto; display:flex; flex-direction:column; gap:48px;">
+            <h2 style="margin:0; max-width:16ch; font-size:clamp(40px,7.4vw,94px); font-weight:400; line-height:0.76; letter-spacing:-0.02em;">{{ t.closing }}</h2>
+            <button onclick="{{ goBrief }}" style="align-self:flex-start; background:none; cursor:pointer; border:1px solid rgba(255,255,255,0.3); border-radius:75px; padding:11px 33px; font-size:16px; white-space:nowrap; font-weight:400; color:#ffffff; transition:letter-spacing .8s cubic-bezier(.19,1,.22,1), border-color .8s cubic-bezier(.19,1,.22,1);" style-hover="letter-spacing:0.08em; border-color:#ffffff">{{ t.cta }}</button>
+          </div>
+        </section>
+      </div>
+    </sc-if>
+
+    <!-- ============================ PORTFOLIO ============================ -->
+    <sc-if value="{{ isWork }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Portfolio" style="padding-top:66px;">
+        <div style="max-width:1078px; margin:0 auto; padding:clamp(48px,8vw,68px) clamp(20px,4vw,48px) 28px;">
+          <h1 style="margin:0 0 48px; font-size:clamp(40px,7.4vw,94px); font-weight:400; line-height:0.76; letter-spacing:-0.02em;">{{ t.navWork }}</h1>
+          <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:20px; padding-bottom:28px; border-bottom:1px solid #000000;">
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <sc-for list="{{ portCats }}" as="c" hint-placeholder-count="3">
+                <button onclick="{{ c.onClick }}" style="cursor:pointer; border-radius:75px; padding:9px 24px; font-size:14px; font-weight:400; white-space:nowrap; border:1px solid {{ c.border }}; background:{{ c.bg }}; color:{{ c.color }}; transition:background .8s cubic-bezier(.19,1,.22,1), color .8s cubic-bezier(.19,1,.22,1);">{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">{{ workCount }} {{ t.pfProjects }}</span>
+          </div>
+        </div>
+
+        <sc-if value="{{ dirA }}" hint-placeholder-val="{{ true }}">
+          <div style="max-width:1078px; margin:0 auto; padding:46px clamp(20px,4vw,48px) clamp(64px,10vw,152px); display:flex; flex-direction:column; gap:clamp(40px,7vw,152px);">
+            <sc-for list="{{ workItems }}" as="w" hint-placeholder-count="6">
+              <button onclick="{{ w.onOpen }}" style="display:block; width:100%; text-align:left; background:none; border:none; padding:0; cursor:pointer; border-radius:0; color:#000000;">
+                <div style="position:relative; width:100%; aspect-ratio:16/9; background:#000000;">
+                  <image-slot id="{{ w.slotP }}" shape="rect" placeholder="{{ w.placeholder }}" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+                </div>
+                <div style="display:flex; align-items:baseline; justify-content:space-between; gap:24px; margin-top:14px;">
+                  <span style="font-size:18px; line-height:1.21;">{{ w.title }}</span>
+                  <span style="font-size:12px; line-height:1.19; color:#6d6d6d; letter-spacing:0.04em; text-transform:uppercase;">{{ w.disc }} — {{ w.year }}</span>
+                </div>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ dirB }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width:1078px; margin:0 auto; padding:28px clamp(20px,4vw,48px) clamp(64px,10vw,152px);">
+            <sc-for list="{{ workItems }}" as="w" hint-placeholder-count="8">
+              <button onclick="{{ w.onOpen }}" style="display:grid; grid-template-columns:{{ ledgerCols }}; align-items:center; gap:clamp(12px,3vw,40px); width:100%; text-align:left; background:none; border:none; border-bottom:1px solid #000000; border-radius:0; padding:20px 0; cursor:pointer; color:#000000; transition:padding-left .8s cubic-bezier(.19,1,.22,1), color .4s ease;" style-hover="padding-left:14px; color:#6d6d6d">
+                <span style="font-size:11px; line-height:1.36; color:#6d6d6d;">{{ w.no }}</span>
+                <span style="font-size:clamp(20px,3vw,39px); line-height:1.19; font-weight:300; letter-spacing:-0.01em;">{{ w.title }}</span>
+                <span style="font-size:12px; line-height:1.19; letter-spacing:0.04em; text-transform:uppercase; color:#6d6d6d;">{{ w.disc }}</span>
+                <span style="font-size:12px; line-height:1.19; color:#6d6d6d;">{{ w.year }}</span>
+                <span style="position:relative; width:{{ thumbW }}; aspect-ratio:16/10; background:#000000; display:block;">
+                  <image-slot id="{{ w.slotB }}" shape="rect" placeholder="Frame" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ dirC }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#000000; color:#ffffff; margin-top:28px; padding:clamp(40px,7vw,68px) 0 clamp(64px,10vw,152px);">
+            <div style="max-width:1078px; margin:0 auto; padding:0 clamp(20px,4vw,48px); display:grid; grid-template-columns:{{ sheetCols }}; gap:28px;">
+              <sc-for list="{{ workItems }}" as="w" hint-placeholder-count="9">
+                <button onclick="{{ w.onOpen }}" style="display:block; text-align:left; background:none; border:none; padding:0; cursor:pointer; border-radius:0; color:#ffffff;">
+                  <div style="position:relative; width:100%; aspect-ratio:3/2; background:#181818;">
+                    <image-slot id="{{ w.slotC }}" shape="rect" placeholder="{{ w.placeholder }}" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; gap:12px; margin-top:8px;">
+                    <span style="font-size:11px; line-height:1.36; letter-spacing:0.04em;">{{ w.no }} {{ w.title }}</span>
+                    <span style="font-size:11px; line-height:1.36; color:#9a9a9a;">{{ w.year }}</span>
+                  </div>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </section>
+    </sc-if>
+
+    <!-- ============================ BRIEF ============================ -->
+    <sc-if value="{{ isBrief }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Brief" style="padding-top:66px;">
+        <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+          <div style="max-width:1078px; margin:0 auto; padding:clamp(48px,8vw,68px) clamp(20px,4vw,48px) clamp(64px,10vw,152px);">
+            <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:24px; padding-bottom:28px; border-bottom:1px solid #000000;">
+              <h1 style="margin:0; font-size:clamp(40px,7.4vw,94px); font-weight:400; line-height:0.76; letter-spacing:-0.02em;">{{ t.briefTitle }}</h1>
+              <p style="margin:0; max-width:34ch; font-size:16px; line-height:1.58; color:#6d6d6d;">{{ t.briefSub }}</p>
+            </div>
+
+            <div style="display:grid; grid-template-columns:{{ briefCols }}; gap:clamp(28px,5vw,68px); align-items:start; margin-top:48px;">
+              <div style="display:flex; flex-direction:column; gap:48px;">
+
+                <div style="display:flex; flex-direction:column; gap:14px;">
+                  <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">01 — {{ t.fType }}</span>
+                  <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                    <sc-for list="{{ typeOptions }}" as="o" hint-placeholder-count="7">
+                      <button onclick="{{ o.onSelect }}" style="cursor:pointer; border-radius:75px; padding:11px 24px; font-size:16px; font-weight:400; white-space:nowrap; border:1px solid {{ o.border }}; background:{{ o.bg }}; color:{{ o.color }}; transition:background .8s cubic-bezier(.19,1,.22,1), color .8s cubic-bezier(.19,1,.22,1);">{{ o.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:14px;">
+                  <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">02 — {{ t.fDeliver }}</span>
+                  <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                    <sc-for list="{{ deliverableOptions }}" as="o" hint-placeholder-count="8">
+                      <button onclick="{{ o.onToggle }}" style="cursor:pointer; border-radius:75px; padding:11px 24px; font-size:16px; font-weight:400; white-space:nowrap; border:1px solid {{ o.border }}; background:{{ o.bg }}; color:{{ o.color }}; transition:background .8s cubic-bezier(.19,1,.22,1), color .8s cubic-bezier(.19,1,.22,1);">{{ o.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:{{ twoCols }}; gap:clamp(24px,4vw,48px);">
+                  <div style="display:flex; flex-direction:column; gap:14px;">
+                    <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">03 — {{ t.fBudget }}</span>
+                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                      <sc-for list="{{ budgetOptions }}" as="o" hint-placeholder-count="5">
+                        <button onclick="{{ o.onSelect }}" style="cursor:pointer; border-radius:75px; padding:11px 24px; font-size:16px; font-weight:400; white-space:nowrap; border:1px solid {{ o.border }}; background:{{ o.bg }}; color:{{ o.color }}; transition:background .8s cubic-bezier(.19,1,.22,1), color .8s cubic-bezier(.19,1,.22,1);">{{ o.label }}</button>
+                      </sc-for>
+                    </div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:14px;">
+                    <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">04 — {{ t.fTimeline }}</span>
+                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                      <sc-for list="{{ timelineOptions }}" as="o" hint-placeholder-count="4">
+                        <button onclick="{{ o.onSelect }}" style="cursor:pointer; border-radius:75px; padding:11px 24px; font-size:16px; font-weight:400; white-space:nowrap; border:1px solid {{ o.border }}; background:{{ o.bg }}; color:{{ o.color }}; transition:background .8s cubic-bezier(.19,1,.22,1), color .8s cubic-bezier(.19,1,.22,1);">{{ o.label }}</button>
+                      </sc-for>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:{{ twoCols }}; gap:clamp(24px,4vw,48px);">
+                  <label style="display:flex; flex-direction:column; gap:12px;">
+                    <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">05 — {{ t.fWhere }}</span>
+                    <input type="text" value="{{ draftLocation }}" oninput="{{ setLocation }}" placeholder="{{ t.phLocation }}" style="border:none; border-bottom:1px solid #000000; border-radius:0; background:none; padding:10px 0; font-size:18px; line-height:1.21; color:#000000; outline:none;">
+                  </label>
+                  <label style="display:flex; flex-direction:column; gap:12px;">
+                    <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">06 — {{ t.fWhen }}</span>
+                    <input type="date" value="{{ draftDate }}" oninput="{{ setDate }}" style="border:none; border-bottom:1px solid #000000; border-radius:0; background:none; padding:10px 0; font-size:18px; line-height:1.21; color:#000000; outline:none;">
+                  </label>
+                </div>
+
+                <label style="display:flex; flex-direction:column; gap:12px;">
+                  <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">07 — {{ t.fBrief }}</span>
+                  <textarea value="{{ draftBrief }}" oninput="{{ setBrief }}" rows="4" placeholder="{{ t.phBrief }}" style="border:none; border-bottom:1px solid #000000; border-radius:0; background:none; padding:10px 0; font-size:18px; line-height:1.58; color:#000000; outline:none; min-height:120px;"></textarea>
+                </label>
+
+                <div style="display:flex; flex-direction:column; gap:14px;">
+                  <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">08 — {{ t.fContact }}</span>
+                  <div style="display:grid; grid-template-columns:{{ twoCols }}; gap:clamp(20px,3vw,40px);">
+                    <input type="text" value="{{ draftName }}" oninput="{{ setName }}" placeholder="{{ t.phName }}" style="border:none; border-bottom:1px solid #000000; border-radius:0; background:none; padding:10px 0; font-size:18px; line-height:1.21; color:#000000; outline:none;">
+                    <input type="email" value="{{ draftEmail }}" oninput="{{ setEmail }}" placeholder="{{ t.phEmail }}" style="border:none; border-bottom:1px solid #000000; border-radius:0; background:none; padding:10px 0; font-size:18px; line-height:1.21; color:#000000; outline:none;">
+                    <input type="tel" value="{{ draftPhone }}" oninput="{{ setPhone }}" placeholder="{{ t.phPhone }}" style="border:none; border-bottom:1px solid #000000; border-radius:0; background:none; padding:10px 0; font-size:18px; line-height:1.21; color:#000000; outline:none;">
+                    <input type="text" value="{{ draftCompany }}" oninput="{{ setCompany }}" placeholder="{{ t.phCompany }}" style="border:none; border-bottom:1px solid #000000; border-radius:0; background:none; padding:10px 0; font-size:18px; line-height:1.21; color:#000000; outline:none;">
+                  </div>
+                </div>
+              </div>
+
+              <aside style="position:{{ asidePos }}; top:96px; display:flex; flex-direction:column; gap:28px; padding:34px; background:#ffffff; border:1px solid #000000;">
+                <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">{{ t.summary }}</span>
+                <div style="display:flex; flex-direction:column; gap:14px;">
+                  <sc-for list="{{ summaryItems }}" as="r" hint-placeholder-count="6">
+                    <div style="display:flex; flex-direction:column; gap:4px;">
+                      <span style="font-size:11px; line-height:1.36; letter-spacing:0.08em; text-transform:uppercase; color:#6d6d6d;">{{ r.label }}</span>
+                      <span style="font-size:16px; line-height:1.3; color:{{ r.ink }};">{{ r.value }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <button onclick="{{ submit }}" style="cursor:pointer; border-radius:75px; padding:11px 33px; font-size:16px; white-space:nowrap; font-weight:400; border:1px solid #000000; background:{{ submitBg }}; color:{{ submitInk }}; opacity:{{ submitOp }}; pointer-events:{{ submitPE }}; transition:letter-spacing .8s cubic-bezier(.19,1,.22,1), opacity .4s ease;" style-hover="letter-spacing:0.08em">{{ t.send }}</button>
+                <span style="font-size:12px; line-height:1.19; color:#6d6d6d;">{{ t.replyNote }}</span>
+              </aside>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width:1078px; margin:0 auto; padding:clamp(80px,14vw,152px) clamp(20px,4vw,48px); display:flex; flex-direction:column; gap:40px;">
+            <h1 style="margin:0; max-width:14ch; font-size:clamp(40px,7.4vw,94px); font-weight:400; line-height:0.76; letter-spacing:-0.02em;">{{ t.received }}</h1>
+            <div style="display:flex; flex-direction:column; gap:8px; border-top:1px solid #000000; padding-top:28px;">
+              <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">{{ t.reference }}</span>
+              <span style="font-size:clamp(32px,4.4vw,54px); font-weight:400; line-height:1.1;">{{ lastId }}</span>
+            </div>
+            <p style="margin:0; max-width:44ch; font-size:18px; line-height:1.58; color:#181818;">{{ t.receivedSub }}</p>
+            <div style="display:flex; flex-wrap:wrap; gap:12px;">
+              <button onclick="{{ goTrack }}" style="cursor:pointer; border-radius:75px; padding:11px 33px; font-size:16px; white-space:nowrap; border:1px solid #000000; background:#000000; color:#ffffff; transition:letter-spacing .8s cubic-bezier(.19,1,.22,1);" style-hover="letter-spacing:0.08em">{{ t.navTrack }}</button>
+              <button onclick="{{ startAnother }}" style="cursor:pointer; border-radius:75px; padding:11px 33px; font-size:16px; white-space:nowrap; border:1px solid #000000; background:none; color:#000000; transition:letter-spacing .8s cubic-bezier(.19,1,.22,1);" style-hover="letter-spacing:0.08em">{{ t.another }}</button>
+            </div>
+          </div>
+        </sc-if>
+      </section>
+    </sc-if>
+
+    <!-- ============================ PACKAGES ============================ -->
+    <sc-if value="{{ isPackages }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Packages" style="padding-top:66px;">
+        <div style="max-width:1078px; margin:0 auto; padding:clamp(48px,8vw,68px) clamp(20px,4vw,48px) clamp(64px,10vw,152px);">
+          <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:24px; padding-bottom:28px;">
+            <h1 style="margin:0; font-size:clamp(40px,7.4vw,94px); font-weight:400; line-height:0.76; letter-spacing:-0.02em;">{{ t.navPackages }}</h1>
+            <p style="margin:0; max-width:34ch; font-size:16px; line-height:1.58; color:#6d6d6d;">{{ t.packagesSub }}</p>
+          </div>
+          <sc-for list="{{ packages }}" as="p" hint-placeholder-count="3">
+            <div style="display:grid; grid-template-columns:{{ pkgCols }}; gap:clamp(20px,4vw,48px); align-items:start; border-top:1px solid #000000; padding:34px 0;">
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <span style="font-size:clamp(28px,4.4vw,54px); font-weight:300; line-height:1.1; letter-spacing:-0.01em;">{{ p.name }}</span>
+                <span style="font-size:12px; line-height:1.19; letter-spacing:0.04em; text-transform:uppercase; color:#6d6d6d;">{{ p.price }}</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <sc-for list="{{ p.points }}" as="pt" hint-placeholder-count="3">
+                  <span style="font-size:16px; line-height:1.5; color:#181818;">{{ pt }}</span>
+                </sc-for>
+              </div>
+              <button onclick="{{ p.onChoose }}" style="justify-self:{{ pkgBtnAlign }}; cursor:pointer; border-radius:75px; padding:11px 33px; font-size:16px; white-space:nowrap; border:1px solid #000000; background:none; color:#000000; white-space:nowrap; transition:letter-spacing .8s cubic-bezier(.19,1,.22,1);" style-hover="letter-spacing:0.08em">{{ t.startWith }}</button>
+            </div>
+          </sc-for>
+          <div style="border-top:1px solid #000000; padding-top:28px;">
+            <button onclick="{{ goBrief }}" style="background:none; border:none; padding:0; cursor:pointer; border-radius:0; font-size:16px; color:#6d6d6d;" style-hover="color:#000000">{{ t.somethingElse }}</button>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ============================ TRACK ============================ -->
+    <sc-if value="{{ isTrack }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Track" style="padding-top:66px;">
+        <div style="max-width:1078px; margin:0 auto; padding:clamp(48px,8vw,68px) clamp(20px,4vw,48px) clamp(64px,10vw,152px);">
+          <h1 style="margin:0 0 48px; font-size:clamp(40px,7.4vw,94px); font-weight:400; line-height:0.76; letter-spacing:-0.02em;">{{ t.navTrack }}</h1>
+          <input type="text" value="{{ lookup }}" oninput="{{ setLookup }}" placeholder="{{ t.phLookup }}" style="width:100%; border:none; border-bottom:1px solid #000000; border-radius:0; background:none; padding:12px 0; font-size:18px; line-height:1.21; color:#000000; outline:none; margin-bottom:48px;">
+          <sc-if value="{{ hasRequests }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <sc-for list="{{ trackList }}" as="r" hint-placeholder-count="2">
+                <div style="border-top:1px solid #000000; padding:28px 0; display:grid; grid-template-columns:{{ trackCols }}; gap:clamp(20px,4vw,48px); align-items:start;">
+                  <div style="display:flex; flex-direction:column; gap:6px;">
+                    <span style="font-size:18px; line-height:1.21;">{{ r.type }}</span>
+                    <span style="font-size:11px; line-height:1.36; letter-spacing:0.08em; color:#6d6d6d;">{{ r.id }} — {{ r.date }}</span>
+                  </div>
+                  <div style="display:flex; gap:8px;">
+                    <sc-for list="{{ r.stages }}" as="s" hint-placeholder-count="4">
+                      <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+                        <div style="height:2px; background:{{ s.bar }};"></div>
+                        <span style="font-size:11px; line-height:1.36; color:{{ s.ink }};">{{ s.name }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+              <div style="border-top:1px solid #000000;"></div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ noRequests }}" hint-placeholder-val="{{ true }}">
+            <div style="border-top:1px solid #000000; padding-top:28px; display:flex; flex-direction:column; align-items:flex-start; gap:24px;">
+              <p style="margin:0; font-size:18px; line-height:1.58; color:#6d6d6d;">{{ emptyTrackMsg }}</p>
+              <button onclick="{{ goBrief }}" style="cursor:pointer; border-radius:75px; padding:11px 33px; font-size:16px; white-space:nowrap; border:1px solid #000000; background:none; color:#000000; transition:letter-spacing .8s cubic-bezier(.19,1,.22,1);" style-hover="letter-spacing:0.08em">{{ t.cta }}</button>
+            </div>
+          </sc-if>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ============================ CALL ============================ -->
+    <sc-if value="{{ isCall }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Book a call" style="padding-top:66px;">
+        <div style="max-width:1078px; margin:0 auto; padding:clamp(48px,8vw,68px) clamp(20px,4vw,48px) clamp(64px,10vw,152px);">
+          <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:24px; padding-bottom:28px; border-bottom:1px solid #000000;">
+            <h1 style="margin:0; font-size:clamp(40px,7.4vw,94px); font-weight:400; line-height:0.76; letter-spacing:-0.02em;">{{ t.navCall }}</h1>
+            <p style="margin:0; max-width:30ch; font-size:16px; line-height:1.58; color:#6d6d6d;">{{ t.callSub }}</p>
+          </div>
+          <sc-if value="{{ callBooked }}" hint-placeholder-val="{{ false }}">
+            <div style="padding-top:48px; display:flex; flex-direction:column; gap:14px;">
+              <span style="font-size:clamp(28px,4.4vw,54px); font-weight:300; line-height:1.1;">{{ t.booked }}</span>
+              <span style="font-size:18px; line-height:1.58; color:#181818;">{{ callConfirm }}</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ callNotBooked }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid; grid-template-columns:{{ twoCols }}; gap:clamp(28px,5vw,68px); padding-top:48px; align-items:start;">
+              <div style="display:flex; flex-direction:column; gap:14px;">
+                <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#6d6d6d;">{{ t.pickSlot }}</span>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                  <sc-for list="{{ slotOptions }}" as="s" hint-placeholder-count="6">
+                    <button onclick="{{ s.onSelect }}" style="cursor:pointer; border-radius:75px; padding:11px 24px; font-size:16px; border:1px solid {{ s.border }}; background:{{ s.bg }}; color:{{ s.color }}; transition:background .8s cubic-bezier(.19,1,.22,1), color .8s cubic-bezier(.19,1,.22,1);">{{ s.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:28px;">
+                <input type="text" value="{{ callName }}" oninput="{{ setCallName }}" placeholder="{{ t.phName }}" style="border:none; border-bottom:1px solid #000000; border-radius:0; background:none; padding:10px 0; font-size:18px; color:#000000; outline:none;">
+                <input type="email" value="{{ callEmail }}" oninput="{{ setCallEmail }}" placeholder="{{ t.phEmail }}" style="border:none; border-bottom:1px solid #000000; border-radius:0; background:none; padding:10px 0; font-size:18px; color:#000000; outline:none;">
+                <button onclick="{{ bookCall }}" style="align-self:flex-start; cursor:pointer; border-radius:75px; padding:11px 33px; font-size:16px; white-space:nowrap; border:1px solid #000000; background:{{ bookBg }}; color:{{ bookInk }}; opacity:{{ bookOp }}; pointer-events:{{ bookPE }}; transition:letter-spacing .8s cubic-bezier(.19,1,.22,1), opacity .4s ease;" style-hover="letter-spacing:0.08em">{{ t.confirm }}</button>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- ============================ SIGN IN ============================ -->
+    <sc-if value="{{ isSignin }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Sign in" style="min-height:100dvh; background:#000000; color:#ffffff; display:flex; align-items:center; justify-content:center; padding:120px clamp(20px,4vw,48px) 68px;">
+        <div style="width:100%; max-width:420px; display:flex; flex-direction:column; gap:40px;">
+          <h1 style="margin:0; font-size:clamp(32px,5.6vw,54px); font-weight:300; line-height:1.1; letter-spacing:-0.01em;">{{ t.signinTitle }}</h1>
+          <sc-if value="{{ signedIn }}" hint-placeholder-val="{{ false }}">
+            <p style="margin:0; font-size:18px; line-height:1.58; color:#9a9a9a;">{{ t.signinDone }} {{ signinEmail }}</p>
+          </sc-if>
+          <sc-if value="{{ notSignedIn }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; flex-direction:column; gap:28px;">
+              <input type="email" value="{{ signinEmail }}" oninput="{{ setSigninEmail }}" placeholder="{{ t.phEmail }}" style="border:none; border-bottom:1px solid rgba(255,255,255,0.3); border-radius:0; background:none; padding:10px 0; font-size:18px; color:#ffffff; outline:none;">
+              <button onclick="{{ doSignin }}" style="align-self:flex-start; cursor:pointer; border-radius:75px; padding:11px 33px; font-size:16px; white-space:nowrap; border:1px solid rgba(255,255,255,0.3); background:none; color:#ffffff; opacity:{{ signinOp }}; pointer-events:{{ signinPE }}; transition:letter-spacing .8s cubic-bezier(.19,1,.22,1), border-color .8s cubic-bezier(.19,1,.22,1), opacity .4s ease;" style-hover="letter-spacing:0.08em; border-color:#ffffff">{{ t.continue }}</button>
+            </div>
+          </sc-if>
+        </div>
+      </section>
+    </sc-if>
+
+  </main>
+
+  <!-- ============================ FOOTER ============================ -->
+  <footer style="background:#ffffff; border-top:1px solid #000000;">
+    <div style="max-width:1078px; margin:0 auto; padding:clamp(48px,8vw,68px) clamp(20px,4vw,48px) 40px; display:grid; grid-template-columns:{{ footCols }}; gap:clamp(28px,5vw,68px); align-items:start;">
+      <div style="display:flex; flex-direction:column; gap:28px;">
+        <svg viewBox="255 248 528 372" width="72" style="display:block; overflow:visible;">
+          <rect x="250" y="250" width="540" height="470" fill="#000000" mask="url(#diaMark)"></rect>
+        </svg>
+        <p style="margin:0; max-width:30ch; font-size:11px; line-height:1.36; color:#6d6d6d;">{{ t.footerTagline }}</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <sc-for list="{{ footerLinks }}" as="fl" hint-placeholder-count="6">
+          <button onclick="{{ fl.onClick }}" style="align-self:flex-start; background:none; border:none; padding:0; cursor:pointer; border-radius:0; font-size:11px; line-height:1.36; color:#181818;" style-hover="color:#6d6d6d">{{ fl.label }}</button>
+        </sc-for>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <sc-for list="{{ offices }}" as="o" hint-placeholder-count="1">
+          <span style="font-size:11px; line-height:1.36; color:#181818;">{{ o.city }}</span>
+          <a href="{{ o.mailto }}" style="font-size:11px; line-height:1.36; color:#6d6d6d;">{{ o.addr }}</a>
+          <a href="{{ o.telHref }}" style="font-size:11px; line-height:1.36; color:#6d6d6d;">{{ o.phone }}</a>
+        </sc-for>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <sc-for list="{{ socials }}" as="sc" hint-placeholder-count="4">
+          <a href="{{ sc.href }}" target="_blank" rel="noopener" style="font-size:11px; line-height:1.36; color:#6d6d6d;">{{ sc.label }}</a>
+        </sc-for>
+      </div>
+    </div>
+    <div style="max-width:1078px; margin:0 auto; padding:0 clamp(20px,4vw,48px) 40px; display:flex; flex-wrap:wrap; gap:12px 28px; justify-content:space-between;">
+      <span style="font-size:11px; line-height:1.36; color:#6d6d6d;">© 2026 {{ studioName }} — P.IVA 13478040010</span>
+      <div style="display:flex; gap:28px;">
+        <span style="font-size:11px; line-height:1.36; color:#6d6d6d;">{{ t.footerPrivacy }}</span>
+        <span style="font-size:11px; line-height:1.36; color:#6d6d6d;">{{ t.footerCookies }}</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================ LIGHTBOX ============================ -->
+  <div onclick="{{ closeWork }}" style="position:fixed; inset:0; z-index:70; display:flex; align-items:center; justify-content:center; padding:clamp(16px,5vw,68px); background:#000000; opacity:{{ lbOpacity }}; visibility:{{ lbVis }}; pointer-events:{{ lbPE }}; transition:opacity .8s cubic-bezier(.19,1,.22,1), visibility .8s cubic-bezier(.19,1,.22,1);">
+    <button onclick="{{ closeWork }}" aria-label="Close" style="position:absolute; top:20px; right:clamp(20px,4vw,48px); background:none; border:none; padding:0; cursor:pointer; border-radius:0; color:#ffffff; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; z-index:2;">{{ t.close }}</button>
+    <sc-if value="{{ hasLightbox }}" hint-placeholder-val="{{ false }}">
+      <div style="width:100%; max-width:1078px; display:flex; flex-direction:column; gap:14px;">
+        <sc-if value="{{ lb.hasEmbed }}" hint-placeholder-val="{{ false }}">
+          <div style="position:relative; width:100%; aspect-ratio:16/9; background:#181818;"><iframe src="{{ lb.embed }}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen="true" style="position:absolute; inset:0; width:100%; height:100%; border:0;"></iframe></div>
+        </sc-if>
+        <sc-if value="{{ lb.noEmbed }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative; width:100%; aspect-ratio:16/9; background:#181818;">
+            <image-slot id="{{ lb.slotL }}" shape="rect" placeholder="{{ lb.placeholder }}" style="position:absolute; inset:0; width:100%; height:100%; display:block;"></image-slot>
+          </div>
+        </sc-if>
+        <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:14px;">
+          <span style="font-size:18px; line-height:1.21; color:#ffffff;">{{ lb.title }}</span>
+          <span style="font-size:11px; line-height:1.36; letter-spacing:0.12em; text-transform:uppercase; color:#9a9a9a;">{{ lb.disc }} — {{ lb.year }}</span>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- ============================ MOBILE MENU ============================ -->
+  <div style="position:fixed; inset:0; z-index:60; background:#ffffff; display:flex; flex-direction:column; padding:20px clamp(20px,6vw,40px) 40px; opacity:{{ menuOpacity }}; visibility:{{ menuVis }}; pointer-events:{{ menuPE }}; transition:opacity .8s cubic-bezier(.19,1,.22,1), visibility .8s cubic-bezier(.19,1,.22,1);">
+    <div style="height:46px; display:flex; align-items:center; justify-content:flex-end;">
+      <button onclick="{{ closeMenu }}" style="background:none; border:none; padding:0; cursor:pointer; border-radius:0; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;">{{ t.close }}</button>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px;">
+      <sc-for list="{{ menuLinks }}" as="m" hint-placeholder-count="6">
+        <button onclick="{{ m.onClick }}" style="align-self:flex-start; background:none; border:none; padding:6px 0; cursor:pointer; border-radius:0; font-size:clamp(30px,8vw,45px); font-weight:300; line-height:1.15; letter-spacing:-0.01em; color:{{ m.color }};">{{ m.label }}</button>
+      </sc-for>
+      <button onclick="{{ goBrief }}" style="align-self:flex-start; margin-top:28px; cursor:pointer; border-radius:75px; padding:11px 33px; font-size:16px; white-space:nowrap; border:1px solid #000000; background:none; color:#000000;">{{ t.cta }}</button>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1280, &quot;height&quot;: 860 },
+  &quot;studioName&quot;: { &quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;DIA PROD&quot;, &quot;tsType&quot;: &quot;string&quot; },
+  &quot;iridescence&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot; },
+  &quot;motion&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot; }
+}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    this.TYPES = ['Brand film','Photography','Commercial','Music video','Event','Corporate','Social content'];
+    this.DELIVERABLES = ['Final edit','Raw footage','Color grade','Motion graphics','Social cuts','Stills','Drone','Sound design'];
+    this.BUDGETS = ['< 5k','5–15k','15–50k','50k+','Not sure'];
+    this.TIMELINES = ['Rush','2–4 weeks','1–2 months','Flexible'];
+    this.STAGES = ['Received','In review','Production','Delivered'];
+    this.SLOTS = ['Tue 10:00','Tue 14:00','Wed 11:30','Thu 09:00','Thu 16:00','Fri 13:00'];
+    this.PACKAGES = [
+      { name:'Half Day', price:'from € 2.500', preset:'Photography', pointsEn:['Photo or short-form video','One location, up to four hours','Edited deliverables in seven days'], pointsIt:['Foto o video short-form','Una location, fino a quattro ore','Consegna montata in sette giorni'] },
+      { name:'Production Day', price:'from € 12.000', preset:'Brand film', pointsEn:['Full crew, one shoot day','Video and stills together','Colour, edit and sound included'], pointsIt:['Troupe completa, una giornata','Video e fotografia insieme','Colore, montaggio e suono inclusi'] },
+      { name:'Signature Film', price:'from € 40.000', preset:'Corporate', pointsEn:['Multi-day, concept to delivery','Creative direction and casting','Full post-production'], pointsIt:['Più giornate, dal concept alla consegna','Direzione creativa e casting','Post-produzione completa'] },
+    ];
+    this.WORK = [
+      { id:'w1', title:'Aether', discEn:'Brand Film', discIt:'Brand Film', cat:'film', year:'2025' },
+      { id:'w2', title:'Nocturne', discEn:'Editorial', discIt:'Editoriale', cat:'photo', year:'2025' },
+      { id:'w3', title:'Last Call', discEn:'Commercial', discIt:'Spot', cat:'film', year:'2025', yt:'WvxYy4n8EYI' },
+      { id:'w4', title:'Meridian', discEn:'Portrait', discIt:'Ritratto', cat:'photo', year:'2024' },
+      { id:'w5', title:'Halcyon', discEn:'Music Video', discIt:'Videoclip', cat:'film', year:'2024' },
+      { id:'w6', title:'Lumen', discEn:'Product', discIt:'Prodotto', cat:'photo', year:'2024' },
+      { id:'w7', title:'Ember', discEn:'Event Film', discIt:'Film Evento', cat:'film', year:'2024' },
+      { id:'w8', title:'Cascade', discEn:'Campaign', discIt:'Campagna', cat:'photo', year:'2023' },
+      { id:'w9', title:'Solstice', discEn:'Fashion Film', discIt:'Fashion Film', cat:'film', year:'2023' },
+    ];
+    this.AWARDS = ['IMAGinACTION','Fabriano Film Festival','Giffoni','REC Film Festival','Epicland'];
+    this.CASES = [
+      { workId:'w1', client:'Aether', catEn:'Brand Film', catIt:'Brand Film',
+        resultEn:'A launch film for a fragrance house. One shoot carried the campaign across every channel for a season.',
+        resultIt:'Un film di lancio per una maison di profumi. Uno shooting ha coperto la campagna su ogni canale per una stagione.',
+        metric:'+240%', mEn:'reach vs. prior launch', mIt:'reach vs. lancio precedente' },
+      { workId:'w3', client:'Last Call', catEn:'Commercial', catIt:'Spot',
+        resultEn:'Thirty seconds for a nightlife brand. Shot, cut and delivered inside two weeks.',
+        resultIt:'Trenta secondi per un brand nightlife. Girato, montato e consegnato in due settimane.',
+        metric:'2M', mEn:'organic views', mIt:'visualizzazioni organiche' },
+      { workId:'w8', client:'Cascade', catEn:'Campaign', catIt:'Campagna',
+        resultEn:'A full-funnel content system. One shoot, forty deliverables, a quarter of social fuel.',
+        resultIt:'Un sistema di contenuti full-funnel. Uno shooting, quaranta contenuti, un trimestre di social.',
+        metric:'40', mEn:'assets from one shoot', mIt:'contenuti da uno shooting' },
+    ];
+    this.OFFICES = [{ city:'Diako Moradi', addr:'studio@diaprod.it', mailto:'mailto:studio@diaprod.it', phone:'+39 377 090 3078', telHref:'tel:+393770903078' }];
+    this.SOCIALS = [
+      { label:'Instagram', href:'https://instagram.com' },
+      { label:'Vimeo', href:'https://vimeo.com' },
+      { label:'YouTube', href:'https://youtube.com' },
+      { label:'LinkedIn', href:'https://linkedin.com' },
+    ];
+    this.DICT = {
+      en: {
+        cta:'Start a project', menu:'Menu', close:'Close', continue:'Continue',
+        heroA:'We make films that hold still',
+        heroB:'Quiet craft, loud results',
+        heroC:'A studio for brands that would rather be remembered',
+        heroSub:'Film and photography, from the first conversation to the final cut. One studio, one brief, one producer answering.',
+        heroBand:'Film & Photography — Rome, Italy',
+        scrollRing:'Scroll down · Scroll down · ',
+        manifesto:'Most brand films look like brand films. That is the problem we work on.',
+        manifestoA:'We are a small production studio. Nine people, one edit suite, and a habit of turning down work we cannot make properly. Every project runs through the same three hands from brief to delivery, which is why nothing gets lost in a handover.',
+        manifestoB:'We shoot on location, we cut in-house, and we finish colour and sound under one roof. What you brief is what you get, on the date we agreed, in every format your channels need.',
+        workKicker:'Selected work', workAll:'All work',
+        awardsKicker:'Recognition',
+        closing:'Tell us what you are making',
+        navHome:'Home', navWork:'Work', navPackages:'Packages', navTrack:'Track', navCall:'Book a call', navSignin:'Sign in',
+        catAll:'All', catFilms:'Film', catPhoto:'Photography', pfProjects:'projects',
+        briefTitle:'The brief', briefSub:'One page, eight fields, no wizard. Fill what you know and send it — we will ask the rest on the call.',
+        fType:'What are we making', fDeliver:'What you need delivered', fBudget:'Budget', fTimeline:'Timeline',
+        fWhere:'Where', fWhen:'Target date', fBrief:'The story', fContact:'How we reach you',
+        phLocation:'City, venue or studio', phBrief:'Mood, goal, audience, anything we should know.',
+        phName:'Full name', phEmail:'Email', phPhone:'Phone (optional)', phCompany:'Company (optional)',
+        summary:'Summary', send:'Send the brief', replyNote:'A producer replies within one business day.',
+        received:'Brief received', reference:'Your reference',
+        receivedSub:'A producer is reading it now. You will hear back within one business day, from a person, not a template.',
+        another:'Send another',
+        packagesSub:'Every project is scoped to you. These are where most of them begin.',
+        startWith:'Start here', somethingElse:'Something else? Write the brief instead',
+        phLookup:'Search by reference, e.g. DIA-7K2P',
+        callSub:'Twenty minutes with a producer. No deck, no pitch.',
+        pickSlot:'Pick a slot', confirm:'Confirm', booked:'You are booked.',
+        signinTitle:'Client access', signinDone:'Check your inbox — we sent a link to',
+        footerTagline:'A production studio in Rome. Film, photography and post under one roof.',
+        footerPrivacy:'Privacy Policy', footerCookies:'Cookie Policy',
+        emptyNone:'No projects yet. Send a brief and it appears here.', emptyNoMatch:'No match for that reference.',
+      },
+      it: {
+        cta:'Inizia il progetto', menu:'Menu', close:'Chiudi', continue:'Continua',
+        heroA:'Facciamo film che restano fermi',
+        heroB:'Mestiere silenzioso, risultati rumorosi',
+        heroC:'Uno studio per i brand che preferiscono essere ricordati',
+        heroSub:'Film e fotografia, dalla prima conversazione al montaggio finale. Uno studio, un brief, un producer che risponde.',
+        heroBand:'Film & Fotografia — Roma, Italia',
+        scrollRing:'Scorri giù · Scorri giù · ',
+        manifesto:'Quasi tutti i brand film sembrano brand film. È il problema su cui lavoriamo.',
+        manifestoA:'Siamo uno studio di produzione piccolo. Nove persone, una sala di montaggio e l’abitudine di rifiutare i lavori che non possiamo fare bene. Ogni progetto passa dalle stesse tre mani, dal brief alla consegna.',
+        manifestoB:'Giriamo in location, montiamo internamente, chiudiamo colore e suono sotto lo stesso tetto. Quello che ci chiedi è quello che ricevi, nella data concordata, in ogni formato che ti serve.',
+        workKicker:'Lavori selezionati', workAll:'Tutti i lavori',
+        awardsKicker:'Riconoscimenti',
+        closing:'Raccontaci cosa stai costruendo',
+        navHome:'Home', navWork:'Lavori', navPackages:'Pacchetti', navTrack:'Traccia', navCall:'Prenota una call', navSignin:'Accedi',
+        catAll:'Tutti', catFilms:'Film', catPhoto:'Fotografia', pfProjects:'progetti',
+        briefTitle:'Il brief', briefSub:'Una pagina, otto campi, nessun wizard. Compila quello che sai e invia — il resto lo chiediamo in call.',
+        fType:'Cosa realizziamo', fDeliver:'Cosa ti serve consegnato', fBudget:'Budget', fTimeline:'Tempi',
+        fWhere:'Dove', fWhen:'Data indicativa', fBrief:'La storia', fContact:'Come ti contattiamo',
+        phLocation:'Città, venue o studio', phBrief:'Mood, obiettivo, pubblico, tutto ciò che dovremmo sapere.',
+        phName:'Nome e cognome', phEmail:'Email', phPhone:'Telefono (facoltativo)', phCompany:'Azienda (facoltativo)',
+        summary:'Riepilogo', send:'Invia il brief', replyNote:'Un producer risponde entro un giorno lavorativo.',
+        received:'Brief ricevuto', reference:'Il tuo riferimento',
+        receivedSub:'Un producer lo sta leggendo. Ti rispondiamo entro un giorno lavorativo, da persona a persona.',
+        another:'Invia un altro',
+        packagesSub:'Ogni progetto è dimensionato su di te. Questi sono i punti di partenza più frequenti.',
+        startWith:'Parti da qui', somethingElse:'Altro? Scrivi direttamente il brief',
+        phLookup:'Cerca per riferimento, es. DIA-7K2P',
+        callSub:'Venti minuti con un producer. Niente deck, niente pitch.',
+        pickSlot:'Scegli uno slot', confirm:'Conferma', booked:'Prenotato.',
+        signinTitle:'Area clienti', signinDone:'Controlla la posta — abbiamo inviato un link a',
+        footerTagline:'Uno studio di produzione a Roma. Film, fotografia e post sotto lo stesso tetto.',
+        footerPrivacy:'Privacy Policy', footerCookies:'Cookie Policy',
+        emptyNone:'Nessun progetto. Invia un brief e comparirà qui.', emptyNoMatch:'Nessun risultato per quel riferimento.',
+      },
+    };
+  }
+
+  state = {
+    route:'home', lang:'en', dir:'A', menuOpen:false, scrolled:false,
+    vw:(typeof window!=='undefined'?window.innerWidth:1200),
+    cat:'all', lightboxId:null,
+    draft:this.emptyDraft(), submitted:false, lastId:null,
+    requests:[], lookup:'',
+    callSlot:'', callName:'', callEmail:'', callBooked:false,
+    signinEmail:'', signedIn:false,
+  };
+
+  emptyDraft(){ return { type:'', deliverables:[], budget:'', timeline:'', date:'', location:'', brief:'', name:'', email:'', phone:'', company:'' }; }
+
+  componentDidMount(){
+    const p=this.props.direction; if(typeof p==='string' && p) this.setState({dir:p.charAt(0).toUpperCase()});
+    try { const r=JSON.parse(localStorage.getItem('diaprod.v2.requests')||'[]'); if(Array.isArray(r)) this.setState({requests:r}); } catch(e){}
+    try { const d=JSON.parse(localStorage.getItem('diaprod.v2.draft')||'null'); if(d) this.setState({draft:d}); } catch(e){}
+    try { const lg=localStorage.getItem('diaprod.v2.lang'); if(lg==='it'||lg==='en') this.setState({lang:lg}); } catch(e){}
+    this._onResize=()=>this.setState({vw:window.innerWidth});
+    window.addEventListener('resize', this._onResize);
+    this._onResize();
+    this._onScroll=()=>{ const s=window.scrollY>window.innerHeight*0.72; if(s!==this.state.scrolled) this.setState({scrolled:s}); };
+    window.addEventListener('scroll', this._onScroll, {passive:true});
+    this._onKey=(e)=>{ if(e.key==='Escape') this.setState({menuOpen:false, lightboxId:null}); };
+    window.addEventListener('keydown', this._onKey);
+  }
+  componentWillUnmount(){
+    window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('keydown', this._onKey);
+  }
+
+  go(route){ this.setState({route, menuOpen:false, scrolled:false}); window.scrollTo(0,0); }
+  setLang(l){ this.setState({lang:l}); try{localStorage.setItem('diaprod.v2.lang',l);}catch(e){} }
+  saveDraft(){ try{ localStorage.setItem('diaprod.v2.draft', JSON.stringify(this.state.draft)); }catch(e){} }
+  setField(k,v){ this.setState(s=>({draft:{...s.draft,[k]:v}}), ()=>this.saveDraft()); }
+  toggleDeliverable(d){
+    this.setState(s=>{
+      const has=s.draft.deliverables.includes(d);
+      const deliverables = has ? s.draft.deliverables.filter(x=>x!==d) : [...s.draft.deliverables, d];
+      return { draft:{...s.draft, deliverables} };
+    }, ()=>this.saveDraft());
+  }
+  submit(){
+    const d=this.state.draft;
+    const id='DIA-'+Math.random().toString(36).slice(2,6).toUpperCase();
+    const rec={ id, type:d.type||'Project', created:Date.now(), stage:0 };
+    const requests=[rec, ...this.state.requests];
+    try{ localStorage.setItem('diaprod.v2.requests', JSON.stringify(requests)); localStorage.removeItem('diaprod.v2.draft'); }catch(e){}
+    this.setState({requests, submitted:true, lastId:id, draft:this.emptyDraft()});
+    window.scrollTo(0,0);
+  }
+  fmtDate(ts){ try{ return new Date(ts).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return ''; } }
+
+  renderVals(){
+    const s=this.state;
+    const lang = s.lang==='it' ? 'it' : 'en';
+    const t = this.DICT[lang];
+    const wide = s.vw>=900, mid = s.vw>=620;
+    const dir = 'A';
+    const dirA=dir==='A', dirB=dir==='B', dirC=dir==='C';
+    const mo = this.props.motion ?? true;
+    const iridOn = (this.props.iridescence ?? true) ? 1 : 0;
+
+    const darkTop = (s.route==='home' && dirB) || s.route==='signin';
+    const headBg = s.scrolled ? (s.route==='signin' ? '#000000' : '#ffffff') : 'transparent';
+    const headInk = (darkTop && !(s.scrolled && s.route!=='signin')) ? '#ffffff' : '#000000';
+
+    const pill=(on)=>({ border:'#000000', bg: on?'#000000':'transparent', color: on?'#ffffff':'#000000' });
+
+    const navDef=[['navWork','work'],['navPackages','packages'],['navTrack','track'],['navCall','call'],['navSignin','signin']];
+    const navLinks=navDef.map(([k,r])=>({ label:t[k], op: s.route===r?1:0.55, onClick:()=>this.go(r) }));
+    const menuLinks=[['navHome','home'],...navDef].map(([k,r])=>({ label:t[k], color: s.route===r?'#000000':'#6d6d6d', onClick:()=>this.go(r) }));
+    const footerLinks=[['navHome','home'],...navDef].map(([k,r])=>({ label:t[k], onClick:()=>this.go(r) }));
+    const langOptions=[['en','EN'],['it','IT']].map(([code,label])=>({ label, op: lang===code?1:0.45, onClick:()=>this.setLang(code) }));
+
+    const disc=(w)=> lang==='it' ? w.discIt : w.discEn;
+    const list = this.WORK.filter(w=> s.cat==='all' || w.cat===s.cat);
+    const mk=(w,i,prefix)=>({
+      no:String(i+1).padStart(2,'0'), title:w.title, disc:disc(w), year:w.year,
+      slotA:`v2-a-${w.id}`, slotB:`v2-b-${w.id}`, slotC:`v2-c-${w.id}`, slotP:`v2-p-${w.id}`,
+      placeholder: w.cat==='film' ? 'Film still' : 'Photograph',
+      onOpen:()=>this.setState({lightboxId:w.id}),
+    });
+    const workItems=list.map((w,i)=>mk(w,i));
+    const homeSlice = dirC ? 6 : (dirB ? 5 : 3);
+    const homeWork = list.slice(0,homeSlice).map((w,i)=>mk(w,i));
+    const portCats=[['all',t.catAll],['film',t.catFilms],['photo',t.catPhoto]].map(([val,label])=>{
+      const on=s.cat===val; return { label, ...pill(on), onClick:()=>this.setState({cat:val}) };
+    });
+
+    const lbw=this.WORK.find(w=>w.id===s.lightboxId)||null;
+    const lbEmbed = lbw && lbw.yt ? `https://www.youtube-nocookie.com/embed/${lbw.yt}?rel=0&playsinline=1&modestbranding=1` : '';
+    const lb = lbw
+      ? { slotL:`v2-lb-${lbw.id}`, title:lbw.title, disc:disc(lbw), year:lbw.year, hasEmbed:!!lbEmbed, noEmbed:!lbEmbed, embed:lbEmbed, placeholder: lbw.cat==='film'?'Film still':'Photograph' }
+      : { slotL:'v2-lb-none', title:'', disc:'', year:'', hasEmbed:false, noEmbed:true, embed:'', placeholder:'' };
+
+    const caseStudies=this.CASES.map((c,i)=>{
+      const rev=i%2===1;
+      return { slotId:`v2-case-${i+1}`, client:c.client, cat: lang==='it'?c.catIt:c.catEn,
+        result: lang==='it'?c.resultIt:c.resultEn, metric:c.metric, metricLabel: lang==='it'?c.mIt:c.mEn,
+        cols: wide ? (rev?'1fr 1fr':'1fr 1fr') : '1fr',
+        mediaOrder: wide ? (rev?2:1) : 1, textOrder: wide ? (rev?1:2) : 2 };
+    });
+
+    const d=s.draft;
+    const typeOptions=this.TYPES.map(v=>({ label:v, ...pill(d.type===v), onSelect:()=>this.setField('type',v) }));
+    const deliverableOptions=this.DELIVERABLES.map(v=>({ label:v, ...pill(d.deliverables.includes(v)), onToggle:()=>this.toggleDeliverable(v) }));
+    const budgetOptions=this.BUDGETS.map(v=>({ label:v, ...pill(d.budget===v), onSelect:()=>this.setField('budget',v) }));
+    const timelineOptions=this.TIMELINES.map(v=>({ label:v, ...pill(d.timeline===v), onSelect:()=>this.setField('timeline',v) }));
+    const dash='—';
+    const sum=(label,value)=>({ label, value: value||dash, ink: value?'#000000':'#6d6d6d' });
+    const summaryItems=[
+      sum(t.fType, d.type),
+      sum(t.fDeliver, d.deliverables.join(', ')),
+      sum(t.fBudget, d.budget),
+      sum(t.fTimeline, [d.timeline, d.date].filter(Boolean).join(' · ')),
+      sum(t.fWhere, d.location),
+      sum(t.fContact, [d.name, d.email].filter(Boolean).join(' · ')),
+    ];
+    const canSend = !!d.type && d.brief.trim().length>=12 && d.name.trim().length>0 && /.+@.+\..+/.test(d.email);
+
+    const packages=this.PACKAGES.map(p=>({
+      name:p.name, price:p.price, points: lang==='it'?p.pointsIt:p.pointsEn,
+      onChoose:()=>{ this.setState(st=>({draft:{...st.draft, type:p.preset}, submitted:false}), ()=>{ this.saveDraft(); this.go('brief'); }); },
+    }));
+
+    const lk=s.lookup.trim().toUpperCase();
+    const filtered = lk ? s.requests.filter(r=> r.id.includes(lk) || (r.type||'').toUpperCase().includes(lk)) : s.requests;
+    const trackList=filtered.map(r=>({
+      id:r.id, type:r.type, date:this.fmtDate(r.created),
+      stages:this.STAGES.map((name,i)=>({ name, bar: i<=r.stage?'#000000':'#d8d8d8', ink: i<=r.stage?'#181818':'#9a9a9a' })),
+    }));
+
+    const slotOptions=this.SLOTS.map(v=>({ label:v, ...pill(s.callSlot===v), onSelect:()=>this.setState({callSlot:v}) }));
+    const callReady = !!s.callSlot && s.callName.trim() && /.+@.+\..+/.test(s.callEmail);
+    const signinReady = /.+@.+\..+/.test(s.signinEmail);
+
+    return {
+      studioName: this.props.studioName || 'DIA PROD',
+      t, langOptions, navLinks, menuLinks, footerLinks,
+      dirA, dirB, dirC,
+      headBg, headInk, menuWord:t.menu,
+      isDesktop:wide, isMobile:!wide,
+      iridOn,
+      iridWash:'linear-gradient(90deg, rgb(160,224,171), rgb(255,172,46) 50%, rgb(165,45,37))',
+      iridAnim: mo ? 'irid 22s ease-in-out infinite' : 'none',
+      spinAnim: mo ? 'spinSlow 24s linear infinite' : 'none',
+
+      heroCols: wide ? '1.6fr 1fr' : '1fr',
+      splitCols: wide ? '1fr 1fr' : '1fr',
+      twoCols: mid ? '1fr 1fr' : '1fr',
+      briefCols: wide ? '1fr 320px' : '1fr',
+      ledgerCols: wide ? '40px 1fr 160px 60px 96px' : '32px 1fr 64px',
+      sheetCols: mid ? (wide ? 'repeat(3,1fr)' : 'repeat(2,1fr)') : '1fr',
+      pkgCols: wide ? '1fr 1.2fr auto' : '1fr',
+      pkgBtnAlign: wide ? 'end' : 'start',
+      trackCols: wide ? '1fr 1.4fr' : '1fr',
+      footCols: wide ? '1.4fr 1fr 1fr 1fr' : (mid ? '1fr 1fr' : '1fr'),
+      asidePos: wide ? 'sticky' : 'static',
+      thumbW: wide ? '96px' : '64px',
+
+      isHome:s.route==='home', isWork:s.route==='work', isBrief:s.route==='brief',
+      isPackages:s.route==='packages', isTrack:s.route==='track', isCall:s.route==='call', isSignin:s.route==='signin',
+      goHome:()=>this.go('home'), goWork:()=>this.go('work'), goBrief:()=>this.go('brief'), goTrack:()=>this.go('track'),
+
+      homeWork, workItems, portCats, workCount:String(list.length).padStart(2,'0'),
+      awards:this.AWARDS, caseStudies,
+      offices:this.OFFICES, socials:this.SOCIALS,
+
+      typeOptions, deliverableOptions, budgetOptions, timelineOptions, summaryItems,
+      draftLocation:d.location, draftDate:d.date, draftBrief:d.brief,
+      draftName:d.name, draftEmail:d.email, draftPhone:d.phone, draftCompany:d.company,
+      setLocation:e=>this.setField('location',e.target.value), setDate:e=>this.setField('date',e.target.value),
+      setBrief:e=>this.setField('brief',e.target.value), setName:e=>this.setField('name',e.target.value),
+      setEmail:e=>this.setField('email',e.target.value), setPhone:e=>this.setField('phone',e.target.value),
+      setCompany:e=>this.setField('company',e.target.value),
+      submit:()=>{ if(canSend) this.submit(); },
+      submitBg: canSend?'#000000':'transparent', submitInk: canSend?'#ffffff':'#000000',
+      submitOp: canSend?1:0.4, submitPE: canSend?'auto':'none',
+      submitted:s.submitted, notSubmitted:!s.submitted, lastId:s.lastId,
+      startAnother:()=>this.setState({submitted:false}),
+
+      packages,
+
+      lookup:s.lookup, setLookup:e=>this.setState({lookup:e.target.value}),
+      hasRequests:trackList.length>0, noRequests:trackList.length===0, trackList,
+      emptyTrackMsg: s.requests.length===0 ? t.emptyNone : t.emptyNoMatch,
+
+      slotOptions, callBooked:s.callBooked, callNotBooked:!s.callBooked,
+      callName:s.callName, callEmail:s.callEmail, callConfirm:s.callSlot,
+      setCallName:e=>this.setState({callName:e.target.value}), setCallEmail:e=>this.setState({callEmail:e.target.value}),
+      bookCall:()=>{ if(callReady) this.setState({callBooked:true}); },
+      bookBg: callReady?'#000000':'transparent', bookInk: callReady?'#ffffff':'#000000',
+      bookOp: callReady?1:0.4, bookPE: callReady?'auto':'none',
+
+      signedIn:s.signedIn, notSignedIn:!s.signedIn, signinEmail:s.signinEmail,
+      setSigninEmail:e=>this.setState({signinEmail:e.target.value}),
+      doSignin:()=>{ if(signinReady) this.setState({signedIn:true}); },
+      signinOp: signinReady?1:0.4, signinPE: signinReady?'auto':'none',
+
+      lb, hasLightbox:!!lbw, closeWork:()=>this.setState({lightboxId:null}),
+      lbOpacity: lbw?1:0, lbVis: lbw?'visible':'hidden', lbPE: lbw?'auto':'none',
+
+      toggleMenu:()=>this.setState(st=>({menuOpen:!st.menuOpen})), closeMenu:()=>this.setState({menuOpen:false}),
+      menuOpacity:s.menuOpen?1:0, menuVis:s.menuOpen?'visible':'hidden', menuPE:s.menuOpen?'auto':'none',
+    };
+  }
+}
+</script>
+</body>
+</html>
