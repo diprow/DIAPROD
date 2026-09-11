@@ -1060,6 +1060,28 @@ var TIMELINES = [
 ];
 var SLOTS = ['Tue 10:00','Tue 14:00','Wed 11:30','Thu 09:00','Thu 16:00','Fri 13:00'];
 var SLOTS_IT = ['Mar 10:00','Mar 14:00','Mer 11:30','Gio 09:00','Gio 16:00','Ven 13:00'];
+
+/* The labels above say "Tue 10:00", which is not a date anyone can put in a diary.
+   SLOT_PLAN gives each one a weekday (0 = Sunday) and a time, so a pick becomes a
+   real date the studio can confirm and the admin Calls tab can sort by. */
+var SLOT_PLAN = [[2,'10:00'],[2,'14:00'],[3,'11:30'],[4,'09:00'],[4,'16:00'],[5,'13:00']];
+var STUDIO_TZ = 'Europe/Rome';
+
+function nextSlotDate(i){
+  var plan = SLOT_PLAN[i];
+  if(!plan) return null;
+  var now = new Date();
+  var d = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var ahead = (plan[0] - d.getDay() + 7) % 7;
+  /* never offer today: that hour may already have gone by */
+  if(ahead === 0) ahead = 7;
+  d.setDate(d.getDate() + ahead);
+  var mm = String(d.getMonth() + 1), dd = String(d.getDate());
+  return {
+    date: d.getFullYear() + '-' + (mm.length < 2 ? '0' : '') + mm + '-' + (dd.length < 2 ? '0' : '') + dd,
+    time: plan[1]
+  };
+}
 var STAGES = [{en:'Received',it:'Ricevuto'},{en:'In review',it:'In revisione'},{en:'In production',it:'In produzione'},{en:'Delivered',it:'Consegnato'}];
 var SOCIALS = [
   {label:'Instagram', href:'https://instagram.com'},
@@ -1239,6 +1261,7 @@ var S = {
   submittedRef:null,
   lookup:'',
   slot:'', callName:'', callEmail:'', callBooked:false,
+  callBusy:false, callError:'', callRef:null,
   signinEmail:'', signinSent:false,
 
   /* backend-backed */
@@ -1380,26 +1403,31 @@ function submitBrief(){
   S.saving = true; S.dataError = ''; render(true);
 
   var d = S.draft;
-  var row = {
-    user_id: S.user ? S.user.id : null,
-    name: d.name.trim(), email: d.email.trim(),
-    phone: d.phone.trim(), company: d.company.trim(),
-    type: d.type, deliverables: d.deliverables,
-    budget: d.budget, timeline: d.timeline,
-    shoot_date: d.date || null,
-    location: d.location.trim(), remote: !!d.remote,
-    brief: d.brief.trim()
-  };
 
-  sb.from('briefs').insert(row).select('id,ref').single()
+  /* Goes through the submit_brief RPC rather than a plain insert on purpose.
+     `briefs` gives anon no SELECT policy — correctly, a visitor must not be able to
+     read the table — and Postgres applies that policy to INSERT ... RETURNING too.
+     A plain .insert().select() therefore fails for a signed-out visitor *after* the
+     row is saved, so they would see an error and never get their reference.
+     The RPC saves the row and hands back only the id and the reference. */
+  sb.rpc('submit_brief', {
+    p_name: d.name.trim(), p_email: d.email.trim(),
+    p_phone: d.phone.trim(), p_company: d.company.trim(),
+    p_type: d.type, p_deliverables: d.deliverables,
+    p_budget: d.budget, p_timeline: d.timeline,
+    p_shoot_date: d.date || null,
+    p_location: d.location.trim(), p_remote: !!d.remote,
+    p_brief: d.brief.trim()
+  })
     .then(function(r){
       if(r.error) throw r.error;
-      return uploadFiles(r.data).then(function(){ return r.data; });
+      var saved = Array.isArray(r.data) ? r.data[0] : r.data;
+      if(!saved || !saved.ref) throw new Error(t().rqFailed);
+      return uploadFiles(saved).then(function(){ return saved; });
     })
     .then(function(saved){
-      /* the brief is safe at this point; the email is best-effort on top */
-      sb.functions.invoke('notify-brief', { body:{ brief_id: saved.id } })
-        .catch(function(){});
+      /* The brief is safe at this point and a database trigger already mails the
+         studio, so nothing else has to happen here. */
       S.saving = false;
       S.submittedRef = saved.ref;
       S.files = [];
@@ -1409,6 +1437,45 @@ function submitBrief(){
     .catch(function(e){
       S.saving = false;
       S.dataError = (e && e.message) || t().rqFailed;
+      render(true);
+    });
+}
+
+/* ---------- booking a call ---------- */
+function submitCall(){
+  if(!sb){ S.callError = t().siBackend; render(true); return; }
+  if(S.callBusy) return;
+  if(S.slot === '' || !S.callName.trim() || !S.callEmail.trim()) return;
+  S.callBusy = true; S.callError = ''; render(true);
+
+  var i = Number(S.slot);
+  var when = nextSlotDate(i);
+
+  /* Same reason as submitBrief: through the RPC, so a signed-out visitor
+     still gets their CAL- reference back. */
+  sb.rpc('book_call', {
+    p_name: S.callName.trim(),
+    p_email: S.callEmail.trim(),
+    p_topic: 'Intro call booked from the site',
+    p_channel: 'Google Meet',
+    p_slot_date: when ? when.date : null,
+    p_slot_time: when ? when.time : '',
+    p_timezone: STUDIO_TZ,
+    p_message: 'Slot picked on the site: ' + (SLOTS[i] || '')
+  })
+    .then(function(r){
+      if(r.error) throw r.error;
+      var ref = Array.isArray(r.data) ? r.data[0] : r.data;
+      if(!ref) throw new Error(t().rqFailed);
+      /* a database trigger mails the studio; nothing else to do here */
+      S.callBusy = false;
+      S.callRef = ref;
+      S.callBooked = true;
+      render();
+    })
+    .catch(function(e){
+      S.callBusy = false;
+      S.callError = (e && e.message) || t().rqFailed;
       render(true);
     });
 }
@@ -1952,17 +2019,28 @@ function screenCall(){
   var inner;
   if(S.callBooked){
     var label = (S.lang==='it'?SLOTS_IT:SLOTS)[Number(S.slot)] || '';
+    var when = nextSlotDate(Number(S.slot));
+    var dated = when ? label + ' — ' + when.date : label;
     inner = '<div class="notice" style="margin-top:40px">'+
       '<h2 class="h-lg" style="color:var(--frost-white)">'+esc(L.clBooked)+'</h2>'+
-      '<p class="body-copy">'+esc(label)+' — '+esc(L.clBookedSub)+' '+esc(S.callEmail)+'.</p></div>';
+      '<p class="body-copy">'+esc(dated)+' — '+esc(L.clBookedSub)+' '+esc(S.callEmail)+'.</p>'+
+      (S.callRef
+        ? '<div class="refbox"><span class="kicker">'+esc(L.yourRef)+'</span><b>'+esc(S.callRef)+'</b></div>'
+        : '')+
+    '</div>';
   } else {
+    var callErr = S.callError
+      ? '<p class="small" role="alert" style="color:#ff6b6b">'+esc(S.callError)+'</p>'
+      : '';
     inner = '<div style="display:flex;flex-direction:column;gap:32px;margin-top:40px">'+
       '<div class="field"><span>'+esc(L.clPick)+'</span><div class="slots">'+slots+'</div></div>'+
       '<div class="field"><span>'+esc(L.clName)+'</span>'+
         '<input class="input" id="callName" data-input="callName" value="'+esc(S.callName)+'" placeholder="'+esc(L.clName)+'"></div>'+
       '<div class="field"><span>'+esc(L.clEmail)+'</span>'+
         '<input class="input" id="callEmail" type="email" data-input="callEmail" value="'+esc(S.callEmail)+'" placeholder="'+esc(L.siPlaceholder)+'"></div>'+
-      '<div><button class="btn btn-primary btn-lg" data-book="1"'+((S.slot!=='' && S.callName && S.callEmail)?'':' disabled')+'>'+esc(L.clConfirm)+'</button></div>'+
+      callErr+
+      '<div><button class="btn btn-primary btn-lg" data-book="1"'+((S.slot!=='' && S.callName && S.callEmail && !S.callBusy)?'':' disabled')+'>'+
+        esc(S.callBusy ? L.rqSending : L.clConfirm)+'</button></div>'+
     '</div>';
   }
   return '<section class="stage"><div class="wrap band"><div class="form-col">'+
@@ -2250,6 +2328,11 @@ function go(route){
   if(route === 'request' && S.submittedRef){
     S.submittedRef = null; S.draft = emptyDraft(); S.files = []; S.step = 0; S.dataError = '';
   }
+  if(route === 'call' && S.callBooked){
+    /* coming back to the form after a confirmation starts a fresh booking */
+    S.callBooked = false; S.callRef = null; S.callError = '';
+    S.slot = ''; S.callName = ''; S.callEmail = '';
+  }
   S.route = route; S.menu = false;
   render();
 }
@@ -2288,10 +2371,7 @@ document.addEventListener('click', function(e){
     go('request'); return;
   }
   if(d.slot != null && el.hasAttribute('data-slot')){ S.slot = d.slot; render(true); return; }
-  if(d.book){
-    if(S.slot !== '' && S.callName && S.callEmail){ S.callBooked = true; render(); }
-    return;
-  }
+  if(d.book){ submitCall(); return; }
   if(d.signin){ if(S.signinEmail){ S.signinSent = true; render(); } return; }
   if(d.signout){ signOut(); return; }
   if(d.track){ trackLookup(); return; }
