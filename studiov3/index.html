@@ -1048,11 +1048,10 @@ var S = {
   signinEmail:'', signinSent:false,
 
   /* backend-backed */
-  user:null, isAdmin:false, authError:'', authBusy:false,
-  briefs:[], adminBriefs:[], loadingBriefs:false, loadingAdmin:false,
-  saving:false, dataError:'', busyId:null,
-  trackResult:null, trackBusy:false, trackDone:false,
-  adminFilter:'open', openBrief:null, noteDraft:{}
+  user:null, authError:'', authBusy:false,
+  briefs:[], loadingBriefs:false,
+  saving:false, dataError:'',
+  trackResult:null, trackBusy:false, trackDone:false
 };
 function emptyDraft(){
   var u = (typeof S !== 'undefined' && S) ? S.user : null;
@@ -1112,21 +1111,12 @@ function applySession(session){
     };
     if(!S.draft.name)  S.draft.name  = S.user.name;
     if(!S.draft.email) S.draft.email = S.user.email;
-    refreshAdminFlag();
     loadMyBriefs();
   } else {
-    S.user = null; S.isAdmin = false; S.briefs = []; S.adminBriefs = [];
-    if(S.route === 'account' || S.route === 'admin') S.route = 'home';
+    S.user = null; S.briefs = [];
+    if(S.route === 'account') S.route = 'home';
   }
   render(true);
-}
-
-function refreshAdminFlag(){
-  sb.rpc('is_admin').then(function(r){
-    var next = !!(r && r.data);
-    if(next !== S.isAdmin){ S.isAdmin = next; render(true); }
-    if(next) loadAdminBriefs();
-  });
 }
 
 /* ---------- sign in / out ---------- */
@@ -1149,7 +1139,7 @@ function signOut(){
   gsiReady = false;
   S.draft.name = ''; S.draft.email = '';
   if(sb) sb.auth.signOut();
-  S.user = null; S.isAdmin = false; S.briefs = []; S.adminBriefs = [];
+  S.user = null; S.briefs = [];
   S.route = 'home'; S.menu = false;
   render();
 }
@@ -1169,30 +1159,12 @@ function loadMyBriefs(){
     });
 }
 
-function loadAdminBriefs(){
-  if(!sb || !S.isAdmin) return;
-  S.loadingAdmin = true;
-  sb.from('briefs').select(BRIEF_COLS).order('created_at', {ascending:false}).limit(300)
-    .then(function(r){
-      S.loadingAdmin = false;
-      S.adminBriefs = (r.data || []).map(normaliseBrief);
-      S.dataError = r.error ? r.error.message : '';
-      render(true);
-    });
-}
-
 function normaliseBrief(b){
   b.brief_events = (b.brief_events || []).sort(function(x, y){
     return new Date(x.created_at) - new Date(y.created_at);
   });
   b.brief_files = b.brief_files || [];
   return b;
-}
-
-function briefById(id){
-  var all = (S.adminBriefs || []).concat(S.briefs || []);
-  for(var i=0;i<all.length;i++){ if(all[i].id === id) return all[i]; }
-  return null;
 }
 
 /* ---------- tracking by reference, no account needed ---------- */
@@ -1277,31 +1249,6 @@ function openFile(path){
   sb.storage.from(BUCKET).createSignedUrl(path, 120).then(function(r){
     if(r.data && r.data.signedUrl) window.open(r.data.signedUrl, '_blank', 'noopener');
   });
-}
-
-/* ---------- admin writes ---------- */
-function setStage(id, stage){
-  if(!sb || !S.isAdmin) return;
-  S.busyId = id; render(true);
-  sb.from('briefs').update({ stage: stage }).eq('id', id).then(function(r){
-    S.busyId = null;
-    S.dataError = r.error ? r.error.message : '';
-    loadAdminBriefs();
-  });
-}
-
-function addNote(id){
-  var text = (S.noteDraft[id] || '').trim();
-  if(!sb || !S.isAdmin || !text) return;
-  var b = briefById(id);
-  S.busyId = id; render(true);
-  sb.from('brief_events').insert({ brief_id:id, stage:(b ? b.stage : null), note:text })
-    .then(function(r){
-      S.busyId = null;
-      S.dataError = r.error ? r.error.message : '';
-      S.noteDraft[id] = '';
-      loadAdminBriefs();
-    });
 }
 
 /* ---------- the Google button ---------- */
@@ -1464,7 +1411,7 @@ var ROUTES = [
 
 function renderNav(){
   var L = t();
-  var routes = S.isAdmin ? ROUTES.slice(0, -1).concat([{id:'admin', key:'navAdmin'}, ROUTES[ROUTES.length-1]]) : ROUTES;
+  var routes = ROUTES;
   var links = routes.map(function(r){
     /* signed in: the Sign in link becomes the account chip */
     if(r.id === 'signin' && S.user){
@@ -1492,7 +1439,7 @@ function renderSheet(){
   var L = t(), el = document.getElementById('sheet');
   el.hidden = !S.menu;
   if(!S.menu){ el.innerHTML=''; return; }
-  var sheetRoutes = S.isAdmin ? ROUTES.slice(0, -1).concat([{id:'admin', key:'navAdmin'}, ROUTES[ROUTES.length-1]]) : ROUTES;
+  var sheetRoutes = ROUTES;
   var links = [{id:'home', key:'navHome'}].concat(sheetRoutes).map(function(r){
     if(r.id === 'signin' && S.user) return '';   /* replaced by the account row below */
     return '<button data-go="'+r.id+'">'+esc(L[r.key])+'</button>';
@@ -1911,119 +1858,6 @@ function errBar(){
     : '';
 }
 
-/* ---------- Studio: every brief, and the controls to move it along ---------- */
-function screenAdmin(){
-  var L = t();
-  if(!S.user)   { S.route = 'signin'; return screenSignin(); }
-  if(!S.isAdmin){ S.route = 'account'; return screenAccount(); }
-
-  var all = S.adminBriefs || [];
-  var list = all.filter(function(b){
-    if(S.adminFilter === 'open') return b.stage < 3;
-    if(S.adminFilter === 'done') return b.stage === 3;
-    return true;
-  });
-
-  var counts = {all:all.length, open:0, done:0};
-  all.forEach(function(b){ b.stage === 3 ? counts.done++ : counts.open++; });
-
-  var tabs = [['open', L.adOpen], ['done', L.adDone], ['all', L.adAll]].map(function(x){
-    return '<button class="tag" data-afilter="'+x[0]+'" aria-pressed="'+(S.adminFilter===x[0])+'">'+
-      esc(x[1])+' <span class="tnum" style="opacity:.6">'+counts[x[0]]+'</span></button>';
-  }).join('');
-
-  var body;
-  if(S.loadingAdmin && !all.length){
-    body = '<p class="body-copy">'+esc(L.adLoading)+'</p>';
-  } else if(!list.length){
-    body = '<div class="notice"><p class="body-copy">'+esc(L.adEmpty)+'</p></div>';
-  } else {
-    body = list.map(adminCard).join('');
-  }
-
-  return '<section class="stage"><div class="wrap band"><div class="form-col">'+
-    '<p class="kicker">'+esc(L.adKicker)+'</p>'+
-    '<h1 class="hero-type" style="margin:16px 0 24px">'+esc(L.adTitle)+'</h1>'+
-    '<div class="tagwrap">'+tabs+'</div>'+
-    errBar()+
-    '<div style="margin-top:32px">'+body+'</div>'+
-  '</div></div></section>';
-}
-
-function adminCard(b){
-  var L = t();
-  var open = S.openBrief === b.id;
-  var busy = S.busyId === b.id;
-
-  var head = '<button class="job-head" data-abrief="'+esc(b.id)+'" aria-expanded="'+open+'">'+
-    '<span style="display:flex;flex-direction:column;gap:4px;text-align:left;min-width:0">'+
-      '<span class="h-md">'+esc(b.name || b.email || L.notSet)+'</span>'+
-      '<span class="small tnum">'+esc(b.ref)+' · '+esc(b.type || L.notSet)+' · '+esc(fmtDate(b.created_at))+'</span>'+
-    '</span>'+
-    stageBadge(b.stage)+
-  '</button>';
-
-  if(!open) return '<div class="job">'+head+'</div>';
-
-  var pair = function(k, v){
-    if(!v || (Array.isArray(v) && !v.length)) return '';
-    return '<div class="kv"><span>'+esc(k)+'</span><b>'+esc(Array.isArray(v)?v.join(', '):v)+'</b></div>';
-  };
-
-  var contact = '<div class="sub"><span class="kicker">'+esc(L.adContact)+'</span><div class="kvs">'+
-    pair(L.fullName, b.name)+
-    '<div class="kv"><span>'+esc(L.email)+'</span><b><a class="linky" href="mailto:'+esc(b.email)+'">'+esc(b.email)+'</a></b></div>'+
-    pair(L.phone, b.phone)+ pair(L.company, b.company)+
-  '</div></div>';
-
-  var details = '<div class="sub"><span class="kicker">'+esc(L.adDetails)+'</span><div class="kvs">'+
-    pair(L.lType, b.type)+ pair(L.lDeliverables, b.deliverables)+
-    pair(L.lBudget, b.budget)+ pair(L.lTimeline, b.timeline + (b.shoot_date ? ' · ' + b.shoot_date : ''))+
-    pair(L.lLocation, b.remote ? (b.location ? b.location + ' · ' + L.remote : L.remote) : b.location)+
-  '</div>'+
-  '<p class="body-copy" style="margin-top:16px;white-space:pre-wrap">'+esc(b.brief)+'</p></div>';
-
-  var files = '<div class="sub"><span class="kicker">'+esc(L.acFiles)+'</span>'+
-    ((b.brief_files || []).length
-      ? '<div class="filelist">'+b.brief_files.map(function(f){
-          return '<button class="filechip" data-file="'+esc(f.path)+'">'+esc(f.name)+
-            '<span>'+fmtSize(f.size)+'</span></button>';
-        }).join('')+'</div>'
-      : '<p class="small">'+esc(L.adNoFiles)+'</p>')+
-  '</div>';
-
-  var moves = '<div class="sub"><span class="kicker">'+esc(L.adSetStage)+'</span><div class="tagwrap">'+
-    STAGES.map(function(st, i){
-      return '<button class="tag" data-stageset="'+esc(b.id)+'" data-stagenum="'+i+'"'+
-        ' aria-pressed="'+(b.stage===i)+'"'+(busy?' disabled':'')+'>'+
-        esc(S.lang==='it'?st.it:st.en)+'</button>';
-    }).join('')+
-  '</div></div>';
-
-  var noteVal = S.noteDraft[b.id] || '';
-  var note = '<div class="sub"><span class="kicker">'+esc(L.adNote)+'</span>'+
-    '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">'+
-      '<input class="input" id="note-'+esc(b.id)+'" data-note="'+esc(b.id)+'" style="flex:1;min-width:200px" value="'+esc(noteVal)+'" placeholder="'+esc(L.adNotePh)+'" aria-label="'+esc(L.adNote)+'">'+
-      '<button class="btn btn-primary" data-noteadd="'+esc(b.id)+'"'+((noteVal.trim() && !busy)?'':' disabled')+'>'+esc(L.adNoteSend)+'</button>'+
-    '</div>'+
-  '</div>';
-
-  var events = (b.brief_events || []).length
-    ? '<div class="sub"><span class="kicker">'+esc(L.acTimeline)+'</span><ol class="timeline">'+
-        b.brief_events.map(function(e){
-          var label = e.note ? esc(e.note)
-            : (e.stage === 0 ? esc(L.acOpened)
-                             : esc(S.lang==='it' ? STAGES[e.stage].it : STAGES[e.stage].en));
-          return '<li><span class="dot"></span><div><p>'+label+'</p>'+
-            '<span class="small tnum">'+esc(fmtDate(e.created_at))+'</span></div></li>';
-        }).join('')+'</ol></div>'
-    : '';
-
-  return '<div class="job" data-openjob="1">'+head+ stageRail(b.stage)+
-    contact + details + files + moves + note + events +
-  '</div>';
-}
-
 /* ---------- request wizard ---------- */
 var STEP_COUNT = 8;
 function stepTitle(i){ return t()['step'+i]; }
@@ -2182,7 +2016,7 @@ function renderLightbox(){
 /* ============================== RENDER / ROUTER ============================== */
 var SCREENS = {home:screenHome, work:screenWork, packages:screenPackages,
   track:screenTrack, call:screenCall, signin:screenSignin, account:screenAccount,
-  admin:screenAdmin, request:screenRequest};
+  request:screenRequest};
 
 function render(keepScroll){
   var y = window.scrollY;
@@ -2209,8 +2043,6 @@ function render(keepScroll){
 function go(route){
   if(route === 'account' && !S.user) route = 'signin';
   if(route === 'signin' && S.user) route = 'account';
-  if(route === 'admin' && !S.isAdmin) route = S.user ? 'account' : 'signin';
-  if(route === 'admin') loadAdminBriefs();
   if(route === 'track'){ S.trackDone = false; S.trackResult = null; }
   if(route === S.route && route !== 'request'){ S.menu = false; render(); return; }
   /* arriving at the wizard from anywhere else starts a new brief — the
@@ -2226,7 +2058,7 @@ function go(route){
 document.addEventListener('click', function(e){
   var el = e.target.closest('[data-go],[data-lang],[data-menu],[data-reel],[data-reelstep],[data-open],'+
     '[data-filter],[data-pkg],[data-slot],[data-book],[data-signin],[data-signout],[data-type],[data-deliv],[data-budget],'+
-    '[data-track],[data-file],[data-afilter],[data-abrief],[data-stageset],[data-noteadd],'+
+    '[data-track],[data-file],'+
     '[data-timeline],[data-remote],[data-step],[data-stepmove],[data-submit],[data-restart],[data-close],[data-unfile]');
 
   if(!el){
@@ -2264,10 +2096,6 @@ document.addEventListener('click', function(e){
   if(d.signout){ signOut(); return; }
   if(d.track){ trackLookup(); return; }
   if(d.file){ openFile(d.file); return; }
-  if(d.afilter){ S.adminFilter = d.afilter; render(true); return; }
-  if(d.abrief){ S.openBrief = (S.openBrief === d.abrief ? null : d.abrief); render(true); return; }
-  if(d.stageset != null && el.hasAttribute('data-stageset')){ setStage(d.stageset, Number(d.stagenum)); return; }
-  if(d.noteadd){ addNote(d.noteadd); return; }
 
   if(d.type != null && el.hasAttribute('data-type')){
     var ty2 = TYPES[Number(d.type)];
@@ -2308,12 +2136,6 @@ document.addEventListener('click', function(e){
 
 document.addEventListener('input', function(e){
   var el = e.target;
-  if(el.dataset && el.dataset.note){
-    S.noteDraft[el.dataset.note] = el.value;
-    var send = document.querySelector('[data-noteadd="'+el.dataset.note+'"]');
-    if(send) send.disabled = !el.value.trim();
-    return;
-  }
   if(el.dataset && el.dataset.input){
     var key = el.dataset.input;
     if(key in S.draft){
