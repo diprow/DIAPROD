@@ -1126,6 +1126,10 @@ var T = {
     trEmpty:'No requests on this device yet. Once you send a brief, it shows up here with its reference and stage.',
     clKicker:'Consultation', clTitle:'Book a call.',
     clSub:'Twenty minutes with a producer. Pick a slot that works.',
+    gateTitle:'Sign in to continue.',
+    gateCall:'Booking a call needs an account. It is how your call, your briefs and your files stay together in one place, and how we know it is really you when we confirm the time.',
+    gateBrief:'Sending a project brief needs an account. It is how your brief, your files and your reference stay together in one place, and how you can follow the project later.',
+    gateCta:'Sign in', gateBack:'Back to home',
     clPick:'Pick a slot', clName:'Your name', clEmail:'Email', clConfirm:'Confirm booking',
     clBooked:'You are booked.', clBookedSub:'We will send a calendar invite to',
     siTitle:'Client access.', siSub:'Sign in with Google to see your briefs and their stage. No password to remember.',
@@ -1205,6 +1209,10 @@ var T = {
     trEmpty:'Nessuna richiesta su questo dispositivo. Quando invii un brief lo trovi qui, con riferimento e stato.',
     clKicker:'Consulenza', clTitle:'Prenota una call.',
     clSub:'Venti minuti con un producer. Scegli lo slot che preferisci.',
+    gateTitle:'Accedi per continuare.',
+    gateCall:'Per prenotare una call serve un account. Così la call, i brief e i file restano tutti nello stesso posto, e sappiamo che sei davvero tu quando confermiamo l’orario.',
+    gateBrief:'Per inviare un brief serve un account. Così il brief, i file e il tuo riferimento restano tutti nello stesso posto, e puoi seguire il progetto anche dopo.',
+    gateCta:'Accedi', gateBack:'Torna alla home',
     clPick:'Scegli uno slot', clName:'Il tuo nome', clEmail:'Email', clConfirm:'Conferma',
     clBooked:'Prenotazione confermata.', clBookedSub:'Invieremo un invito calendario a',
     siTitle:'Area clienti.', siSub:'Accedi con Google per vedere i tuoi brief e il loro stato. Nessuna password da ricordare.',
@@ -1262,6 +1270,7 @@ var S = {
   lookup:'',
   slot:'', callName:'', callEmail:'', callBooked:false,
   callBusy:false, callError:'', callRef:null,
+  afterSignin:null,
   signinEmail:'', signinSent:false,
 
   /* backend-backed */
@@ -1344,7 +1353,10 @@ function onGoogleCredential(resp){
     .then(function(r){
       S.authBusy = false;
       if(r.error){ S.authError = r.error.message || t().siError; render(true); return; }
-      S.route = 'account'; S.menu = false; render();
+      /* back to whatever they were trying to do before the sign-in gate */
+      S.route = S.afterSignin || 'account';
+      S.afterSignin = null;
+      S.menu = false; render();
     })
     .catch(function(e){
       S.authBusy = false; S.authError = (e && e.message) || t().siError; render(true);
@@ -2013,6 +2025,10 @@ function screenTrack(){
 
 function screenCall(){
   var L = t();
+  if(!S.user) return signinGate(L.clKicker, L.clTitle, L.gateCall, 'call');
+  /* signed in, so the two fields are already known — fill them in once */
+  if(!S.callName && S.user.name) S.callName = S.user.name;
+  if(!S.callEmail && S.user.email) S.callEmail = S.user.email;
   var slots = (S.lang==='it'?SLOTS_IT:SLOTS).map(function(s, i){
     return '<button class="slot" data-slot="'+i+'" aria-pressed="'+(S.slot===String(i))+'">'+esc(s)+'</button>';
   }).join('');
@@ -2125,6 +2141,26 @@ function screenAccount(){
   '</div></div></section>';
 }
 
+/* A call and a brief both need an account. This is the screen a signed-out
+   visitor gets instead of the form — it says so plainly rather than bouncing
+   them to the sign-in page with no explanation, and it remembers where they
+   were headed so signing in takes them straight back. */
+function signinGate(kicker, title, msg, back){
+  var L = t();
+  return '<section class="stage"><div class="wrap band"><div class="form-col">'+
+    '<p class="kicker">'+esc(kicker)+'</p>'+
+    '<h1 class="hero-type" style="margin:16px 0 16px">'+esc(title)+'</h1>'+
+    '<div class="notice" style="margin-top:32px">'+
+      '<h2 class="h-lg" style="color:var(--frost-white)">'+esc(L.gateTitle)+'</h2>'+
+      '<p class="body-copy">'+esc(msg)+'</p>'+
+      '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:28px">'+
+        '<button class="btn btn-primary btn-lg" data-gate="'+esc(back)+'">'+esc(L.gateCta)+'</button>'+
+        '<button class="btn btn-outline btn-lg" data-go="home">'+esc(L.gateBack)+'</button>'+
+      '</div>'+
+    '</div>'+
+  '</div></div></section>';
+}
+
 function errBar(){
   return S.dataError
     ? '<p class="small" role="alert" style="color:var(--signal-orange);margin-top:16px">'+esc(S.dataError)+'</p>'
@@ -2137,6 +2173,7 @@ function stepTitle(i){ return t()['step'+i]; }
 
 function screenRequest(){
   var L = t();
+  if(!S.user && !S.submittedRef) return signinGate(L.rqKicker, L.start, L.gateBrief, 'request');
   if(S.submittedRef){
     var first = (S.draft.name || '').split(' ')[0];
     return '<section class="stage"><div class="wrap band"><div class="centered">'+
@@ -2340,7 +2377,7 @@ function go(route){
 /* ============================== EVENTS ============================== */
 document.addEventListener('click', function(e){
   var el = e.target.closest('[data-go],[data-lang],[data-menu],[data-reel],[data-reelstep],[data-open],'+
-    '[data-filter],[data-pkg],[data-slot],[data-book],[data-signin],[data-signout],[data-type],[data-deliv],[data-budget],'+
+    '[data-filter],[data-pkg],[data-slot],[data-book],[data-gate],[data-signin],[data-signout],[data-type],[data-deliv],[data-budget],'+
     '[data-track],[data-file],'+
     '[data-timeline],[data-remote],[data-step],[data-stepmove],[data-submit],[data-restart],[data-close],[data-unfile]');
 
@@ -2372,6 +2409,7 @@ document.addEventListener('click', function(e){
   }
   if(d.slot != null && el.hasAttribute('data-slot')){ S.slot = d.slot; render(true); return; }
   if(d.book){ submitCall(); return; }
+  if(d.gate){ S.afterSignin = d.gate; go('signin'); return; }
   if(d.signin){ if(S.signinEmail){ S.signinSent = true; render(); } return; }
   if(d.signout){ signOut(); return; }
   if(d.track){ trackLookup(); return; }
