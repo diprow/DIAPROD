@@ -483,6 +483,128 @@ textarea.input{border-radius:var(--r-card);line-height:1.47}
 .timeline .dot{width:7px;height:7px;border-radius:50%;background:var(--apple-blue);margin-top:7px;flex:0 0 auto}
 .timeline li:not(:first-child) .dot{background:var(--smoke)}
 .timeline p{margin:0;font-size:var(--t-xs);color:var(--frost-white);line-height:1.5}
+
+/* ============================================================
+   MOTION — reveal on scroll, parallax stills, a cursor of its own.
+   Everything here is decoration: the page works with all of it
+   switched off, and it is switched off for anyone who has asked
+   their system for less motion.
+   ============================================================ */
+
+/* ---------- sections arriving ---------- */
+[data-reveal]{
+  opacity:0;
+  transform:translate3d(0,20px,0);
+  transition:opacity .9s cubic-bezier(.16,.84,.34,1),
+             transform .9s cubic-bezier(.16,.84,.34,1);
+  transition-delay:var(--rd,0ms);
+  will-change:opacity,transform;
+}
+[data-reveal].in{opacity:1;transform:none}
+
+/* ---------- a screen arriving ---------- */
+@keyframes pageIn{
+  from{opacity:0;transform:translate3d(0,12px,0)}
+  to{opacity:1;transform:none}
+}
+.page-in{animation:pageIn .6s cubic-bezier(.16,.84,.34,1) both}
+
+/* ---------- the hero, on first paint ---------- */
+@keyframes heroIn{
+  from{opacity:0;transform:translate3d(0,16px,0)}
+  to{opacity:1;transform:none}
+}
+.hero-copy > *{animation:heroIn .9s cubic-bezier(.16,.84,.34,1) both}
+.hero-copy > *:nth-child(1){animation-delay:.10s}
+.hero-copy > *:nth-child(2){animation-delay:.18s}
+.hero-copy > *:nth-child(3){animation-delay:.28s}
+.hero-copy > *:nth-child(4){animation-delay:.36s}
+@keyframes stillIn{from{opacity:0}to{opacity:1}}
+.hero-still,.reel-still{animation:stillIn .7s ease both}
+
+/* ---------- stills drifting against the scroll ----------
+   Each still is taller than the frame that crops it, so it can
+   travel without ever showing an edge. The hover scale lives in
+   its own variable so the two never fight over `transform`.   */
+.hero-still,.reel-still,.case-still,.tile-still{
+  top:-9%;bottom:-9%;
+  transform:translate3d(0,var(--py,0px),0) scale(var(--ts,1));
+  transition:transform .45s cubic-bezier(.16,.84,.34,1);
+  will-change:transform;
+}
+.reel-frame:hover .reel-still{--ts:1.03;transform:translate3d(0,var(--py,0px),0) scale(var(--ts,1))}
+.case-media:hover .case-still{--ts:1.04;transform:translate3d(0,var(--py,0px),0) scale(var(--ts,1))}
+.tile:hover .tile-still{--ts:1.045;transform:translate3d(0,var(--py,0px),0) scale(var(--ts,1))}
+
+/* ---------- the cursor ----------
+   Only ever switched on for a real pointer, and never in place of
+   the caret in a text field.                                   */
+.cur-dot,.cur-ring{
+  position:fixed;top:0;left:0;z-index:900;pointer-events:none;
+  border-radius:50%;opacity:0;
+  transition:opacity .3s ease, width .35s cubic-bezier(.16,.84,.34,1),
+             height .35s cubic-bezier(.16,.84,.34,1),
+             background-color .35s ease, border-color .35s ease;
+}
+.cur-dot{
+  width:6px;height:6px;margin:-3px 0 0 -3px;
+  background:var(--frost-white);
+}
+.cur-ring{
+  width:34px;height:34px;margin:-17px 0 0 -17px;
+  border:1px solid rgba(245,245,247,.42);
+  display:flex;align-items:center;justify-content:center;
+}
+html.cur-on .cur-dot,html.cur-on .cur-ring{opacity:1}
+html.cur-on,html.cur-on body{cursor:none}
+html.cur-on a,html.cur-on button,html.cur-on .chip,html.cur-on .tag,html.cur-on .dot,
+html.cur-on label,html.cur-on summary{cursor:none}
+html.cur-on input,html.cur-on textarea,html.cur-on select{cursor:auto}
+
+/* over a text field, the caret does the job on its own */
+html.cur-text .cur-dot,html.cur-text .cur-ring{opacity:0}
+
+/* over anything clickable */
+html.cur-link .cur-ring{
+  width:54px;height:54px;margin:-27px 0 0 -27px;
+  background:rgba(245,245,247,.09);
+  border-color:rgba(245,245,247,.65);
+}
+html.cur-link .cur-dot{opacity:0}
+
+/* over a film or a photograph, the ring says what a click will do */
+html.cur-media .cur-ring{
+  width:86px;height:86px;margin:-43px 0 0 -43px;
+  background:rgba(0,0,0,.34);
+  border-color:rgba(245,245,247,.9);
+  backdrop-filter:blur(2px);
+}
+html.cur-media .cur-dot{opacity:0}
+.cur-label{
+  font-size:var(--t-caption);font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--frost-white);
+  opacity:0;transition:opacity .25s ease;white-space:nowrap;
+  max-width:74px;overflow:hidden;text-overflow:ellipsis;text-align:center;
+}
+html.cur-media .cur-label{opacity:1}
+
+/* pressed */
+html.cur-down .cur-ring{transform:scale(.88)!important}
+
+@media (hover:none),(pointer:coarse){
+  .cur-dot,.cur-ring{display:none}
+}
+
+/* ---------- and none of it for anyone who asked for less ---------- */
+@media (prefers-reduced-motion:reduce){
+  [data-reveal]{opacity:1;transform:none;transition:none}
+  .page-in{animation:none}
+  .hero-copy > *{animation:none}
+  .hero-still,.reel-still{animation:none}
+  .hero-still,.reel-still,.case-still,.tile-still{top:0;bottom:0;transform:none}
+  .cur-dot,.cur-ring{display:none}
+  html.cur-on,html.cur-on body{cursor:auto}
+}
 </style>
 </head>
 <body>
@@ -493,6 +615,8 @@ textarea.input{border-radius:var(--r-card);line-height:1.47}
 <main id="app"></main>
 <footer class="footer" id="footer"></footer>
 <div class="lightbox" id="lightbox" hidden></div>
+<span class="cur-ring" id="curRing" aria-hidden="true"><span class="cur-label" id="curLabel"></span></span>
+<span class="cur-dot" id="curDot" aria-hidden="true"></span>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
     <mask id="diaLogoMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
       <g fill="#ffffff">
@@ -889,6 +1013,7 @@ var T = {
     metaReply:'Producer replies within', metaReplyV:'1 day',
     workKicker:'Selected work', workTitle:'Recent films.', workAll:'See all work',
     watch:'Watch the film', view:'View project',
+    curWatch:'Watch', curView:'View',
     awardsKicker:'Recognition', awardsTitle:'Selected at festivals and awards.',
     casesKicker:'Case studies', casesTitle:'Work that moved the needle.',
     casesSub:'Three stories — the brief, the film, and what it did.',
@@ -967,6 +1092,7 @@ var T = {
     metaReply:'Un producer risponde entro', metaReplyV:'1 giorno',
     workKicker:'Lavori selezionati', workTitle:'Lavori recenti.', workAll:'Vedi tutti i lavori',
     watch:'Guarda il film', view:'Vedi il progetto',
+    curWatch:'Guarda', curView:'Apri',
     awardsKicker:'Riconoscimenti', awardsTitle:'Selezionati a festival e premi.',
     casesKicker:'Case study', casesTitle:'Progetti che fanno la differenza.',
     casesSub:'Tre storie — il brief, il film e i risultati.',
@@ -1505,7 +1631,7 @@ function screenHome(){
   var hero =
   '<section class="stage"><div class="wrap hero">'+
     '<div class="hero-stage">'+
-      '<div class="hero-still" style="'+stillStyle(HERO,'hero-dia',900,506)+'"></div>'+
+      '<div class="hero-still" data-px style="'+stillStyle(HERO,'hero-dia',900,506)+'"></div>'+
       '<div class="hero-scrim"></div>'+
       '<div class="hero-copy">'+
         '<p class="eyebrow">'+esc(L.heroEyebrow)+'</p>'+
@@ -1532,8 +1658,8 @@ function screenHome(){
       '<button class="linky" data-go="work">'+esc(L.workAll)+' &rsaquo;</button>'+
     '</div>'+
     '<div class="reel">'+
-      '<button class="reel-frame" data-open="'+w.id+'">'+
-        '<span class="reel-still" style="'+stillStyle(w,w.id,900,506)+'"></span>'+
+      '<button class="reel-frame" data-open="'+w.id+'" data-cursor="'+esc(w.yt ? L.curWatch : L.curView)+'">'+
+        '<span class="reel-still" data-px style="'+stillStyle(w,w.id,900,506)+'"></span>'+
         '<span class="reel-scrim"></span>'+
         '<span class="reel-count tnum">'+pad(S.reel+1)+' / '+pad(WORK.length)+'</span>'+
         '<span class="reel-cap">'+
@@ -1567,8 +1693,8 @@ function screenHome(){
     CASES.map(function(cs){
       var wk = workById(cs.workId);
       return '<article class="case">'+
-        '<button class="case-media" data-open="'+cs.workId+'" aria-label="'+esc(cs.client)+'">'+
-          '<span class="case-still" style="'+stillStyle(wk,cs.workId,720,540)+'"></span>'+
+        '<button class="case-media" data-open="'+cs.workId+'" aria-label="'+esc(cs.client)+'" data-cursor="'+esc(L.curView)+'">'+
+          '<span class="case-still" data-px style="'+stillStyle(wk,cs.workId,720,540)+'"></span>'+
         '</button>'+
         '<div class="case-body">'+
           '<p class="eyebrow'+accentClass(cs.accent)+'">'+esc(S.lang==='it'?cs.catIt:cs.catEn)+'</p>'+
@@ -1605,9 +1731,9 @@ function screenWork(){
     return '<button class="chip" data-filter="'+c[0]+'" aria-pressed="'+(S.filter===c[0])+'">'+esc(c[1])+'</button>';
   }).join('');
   var tiles = list.map(function(w, i){
-    return '<button class="tile" data-open="'+w.id+'">'+
+    return '<button class="tile" data-open="'+w.id+'" data-cursor="'+esc(w.yt ? L.curWatch : L.curView)+'">'+
       '<span class="tile-media">'+
-        '<span class="tile-still" style="'+stillStyle(w,w.id,760,475)+'"></span>'+
+        '<span class="tile-still" data-px style="'+stillStyle(w,w.id,760,475)+'"></span>'+
         '<span class="tile-play">&#9654;</span>'+
       '</span>'+
       '<span class="tile-foot">'+
@@ -2018,6 +2144,7 @@ var SCREENS = {home:screenHome, work:screenWork, packages:screenPackages,
   track:screenTrack, call:screenCall, signin:screenSignin, account:screenAccount,
   request:screenRequest};
 
+var lastRoute = null;
 function render(keepScroll){
   var y = window.scrollY;
   var active = document.activeElement;
@@ -2028,6 +2155,10 @@ function render(keepScroll){
   document.getElementById('app').innerHTML = (SCREENS[S.route] || screenHome)();
   renderNav(); renderSheet(); renderFooter(); renderLightbox();
   mountGoogle();
+
+  var routeChanged = (lastRoute !== S.route);
+  lastRoute = S.route;
+  motionAfterRender(routeChanged);
 
   if(keepScroll){
     window.scrollTo(0, y);
@@ -2176,6 +2307,167 @@ document.addEventListener('keydown', function(e){
     if(e.key === 'ArrowLeft'){ S.reel = (S.reel-1+WORK.length)%WORK.length; render(true); }
   }
 });
+
+/* ============================== MOTION ==============================
+   Three small pieces, all of them optional: sections that arrive as
+   you reach them, stills that drift a little against the scroll, and
+   a cursor of the studio's own. Each one checks for a real pointer
+   and for the system's reduced-motion setting before it does
+   anything, and the page is complete without any of them.        */
+
+var REDUCED = false;
+try{ REDUCED = window.matchMedia('(prefers-reduced-motion:reduce)').matches; }catch(e){}
+
+/* ---------- sections arriving ---------- */
+var REVEAL_SEL = '.sec-head,.tile,.case,.pkg,.awards-list li,.closing,.hero-meta > div,'+
+                 '.job,.step-card,.notice,.refbox,.slot-grid,.form-col > .kicker';
+var revealObserver = null;
+
+function initReveal(){
+  if(REDUCED || !('IntersectionObserver' in window)) return;
+  revealObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      en.target.classList.add('in');
+      revealObserver.unobserve(en.target);
+    });
+  }, {threshold:0.08, rootMargin:'0px 0px -6% 0px'});
+}
+
+function bindReveal(){
+  if(!revealObserver) return;
+  var app = document.getElementById('app');
+  var groups = {};
+  var nodes = app.querySelectorAll(REVEAL_SEL);
+  for(var i=0;i<nodes.length;i++){
+    var el = nodes[i];
+    if(el.hasAttribute('data-reveal')) continue;
+    /* stagger within whatever row or grid the element belongs to */
+    var pid = el.parentNode.className || 'x';
+    groups[pid] = (groups[pid] == null) ? 0 : groups[pid] + 1;
+    var n = Math.min(groups[pid], 5);
+    el.setAttribute('data-reveal','');
+    el.style.setProperty('--rd', (n * 70) + 'ms');
+    /* anything already on screen when the page loads arrives at once */
+    var r = el.getBoundingClientRect();
+    if(r.top < window.innerHeight * 0.92){ el.classList.add('in'); continue; }
+    revealObserver.observe(el);
+  }
+}
+
+/* ---------- stills drifting against the scroll ---------- */
+var pxNodes = [], pxTicking = false;
+
+function bindParallax(){
+  if(REDUCED) return;
+  pxNodes = Array.prototype.slice.call(document.querySelectorAll('[data-px]'));
+  updateParallax();
+}
+
+function updateParallax(){
+  var vh = window.innerHeight || 1;
+  for(var i=0;i<pxNodes.length;i++){
+    var el = pxNodes[i], host = el.parentNode;
+    if(!host || !host.getBoundingClientRect) continue;
+    var r = host.getBoundingClientRect();
+    if(r.bottom < -200 || r.top > vh + 200) continue;
+    var mid = r.top + r.height / 2;
+    var p = (mid - vh / 2) / (vh / 2);              /* -1 above, +1 below */
+    if(p > 1.4) p = 1.4; if(p < -1.4) p = -1.4;
+    el.style.setProperty('--py', (p * -22).toFixed(1) + 'px');
+  }
+  pxTicking = false;
+}
+
+function onScroll(){
+  if(pxTicking || REDUCED) return;
+  pxTicking = true;
+  window.requestAnimationFrame(updateParallax);
+}
+
+/* ---------- the cursor ---------- */
+var CUR = {on:false, x:0, y:0, rx:0, ry:0, dot:null, ring:null, label:null, raf:false};
+var CUR_LINK = 'a,button,[data-go],[data-open],[data-lang],[data-menu],[data-reel],'+
+               '[data-reelstep],.chip,.tag,.dot,label,summary';
+
+function initCursor(){
+  if(REDUCED) return;
+  var fine = false;
+  try{ fine = window.matchMedia('(pointer:fine)').matches; }catch(e){}
+  if(!fine) return;
+
+  CUR.ring  = document.getElementById('curRing');
+  CUR.dot   = document.getElementById('curDot');
+  CUR.label = document.getElementById('curLabel');
+  if(!CUR.ring || !CUR.dot) return;
+
+  document.addEventListener('mousemove', function(e){
+    CUR.x = e.clientX; CUR.y = e.clientY;
+    if(!CUR.on){
+      CUR.on = true; CUR.rx = CUR.x; CUR.ry = CUR.y;
+      document.documentElement.classList.add('cur-on');
+      loop();
+    }
+    hoverState(e.target);
+  }, {passive:true});
+
+  document.addEventListener('mouseleave', function(){
+    document.documentElement.classList.remove('cur-on');
+    CUR.on = false;
+  });
+  document.addEventListener('mouseenter', function(){
+    if(CUR.x || CUR.y){ document.documentElement.classList.add('cur-on'); CUR.on = true; loop(); }
+  });
+  document.addEventListener('mousedown', function(){ document.documentElement.classList.add('cur-down'); });
+  document.addEventListener('mouseup',   function(){ document.documentElement.classList.remove('cur-down'); });
+}
+
+function hoverState(target){
+  var root = document.documentElement;
+  if(!target || !target.closest){ return; }
+
+  var field = target.closest('input,textarea,select');
+  root.classList.toggle('cur-text', !!field);
+  if(field){ root.classList.remove('cur-link','cur-media'); return; }
+
+  var media = target.closest('[data-cursor]');
+  if(media){
+    root.classList.add('cur-media');
+    root.classList.remove('cur-link');
+    var want = media.getAttribute('data-cursor') || '';
+    if(CUR.label && CUR.label.textContent !== want) CUR.label.textContent = want;
+    return;
+  }
+  root.classList.remove('cur-media');
+  root.classList.toggle('cur-link', !!target.closest(CUR_LINK));
+}
+
+function loop(){
+  if(!CUR.on){ CUR.raf = false; return; }
+  CUR.raf = true;
+  CUR.rx += (CUR.x - CUR.rx) * 0.18;               /* the ring trails a little */
+  CUR.ry += (CUR.y - CUR.ry) * 0.18;
+  CUR.ring.style.transform = 'translate3d('+CUR.rx.toFixed(1)+'px,'+CUR.ry.toFixed(1)+'px,0)';
+  CUR.dot.style.transform  = 'translate3d('+CUR.x+'px,'+CUR.y+'px,0)';
+  window.requestAnimationFrame(loop);
+}
+
+/* ---------- called after every render ---------- */
+function motionAfterRender(routeChanged){
+  bindReveal();
+  bindParallax();
+  if(routeChanged && !REDUCED){
+    var app = document.getElementById('app');
+    app.classList.remove('page-in');
+    void app.offsetWidth;                           /* restart the animation */
+    app.classList.add('page-in');
+  }
+}
+
+window.addEventListener('scroll', onScroll, {passive:true});
+window.addEventListener('resize', function(){ bindParallax(); }, {passive:true});
+initReveal();
+initCursor();
 
 initBackend();
 render();
