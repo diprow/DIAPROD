@@ -164,13 +164,46 @@ select.input{appearance:none;cursor:pointer;padding-right:40px;
   background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;
   background-size:6px 6px,6px 6px;background-repeat:no-repeat}
 
-/* ---------- sign in ---------- */
-.loginwrap{min-height:calc(100vh - 120px);display:flex;align-items:center;justify-content:center;padding:var(--s40) var(--gutter)}
+/* ---------- sign in ----------
+   The card is lit rather than outlined: a wide blue wash in the room
+   behind it, a tight halo hugging its edge, a rim light along the top
+   and a deep shadow under it, so it reads as an object above the page. */
+.loginwrap{
+  position:relative;isolation:isolate;
+  min-height:calc(100vh - 120px);display:flex;align-items:center;justify-content:center;
+  padding:var(--s40) var(--gutter);
+}
+.loginwrap::before{                       /* the wash on the wall behind */
+  content:'';position:absolute;z-index:-1;pointer-events:none;
+  width:min(820px,140vw);aspect-ratio:1;
+  background:radial-gradient(circle,
+    rgba(41,151,255,.10) 0%, rgba(41,151,255,.04) 34%, rgba(41,151,255,0) 66%);
+}
 .logincard{
-  width:100%;max-width:420px;background:var(--carbon);border:1px solid var(--graphite);
+  position:relative;
+  width:100%;max-width:420px;
+  background:linear-gradient(176deg,#181b20 0%,#101216 46%,#0b0c0e 100%);
+  border:1px solid rgba(41,151,255,.34);
   border-radius:var(--r-card-lg);padding:clamp(26px,5vw,38px);
   display:flex;flex-direction:column;gap:var(--s16);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),          /* rim light on the top edge */
+    inset 0 -1px 0 rgba(0,0,0,.55),
+    0 2px 5px rgba(0,0,0,.5),
+    0 26px 56px -28px rgba(0,0,0,.95),            /* it casts a shadow down */
+    0 0 16px -4px rgba(41,151,255,.26),
+    0 0 52px -22px rgba(41,151,255,.34);
 }
+.logincard::before{                       /* the halo, blurred so no edge shows */
+  content:'';position:absolute;inset:-7px;z-index:-1;pointer-events:none;
+  border-radius:calc(var(--r-card-lg) + 7px);
+  background:linear-gradient(152deg,
+    rgba(41,151,255,.75) 0%, rgba(0,161,179,.45) 46%, rgba(41,151,255,.7) 100%);
+  filter:blur(13px);opacity:.4;
+}
+.logincard .input{background:rgba(0,0,0,.34);border-color:rgba(255,255,255,.09)}
+.logincard .input:focus{border-color:var(--halo-blue);box-shadow:0 0 0 3px rgba(41,151,255,.16)}
+.logincard .btn-primary{box-shadow:0 6px 20px -6px rgba(0,113,227,.75),inset 0 1px 0 rgba(255,255,255,.18)}
 
 /* ---------- rows ---------- */
 .rows{display:flex;flex-direction:column;margin-top:var(--s24)}
