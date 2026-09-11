@@ -176,7 +176,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;margin:0;text-wrap:balanc
   transition:opacity .2s ease,background .2s ease;white-space:nowrap;
 }
 .navlink:hover{opacity:1}
-.navlink[aria-current="page"]{opacity:1;background:var(--graphite)}
+.navlink[aria-current="page"]{opacity:1}
 .langbox{display:flex;gap:2px;padding:3px;border-radius:var(--r-pill);border:1px solid var(--graphite)}
 .langbtn{
   background:none;border:none;cursor:pointer;padding:5px 10px;border-radius:var(--r-pill);
@@ -537,22 +537,25 @@ textarea.input{border-radius:var(--r-card);line-height:1.47}
 .tile:hover .tile-still{--ts:1.045;transform:translate3d(0,var(--py,0px),0) scale(var(--ts,1))}
 
 /* ---------- the cursor ----------
-   Only ever switched on for a real pointer, and never in place of
-   the caret in a text field.                                   */
+   A ring that inverts whatever it sits on, so it stays visible on the
+   black stage and on the white pages alike, and opens into a
+   viewfinder over anything you can watch. Only ever for a real
+   pointer, and never in place of the caret in a text field.      */
 .cur-dot,.cur-ring{
-  position:fixed;top:0;left:0;z-index:900;pointer-events:none;
-  border-radius:50%;opacity:0;
-  transition:opacity .3s ease, width .35s cubic-bezier(.16,.84,.34,1),
-             height .35s cubic-bezier(.16,.84,.34,1),
-             background-color .35s ease, border-color .35s ease;
+  position:fixed;top:0;left:0;z-index:900;pointer-events:none;opacity:0;
+  mix-blend-mode:difference;
+  transition:opacity .3s ease, width .4s cubic-bezier(.16,.84,.34,1),
+             height .4s cubic-bezier(.16,.84,.34,1),
+             border-radius .4s cubic-bezier(.16,.84,.34,1),
+             border-color .3s ease, margin .4s cubic-bezier(.16,.84,.34,1);
 }
 .cur-dot{
-  width:6px;height:6px;margin:-3px 0 0 -3px;
-  background:var(--frost-white);
+  width:5px;height:5px;margin:-2.5px 0 0 -2.5px;border-radius:50%;
+  background:#fff;
 }
 .cur-ring{
-  width:34px;height:34px;margin:-17px 0 0 -17px;
-  border:1px solid rgba(245,245,247,.42);
+  width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.62);
   display:flex;align-items:center;justify-content:center;
 }
 html.cur-on .cur-dot,html.cur-on .cur-ring{opacity:1}
@@ -561,42 +564,63 @@ html.cur-on a,html.cur-on button,html.cur-on .chip,html.cur-on .tag,html.cur-on 
 html.cur-on label,html.cur-on summary{cursor:none}
 html.cur-on input,html.cur-on textarea,html.cur-on select{cursor:auto}
 
-/* over a text field, the caret does the job on its own */
+/* over a text field the caret does the job on its own */
 html.cur-text .cur-dot,html.cur-text .cur-ring{opacity:0}
 
 /* over anything clickable */
 html.cur-link .cur-ring{
-  width:54px;height:54px;margin:-27px 0 0 -27px;
-  background:rgba(245,245,247,.09);
-  border-color:rgba(245,245,247,.65);
+  width:46px;height:46px;margin:-23px 0 0 -23px;
+  border-width:1.5px;border-color:#fff;
 }
 html.cur-link .cur-dot{opacity:0}
 
-/* over a film or a photograph, the ring says what a click will do */
-html.cur-media .cur-ring{
-  width:86px;height:86px;margin:-43px 0 0 -43px;
-  background:rgba(0,0,0,.34);
-  border-color:rgba(245,245,247,.9);
-  backdrop-filter:blur(2px);
+/* over a film or a photograph: a viewfinder, with the action named */
+.cur-c{
+  position:absolute;width:15px;height:15px;opacity:0;
+  border:0 solid #fff;transition:opacity .3s ease;
 }
+.cur-c.tl{top:-1px;left:-1px;border-top-width:1.5px;border-left-width:1.5px}
+.cur-c.tr{top:-1px;right:-1px;border-top-width:1.5px;border-right-width:1.5px}
+.cur-c.bl{bottom:-1px;left:-1px;border-bottom-width:1.5px;border-left-width:1.5px}
+.cur-c.br{bottom:-1px;right:-1px;border-bottom-width:1.5px;border-right-width:1.5px}
+html.cur-media .cur-ring{
+  width:96px;height:96px;margin:-48px 0 0 -48px;
+  border-radius:3px;border-color:transparent;
+  mix-blend-mode:normal;
+}
+html.cur-media .cur-c{opacity:1}
 html.cur-media .cur-dot{opacity:0}
 .cur-label{
-  font-size:var(--t-caption);font-weight:600;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--frost-white);
+  font-size:var(--t-caption);font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.7);
   opacity:0;transition:opacity .25s ease;white-space:nowrap;
-  max-width:74px;overflow:hidden;text-overflow:ellipsis;text-align:center;
+  max-width:84px;overflow:hidden;text-overflow:ellipsis;text-align:center;
 }
 html.cur-media .cur-label{opacity:1}
 
 /* pressed */
-html.cur-down .cur-ring{transform:scale(.88)!important}
+html.cur-down .cur-ring{transform:scale(.9)!important}
 
 @media (hover:none),(pointer:coarse){
   .cur-dot,.cur-ring{display:none}
 }
 
+/* ---------- the pill that follows the pointer across the nav ---------- */
+.navlinks{position:relative}
+.navlink{position:relative;z-index:1}
+.nav-pill{
+  position:absolute;top:0;left:0;width:0;height:0;z-index:0;opacity:0;
+  border-radius:var(--r-pill);background:var(--graphite);pointer-events:none;
+  transition:transform .42s cubic-bezier(.16,.84,.34,1),
+             width .42s cubic-bezier(.16,.84,.34,1),
+             height .42s cubic-bezier(.16,.84,.34,1),
+             opacity .28s ease;
+}
+.nav-pill.no-anim{transition:none}
+
 /* ---------- and none of it for anyone who asked for less ---------- */
 @media (prefers-reduced-motion:reduce){
+  .nav-pill{transition:none}
   [data-reveal]{opacity:1;transform:none;transition:none}
   .page-in{animation:none}
   .hero-copy > *{animation:none}
@@ -615,7 +639,7 @@ html.cur-down .cur-ring{transform:scale(.88)!important}
 <main id="app"></main>
 <footer class="footer" id="footer"></footer>
 <div class="lightbox" id="lightbox" hidden></div>
-<span class="cur-ring" id="curRing" aria-hidden="true"><span class="cur-label" id="curLabel"></span></span>
+<span class="cur-ring" id="curRing" aria-hidden="true"><i class="cur-c tl"></i><i class="cur-c tr"></i><i class="cur-c bl"></i><i class="cur-c br"></i><span class="cur-label" id="curLabel"></span></span>
 <span class="cur-dot" id="curDot" aria-hidden="true"></span>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
     <mask id="diaLogoMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
@@ -1550,7 +1574,7 @@ function renderNav(){
   document.getElementById('nav').innerHTML =
     '<button class="brand" data-go="home" aria-label="'+STUDIO+' — home">'+logo(26,'var(--frost-white)')+
       '<span class="brand-name">'+STUDIO+'</span></button>'+
-    '<div class="navlinks">'+links+'</div>'+
+    '<div class="navlinks"><span class="nav-pill" id="navPill" aria-hidden="true"></span>'+links+'</div>'+
     '<div style="display:flex;align-items:center;gap:8px">'+
       '<div class="langbox" role="group" aria-label="Language">'+
         '<button class="langbtn" data-lang="en" aria-pressed="'+(S.lang==='en')+'">EN</button>'+
@@ -1559,6 +1583,7 @@ function renderNav(){
       '<button class="btn btn-primary" data-go="request">'+esc(L.start)+'</button>'+
       '<button class="burger" data-menu="1" aria-label="Menu"><span></span><span></span></button>'+
     '</div>';
+  syncNavPill(true);
 }
 
 function renderSheet(){
@@ -2451,6 +2476,51 @@ function loop(){
   CUR.dot.style.transform  = 'translate3d('+CUR.x+'px,'+CUR.y+'px,0)';
   window.requestAnimationFrame(loop);
 }
+
+/* ---------- the nav pill ----------
+   One rounded block behind the links. It rests under whichever page
+   you are on and slides to whatever the pointer is over, so the nav
+   answers the mouse instead of only the click.                    */
+function movePill(el){
+  var pill = document.getElementById('navPill');
+  if(!pill || !el) return;
+  pill.style.opacity = '1';
+  pill.style.width  = el.offsetWidth + 'px';
+  pill.style.height = el.offsetHeight + 'px';
+  pill.style.transform = 'translate3d('+el.offsetLeft+'px,'+el.offsetTop+'px,0)';
+}
+
+function syncNavPill(instant){
+  var wrap = document.querySelector('.navlinks');
+  var pill = document.getElementById('navPill');
+  if(!wrap || !pill) return;
+  if(instant) pill.classList.add('no-anim');
+  var active = wrap.querySelector('.navlink[aria-current="page"]');
+  if(active) movePill(active);
+  else pill.style.opacity = '0';
+  if(instant){ void pill.offsetWidth; pill.classList.remove('no-anim'); }
+}
+
+document.addEventListener('mouseover', function(e){
+  var t = e.target;
+  if(!t || !t.closest) return;
+  if(!t.closest('.navlinks')) return;
+  var link = t.closest('.navlink');
+  if(link) movePill(link); else syncNavPill();
+});
+
+document.addEventListener('mouseout', function(e){
+  var t = e.target;
+  if(!t || !t.closest || !t.closest('.navlinks')) return;
+  var to = e.relatedTarget;
+  if(to && to.closest && to.closest('.navlinks')) return;   /* still inside */
+  syncNavPill();
+});
+
+window.addEventListener('resize', function(){ syncNavPill(true); }, {passive:true});
+/* the links change width when the real typeface lands */
+try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ syncNavPill(true); }); }catch(e){}
+
 
 /* ---------- called after every render ---------- */
 function motionAfterRender(routeChanged){
