@@ -538,19 +538,15 @@ textarea.input{border-radius:var(--r-card);line-height:1.47}
 
 /* ---------- the cursor ----------
    A bead of glass that carries whatever is under it: the backdrop is
-   lifted rather than hidden, a specular highlight sits off to one
-   side, and the rim picks up a little colour the way a lens does at
-   its edge. It trails the pointer and stretches along its direction
-   of travel, so it moves like a drop rather than a sprite; when it
-   reaches a control it settles over it and takes its shape.
-
-   Size, position and corner radius are all set from script, frame by
-   frame, so the drop can morph into a button and back without two
-   systems fighting over the same properties. Everything here is the
-   look, not the geometry.                                        */
+   blurred and lifted inside the disc, a specular highlight sits off
+   to one side, and the rim picks up a little colour the way a real
+   lens does at its edge. It lags a few frames behind the pointer and
+   stretches along the direction of travel, so it moves like a drop
+   of liquid rather than a sprite. A small solid core stays exactly on
+   the point, so clicking is still precise.                        */
 .cur-glass,.cur-cap,.cur-core{
   position:fixed;top:0;left:0;z-index:900;pointer-events:none;opacity:0;
-  will-change:transform,width,height;
+  will-change:transform;
 }
 html.cur-on .cur-glass,html.cur-on .cur-cap,html.cur-on .cur-core{opacity:1}
 html.cur-on,html.cur-on body{cursor:none}
@@ -559,7 +555,8 @@ html.cur-on label,html.cur-on summary{cursor:none}
 html.cur-on input,html.cur-on textarea,html.cur-on select{cursor:auto}
 
 .cur-glass{
-  width:42px;height:42px;border-radius:21px;
+  width:42px;height:42px;margin:-21px 0 0 -21px;
+  border-radius:50%;
   background:rgba(245,245,247,.05);
   backdrop-filter:blur(.6px) saturate(190%) brightness(1.1) contrast(1.04);
   -webkit-backdrop-filter:blur(.6px) saturate(190%) brightness(1.1) contrast(1.04);
@@ -567,10 +564,21 @@ html.cur-on input,html.cur-on textarea,html.cur-on select{cursor:auto}
              inset 0 -1px 2px rgba(255,255,255,.2),
              inset 0 0 10px rgba(255,255,255,.07),
              0 4px 14px rgba(0,0,0,.26);
-  transition:background-color .4s ease, box-shadow .4s ease,
-             backdrop-filter .4s ease, -webkit-backdrop-filter .4s ease,
-             opacity .3s ease;
+  transition:width .45s cubic-bezier(.22,1.2,.36,1),
+             height .45s cubic-bezier(.22,1.2,.36,1),
+             margin .45s cubic-bezier(.22,1.2,.36,1),
+             opacity .3s ease, background-color .35s ease;
+  animation:curWobble 7s ease-in-out infinite;
 }
+/* the disc is never quite a circle, and never quite the same one */
+@keyframes curWobble{
+  0%  {border-radius:50% 50% 50% 50%}
+  25% {border-radius:54% 46% 49% 51%}
+  50% {border-radius:47% 53% 52% 48%}
+  75% {border-radius:51% 49% 46% 54%}
+  100%{border-radius:50% 50% 50% 50%}
+}
+
 /* the highlight, off to one side as if lit from above and left */
 .cur-spec{
   position:absolute;inset:0;border-radius:inherit;pointer-events:none;
@@ -586,41 +594,29 @@ html.cur-on input,html.cur-on textarea,html.cur-on select{cursor:auto}
   -webkit-mask:radial-gradient(closest-side, transparent 84%, #000 91%);
   mask:radial-gradient(closest-side, transparent 84%, #000 91%);
   opacity:.55;
-  transition:opacity .4s ease;
 }
 .cur-core{
   width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;
   background:rgba(255,255,255,.9);
   box-shadow:0 0 6px rgba(0,0,0,.5);
-  transition:opacity .25s ease;
+  transition:opacity .25s ease, width .3s ease, height .3s ease, margin .3s ease;
 }
 
 /* over a text field the caret does the job on its own */
 html.cur-text .cur-glass,html.cur-text .cur-cap,html.cur-text .cur-core{opacity:0!important}
 
-/* over something clickable but not shaped like a control */
+/* over anything clickable the bead swells and thickens */
 html.cur-link .cur-glass{
+  width:58px;height:58px;margin:-29px 0 0 -29px;
   background:rgba(245,245,247,.09);
   backdrop-filter:blur(1.4px) saturate(215%) brightness(1.16) contrast(1.06);
   -webkit-backdrop-filter:blur(1.4px) saturate(215%) brightness(1.16) contrast(1.06);
 }
 html.cur-link .cur-core{opacity:.5}
 
-/* settled over a control: thinner glass, so the label underneath stays
-   crisp, and a brighter rim so the shape reads as one piece          */
-html.cur-snap .cur-glass{
-  background:rgba(245,245,247,.07);
-  backdrop-filter:saturate(160%) brightness(1.14);
-  -webkit-backdrop-filter:saturate(160%) brightness(1.14);
-  box-shadow:inset 0 1px 1px rgba(255,255,255,.6),
-             inset 0 -1px 2px rgba(255,255,255,.24),
-             0 4px 18px rgba(0,0,0,.3);
-}
-html.cur-snap .cur-rim{opacity:.6}
-html.cur-snap .cur-core{opacity:0}
-
 /* over a film or a photograph it opens and names the action */
 html.cur-media .cur-glass{
+  width:112px;height:112px;margin:-56px 0 0 -56px;
   background:rgba(245,245,247,.08);
   backdrop-filter:blur(2.4px) saturate(190%) brightness(1.04);
   -webkit-backdrop-filter:blur(2.4px) saturate(190%) brightness(1.04);
@@ -2459,23 +2455,9 @@ function onScroll(){
 }
 
 /* ---------- the cursor ---------- */
-var CUR = {
-  on:false,
-  x:0, y:0,                       /* the pointer itself                  */
-  cx:0, cy:0,                     /* where the drop actually is          */
-  w:42, h:42, r:21,               /* and the shape it currently holds    */
-  stretch:0, ang:0, snapAmt:0, tick:0,
-  mode:'free',                    /* free | link | snap | media          */
-  el:null, elR:0,                 /* the control it has settled on       */
-  glass:null, cap:null, core:null, label:null
-};
-
-/* controls the drop wraps itself around */
-var CUR_SNAP = '.navlink,.acct-chip,.btn,.btn-line,.chip,.tag,.langbtn,.filechip,'+
-               '.reel-nav,.iconbtn,.burger,.job-head,.case-media';
-/* clickable, but not shaped like a control */
-var CUR_LINK = 'a,button,[data-go],[data-lang],[data-menu],[data-reel],[data-reelstep],'+
-               '.dot,.linky,label,summary';
+var CUR = {on:false, x:0, y:0, gx:0, gy:0, glass:null, cap:null, core:null, label:null, ang:0};
+var CUR_LINK = 'a,button,[data-go],[data-open],[data-lang],[data-menu],[data-reel],'+
+               '[data-reelstep],.chip,.tag,.dot,label,summary';
 
 function initCursor(){
   if(REDUCED) return;
@@ -2492,7 +2474,7 @@ function initCursor(){
   document.addEventListener('mousemove', function(e){
     CUR.x = e.clientX; CUR.y = e.clientY;
     if(!CUR.on){
-      CUR.on = true; CUR.cx = CUR.x; CUR.cy = CUR.y;
+      CUR.on = true; CUR.gx = CUR.x; CUR.gy = CUR.y;
       document.documentElement.classList.add('cur-on');
       loop();
     }
@@ -2508,126 +2490,47 @@ function initCursor(){
   });
   document.addEventListener('mousedown', function(){ document.documentElement.classList.add('cur-down'); });
   document.addEventListener('mouseup',   function(){ document.documentElement.classList.remove('cur-down'); });
-  /* a control can slide out from under a still pointer */
-  window.addEventListener('scroll', refreshHover, {passive:true});
-}
-
-function setMode(mode, el){
-  if(mode === 'snap' && el !== CUR.el){
-    /* the corner radius is read once, when the drop arrives */
-    var cs = window.getComputedStyle(el);
-    var raw = cs.borderTopLeftRadius || '0px';
-    CUR.elR = raw.indexOf('%') > -1 ? 9999 : (parseFloat(raw) || 0);
-  }
-  CUR.mode = mode;
-  CUR.el = (mode === 'snap') ? el : null;
-  var root = document.documentElement;
-  root.classList.toggle('cur-snap',  mode === 'snap');
-  root.classList.toggle('cur-media', mode === 'media');
-  root.classList.toggle('cur-link',  mode === 'link');
 }
 
 function hoverState(target){
   var root = document.documentElement;
-  if(!target || !target.closest){ return; }
+  if(!target || !target.closest) return;
 
   var field = target.closest('input,textarea,select');
   root.classList.toggle('cur-text', !!field);
-  if(field){ setMode('free', null); return; }
+  if(field){ root.classList.remove('cur-link','cur-media'); return; }
 
   var media = target.closest('[data-cursor]');
   if(media){
-    setMode('media', null);
+    root.classList.add('cur-media');
+    root.classList.remove('cur-link');
     var want = media.getAttribute('data-cursor') || '';
     if(CUR.label && CUR.label.textContent !== want) CUR.label.textContent = want;
     return;
   }
-
-  var control = target.closest(CUR_SNAP);
-  if(control && control.getBoundingClientRect().width > 0){ setMode('snap', control); return; }
-
-  setMode(target.closest(CUR_LINK) ? 'link' : 'free', null);
+  root.classList.remove('cur-media');
+  root.classList.toggle('cur-link', !!target.closest(CUR_LINK));
 }
 
-/* after a re-render, or a scroll, whatever is under the pointer may be a
-   different element — or no element at all. Ask the page rather than
-   waiting for the next mousemove, so the drop never clings to something
-   that has gone.                                                      */
-function refreshHover(){
-  if(!CUR.on) return;
-  var el = null;
-  try{ el = document.elementFromPoint(CUR.x, CUR.y); }catch(e){}
-  if(el) hoverState(el); else setMode('free', null);
-}
-
-/* where the drop is trying to get to, this frame */
-function curTarget(){
-  var t = {x:CUR.x, y:CUR.y, w:42, h:42, r:21, snap:false};
-
-  if(CUR.mode === 'media'){ t.w = t.h = 112; t.r = 56; return t; }
-  if(CUR.mode === 'link'){  t.w = t.h = 58;  t.r = 29; return t; }
-
-  if(CUR.mode === 'snap'){
-    var el = CUR.el;
-    if(!el || !el.isConnected){ setMode('free', null); return t; }
-    var b = el.getBoundingClientRect();
-    if(!b.width || !b.height){ setMode('free', null); return t; }
-
-    var pad = 4;
-    t.w = b.width  + pad * 2;
-    t.h = b.height + pad * 2;
-    t.r = Math.min(CUR.elR + pad, t.h / 2, t.w / 2);
-    /* a touch of magnetism, so it still answers the pointer once settled */
-    t.x = b.left + b.width  / 2 + (CUR.x - (b.left + b.width  / 2)) * 0.07;
-    t.y = b.top  + b.height / 2 + (CUR.y - (b.top  + b.height / 2)) * 0.07;
-    t.snap = true;
-  }
-  return t;
-}
-
+/* The bead chases the pointer rather than sitting on it, and the gap
+   between the two is what makes it look like liquid: the faster it is
+   travelling, the more it stretches along its own direction.        */
 function loop(){
   if(!CUR.on) return;
-  CUR.tick++;
+  var dx = CUR.x - CUR.gx, dy = CUR.y - CUR.gy;
+  CUR.gx += dx * 0.22;
+  CUR.gy += dy * 0.22;
 
-  var t  = curTarget();
-  var dx = t.x - CUR.cx, dy = t.y - CUR.cy;
+  var speed = Math.sqrt(dx*dx + dy*dy);
+  var pull  = Math.min(speed / 130, 0.32);          /* how far it draws out */
+  if(speed > 1.5) CUR.ang = Math.atan2(dy, dx) * 180 / Math.PI;
 
-  /* it settles onto a control a little more eagerly than it drifts */
-  var ease = t.snap ? 0.24 : 0.2;
-  CUR.cx += dx * ease;
-  CUR.cy += dy * ease;
-  CUR.w  += (t.w - CUR.w) * 0.2;
-  CUR.h  += (t.h - CUR.h) * 0.2;
-  CUR.r  += (t.r - CUR.r) * 0.2;
-  CUR.snapAmt += ((t.snap ? 1 : 0) - CUR.snapAmt) * 0.18;
-
-  /* stretch along the direction of travel, but never while settled */
-  var speed = Math.sqrt(dx * dx + dy * dy);
-  var want  = (CUR.mode === 'free') ? Math.min(speed / 130, 0.3) : 0;
-  CUR.stretch += (want - CUR.stretch) * 0.2;
-  if(speed > 1.5 && CUR.mode === 'free') CUR.ang = Math.atan2(dy, dx) * 180 / Math.PI;
-
-  var g = CUR.glass.style;
-  g.width  = CUR.w.toFixed(1) + 'px';
-  g.height = CUR.h.toFixed(1) + 'px';
-
-  /* a drop is never a perfect circle; a button always is what it is */
-  var rr   = Math.min(CUR.r, CUR.h / 2, CUR.w / 2);
-  var free = 1 - CUR.snapAmt;
-  var wob  = CUR.h * 0.045 * free;
-  var w1   = Math.sin(CUR.tick / 38) * wob;
-  var w2   = Math.cos(CUR.tick / 47) * wob;
-  g.borderRadius = (rr + w1).toFixed(1) + 'px ' + (rr - w1).toFixed(1) + 'px ' +
-                   (rr + w2).toFixed(1) + 'px ' + (rr - w2).toFixed(1) + 'px';
-
-  g.transform = 'translate3d(' + (CUR.cx - CUR.w / 2).toFixed(1) + 'px,' +
-                                 (CUR.cy - CUR.h / 2).toFixed(1) + 'px,0) ' +
-                'rotate(' + CUR.ang.toFixed(1) + 'deg) ' +
-                'scale(' + (1 + CUR.stretch).toFixed(3) + ',' +
-                           (1 - CUR.stretch * 0.62).toFixed(3) + ')';
-
-  CUR.cap.style.transform  = 'translate3d(' + CUR.cx.toFixed(1) + 'px,' + CUR.cy.toFixed(1) + 'px,0)';
-  CUR.core.style.transform = 'translate3d(' + CUR.x + 'px,' + CUR.y + 'px,0)';
+  CUR.glass.style.transform =
+    'translate3d('+CUR.gx.toFixed(1)+'px,'+CUR.gy.toFixed(1)+'px,0) '+
+    'rotate('+CUR.ang.toFixed(1)+'deg) '+
+    'scale('+(1 + pull).toFixed(3)+','+(1 - pull * 0.62).toFixed(3)+')';
+  CUR.cap.style.transform  = 'translate3d('+CUR.gx.toFixed(1)+'px,'+CUR.gy.toFixed(1)+'px,0)';
+  CUR.core.style.transform = 'translate3d('+CUR.x+'px,'+CUR.y+'px,0)';
 
   window.requestAnimationFrame(loop);
 }
@@ -2681,7 +2584,6 @@ try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(functi
 function motionAfterRender(routeChanged){
   bindReveal();
   bindParallax();
-  refreshHover();
   if(routeChanged && !REDUCED){
     var app = document.getElementById('app');
     app.classList.remove('page-in');
