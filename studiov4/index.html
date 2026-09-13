@@ -741,7 +741,7 @@ html.sig .hero-copy > *{animation:none}      /* the split handles these now */
 .btn.bm{overflow:hidden}
 .bm-lab{
   position:relative;display:inline-block;overflow:clip;
-  line-height:1.1;padding-bottom:.14em;margin-bottom:-.14em;vertical-align:bottom;
+  line-height:1.34;vertical-align:middle;   /* room for descenders inside the clip */
 }
 .bm-b{position:absolute;left:0;top:0}
 .bm-c{
@@ -851,6 +851,106 @@ html.sig .sheet-links button:nth-child(4){animation-delay:.24s}
 html.sig .sheet-links button:nth-child(5){animation-delay:.30s}
 html.sig .sheet-links button:nth-child(6){animation-delay:.36s}
 html.sig .sheet-links button:nth-child(n+7){animation-delay:.42s}
+
+
+/* ============================================================
+   ON A PHONE
+   The design doesn't change here — the size of the things you
+   have to hit with a thumb does. Nothing you can tap is under
+   44px, the top bar carries only the name and the way in, and
+   the long rows of small controls become one thing you swipe.
+   ============================================================ */
+
+/* a tap should never wait to see whether a second one is coming */
+button,a,.chip,.tag,.dot,.slot,.opt,.filechip,.review-row,.job-head{touch-action:manipulation}
+
+/* a space inside a rolling number is still a space */
+.od-s{white-space:pre}
+
+@media (max-width:1000px){
+  /* language and the call to action both move into the menu, so the
+     bar stops competing with itself for room */
+  .nav > div:last-child .langbox,
+  .nav > div:last-child > .btn{display:none}
+  .nav{padding:6px 10px 6px 16px;gap:var(--s12)}
+  .brand-name{white-space:nowrap}
+  .burger{width:44px;height:44px;padding:0;align-items:center;justify-content:center}
+  .burger span{width:22px}
+  .navwrap{padding-top:max(var(--s12),env(safe-area-inset-top))}
+  .wrap{padding-inline:max(var(--gutter),env(safe-area-inset-left),env(safe-area-inset-right))}
+  .sheet{padding-bottom:max(var(--s48),calc(env(safe-area-inset-bottom) + 24px))}
+  .footer{padding-bottom:max(var(--s40),calc(env(safe-area-inset-bottom) + 16px))}
+  .sheet-lang{display:flex;justify-content:center;margin-bottom:var(--s16)}
+}
+
+/* ---------- anything a thumb has to land on ---------- */
+@media (max-width:820px),(pointer:coarse){
+  .btn{min-height:48px;padding:13px 22px}
+  .btn-lg{min-height:54px;padding:16px 26px}
+  .btn-line{min-height:48px;padding:13px 22px;font-size:var(--t-body)}
+  .iconbtn{width:48px;height:48px;font-size:24px}
+  .chip{min-height:44px;padding:11px 18px;font-size:var(--t-body)}
+  .dot{min-height:44px;padding:12px 16px;font-size:var(--t-xs)}
+  .tag{min-height:46px;padding:12px 20px}
+  .slot{min-height:48px;padding:13px 20px;font-size:var(--t-lg)}
+  .filechip{min-height:44px;padding:11px 18px;font-size:var(--t-body)}
+  .langbtn{min-height:40px;min-width:52px;padding:10px 14px;font-size:var(--t-xs)}
+  .opt{padding:18px 20px}
+  .opt .mark{width:22px;height:22px}
+  .reel-nav{width:48px;height:48px}
+  .lb-close{width:48px;height:48px}
+  .linky{min-height:46px;display:inline-flex;align-items:center;gap:6px}
+  .fcol a,.fcol button:not(.btn){min-height:44px;display:inline-flex;align-items:center}
+  .brand{min-height:44px;padding:6px 0}
+  .review-row{padding:var(--s20) 0}
+  .acct-chip{min-height:44px}
+  .stepnav .btn{flex:1 1 auto}
+}
+
+/* ---------- the calls to action take the full width ---------- */
+@media (max-width:560px){
+  /* the frame grows with the words instead of cropping them */
+  .hero-stage{aspect-ratio:auto;min-height:calc(100svh - 150px)}
+  .notice > div > .btn,
+  .closing > div > .btn{width:100%}
+  .hero-actions{flex-direction:column;align-items:stretch;gap:var(--s12)}
+  .hero-actions .btn{width:100%}
+  .closing > div{width:100%}
+  .closing > div > .btn{flex:1 1 100%}
+  .centered .btn{width:100%}
+  .form-col .stepnav{gap:var(--s12)}
+}
+
+@media (max-width:430px){
+  :root{--t-hero:clamp(34px,8.6vw,80px);--t-display:clamp(28px,7.4vw,56px)}
+}
+
+/* ---------- one long row of small controls becomes a swipe ---------- */
+@media (max-width:700px){
+  .reel-dots{
+    flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;
+    margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter);
+    scrollbar-width:none;
+  }
+  .reel-dots::-webkit-scrollbar{display:none}
+  .dot{flex:none}
+
+  /* the reel gets a taller frame and a caption that stops fighting
+     itself for the width */
+  .reel-frame{aspect-ratio:4/3}
+  .reel-cap{flex-direction:column;align-items:flex-start;gap:var(--s16)}
+  .reel-cap > span:first-child{width:100%}
+  .reel-cap .btn{width:100%}
+  /* the count takes one corner, the arrows the other, and the middle
+     of the frame is left to the film — a flick moves it anyway */
+  .reel-count{top:var(--s16);left:var(--s16);right:auto}
+  .reel-nav{top:var(--s12);transform:none;width:44px;height:44px}
+  .reel-prev{left:auto;right:calc(var(--s12) + 52px)}
+  .reel-next{right:var(--s12)}
+  .slots{gap:var(--s8)}
+  .filters{gap:var(--s8)}
+}
 
 /* ---------- and none of it for anyone who asked for less ---------- */
 @media (prefers-reduced-motion:reduce){
@@ -1923,7 +2023,12 @@ function renderSheet(){
   el.innerHTML =
     '<div class="sheet-top"><button class="iconbtn" data-menu="0" aria-label="Close">&times;</button></div>'+
     '<div class="sheet-links">'+acct+links+'</div>'+
-    '<div style="margin-top:auto;padding-top:32px"><button class="btn btn-primary btn-lg" data-go="request" style="width:100%">'+esc(L.start)+'</button>'+out+'</div>';
+    '<div style="margin-top:auto;padding-top:32px">'+
+      '<div class="sheet-lang"><div class="langbox" role="group" aria-label="Language">'+
+        '<button class="langbtn" data-lang="en" aria-pressed="'+(S.lang==='en')+'">EN</button>'+
+        '<button class="langbtn" data-lang="it" aria-pressed="'+(S.lang==='it')+'">IT</button>'+
+      '</div></div>'+
+      '<button class="btn btn-primary btn-lg" data-go="request" style="width:100%">'+esc(L.start)+'</button>'+out+'</div>';
 }
 
 function renderFooter(){
@@ -2962,6 +3067,17 @@ function sigWatch(el){
   if(sigInView(el)){ sigFire(el); return; }
   if(sigObs) sigObs.observe(el); else sigFire(el);
 }
+/* Anything sitting inside a frame is invisible to the observer until
+   that frame opens — a clipped ancestor counts as out of sight. So the
+   frame brings its own contents in, a beat behind itself. */
+function sigFireInside(root, delay){
+  var els = root.querySelectorAll('*');
+  for(var i=0;i<els.length;i++){
+    if(!els[i].__sigPlay) continue;
+    (function(el){ window.setTimeout(function(){ sigFire(el); }, delay || 0); })(els[i]);
+  }
+}
+
 function sigPlayPending(){
   var q = SIG.pending; SIG.pending = [];
   for(var i=0;i<q.length;i++){
@@ -3059,7 +3175,9 @@ function prepMedia(root){
     el.style.setProperty('--mr', r);
     el.setAttribute('data-mrev','');
     if(!SIG.anim && !SIG.gate && sigInView(el)){ el.classList.add('now','in'); continue; }
-    (function(el){ el.__sigPlay = function(){ el.classList.add('in'); }; })(el);
+    (function(el){
+      el.__sigPlay = function(){ el.classList.add('in'); sigFireInside(el, 140); };
+    })(el);
     sigWatch(el);
   }
 }
@@ -3232,12 +3350,65 @@ function sigBoot(){
   window.setTimeout(ready, hold + 350);
 }
 
+/* ---------- the reel answers a thumb ----------
+   A flick across the frame moves to the next film, exactly as the
+   arrows do. A vertical drag is left alone so the page still scrolls,
+   and the flick itself never counts as a tap on the film.          */
+var lastSwipe = 0;
+
+function initReelSwipe(){
+  var x0 = null, y0 = null, moved = false;
+
+  document.addEventListener('touchstart', function(e){
+    var host = e.target && e.target.closest ? e.target.closest('.reel') : null;
+    if(!host || e.touches.length !== 1){ x0 = null; return; }
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; moved = false;
+  }, {passive:true});
+
+  document.addEventListener('touchmove', function(e){
+    if(x0 === null || e.touches.length !== 1) return;
+    var dx = e.touches[0].clientX - x0, dy = e.touches[0].clientY - y0;
+    if(Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) moved = true;
+  }, {passive:true});
+
+  document.addEventListener('touchend', function(e){
+    if(x0 === null) return;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - x0, dy = t.clientY - y0;
+    x0 = null;
+    if(!moved || Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+    lastSwipe = Date.now();
+    S.reel = (S.reel + (dx < 0 ? 1 : -1) + WORK.length) % WORK.length;
+    render(true);
+  }, {passive:true});
+
+  /* a flick must not also open the film */
+  document.addEventListener('click', function(e){
+    if(Date.now() - lastSwipe > 500) return;
+    if(e.target && e.target.closest && e.target.closest('.reel')){
+      e.preventDefault(); e.stopPropagation();
+    }
+  }, true);
+}
+
+/* the chip for the film you are on stays in sight as the strip scrolls */
+function syncReelStrip(){
+  var strip = document.querySelector('.reel-dots');
+  if(!strip || strip.scrollWidth <= strip.clientWidth + 4) return;
+  var on = strip.querySelector('.dot[aria-pressed="true"]');
+  if(!on) return;
+  var left = on.offsetLeft - strip.clientWidth / 2 + on.offsetWidth / 2;
+  try{ strip.scrollTo({left:Math.max(0, left), behavior:'smooth'}); }
+  catch(e){ strip.scrollLeft = Math.max(0, left); }
+}
+
 /* ---------- called after every render ---------- */
 function motionAfterRender(routeChanged){
   SIG.anim = !!routeChanged;
   bindSignature(routeChanged);
   bindReveal();
   bindParallax();
+  syncReelStrip();
   if(routeChanged && !REDUCED && !(SIG.on && USE_CURTAIN)){
     var app = document.getElementById('app');
     app.classList.remove('page-in');
@@ -3250,6 +3421,7 @@ window.addEventListener('scroll', onScroll, {passive:true});
 window.addEventListener('resize', function(){ bindParallax(); }, {passive:true});
 initReveal();
 initCursor();
+initReelSwipe();
 sigInit();
 if(SIG.on) document.documentElement.classList.add('sig');
 
