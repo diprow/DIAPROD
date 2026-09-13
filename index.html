@@ -1479,19 +1479,29 @@ var AWARDS = [
   {name:'Milano Fashion Week', year:'2023'}
 ];
 
+/* Three things that are true about working with this studio, each with a
+   real number behind it. The photographs stay where they were. */
 var CASES = [
-  {workId:'work-2', client:'Photography', clientIt:'Fotografia', catEn:'Photo', catIt:'Foto', accent:'violet',
-   en:'Portrait, sport, outdoor and street — shot in Turin, and wherever the work needs to happen.',
-   it:'Ritratto, sport, outdoor e street — a Torino, e ovunque serva.',
-   metric:'€150', lEn:'Starter · Pro · Premium', lIt:'Starter · Pro · Premium'},
-  {workId:'work-3', client:'Video', clientIt:'Video', catEn:'Video', catIt:'Video', accent:'orange',
-   en:'Vertical content made for Instagram and TikTok, and promotional video for brands and local businesses.',
-   it:'Contenuti verticali per Instagram e TikTok, e video promozionali per brand e attività.',
-   metric:'€150', lEn:'Reel · Social · Commercial', lIt:'Reel · Social · Commercial'},
-  {workId:'work-8', client:'Photo + video', clientIt:'Foto + video', accent:'teal', catEn:'Both', catIt:'Entrambi',
-   en:'One session, both formats — the efficient way to fill a month of feed and keep a consistent look.',
-   it:'Una sessione, entrambi i formati — il modo efficiente per riempire un mese di feed con uno stile coerente.',
-   metric:'€350', lEn:'Content · Production · Full Day', lIt:'Content · Production · Full Day'}
+  {workId:'work-2', client:'Made to be watched', clientIt:'Fatti per essere guardati',
+   catEn:'Reach', catIt:'Risultati', accent:'orange',
+   en:'Over five million views on Instagram for the brands and people we shoot for — reels, campaigns and content built for the way people actually scroll.',
+   it:'Oltre cinque milioni di visualizzazioni su Instagram per i brand e le persone che riprendiamo — reel, campagne e contenuti pensati per come si guarda davvero.',
+   metric:'5M+', lEn:'views for our clients', lIt:'visualizzazioni per i clienti',
+   goTo:'work', linkEn:'See the work', linkIt:'Vedi i lavori'},
+
+  {workId:'work-3', client:'One pair of hands', clientIt:'Una sola persona, dall\u2019inizio alla fine',
+   catEn:'How we work', catIt:'Come lavoriamo', accent:'violet',
+   en:'Shot, edited and coloured in house. You talk to the person holding the camera, not to an account manager — which is why a brief on Monday does not become a quote a fortnight later.',
+   it:'Ripreso, montato e colorato in casa. Parli con chi tiene in mano la macchina, non con un account — per questo un brief di luned\u00ec non diventa un preventivo due settimane dopo.',
+   metric:'6', lEn:'years behind the camera', lIt:'anni dietro la macchina',
+   goTo:'call', linkEn:'Book a call', linkIt:'Prenota una call'},
+
+  {workId:'work-8', client:'Terms you can read', clientIt:'Condizioni che si capiscono',
+   catEn:'What it costs', catIt:'Quanto costa', accent:'teal',
+   en:'A price band before you commit, a fixed quote once the brief is in, and payment in three parts — one third at contract, one third on the shoot day, one third on delivery.',
+   it:'Una fascia di prezzo prima di impegnarti, un preventivo fisso quando arriva il brief, e pagamento in tre parti — un terzo alla firma, un terzo il giorno delle riprese, un terzo alla consegna.',
+   metric:'3', lEn:'parts: contract, shoot, delivery', lIt:'parti: firma, riprese, consegna',
+   goTo:'packages', linkEn:'See what it costs', linkIt:'Vedi i costi'}
 ];
 
 
@@ -1614,8 +1624,8 @@ var T = {
     watch:'Watch the film', view:'View project',
     curWatch:'Watch', curView:'View',
     awardsKicker:'Milano Fashion Week', awardsTitle:'On location in 2023 and 2025.',
-    casesKicker:'What we do', casesTitle:'Three ways to work together.',
-    casesSub:'Pick a package, or tell us what you need and we will quote it.',
+    casesKicker:'Why DIA PROD', casesTitle:'What you get, in practice.',
+    casesSub:'No agency layers, no surprise invoices — and work that has to earn its views.',
     viewCase:'See the packages',
     closeTitle:'Every great story starts with the first move.',
     closeSub:'Tell us what you are building. A quick brief, and we reply within a business day.',
@@ -1710,8 +1720,8 @@ var T = {
     watch:'Guarda il film', view:'Vedi il progetto',
     curWatch:'Guarda', curView:'Apri',
     awardsKicker:'Milano Fashion Week', awardsTitle:'Sul campo nel 2023 e nel 2025.',
-    casesKicker:'Cosa facciamo', casesTitle:'Tre modi di lavorare insieme.',
-    casesSub:'Scegli un pacchetto, oppure raccontaci cosa ti serve e ti facciamo un preventivo.',
+    casesKicker:'Perché DIA PROD', casesTitle:'Cosa ottieni, in pratica.',
+    casesSub:'Nessun passaggio d\u2019agenzia, nessuna fattura a sorpresa — e lavori che le visualizzazioni se le devono guadagnare.',
     viewCase:'Vedi i pacchetti',
     closeTitle:'Ogni grande storia inizia con la prima mossa.',
     closeSub:'Raccontaci cosa stai costruendo. Un brief veloce, e ti rispondiamo entro un giorno lavorativo.',
@@ -2416,9 +2426,10 @@ function screenHome(){
           '<p class="eyebrow'+accentClass(cs.accent)+'">'+esc(S.lang==='it'?cs.catIt:cs.catEn)+'</p>'+
           '<h3 class="display-type">'+esc(S.lang==='it'?(cs.clientIt||cs.client):cs.client)+'</h3>'+
           '<p class="body-copy" style="max-width:46ch">'+esc(S.lang==='it'?cs.it:cs.en)+'</p>'+
-          '<div class="metric"><b>'+esc(S.lang==='it'?'da ':'from ')+esc(cs.metric)+'</b>'+
+          '<div class="metric"><b>'+esc(cs.metric)+'</b>'+
             '<span class="small">'+esc(S.lang==='it'?cs.lIt:cs.lEn)+'</span></div>'+
-          '<button class="linky" data-go="packages" style="margin-top:8px">'+esc(L.viewCase)+' &rsaquo;</button>'+
+          '<button class="linky" data-go="'+(cs.goTo||'packages')+'" style="margin-top:8px">'+
+            esc(S.lang==='it'?(cs.linkIt||L.viewCase):(cs.linkEn||L.viewCase))+' &rsaquo;</button>'+
         '</div>'+
       '</article>';
     }).join('')+
