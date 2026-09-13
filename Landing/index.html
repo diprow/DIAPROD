@@ -7,8 +7,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>DIA PROD — Video e foto per brand ambiziosi · −20% con META20</title>
-<meta name="description" content="Brand film, spot e fotografia dal concept alla consegna. Prenota una call gratuita o invia il tuo progetto: −20% sul primo progetto con il codice META20.">
+<title>DIA PROD — Foto e video da Torino · −20% con META20</title>
+<meta name="description" content="Fotografia, Reel e video promozionali da Torino. Pacchetti da €150, dal concept alla consegna. Prenota una call gratuita: −20% sul primo progetto con il codice META20.">
 <meta name="author" content="DIA PROD — diaprod.it">
 <meta name="copyright" content="© 2026 DIA PROD">
 <meta name="x-build" content="DIAPROD-VTAX-7F3Y">
@@ -18,8 +18,8 @@
 <meta property="og:site_name" content="DIA PROD">
 <meta property="og:locale" content="it_IT">
 <meta property="og:locale:alternate" content="en_GB">
-<meta property="og:title" content="Video che fanno vendere il tuo brand — −20% con META20">
-<meta property="og:description" content="Brand film, spot e fotografia. Dal concept alla consegna. Prenota una call gratuita.">
+<meta property="og:title" content="Contenuti che la gente guarda davvero — −20% con META20">
+<meta property="og:description" content="Fotografia, Reel e video promozionali da Torino. Pacchetti da €150. Prenota una call gratuita.">
 <meta property="og:url" content="https://diaprod.it/lp/">
 <meta property="og:image" content="https://diaprod.it/studiov3/photos/01.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -135,7 +135,29 @@ header{position:sticky;top:0;z-index:60;background:rgba(11,11,12,.72);
 @media(min-width:680px){.rail figure{flex-basis:30%}}
 .rail img{width:100%;height:100%;object-fit:cover}
 
+/* ── proof strip ── */
+.proof{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--r-card);overflow:hidden}
+@media(min-width:680px){.proof{grid-template-columns:repeat(4,1fr)}}
+.proof div{background:var(--bg2);padding:18px 16px}
+.proof b{display:block;font-family:var(--display);font-size:clamp(22px,5vw,28px);font-weight:700;
+  letter-spacing:-.03em;color:var(--fg);line-height:1.1}
+.proof span{display:block;font-size:12px;color:var(--mut);margin-top:5px;line-height:1.35}
+
 /* ── packages ── */
+.segs{display:flex;gap:5px;background:var(--bg2);border:1px solid var(--line);border-radius:var(--r-btn);
+  padding:5px;margin:0 auto 22px;width:fit-content;max-width:100%;overflow:auto;scrollbar-width:none}
+.segs::-webkit-scrollbar{display:none}
+.segs button{appearance:none;border:0;background:none;color:var(--mut);font-family:var(--display);
+  font-weight:600;font-size:13.5px;padding:11px 16px;border-radius:999px;cursor:pointer;white-space:nowrap;min-height:42px}
+.segs button[aria-selected="true"]{background:var(--fg);color:#000}
+.extras{margin-top:34px;background:var(--bg2);border:1px solid var(--line);border-radius:var(--r-card);
+  padding:20px 22px}
+.extras ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+@media(min-width:680px){.extras ul{grid-template-columns:1fr 1fr;gap:10px 32px}}
+.extras li{display:flex;justify-content:space-between;gap:16px;font-size:14px;color:var(--fg2);
+  border-bottom:1px solid var(--line);padding-bottom:9px}
+.extras li b{color:var(--fg);font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
 .pk{position:relative;display:flex;flex-direction:column}
 .pk.hot{border-color:rgba(245,105,0,.5);background:linear-gradient(180deg,rgba(245,105,0,.09),var(--card) 46%)}
 .tag{position:absolute;top:-11px;left:22px;background:var(--acc);color:#fff;font-size:10.5px;font-weight:800;
@@ -273,8 +295,20 @@ footer a:hover{color:var(--fg)}
   </div>
 </section>
 
+<!-- ═══ PROOF ═══ -->
+<section style="padding-block:clamp(34px,6vw,56px)">
+  <div class="wrap">
+    <div class="proof reveal">
+      <div><b data-t="n1v"></b><span data-t="n1"></span></div>
+      <div><b data-t="n2v"></b><span data-t="n2"></span></div>
+      <div><b data-t="n3v"></b><span data-t="n3"></span></div>
+      <div><b data-t="n4v"></b><span data-t="n4"></span></div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ SERVICES ═══ -->
-<section class="band">
+<section class="band" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="eyebrow" data-t="srvEye"></span>
@@ -317,43 +351,13 @@ footer a:hover{color:var(--fg)}
       <h2 data-t="pkH"></h2>
       <p data-t="pkP"></p>
     </div>
-    <div class="grid g3">
-      <div class="card pk reveal">
-        <h3 data-t="p1h"></h3>
-        <div class="price"><span class="was">€2.500</span><span class="now">€2.000 <small data-t="from"></small></span></div>
-        <span class="saving" data-t="save1"></span>
-        <ul>
-          <li><svg class="tick" viewBox="0 0 20 20" fill="none"><path d="M4 10.5 8 14.5 16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="p1a"></span></li>
-          <li><svg class="tick" viewBox="0 0 20 20" fill="none"><path d="M4 10.5 8 14.5 16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="p1b"></span></li>
-          <li><svg class="tick" viewBox="0 0 20 20" fill="none"><path d="M4 10.5 8 14.5 16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="p1c"></span></li>
-        </ul>
-        <div class="pk-foot"><a class="btn btn-2 btn-full" href="#start" data-cta="pkg-half" data-t="ctaPick"></a></div>
-      </div>
-      <div class="card pk hot reveal">
-        <span class="tag" data-t="popular"></span>
-        <h3 data-t="p2h"></h3>
-        <div class="price"><span class="was">€12.000</span><span class="now">€9.600 <small data-t="from"></small></span></div>
-        <span class="saving" data-t="save2"></span>
-        <ul>
-          <li><svg class="tick" viewBox="0 0 20 20" fill="none"><path d="M4 10.5 8 14.5 16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="p2a"></span></li>
-          <li><svg class="tick" viewBox="0 0 20 20" fill="none"><path d="M4 10.5 8 14.5 16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="p2b"></span></li>
-          <li><svg class="tick" viewBox="0 0 20 20" fill="none"><path d="M4 10.5 8 14.5 16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="p2c"></span></li>
-        </ul>
-        <div class="pk-foot"><a class="btn btn-1 btn-full" href="#start" data-cta="pkg-day" data-t="ctaPick"></a></div>
-      </div>
-      <div class="card pk reveal">
-        <h3 data-t="p3h"></h3>
-        <div class="price"><span class="was">€40.000</span><span class="now">€32.000 <small data-t="from"></small></span></div>
-        <span class="saving" data-t="save3"></span>
-        <ul>
-          <li><svg class="tick" viewBox="0 0 20 20" fill="none"><path d="M4 10.5 8 14.5 16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="p3a"></span></li>
-          <li><svg class="tick" viewBox="0 0 20 20" fill="none"><path d="M4 10.5 8 14.5 16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="p3b"></span></li>
-          <li><svg class="tick" viewBox="0 0 20 20" fill="none"><path d="M4 10.5 8 14.5 16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="p3c"></span></li>
-        </ul>
-        <div class="pk-foot"><a class="btn btn-2 btn-full" href="#start" data-cta="pkg-sig" data-t="ctaPick"></a></div>
-      </div>
-    </div>
+    <div class="segs" id="segs" role="tablist"></div>
+    <div class="grid g3" id="pkgs"></div>
     <p class="note" data-t="pkNote"></p>
+    <div class="extras reveal">
+      <span class="eyebrow" data-t="exEye"></span>
+      <ul id="extras"></ul>
+    </div>
   </div>
 </section>
 
@@ -458,6 +462,7 @@ footer a:hover{color:var(--fg)}
       <details><summary data-t="q2"></summary><p data-t="a2"></p></details>
       <details><summary data-t="q3"></summary><p data-t="a3"></p></details>
       <details><summary data-t="q4"></summary><p data-t="a4"></p></details>
+      <details><summary data-t="q5"></summary><p data-t="a5"></p></details>
     </div>
   </div>
 </section>
@@ -513,43 +518,43 @@ var DIA_BUILD = 'DIAPROD-VTAX-7F3Y', DIA_ORIGIN = 'https://diaprod.it';
 var COPY = {
 it:{
  pill:'−20% · META20', off20:'−20%', offText:'primo progetto · codice META20',
- h1:'Video che fanno <em>vendere</em> il tuo brand.',
- sub:'Brand film, spot e fotografia. Raccontaci l’idea una volta: pensiamo noi a tutto, dal concept alla consegna.',
+ h1:'Contenuti che la gente <em>guarda davvero</em>.',
+ sub:'Fotografia, Reel e video promozionali, da Torino. Raccontaci l’idea una volta: pensiamo noi a tutto, dal concept alla consegna.',
  ctaCall:'Prenota una call gratuita', ctaCallShort:'Prenota', ctaProject:'Inizia il progetto',
- t1:'Risposta entro 24 ore', t2:'Preventivo fisso', t3:'Revisioni incluse',
+ t1:'Risposta entro un giorno lavorativo', t2:'Prezzi chiari, extra a listino', t3:'Color grading sempre incluso',
 
- srvEye:'Cosa facciamo', srvH:'Una troupe sola, dal concept alla consegna.',
- srvP:'Niente coordinamento fra tre fornitori diversi: riprese, montaggio, color e suono li gestiamo noi.',
- s1h:'Brand film', s1p:'Il film che racconta chi siete: identità, prodotto, persone. Pensato per sito, sala e campagne.',
- s2h:'Spot pubblicitario', s2p:'Formati verticali e 16:9 pronti per Meta, TikTok e YouTube. Dallo storyboard al master.',
- s3h:'Fotografia', s3p:'Still di prodotto, ritratti e backstage — girati nello stesso giorno delle riprese video.',
+ n1v:'6',    n1:'Anni dietro la macchina',
+ n2v:'50+',  n2:'Video consegnati',
+ n3v:'5M+',  n3:'Visualizzazioni per i clienti',
+ n4v:'2×',   n4:'Milano Fashion Week, 2023 e 2025',
+
+ srvEye:'Cosa facciamo', srvH:'Tre modi di lavorare insieme.',
+ srvP:'Scegli un pacchetto, oppure raccontaci cosa ti serve e ti facciamo un preventivo su misura.',
+ s1h:'Fotografia — da €150', s1p:'Ritratto, sport, outdoor e street. Girati, montati e colorati in casa, consegna digitale inclusa.',
+ s2h:'Video e Reel — da €150', s2p:'Contenuti verticali per Instagram e TikTok, e video promozionali per brand e attività.',
+ s3h:'Foto + video — da €350', s3p:'Una sessione, entrambi i formati: il modo efficiente per riempire un mese di feed con uno stile coerente.',
 
  wkEye:'Lavori', wkH:'Qualche fotogramma.',
- pkEye:'Pacchetti', pkH:'Prezzi chiari, già scontati del 20%.',
+ pkEye:'Pacchetti', pkH:'Punti di partenza, già scontati del 20%.',
  pkP:'Il prezzo barrato è il listino. Quello accanto è quello che paghi con il codice META20 sul tuo primo progetto.',
- from:'iva escl.', popular:'Più richiesto', ctaPick:'Richiedi questo pacchetto',
- save1:'Risparmi €500', save2:'Risparmi €2.400', save3:'Risparmi €8.000',
- p1h:'Mezza giornata', p1a:'Foto o video short-form, una location, fino a 4 ore',
- p1b:'Consegna montata in 7 giorni', p1c:'Formati social inclusi',
- p2h:'Giornata di produzione', p2a:'Troupe completa, un giorno di ripresa',
- p2b:'Video + fotografia nello stesso giorno', p2c:'Color, montaggio e suono inclusi',
- p3h:'Signature Film', p3a:'Più giornate, dal concept alla consegna',
- p3b:'Direzione creativa e casting', p3c:'Post-produzione completa',
- pkNote:'Offerta valida per i nuovi clienti, sui progetti confermati entro il {date}.',
+ segPhoto:'Fotografia', segVideo:'Video', segBoth:'Foto + video',
+ popular:'Il più scelto', ctaPick:'Inizia da qui', saveLabel:'Risparmi',
+ pkNote:'I prezzi sono punti di partenza e variano in base al progetto. IVA inclusa ove applicabile. Offerta per i nuovi clienti, sui progetti confermati entro il {date}.',
+ exEye:'Extra a listino',
 
- grEye:'Qualità garantita', grH:'Se non ti convince, lo rifacciamo.',
- g1:'Due giri di revisione inclusi in ogni pacchetto.',
- g2:'Preventivo fisso prima delle riprese: nessun costo a sorpresa.',
- g3:'Date di consegna concordate per iscritto e rispettate.',
- g4:'Color, montaggio e suono sempre inclusi nel prezzo.',
+ grEye:'Come lavoriamo', grH:'Nessuna sorpresa, dal preventivo alla consegna.',
+ g1:'Color correction e grading inclusi in ogni pacchetto.',
+ g2:'Consegna digitale inclusa, senza costi aggiuntivi.',
+ g3:'Extra a listino: sai in anticipo quanto costa un’ora o un reel in più.',
+ g4:'Pagamento in tre parti: un terzo alla firma, un terzo alle riprese, un terzo alla consegna.',
 
  prEye:'Come funziona', prH:'Tre passaggi, nessuna perdita di tempo.',
  pr1h:'Call di 20 minuti', pr1p:'Capiamo obiettivo, budget e tempi. Gratuita e senza impegno.',
- pr2h:'Concept e preventivo', pr2p:'Ti arriva entro 48 ore, con costi fissi e date di consegna.',
- pr3h:'Riprese e consegna', pr3p:'Giriamo, montiamo e consegniamo, già tagliato nei formati che ti servono.',
+ pr2h:'Preventivo su misura', pr2p:'Ti rispondiamo entro un giorno lavorativo, con il −20% già applicato.',
+ pr3h:'Shooting e consegna', pr3p:'Giriamo, montiamo e coloriamo in casa. Consegna digitale, pronta per i social.',
 
  fEye:'Iniziamo', fH:'Prenota la call o mandaci il progetto.',
- fP:'Nessun account, nessuna registrazione. Ti rispondiamo entro 24 ore con il codice sconto già applicato.',
+ fP:'Nessun account, nessuna registrazione. Ti rispondiamo entro un giorno lavorativo, con il codice sconto già applicato.',
  tabCall:'Prenota una call', tabProj:'Invia il progetto',
  lName:'Nome e cognome', lEmail:'Email', lPhone:'Telefono', lCompany:'Azienda',
  lType:'Di cosa hai bisogno', lBudget:'Budget indicativo', lSlot:'Scegli un orario',
@@ -558,70 +563,73 @@ it:{
  phMsg:'Cosa vuoi girare, per chi e entro quando.',
  btnSend:'Invia e blocca il −20%', btnSending:'Invio in corso…',
  fNote:'Inviando accetti di essere ricontattato da DIA PROD. Niente newsletter, niente spam.',
- okH:'Ricevuto. Ti scriviamo entro 24 ore.',
+ okH:'Ricevuto. Ti rispondiamo entro un giorno lavorativo.',
  okP:'Abbiamo registrato la richiesta e il tuo sconto. Conserva il riferimento qui sotto.',
- okRef:'Riferimento', okSlot:'Orario scelto: <b>{slot}</b> (ora italiana). Ti confermiamo per email.', okCode:'Sconto applicato: <b>META20</b> — −20% sul primo progetto.',
+ okRef:'Riferimento', okSlot:'Orario scelto: <b>{slot}</b> (ora italiana). Ti confermiamo per email.',
+ okCode:'Sconto applicato: <b>META20</b> — −20% sul primo progetto.',
 
  qEye:'Domande', qH:'Le risposte veloci.',
  q1:'Come funziona lo sconto del 20%?',
  a1:'Il codice META20 si applica automaticamente alla richiesta che invii da questa pagina. Vale per i nuovi clienti, su un solo progetto, se confermato entro il {date}. Lo trovi già scontato nel preventivo.',
- q2:'In quanto tempo consegnate?',
- a2:'Mezza giornata: montato in 7 giorni. Giornata di produzione: 10–14 giorni. Signature Film: definiamo il calendario insieme in fase di preventivo. Le date concordate finiscono per iscritto nel contratto.',
- q3:'Lavorate in tutta Italia?',
- a3:'Sì, in tutta Italia, e all’estero su richiesta. Le trasferte fuori regione le mettiamo a preventivo in anticipo, mai a consuntivo.',
- q4:'Devo creare un account per scrivervi?',
- a4:'No. Da questa pagina invii la richiesta direttamente, senza registrazione. Ricevi un codice di riferimento e ti ricontattiamo via email o telefono.',
+ q2:'I prezzi dei pacchetti sono definitivi?',
+ a2:'Sono punti di partenza e coprono esattamente quello che leggi nel pacchetto. Se servono più ore, più foto o più reel, gli extra sono a listino qui sopra. IVA inclusa ove applicabile; il preventivo finale te lo confermiamo prima delle riprese.',
+ q3:'Dove lavorate?',
+ a3:'Lo studio è a Torino e ci muoviamo in città senza costi aggiuntivi. Per le trasferte fuori Torino facciamo un preventivo dedicato, sempre prima di partire.',
+ q4:'Come si paga?',
+ a4:'In tre parti: un terzo alla firma, un terzo il giorno delle riprese, un terzo alla consegna.',
+ q5:'Devo creare un account per scrivervi?',
+ a5:'No. Da questa pagina invii la richiesta direttamente, senza registrazione. Ricevi un codice di riferimento e ti ricontattiamo via email o telefono.',
 
  fullSite:'Vai al sito completo →',
- legal:'Tutti i prezzi sono IVA esclusa e indicativi: il preventivo finale è fisso e concordato prima delle riprese.',
+ legal:'Create. Capture. Connect. — fotografia, videografia e produzione creativa, da Torino. I prezzi indicati sono punti di partenza, IVA inclusa ove applicabile.',
  skT:'−20% sul primo progetto', skS:'codice META20',
  errGeneric:'Non siamo riusciti a inviare la richiesta. Riprova o scrivici a studio@diaprod.it.',
  errMany:'Troppi invii ravvicinati. Riprova tra qualche minuto o scrivici a studio@diaprod.it.',
  errFields:'Controlla nome ed email: servono entrambi, e l’email deve essere valida.',
  errNet:'Connessione non riuscita. Controlla la rete e riprova.',
- types:['Brand film','Spot pubblicitario','Fotografia','Contenuti per i social','Altro / non lo so ancora'],
- budgets:['Meno di €2.500','€2.500 – €10.000','€10.000 – €25.000','Oltre €25.000','Da definire insieme'],
+ types:['Fotografia','Reel e contenuti social','Video promozionale','Foto + video','Altro / non lo so ancora'],
+ budgets:['€150 – €300','€300 – €600','€600 – €1.000','Oltre €1.000','Da definire insieme'],
  days:['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato']
 },
 en:{
  pill:'−20% · META20', off20:'−20%', offText:'first project · code META20',
- h1:'Video that actually <em>sells</em> your brand.',
- sub:'Brand films, commercials and photography. Brief us once — we take it from concept to final delivery.',
+ h1:'Content people <em>actually watch</em>.',
+ sub:'Photography, Reels and promotional video, from Turin. Brief us once — we take it from concept to final delivery.',
  ctaCall:'Book a free call', ctaCallShort:'Book a call', ctaProject:'Start a project',
- t1:'Reply within 24 hours', t2:'Fixed quote', t3:'Revisions included',
+ t1:'Reply within one working day', t2:'Clear prices, extras on the list', t3:'Colour grading always included',
 
- srvEye:'What we do', srvH:'One crew, from concept to delivery.',
- srvP:'No juggling three suppliers: shooting, edit, colour and sound all sit with us.',
- s1h:'Brand film', s1p:'The film that says who you are — identity, product, people. Built for your site, screens and campaigns.',
- s2h:'Commercial', s2p:'Vertical and 16:9 masters ready for Meta, TikTok and YouTube. Storyboard to final cut.',
- s3h:'Photography', s3p:'Product stills, portraits and behind-the-scenes — shot on the same production day.',
+ n1v:'6',    n1:'Years behind the camera',
+ n2v:'50+',  n2:'Videos delivered',
+ n3v:'5M+',  n3:'Views for our clients',
+ n4v:'2×',   n4:'Milano Fashion Week, 2023 and 2025',
+
+ srvEye:'What we do', srvH:'Three ways to work together.',
+ srvP:'Pick a package, or tell us what you need and we quote it.',
+ s1h:'Photography — from €150', s1p:'Portrait, sport, outdoor and street. Shot, edited and coloured in house, digital delivery included.',
+ s2h:'Video and Reels — from €150', s2p:'Vertical content for Instagram and TikTok, and promotional video for brands and local businesses.',
+ s3h:'Photo + video — from €350', s3p:'One session, both formats: the efficient way to fill a month of feed with a consistent look.',
 
  wkEye:'Work', wkH:'A few frames.',
- pkEye:'Packages', pkH:'Clear prices, already 20% off.',
- pkP:'The struck-through figure is our rate card. The one next to it is what you pay with code META20 on your first project.',
- from:'excl. VAT', popular:'Most booked', ctaPick:'Request this package',
- save1:'You save €500', save2:'You save €2,400', save3:'You save €8,000',
- p1h:'Half day', p1a:'Photo or short-form video, one location, up to 4 hours',
- p1b:'Edited delivery in 7 days', p1c:'Social formats included',
- p2h:'Production day', p2a:'Full crew, one shoot day',
- p2b:'Video + stills on the same day', p2c:'Colour, edit and sound included',
- p3h:'Signature Film', p3a:'Multi-day, concept to delivery',
- p3b:'Creative direction and casting', p3c:'Full post-production',
- pkNote:'Valid for new clients, on projects confirmed by {date}.',
+ pkEye:'Packages', pkH:'Starting points, already 20% off.',
+ pkP:'The struck-through figure is our list price. The one next to it is what you pay with code META20 on your first project.',
+ segPhoto:'Photography', segVideo:'Video', segBoth:'Photo + video',
+ popular:'Most booked', ctaPick:'Start here', saveLabel:'You save',
+ pkNote:'Prices are starting points and vary with the project. VAT included where applicable. For new clients, on projects confirmed by {date}.',
+ exEye:'Extras, priced',
 
- grEye:'Quality guaranteed', grH:'If the cut isn’t right, we redo it.',
- g1:'Two rounds of revisions included in every package.',
- g2:'Fixed quote before we shoot — no surprise costs.',
- g3:'Delivery dates agreed in writing, and kept.',
- g4:'Colour, edit and sound always included in the price.',
+ grEye:'How we work', grH:'No surprises, from quote to delivery.',
+ g1:'Colour correction and grading included in every package.',
+ g2:'Digital delivery included, at no extra cost.',
+ g3:'Extras are priced up front — you know what an extra hour or reel costs.',
+ g4:'Paid in three parts: a third on signing, a third on the shoot day, a third on delivery.',
 
  prEye:'How it works', prH:'Three steps, no time wasted.',
  pr1h:'A 20-minute call', pr1p:'We work out the goal, the budget and the timing. Free, no strings.',
- pr2h:'Concept and quote', pr2p:'With you within 48 hours — fixed costs and delivery dates.',
- pr3h:'Shoot and deliver', pr3p:'We shoot, edit and hand over, already cut to the formats you need.',
+ pr2h:'A quote built for you', pr2p:'Back with you within one working day, with the 20% already applied.',
+ pr3h:'Shoot and deliver', pr3p:'We shoot, edit and colour in house. Digital delivery, ready for social.',
 
  fEye:'Let’s start', fH:'Book the call or send us the project.',
- fP:'No account, no sign-up. We reply within 24 hours with your discount already applied.',
+ fP:'No account, no sign-up. We reply within one working day, with your discount already applied.',
  tabCall:'Book a call', tabProj:'Send the project',
  lName:'Full name', lEmail:'Email', lPhone:'Phone', lCompany:'Company',
  lType:'What do you need', lBudget:'Rough budget', lSlot:'Pick a time',
@@ -630,37 +638,83 @@ en:{
  phMsg:'What you want to shoot, who for and by when.',
  btnSend:'Send and lock in −20%', btnSending:'Sending…',
  fNote:'By sending this you agree to be contacted by DIA PROD. No newsletter, no spam.',
- okH:'Got it. We’ll be in touch within 24 hours.',
+ okH:'Got it. We’ll reply within one working day.',
  okP:'Your request and your discount are recorded. Keep the reference below.',
- okRef:'Reference', okSlot:'Time you picked: <b>{slot}</b> (Italian time). We confirm by email.', okCode:'Discount applied: <b>META20</b> — 20% off your first project.',
+ okRef:'Reference', okSlot:'Time you picked: <b>{slot}</b> (Italian time). We confirm by email.',
+ okCode:'Discount applied: <b>META20</b> — 20% off your first project.',
 
  qEye:'Questions', qH:'The quick answers.',
  q1:'How does the 20% discount work?',
  a1:'Code META20 is applied automatically to the request you send from this page. It is for new clients, on one project, confirmed by {date}. The quote you receive already has it applied.',
- q2:'How fast do you deliver?',
- a2:'Half day: edited in 7 days. Production day: 10–14 days. Signature Film: we set the schedule together at quoting stage. Agreed dates go in writing into the contract.',
- q3:'Do you work across Italy?',
- a3:'Yes, anywhere in Italy, and abroad on request. Travel outside the region is quoted upfront, never billed after the fact.',
- q4:'Do I need an account to contact you?',
- a4:'No. From this page you send the request directly, with no sign-up. You get a reference code and we come back to you by email or phone.',
+ q2:'Are the package prices final?',
+ a2:'They are starting points, and they cover exactly what the package lists. If you need more hours, more photographs or more reels, the extras are priced above. VAT included where applicable; the final quote is confirmed before the shoot.',
+ q3:'Where do you work?',
+ a3:'The studio is in Turin and we move around the city at no extra cost. Travel outside Turin is quoted separately, always before we set off.',
+ q4:'How do I pay?',
+ a4:'In three parts: a third on signing, a third on the shoot day, a third on delivery.',
+ q5:'Do I need an account to contact you?',
+ a5:'No. From this page you send the request directly, with no sign-up. You get a reference code and we come back to you by email or phone.',
 
  fullSite:'Go to the full site →',
- legal:'All prices exclude VAT and are indicative: the final quote is fixed and agreed before the shoot.',
+ legal:'Create. Capture. Connect. — photography, videography and creative production, from Turin. Prices shown are starting points, VAT included where applicable.',
  skT:'−20% on your first project', skS:'code META20',
  errGeneric:'We could not send that. Please try again or email studio@diaprod.it.',
  errMany:'Too many attempts in a row. Try again in a few minutes or email studio@diaprod.it.',
  errFields:'Please check your name and email — both are required and the email must be valid.',
  errNet:'Connection failed. Check your network and try again.',
- types:['Brand film','Commercial','Photography','Social content','Other / not sure yet'],
- budgets:['Under €2,500','€2,500 – €10,000','€10,000 – €25,000','Over €25,000','To be defined together'],
+ types:['Photography','Reels and social content','Promotional video','Photo + video','Other / not sure yet'],
+ budgets:['€150 – €300','€300 – €600','€600 – €1,000','Over €1,000','To be defined together'],
  days:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 }};
+
+/* ── the studio's real packages (list price in euro, −20% applied in the page) ── */
+var PKG_GROUPS = ['photo','video','both'];
+var PKG = [
+ {g:'photo', n:'Starter', p:150,
+  it:['1 ora di shooting','1 location','10 fotografie post-prodotte','Color correction','Consegna digitale'],
+  en:['1 hour of shooting','1 location','10 edited photographs','Colour correction','Digital delivery']},
+ {g:'photo', n:'Pro', p:250, hot:true,
+  it:['Fino a 2 ore di shooting','Fino a 2 outfit / look','20 fotografie post-prodotte','5 con ritocco professionale','Color correction & grading'],
+  en:['Up to 2 hours of shooting','Up to 2 outfits / looks','20 edited photographs','5 with professional retouching','Colour correction & grading']},
+ {g:'photo', n:'Premium', p:400,
+  it:['Fino a 4 ore di shooting','Multiple location / look','40 fotografie post-prodotte','10 con ritocco professionale','Direzione creativa','Color grading professionale'],
+  en:['Up to 4 hours of shooting','Multiple locations / looks','40 edited photographs','10 with professional retouching','Creative direction','Professional colour grading']},
+
+ {g:'video', n:'Reel', p:150,
+  it:['Fino a 1 ora di shooting','1 Reel verticale','Editing professionale','Color grading','Musica','Formato 9:16'],
+  en:['Up to 1 hour of shooting','1 vertical reel','Professional editing','Colour grading','Music','9:16 format']},
+ {g:'video', n:'Social', p:300, hot:true,
+  it:['Fino a 2 ore di shooting','3 Reel verticali','Editing professionale','Color grading','Sottotitoli','Musica & sound design'],
+  en:['Up to 2 hours of shooting','3 vertical reels','Professional editing','Colour grading','Subtitles','Music & sound design']},
+ {g:'video', n:'Commercial', p:600,
+  it:['Fino a 4 ore di produzione','1 video promozionale','Riprese professionali','Editing cinematografico','Color grading e sound design','1 revisione inclusa'],
+  en:['Up to 4 hours of production','1 promotional video','Professional filming','Cinematic editing','Colour grading and sound design','1 revision included']},
+
+ {g:'both', n:'Content', p:350,
+  it:['Fino a 2 ore di shooting','15 fotografie post-prodotte','2 Reel verticali','Editing professionale','Color grading','Consegna digitale'],
+  en:['Up to 2 hours of shooting','15 edited photographs','2 vertical reels','Professional editing','Colour grading','Digital delivery']},
+ {g:'both', n:'Production', p:650, hot:true,
+  it:['Mezza giornata di produzione','30 fotografie post-prodotte','4 Reel verticali','Ritocco fotografico professionale','Video editing e color grading','Direzione creativa'],
+  en:['Half a day of production','30 edited photographs','4 vertical reels','Professional photo retouching','Video editing and colour grading','Creative direction']},
+ {g:'both', n:'Full Day', p:950,
+  it:['Giornata completa di produzione','Fotografia + videografia','50+ fotografie post-prodotte','6–8 Reel verticali','Video editing avanzato','Color grading cinematografico','Direzione creativa'],
+  en:['A full production day','Photography + videography','50+ edited photographs','6–8 vertical reels','Advanced video editing','Cinematic colour grading','Creative direction']}
+];
+var EXTRAS = [
+ {it:'Ora aggiuntiva',                   en:'Extra hour',                   v:'€70'},
+ {it:'Reel aggiuntivo',                  en:'Extra reel',                   v:'€80'},
+ {it:'Fotografia aggiuntiva',            en:'Extra photograph',             v:'€15'},
+ {it:'Retouch professionale aggiuntivo', en:'Extra professional retouch',   v:'€20'},
+ {it:'Location aggiuntiva',              en:'Extra location',               v:'da €50', ven:'from €50'},
+ {it:'Consegna urgente',                 en:'Rush delivery',                v:'su richiesta', ven:'on request'},
+ {it:'Trasferta fuori Torino',           en:'Travel outside Turin',         v:'su richiesta', ven:'on request'}
+];
 
 /* ─────────────── RUNTIME ─────────────── */
 (function(){
   var $  = function(s,r){return (r||document).querySelector(s)};
   var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
-  var L  = 'it', T = COPY.it, KIND = 'call', SLOT = null;
+  var L  = 'it', T = COPY.it, KIND = 'call', SLOT = null, GROUP = 'both';
 
   /* language ------------------------------------------------------------- */
   function pickLang(){
@@ -687,6 +741,8 @@ en:{
     buildSelect($('#f-type'),  T.types);
     buildSelect($('#f-budget'),T.budgets, true);
     buildSlots();
+    buildPackages();
+    buildExtras();
     document.title = l === 'it'
       ? 'DIA PROD — Video e foto per brand ambiziosi · −20% con META20'
       : 'DIA PROD — Video and photography for ambitious brands · 20% off with META20';
@@ -699,6 +755,62 @@ en:{
     if(cur > -1 && cur < list.length) sel.selectedIndex = cur;
   }
   $$('.lang button').forEach(function(b){ b.addEventListener('click', function(){ applyLang(b.dataset.lang); }); });
+
+  /* packages ------------------------------------------------------------- */
+  var TICK = '<svg class="tick" viewBox="0 0 20 20" fill="none" aria-hidden="true">' +
+             '<path d="M4 10.5 8 14.5 16 6" stroke="currentColor" stroke-width="2.2" ' +
+             'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function eur(n){ return '\u20ac' + String(n); }
+
+  function goToForm(kind, tag){
+    setKind(kind);
+    try{ fbq('track','InitiateCheckout',{content_name:tag}); }catch(e){}
+    document.getElementById('start').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function buildPackages(){
+    var segs = $('#segs'), box = $('#pkgs');
+    segs.innerHTML = '';
+    PKG_GROUPS.forEach(function(g){
+      var b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('role','tab');
+      b.setAttribute('aria-selected', String(g === GROUP));
+      b.textContent = T[g === 'photo' ? 'segPhoto' : g === 'video' ? 'segVideo' : 'segBoth'];
+      b.addEventListener('click', function(){ GROUP = g; buildPackages(); });
+      segs.appendChild(b);
+    });
+
+    box.innerHTML = '';
+    PKG.filter(function(k){ return k.g === GROUP; }).forEach(function(k){
+      var now = Math.round(k.p * (100 - CFG.DISCOUNT) / 100);
+      var c = document.createElement('div');
+      c.className = 'card pk' + (k.hot ? ' hot' : '');
+      c.innerHTML =
+        (k.hot ? '<span class="tag">' + T.popular + '</span>' : '') +
+        '<h3>' + k.n + '</h3>' +
+        '<div class="price"><span class="was">' + eur(k.p) + '</span>' +
+        '<span class="now">' + eur(now) + '</span></div>' +
+        '<span class="saving">' + T.saveLabel + ' ' + eur(k.p - now) + '</span>' +
+        '<ul>' + k[L].map(function(t){ return '<li>' + TICK + '<span>' + t + '</span></li>'; }).join('') + '</ul>' +
+        '<div class="pk-foot"><button type="button" class="btn ' + (k.hot ? 'btn-1' : 'btn-2') +
+        ' btn-full">' + T.ctaPick + '</button></div>';
+      c.querySelector('button.btn').addEventListener('click', function(){
+        goToForm('project', 'pkg-' + k.n.toLowerCase().replace(/\s+/g,'-'));
+        var sel = $('#f-type'), want = k.g === 'photo' ? 0 : k.g === 'video' ? 1 : 3;
+        if(sel.options[want]) sel.selectedIndex = want;
+      });
+      box.appendChild(c);
+    });
+  }
+
+  function buildExtras(){
+    var ul = $('#extras'); ul.innerHTML = '';
+    EXTRAS.forEach(function(x){
+      var li = document.createElement('li');
+      li.innerHTML = '<span>' + x[L] + '</span><b>' + ((L === 'en' && x.ven) ? x.ven : x.v) + '</b>';
+      ul.appendChild(li);
+    });
+  }
 
   /* gallery -------------------------------------------------------------- */
   (function(){
