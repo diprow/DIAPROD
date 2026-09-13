@@ -146,6 +146,23 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;margin:0;text-wrap:balanc
 .btn-ghost{color:var(--frost-white)}
 .btn-ghost:hover{color:var(--paper-white)}
 .light .btn-ghost{color:var(--obsidian)}
+/* the studio's own call to action: an outline rather than a block of
+   colour. A shade brighter than .btn-outline so that where the two stand
+   side by side you can still tell which one is the invitation. */
+.btn-cta{
+  background:rgba(245,245,247,.05);border:1px solid rgba(245,245,247,.34);
+  border-radius:var(--r-pill);color:var(--frost-white);
+  padding-inline:30px;
+  transition:border-color .28s ease,background .28s ease;
+}
+.btn-cta:hover{border-color:rgba(245,245,247,.62);background:rgba(245,245,247,.09)}
+.btn-cta:active{background:rgba(245,245,247,.13)}
+.btn-cta.btn-lg{padding:15px 34px}
+.light .btn-cta,.frost .btn-cta{
+  background:rgba(29,29,31,.04);border-color:rgba(29,29,31,.28);color:var(--obsidian);
+}
+.light .btn-cta:hover,.frost .btn-cta:hover{border-color:rgba(29,29,31,.55);background:rgba(29,29,31,.08)}
+.light .btn-cta:active,.frost .btn-cta:active{background:rgba(29,29,31,.12)}
 .btn-outline{border:1px solid var(--smoke);color:var(--frost-white)}
 .btn-outline:hover{border-color:var(--silver-mist)}
 .light .btn-outline{border-color:var(--line-light);color:var(--obsidian)}
@@ -208,8 +225,8 @@ html.nav-lift.nav-light .nav{
   background:rgba(255,255,255,.62);
   border-color:rgba(0,0,0,.07);
 }
-.nav .brand-name,.nav .navlink,.nav .acct-chip,.nav .langbtn,.nav .burger span,
-.nav .langbox,.nav .brand svg rect{
+.nav .brand-name,.nav .navlink,.nav .acct-chip,.nav .langbtn,.nav .burger i,
+.nav .langbox,.nav .brand svg rect,.nav .btn-cta{
   transition:color .35s ease,background .35s ease,border-color .35s ease,fill .35s ease;
 }
 html.nav-light .nav .brand-name,
@@ -218,7 +235,15 @@ html.nav-light .nav .acct-chip{color:var(--obsidian)}
 html.nav-light .nav .brand svg rect{fill:var(--obsidian)}
 html.nav-light .nav .langbox{border-color:rgba(0,0,0,.13)}
 html.nav-light .nav .langbtn[aria-pressed="true"]{background:var(--obsidian);color:var(--paper-white)}
-html.nav-light .nav .burger span{background:var(--obsidian)}
+html.nav-light .nav .burger i{background:var(--obsidian)}
+html.nav-light .nav .burger{color:var(--obsidian)}
+/* the call to action turns over with the rest of the bar — white on white
+   is no button at all */
+html.nav-light .nav .btn-cta{
+  background:rgba(29,29,31,.05);border-color:rgba(29,29,31,.30);color:var(--obsidian);
+}
+html.nav-light .nav .btn-cta:hover{border-color:rgba(29,29,31,.58);background:rgba(29,29,31,.09)}
+html.nav-light .nav .btn-cta:active{background:rgba(29,29,31,.13)}
 html.nav-light .nav-pill{background:rgba(0,0,0,.07)}
 html.nav-light .navwrap::after{
   background:linear-gradient(to bottom,rgba(255,255,255,.62),rgba(255,255,255,0));
@@ -257,8 +282,35 @@ html.nav-light .nav .langbtn,html.nav-light .nav .acct-chip{text-shadow:none}
   font-size:var(--t-caption);font-weight:600;letter-spacing:.06em;color:var(--platinum);transition:.2s;
 }
 .langbtn[aria-pressed="true"]{background:var(--frost-white);color:var(--pure-black)}
-.burger{display:none;background:none;border:none;cursor:pointer;padding:10px;flex-direction:column;gap:5px}
-.burger span{display:block;width:20px;height:1.5px;background:var(--frost-white);border-radius:2px}
+.burger{
+  display:none;position:relative;background:none;border:none;cursor:pointer;padding:0;
+  width:44px;height:44px;align-items:center;justify-content:center;
+  color:var(--frost-white);
+}
+/* the two lines */
+.burger-lines{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:5px;
+}
+.burger-lines i{
+  display:block;width:20px;height:1.5px;background:currentColor;border-radius:2px;
+  transition:transform .62s var(--ease-sig),opacity .3s ease .04s;
+}
+/* the camera, waiting underneath */
+.burger-mark{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:scale(.72);filter:blur(3px);
+  transition:opacity .34s ease,transform .62s var(--ease-sig),filter .34s ease;
+}
+.burger-mark svg{display:block}
+/* open: the lines meet in the middle and leave, the camera settles in behind them */
+html.menu-open .burger-lines i{opacity:0;transition:transform .62s var(--ease-sig),opacity .22s ease}
+html.menu-open .burger-lines i:first-child{transform:translateY(3.25px) scaleX(.34)}
+html.menu-open .burger-lines i:last-child{transform:translateY(-3.25px) scaleX(.34)}
+html.menu-open .burger-mark{
+  opacity:1;transform:none;filter:blur(0);
+  transition:opacity .42s ease .16s,transform .66s var(--ease-sig) .12s,filter .42s ease .16s;
+}
 @media (max-width:1000px){
   .navlinks{display:none}
   .burger{display:flex}
@@ -266,17 +318,41 @@ html.nav-light .nav .langbtn,html.nav-light .nav .acct-chip{text-shadow:none}
 
 /* mobile menu */
 .sheet{
-  position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.94);
-  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  display:flex;flex-direction:column;padding:var(--s20) var(--gutter) var(--s48);
+  position:fixed;inset:0;z-index:90;
+  background:
+    radial-gradient(120% 70% at 50% 8%,rgba(245,105,0,.07) 0%,rgba(0,0,0,0) 58%),
+    radial-gradient(100% 60% at 50% 100%,rgba(41,151,255,.06) 0%,rgba(0,0,0,0) 60%),
+    rgba(7,7,8,.94);
+  backdrop-filter:blur(30px) saturate(150%);-webkit-backdrop-filter:blur(30px) saturate(150%);
+  display:flex;flex-direction:column;
+  padding:calc(var(--nav-h,74px) + var(--s16)) var(--gutter)
+          max(var(--s32),calc(env(safe-area-inset-bottom) + 20px));
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .46s var(--ease-sig),visibility 0s linear .46s;
+}
+html.menu-open .sheet{
+  opacity:1;visibility:visible;pointer-events:auto;
+  transition:opacity .46s var(--ease-sig),visibility 0s;
 }
 .sheet[hidden]{display:none!important}
-.sheet-top{display:flex;justify-content:flex-end}
-.sheet-links{display:flex;flex-direction:column;gap:var(--s4);margin-top:var(--s40)}
+.sheet-top{display:none}
+/* the names sit in the middle of the screen, with room to breathe */
+.sheet-links{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(14px,3.1vh,30px);text-align:center;width:100%;
+}
 .sheet-links button{
-  background:none;border:none;border-bottom:1px solid var(--graphite);cursor:pointer;text-align:left;
-  padding:var(--s20) 0;font-family:var(--display);font-size:var(--t-h-lg);font-weight:600;
-  letter-spacing:-0.01em;color:var(--frost-white);
+  background:none;border:none;cursor:pointer;text-align:center;
+  padding:4px 8px;font-family:var(--display);
+  font-size:clamp(27px,7.4vw,38px);font-weight:500;letter-spacing:-0.018em;line-height:1.06;
+  color:var(--frost-white);transition:opacity .28s ease;
+}
+.sheet-links button:active{opacity:.55}
+/* the page you are on keeps a small mark of its own */
+.sheet-links button[aria-current="page"]::before{
+  content:'';display:inline-block;vertical-align:middle;
+  width:24px;height:2px;border-radius:2px;background:var(--signal-orange);
+  margin-right:15px;transform:translateY(-3px);
 }
 .iconbtn{
   background:none;border:1px solid var(--graphite);color:var(--frost-white);cursor:pointer;
@@ -508,8 +584,8 @@ textarea.input{border-radius:var(--r-card);line-height:1.47}
 }
 .avatar.lg{width:64px;height:64px;font-size:var(--t-lg)}
 .sheet-acct{
-  display:flex;align-items:center;gap:var(--s12);padding:var(--s16) 0;
-  border-bottom:1px solid var(--graphite);margin-bottom:var(--s12);
+  display:flex;align-items:center;justify-content:center;gap:var(--s12);
+  padding:0 0 var(--s8);margin-bottom:var(--s8);text-align:left;
 }
 .acct-head{display:flex;align-items:center;gap:var(--s20);margin-top:var(--s40);flex-wrap:wrap}
 .acct-head .who{display:flex;flex-direction:column;gap:2px;min-width:0}
@@ -916,15 +992,34 @@ html.sig .hero-copy > *{animation:none}      /* the split handles these now */
 html.sig-boot,html.sig-boot body{overflow:hidden}
 
 /* ---------- the menu, one line after another ---------- */
-@keyframes sheetIn{from{opacity:0;transform:translate3d(0,26px,0)}to{opacity:1;transform:none}}
-html.sig .sheet-links button{animation:sheetIn .44s var(--ease-sig) both}
-html.sig .sheet-links button:nth-child(1){animation-delay:.04s}
-html.sig .sheet-links button:nth-child(2){animation-delay:.08s}
-html.sig .sheet-links button:nth-child(3){animation-delay:.12s}
-html.sig .sheet-links button:nth-child(4){animation-delay:.16s}
-html.sig .sheet-links button:nth-child(5){animation-delay:.20s}
-html.sig .sheet-links button:nth-child(6){animation-delay:.24s}
-html.sig .sheet-links button:nth-child(n+7){animation-delay:.28s}
+@keyframes sheetIn{from{opacity:0;transform:translate3d(0,18px,0)}to{opacity:1;transform:none}}
+html.menu-open .sheet-links button,
+html.menu-open .sheet-acct,
+html.menu-open .sheet-foot{animation:sheetIn .62s var(--ease-sig) both}
+html.menu-open .sheet-links button:nth-child(1){animation-delay:.10s}
+html.menu-open .sheet-links button:nth-child(2){animation-delay:.16s}
+html.menu-open .sheet-links button:nth-child(3){animation-delay:.22s}
+html.menu-open .sheet-links button:nth-child(4){animation-delay:.28s}
+html.menu-open .sheet-links button:nth-child(5){animation-delay:.34s}
+html.menu-open .sheet-links button:nth-child(6){animation-delay:.40s}
+html.menu-open .sheet-links button:nth-child(n+7){animation-delay:.46s}
+html.menu-open .sheet-foot{animation-delay:.44s}
+
+/* while it is open the bar keeps only its two marks, and nothing scrolls behind */
+html.menu-open,html.menu-open body{overflow:hidden}
+html.menu-open .navwrap{z-index:95}
+html.menu-open .navwrap::after{opacity:0}
+html.menu-open .nav,
+html.menu-open.nav-lift .nav,
+html.menu-open.nav-light .nav,
+html.menu-open.nav-lift.nav-light .nav{
+  background:transparent;border-color:transparent;box-shadow:none;
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+}
+html.menu-open .nav .brand-name,html.menu-open .nav .brand svg rect,
+html.menu-open .nav .burger{color:var(--frost-white)}
+html.menu-open .nav .brand svg rect{fill:var(--frost-white)}
+html.menu-open .nav .brand-name{color:var(--frost-white)}
 
 
 /* ============================================================
@@ -952,9 +1047,11 @@ button,a,.chip,.tag,.dot,.slot,.opt,.filechip,.review-row,.job-head{touch-action
   .burger span{width:22px}
   .navwrap{padding-top:max(var(--s12),env(safe-area-inset-top))}
   .wrap{padding-inline:max(var(--gutter),env(safe-area-inset-left),env(safe-area-inset-right))}
-  .sheet{padding-bottom:max(var(--s48),calc(env(safe-area-inset-bottom) + 24px))}
+  .sheet-foot{display:flex;flex-direction:column;align-items:center;gap:var(--s16);margin-top:var(--s24)}
+  .sheet-foot .btn-cta{font-weight:500}
+  .sheet-foot .btn{min-width:230px}
   .footer{padding-bottom:max(var(--s40),calc(env(safe-area-inset-bottom) + 16px))}
-  .sheet-lang{display:flex;justify-content:center;margin-bottom:var(--s16)}
+  .sheet-lang{display:flex;justify-content:center;margin-bottom:0}
 }
 
 /* ---------- anything a thumb has to land on ---------- */
@@ -1028,7 +1125,8 @@ button,a,.chip,.tag,.dot,.slot,.opt,.filechip,.review-row,.job-head{touch-action
 
 /* ---------- and none of it for anyone who asked for less ---------- */
 @media (prefers-reduced-motion:reduce){
-  .sheet-links button{animation:none!important}
+  .sheet-links button,.sheet-acct,.sheet-foot{animation:none!important}
+  .burger-lines i,.burger-mark,.sheet{transition-duration:.01ms!important}
   .sp-c,.sp-f,.bm-c,.od-r,[data-mrev],[data-bwipe]{transition:none!important;transform:none!important;opacity:1!important;clip-path:none!important}
   .curtain,.intro{display:none!important}
   html.sig-boot,html.sig-boot body{overflow:auto}
@@ -1045,7 +1143,7 @@ button,a,.chip,.tag,.dot,.slot,.opt,.filechip,.review-row,.job-head{touch-action
 <div class="navwrap">
   <nav class="nav" id="nav" aria-label="Main"></nav>
 </div>
-<div class="sheet" id="sheet" hidden></div>
+<div class="sheet" id="sheet"></div>
 <main id="app"></main>
 <footer class="footer" id="footer"></footer>
 <div class="lightbox" id="lightbox" hidden></div>
@@ -1344,16 +1442,16 @@ var BUCKET            = 'brief-files';
    comes back for that project. photos/06.jpg and photos/10.jpg are unused
    spares, ready to swap in. */
 var WORK = [
-  {id:'work-1', title:'Aether',   tagEn:'Brand film',   tagIt:'Brand film',  cat:'film',  accent:'orange', img:'photos/02.jpg', pos:'center 45%'},
-  {id:'work-2', title:'Nocturne', tagEn:'Editorial',    tagIt:'Editoriale',  cat:'photo', accent:'violet', img:'photos/11.jpg', pos:'center 42%'},
-  {id:'work-3', title:'Last Call',tagEn:'Commercial',   tagIt:'Spot',        cat:'film',  accent:'orange', yt:'WvxYy4n8EYI', img:'photos/07.jpg', pos:'center 30%'},
-  {id:'work-4', title:'Meridian', tagEn:'Portrait',     tagIt:'Ritratto',    cat:'photo', accent:'violet', img:'photos/08.jpg', pos:'center 42%'},
-  {id:'work-5', title:'Halcyon',  tagEn:'Music video',  tagIt:'Videoclip',   cat:'film',  accent:'orange', img:'photos/05.jpg', pos:'center 55%'},
-  {id:'work-6', title:'Lumen',    tagEn:'Product',      tagIt:'Prodotto',    cat:'photo', accent:'violet', img:'photos/12.jpg', pos:'center 40%'},
-  {id:'work-7', title:'Ember',    tagEn:'Event film',   tagIt:'Film evento', cat:'film',  accent:'teal',   img:'photos/01.jpg', pos:'center 25%'},
-  {id:'work-8', title:'Cascade',  tagEn:'Campaign',     tagIt:'Campagna',    cat:'photo', accent:'violet', img:'photos/09.jpg', pos:'center 38%'},
-  {id:'work-9', title:'Solstice', tagEn:'Fashion film', tagIt:'Fashion film',cat:'film',  accent:'orange', img:'photos/03.jpg', pos:'center 28%'},
-  {id:'work-10',title:'Atlas',    tagEn:'Campaign',     tagIt:'Campagna',    cat:'photo', accent:'teal',   img:'photos/04.jpg', pos:'center 55%'}
+  {id:'work-1', title:'Portrait',  tagEn:'Portrait',  tagIt:'Ritratto',  cat:'photo', accent:'violet', img:'photos/02.jpg', pos:'center 45%'},
+  {id:'work-2', title:'Portrait',  tagEn:'Editorial', tagIt:'Editoriale',cat:'photo', accent:'violet', img:'photos/11.jpg', pos:'center 42%'},
+  {id:'work-3', title:'Sport',     tagEn:'Sport',     tagIt:'Sport',     cat:'video', accent:'orange', img:'photos/07.jpg', pos:'center 30%'},
+  {id:'work-4', title:'Portrait',  tagEn:'Portrait',  tagIt:'Ritratto',  cat:'photo', accent:'violet', img:'photos/08.jpg', pos:'center 42%'},
+  {id:'work-5', title:'Outdoor',   tagEn:'Outdoor',   tagIt:'Outdoor',   cat:'video', accent:'orange', img:'photos/05.jpg', pos:'center 55%'},
+  {id:'work-6', title:'Street',    tagEn:'Street',    tagIt:'Street',    cat:'photo', accent:'teal',   img:'photos/12.jpg', pos:'center 40%'},
+  {id:'work-7', title:'Outdoor',   tagEn:'Outdoor',   tagIt:'Outdoor',   cat:'video', accent:'teal',   img:'photos/01.jpg', pos:'center 25%'},
+  {id:'work-8', title:'Street',    tagEn:'Street',    tagIt:'Street',    cat:'photo', accent:'violet', img:'photos/09.jpg', pos:'center 38%'},
+  {id:'work-9', title:'Sport',     tagEn:'Sport',     tagIt:'Sport',     cat:'video', accent:'orange', img:'photos/03.jpg', pos:'center 28%'},
+  {id:'work-10',title:'Street',    tagEn:'Street',    tagIt:'Street',    cat:'photo', accent:'teal',   img:'photos/04.jpg', pos:'center 55%'}
 ];
 
 var HERO = {img:'photos/13.jpg', pos:'center 55%'};
@@ -1368,63 +1466,161 @@ function stillStyle(w, key, cw, ch){
 }
 
 var AWARDS = [
-  {name:'IMAGinACTION', year:'2025'},
-  {name:'Fabriano Film Festival', year:'2025'},
-  {name:'Giffoni', year:'2024'},
-  {name:'REC Film Festival', year:'2024'},
-  {name:'Epicland', year:'2023'}
+  {name:'Milano Fashion Week', year:'2025'},
+  {name:'Milano Fashion Week', year:'2023'}
 ];
 
 var CASES = [
-  {workId:'work-1', client:'Aether', catEn:'Brand film', catIt:'Brand film', accent:'orange',
-   en:'A launch film for a fragrance house — cinema-grade craft that carried the campaign across every channel.',
-   it:'Un film di lancio per una maison di profumi — qualità cinema che ha guidato la campagna su ogni canale.',
-   metric:'+240%', lEn:'reach vs. prior launch', lIt:'reach vs. lancio precedente'},
-  {workId:'work-3', client:'Last Call', catEn:'Commercial', catIt:'Spot', accent:'teal',
-   en:'A 30-second spot for a nightlife brand — shot, cut and delivered in two weeks flat.',
-   it:'Uno spot da 30 secondi per un brand nightlife — girato, montato e consegnato in due settimane.',
-   metric:'2M+', lEn:'organic views', lIt:'visualizzazioni organiche'},
-  {workId:'work-8', client:'Cascade', catEn:'Campaign', catIt:'Campagna', accent:'violet',
-   en:'A full-funnel content system — one shoot, forty deliverables, a quarter of social fuel.',
-   it:'Un sistema di contenuti full-funnel — uno shooting, quaranta deliverable, un trimestre di social.',
-   metric:'40', lEn:'assets from one shoot', lIt:'contenuti da uno shooting'}
+  {workId:'work-2', client:'Photography', clientIt:'Fotografia', catEn:'Photo', catIt:'Foto', accent:'violet',
+   en:'Portrait, sport, outdoor and street — shot in Turin, and wherever the work needs to happen.',
+   it:'Ritratto, sport, outdoor e street — a Torino, e ovunque serva.',
+   metric:'€150', lEn:'Starter · Pro · Premium', lIt:'Starter · Pro · Premium'},
+  {workId:'work-3', client:'Video', clientIt:'Video', catEn:'Video', catIt:'Video', accent:'orange',
+   en:'Vertical content made for Instagram and TikTok, and promotional video for brands and local businesses.',
+   it:'Contenuti verticali per Instagram e TikTok, e video promozionali per brand e attività.',
+   metric:'€150', lEn:'Reel · Social · Commercial', lIt:'Reel · Social · Commercial'},
+  {workId:'work-8', client:'Photo + video', clientIt:'Foto + video', accent:'teal', catEn:'Both', catIt:'Entrambi',
+   en:'One session, both formats — the efficient way to fill a month of feed and keep a consistent look.',
+   it:'Una sessione, entrambi i formati — il modo efficiente per riempire un mese di feed con uno stile coerente.',
+   metric:'€350', lEn:'Content · Production · Full Day', lIt:'Content · Production · Full Day'}
+];
+
+var PACK_GROUPS = [
+  {id:'photo', en:'Photography',      it:'Fotografia'},
+  {id:'video', en:'Video production', it:'Produzione video'},
+  {id:'both',  en:'Photo + video',    it:'Foto + video'}
 ];
 
 var PACKAGES = [
-  {id:'half', nameEn:'Half Day', nameIt:'Mezza giornata', price:'from €2,500', priceIt:'da €2.500', presetType:1,
-   en:['Photo or short-form video','One location · up to 4 hours','Edited deliverables in 7 days'],
-   it:['Foto o video short-form','Una location · fino a 4 ore','Consegna montata in 7 giorni']},
-  {id:'day', nameEn:'Production Day', nameIt:'Giornata di produzione', price:'from €12,000', priceIt:'da €12.000', featured:true, presetType:0,
-   en:['Full crew · one shoot day','Video + stills','Color, edit and sound included'],
-   it:['Troupe completa · un giorno di ripresa','Video + fotografia','Color, montaggio e suono inclusi']},
-  {id:'signature', nameEn:'Signature Film', nameIt:'Signature Film', price:'from €40,000', priceIt:'da €40.000', presetType:5,
-   en:['Multi-day · concept to delivery','Creative direction and casting','Full post-production'],
-   it:['Più giornate · dal concept alla consegna','Direzione creativa e casting','Post-produzione completa']}
+  {id:'starter', group:'photo', nameEn:'Starter', nameIt:'Starter', price:'€150', priceIt:'€150',
+   dEn:'An essential session, made for social media and personal content.',
+   dIt:'Servizio fotografico essenziale, ideale per social media e contenuti personali.',
+   en:['1 hour of shooting','1 location','10 edited photographs','Colour correction','Digital delivery'],
+   it:['1 ora di shooting','1 location','10 fotografie post-prodotte','Color correction','Consegna digitale']},
+
+  {id:'pro', group:'photo', nameEn:'Pro', nameIt:'Pro', price:'€250', priceIt:'€250',
+   dEn:'A full session to show your style and your image at their best.',
+   dIt:'Un servizio completo per valorizzare il tuo stile e la tua immagine.',
+   en:['Up to 2 hours of shooting','Up to 2 outfits / looks','20 edited photographs','5 with professional retouching','Colour correction & grading','Digital delivery'],
+   it:['Fino a 2 ore di shooting','Fino a 2 outfit / look','20 fotografie post-prodotte','5 fotografie con ritocco professionale','Color correction & grading','Consegna digitale']},
+
+  {id:'premium', group:'photo', nameEn:'Premium', nameIt:'Premium', price:'€400', priceIt:'€400',
+   dEn:'A complete photographic experience for fashion, personal branding and professional portfolios.',
+   dIt:'Un\u2019esperienza fotografica completa, pensata per fashion, personal branding e portfolio professionali.',
+   en:['Up to 4 hours of shooting','Multiple locations / looks','40 edited photographs','10 with professional retouching','Creative direction','Professional colour grading','Digital delivery'],
+   it:['Fino a 4 ore di shooting','Multiple location / look','40 fotografie post-prodotte','10 fotografie con ritocco professionale','Direzione creativa','Color grading professionale','Consegna digitale']},
+
+  {id:'reel', group:'video', nameEn:'Reel', nameIt:'Reel', price:'€150', priceIt:'€150',
+   dEn:'Professional vertical content made for Instagram and TikTok.',
+   dIt:'Contenuti verticali professionali pensati per Instagram e TikTok.',
+   en:['Up to 1 hour of shooting','1 vertical reel','Professional editing','Colour grading','Music','9:16 format'],
+   it:['Fino a 1 ora di shooting','1 Reel verticale','Editing professionale','Color grading','Musica','Formato 9:16']},
+
+  {id:'social', group:'video', nameEn:'Social', nameIt:'Social', price:'€300', priceIt:'€300',
+   dEn:'Built to get several pieces of content out of a single session.',
+   dIt:'Un pacchetto pensato per creare pi\u00f9 contenuti da un\u2019unica sessione.',
+   en:['Up to 2 hours of shooting','3 vertical reels','Professional editing','Colour grading','Subtitles','Music & sound design','9:16 format'],
+   it:['Fino a 2 ore di shooting','3 Reel verticali','Editing professionale','Color grading','Sottotitoli','Musica & sound design','Formato 9:16']},
+
+  {id:'commercial', group:'video', nameEn:'Commercial', nameIt:'Commercial', price:'€600', priceIt:'€600',
+   dEn:'Professional video production for brands, companies and local businesses.',
+   dIt:'Produzione video professionale per brand, aziende e attivit\u00e0 commerciali.',
+   en:['Up to 4 hours of production','1 promotional video','Professional filming','Cinematic editing','Colour grading','Sound design','1 revision included'],
+   it:['Fino a 4 ore di produzione','1 video promozionale','Riprese professionali','Editing cinematografico','Color grading','Sound design','1 revisione inclusa']},
+
+  {id:'content', group:'both', nameEn:'Content', nameIt:'Content', price:'€350', priceIt:'€350',
+   dEn:'The straightforward way to get photographs and video out of one session.',
+   dIt:'La soluzione ideale per creare contenuti fotografici e video durante un\u2019unica sessione.',
+   en:['Up to 2 hours of shooting','15 edited photographs','2 vertical reels','Professional editing','Colour grading','Digital delivery'],
+   it:['Fino a 2 ore di shooting','15 fotografie post-prodotte','2 Reel verticali','Editing professionale','Color grading','Consegna digitale']},
+
+  {id:'production', group:'both', nameEn:'Production', nameIt:'Production', price:'€650', priceIt:'€650',
+   dEn:'A complete package for brands, professionals and social media.',
+   dIt:'Un pacchetto completo per brand, professionisti e social media.',
+   en:['Half a day of production','30 edited photographs','4 vertical reels','Professional photo retouching','Video editing','Colour grading','Creative direction'],
+   it:['Mezza giornata di produzione','30 fotografie post-prodotte','4 Reel verticali','Ritocco fotografico professionale','Video editing','Color grading','Direzione creativa']},
+
+  {id:'fullday', group:'both', nameEn:'Full Day', nameIt:'Full Day', price:'€950', priceIt:'€950',
+   dEn:'A whole day given over to producing professional content.',
+   dIt:'Una giornata completa dedicata alla produzione di contenuti professionali.',
+   en:['A full production day','Photography + videography','50+ edited photographs','6–8 vertical reels','Professional photo retouching','Advanced video editing','Cinematic colour grading','Creative direction'],
+   it:['Giornata completa di produzione','Fotografia + Videografia','50+ fotografie post-prodotte','6–8 Reel verticali','Ritocco fotografico professionale','Video editing avanzato','Color grading cinematografico','Direzione creativa']}
 ];
 
-var TYPES = [
-  {en:'Video production', it:'Video produzione', dEn:'Films, brand stories, content series', dIt:'Film, brand story, serie di contenuti'},
-  {en:'Photography', it:'Fotografia', dEn:'Campaigns, products, portraits', dIt:'Campagne, prodotti, ritratti'},
-  {en:'Commercials / ads', it:'Spot pubblicitari', dEn:'Broadcast and social spots', dIt:'Spot TV e social'},
-  {en:'Music videos', it:'Videoclip', dEn:'Performance and narrative', dIt:'Performance e narrativi'},
-  {en:'Events', it:'Eventi', dEn:'Live coverage and recap films', dIt:'Riprese live e recap film'},
-  {en:'Corporate / brand films', it:'Film aziendali', dEn:'Internal and external comms', dIt:'Comunicazione interna ed esterna'},
-  {en:'Social media content', it:'Contenuti social', dEn:'Short-form, vertical, recurring', dIt:'Short-form, verticali, ricorrenti'}
+/* The extras, priced. These are also the choices in the brief. */
+var EXTRAS = [
+  {en:'Extra hour',                  it:'Ora aggiuntiva',                     price:'€70'},
+  {en:'Extra photograph',            it:'Fotografia aggiuntiva',              price:'€15'},
+  {en:'Extra professional retouch',  it:'Retouch professionale aggiuntivo',   price:'€20'},
+  {en:'Extra reel',                  it:'Reel aggiuntivo',                    price:'€80'},
+  {en:'Extra location',              it:'Location aggiuntiva',                price:'from €50', priceIt:'da €50'},
+  {en:'Rush delivery',               it:'Consegna urgente',                   price:'on request', priceIt:'su richiesta'},
+  {en:'Travel outside Turin',        it:'Trasferta fuori Torino',             price:'on request', priceIt:'su richiesta'}
 ];
-var DELIVERABLES = [
-  {en:'Final edit', it:'Montaggio finale'},{en:'Raw footage', it:'Girato grezzo'},
-  {en:'Color grade', it:'Color grade'},{en:'Motion graphics', it:'Motion graphics'},
-  {en:'Social cuts', it:'Tagli social'},{en:'Stills / photos', it:'Fotografie'},
-  {en:'Drone', it:'Drone'},{en:'Sound design', it:'Sound design'}
+
+/* What the visitor needs, and then what it is about. Each format carries
+   a broad range; each subject inside it carries its own, because a wedding
+   is not priced like a social reel. The figures are the Italian market as
+   the trade price guides report it, with this studio's own list as the
+   floor — they are shown as a guide, never as a quote. */
+var FORMATS = [
+  {id:'photo', en:'Photography', it:'Fotografia',
+   dEn:'From small shoots to a professional wedding', dIt:'Da piccoli servizi a un matrimonio professionale',
+   range:'€150 – €2.500',
+   subjects:[
+     {en:'Portrait / personal', it:'Ritratto / personale', range:'€150 – €400'},
+     {en:'Brand or business',   it:'Brand o attività',     range:'€250 – €900'},
+     {en:'Restaurant / food',   it:'Ristorante / food',    range:'€350 – €900'},
+     {en:'Sport',               it:'Sport',                range:'€250 – €750'},
+     {en:'Wedding',             it:'Matrimonio',           range:'€900 – €2.500'},
+     {en:'Event',               it:'Evento',               range:'€250 – €900'},
+     {en:'Travel / on location',it:'Viaggio / in trasferta', onRequest:true},
+     {en:'Something else',      it:'Altro',                onRequest:true, other:true}
+   ]},
+
+  {id:'video', en:'Video', it:'Video',
+   dEn:'From social reels to brand work, weddings, events and music videos',
+   dIt:'Da reel social a lavori per brand, matrimoni, eventi e videoclip',
+   range:'€150 – €3.000',
+   subjects:[
+     {en:'Reels / social content', it:'Reel / contenuti social', range:'€150 – €600'},
+     {en:'Brand or business',      it:'Brand o attività',        range:'€500 – €1.600'},
+     {en:'Restaurant / food',      it:'Ristorante / food',       range:'€300 – €900'},
+     {en:'Sport',                  it:'Sport',                   range:'€300 – €1.200'},
+     {en:'Wedding',                it:'Matrimonio',              range:'€1.000 – €2.500'},
+     {en:'Event',                  it:'Evento',                  range:'€400 – €1.500'},
+     {en:'Music video',            it:'Videoclip',               range:'€800 – €3.000'},
+     {en:'Travel / on location',   it:'Viaggio / in trasferta',  onRequest:true},
+     {en:'Something else',         it:'Altro',                   onRequest:true, other:true}
+   ]},
+
+  {id:'both', en:'Photo + video', it:'Foto + video',
+   dEn:'The two together, out of one production', dIt:'I due insieme, in un\u2019unica produzione',
+   range:'€350 – €3.500',
+   subjects:[
+     {en:'Portrait / personal', it:'Ritratto / personale', range:'€350 – €650'},
+     {en:'Brand or business',   it:'Brand o attività',     range:'€650 – €2.000'},
+     {en:'Restaurant / food',   it:'Ristorante / food',    range:'€650 – €1.500'},
+     {en:'Sport',               it:'Sport',                range:'€650 – €1.800'},
+     {en:'Wedding',             it:'Matrimonio',           range:'€1.800 – €3.500'},
+     {en:'Event',               it:'Evento',               range:'€650 – €2.000'},
+     {en:'Travel / on location',it:'Viaggio / in trasferta', onRequest:true},
+     {en:'Something else',      it:'Altro',                onRequest:true, other:true}
+   ]}
 ];
-var BUDGETS = [
-  {en:'Under €5k', it:'Meno di €5k'},{en:'€5k – €15k', it:'€5k – €15k'},
-  {en:'€15k – €50k', it:'€15k – €50k'},{en:'€50k+', it:'€50k+'},{en:'Not sure yet', it:'Non ancora deciso'}
-];
-var TIMELINES = [
-  {en:'ASAP / rush', it:'Il prima possibile'},{en:'In 2–4 weeks', it:'Tra 2–4 settimane'},
-  {en:'In 1–2 months', it:'Tra 1–2 mesi'},{en:'Flexible', it:'Flessibile'}
-];
+
+function fmtByLabel(lbl){
+  for(var i=0;i<FORMATS.length;i++){ if(FORMATS[i].en === lbl || FORMATS[i].it === lbl) return FORMATS[i]; }
+  return null;
+}
+function subjByLabel(fmt, lbl){
+  if(!fmt) return null;
+  for(var i=0;i<fmt.subjects.length;i++){
+    if(fmt.subjects[i].en === lbl || fmt.subjects[i].it === lbl) return fmt.subjects[i];
+  }
+  return null;
+}
+
 var SLOTS = ['Tue 10:00','Tue 14:00','Wed 11:30','Thu 09:00','Thu 16:00','Fri 13:00'];
 var SLOTS_IT = ['Mar 10:00','Mar 14:00','Mer 11:30','Gio 09:00','Gio 16:00','Ven 13:00'];
 
@@ -1451,42 +1647,44 @@ function nextSlotDate(i){
 }
 var STAGES = [{en:'Received',it:'Ricevuto'},{en:'In review',it:'In revisione'},{en:'In production',it:'In produzione'},{en:'Delivered',it:'Consegnato'}];
 var SOCIALS = [
-  {label:'Instagram', href:'https://instagram.com'},
-  {label:'Vimeo', href:'https://vimeo.com'},
-  {label:'YouTube', href:'https://youtube.com'},
-  {label:'LinkedIn', href:'https://linkedin.com'}
+  {label:'Instagram', href:'https://instagram.com/diaprod.it'},
+  {label:'WhatsApp',  href:'https://wa.me/393770903078'}
 ];
 
 var T = {
   en:{
     navHome:'Home', navWork:'Portfolio', navPackages:'Packages', navTrack:'Track', navCall:'Book a call', navSignin:'Sign in',
     start:'Start a project',
-    heroEyebrow:'Production studio · Film and photography',
-    heroTitle:'Video production for ambitious brands.',
+    heroEyebrow:'Photography · Videography · Creative Production',
+    heroTitle:'Content people actually watch.',
     heroNote:'Brief us once. We take it from concept to final delivery.',
-    heroFrom:'Projects from €2,500',
-    metaYears:'Years in production', metaYearsV:'12',
-    metaDelivered:'Films delivered', metaDeliveredV:'340+',
-    metaReply:'Producer replies within', metaReplyV:'1 day',
-    workKicker:'Selected work', workTitle:'Recent films.', workAll:'See all work',
+    metaYears:'Years behind the camera', metaYearsV:'6',
+    metaDelivered:'Videos delivered', metaDeliveredV:'50+',
+    metaReply:'Views for our clients', metaReplyV:'5M+',
+    workKicker:'Selected work', workTitle:'Recent work.', workAll:'See all work',
     watch:'Watch the film', view:'View project',
     curWatch:'Watch', curView:'View',
-    awardsKicker:'Recognition', awardsTitle:'Selected at festivals and awards.',
-    casesKicker:'Case studies', casesTitle:'Work that moved the needle.',
-    casesSub:'Three stories — the brief, the film, and what it did.',
-    viewCase:'View the film',
+    awardsKicker:'Milano Fashion Week', awardsTitle:'On location in 2023 and 2025.',
+    casesKicker:'What we do', casesTitle:'Three ways to work together.',
+    casesSub:'Pick a package, or tell us what you need and we will quote it.',
+    viewCase:'See the packages',
     closeTitle:'Every great story starts with the first move.',
-    closeSub:'Tell us what you are building. A quick brief, one producer replies within a business day.',
+    closeSub:'Tell us what you are building. A quick brief, and we reply within a business day.',
     bookCall:'Book a 20-minute call',
-    footerTag:'A production studio telling brand stories with heart and craft — from concept to final cut.',
+    footerTag:'Create. Capture. Connect. — photography, videography and creative production, from Turin.',
     pages:'Pages', contact:'Contact', studioLabel:'Studio', rights:'All rights reserved.',
     privacy:'Privacy Policy', cookies:'Cookie Policy',
     pfTitle:'Every frame is ours.', pfKicker:'Portfolio',
-    pfSub:'Brand films, commercials and photography — shot, cut and coloured in house.',
-    pfFilter:'Filter', pfProjects:'projects', pfAll:'All', pfFilms:'Films', pfPhoto:'Photography',
+    pfSub:'Portrait, sport, outdoor and street — shot, cut and coloured in house.',
+    pfFilter:'Filter', pfProjects:'projects', pfAll:'All', pfFilms:'Video', pfPhoto:'Photography',
     pkKicker:'Packages', pkTitle:'Starting points.',
-    pkSub:'Every project is scoped to you. These are where most begin.',
+    pkSub:'Prices are starting points. Every project is scoped to what it actually needs.',
     pkChoose:'Start with this', pkMost:'Most chosen',
+    pkExtras:'Extras', pkNotes:'Good to know',
+    pkNote1:'Prices are starting points and change with what a project needs.',
+    pkNote2:'For commercial productions, ad campaigns, events and custom projects, ask for a dedicated quote.',
+    pkNote3:'All prices include VAT where applicable.',
+    pkPay:'Payment in three parts: one third at contract, one third on the shoot day, one third on delivery.',
     pkElse:'Something else in mind? Tell us what you need',
     trKicker:'Track', trTitle:'Your projects.',
     trSearch:'Search by reference, e.g. DIA-7K2P',
@@ -1527,49 +1725,62 @@ var T = {
     rqSending:'Sending…', rqFailed:'We could not save that. Please try again.',
     rqSignedFiles:'Sign in to attach reference files.',
     rqKicker:'New project', rqStep:'Step',
-    step0:'What are we making?', step1:'What do you need delivered?', step2:'What is the budget range?',
-    step3:'When do you need it?', step4:'Where does it shoot?', step5:'Tell us about it.',
-    step6:'How do we reach you?', step7:'Check it over.',
+    step0:'What do you need?', step1:'What is it about?', step2:'Anything extra?',
+    step3:'When and where?', step4:'Tell us about it.', step5:'How do we reach you?',
+    step6:'Check it over.',
+    pkNotSure:'Not sure yet', pkNotSureSub:'Tell us what you need and we will quote it',
+    pkOptions:'options', pkBack:'Another category',
+    lFormat:'What you need',
+    otherLabel:'Tell us what you have in mind', otherPlaceholder:'In a line or two',
+    guidePrice:'Indicative range', onRequest:'On request',
+    guideNoteShort:'Ranges are a guide to what this kind of work costs in Italy. The exact figure comes back with your quote.',
+    guideNote:'A guide, not a quote. The real figure depends on the hours, the location and how much post-production it needs. Send this brief, or book a call, and you get a precise price.',
+    extrasSkip:'Nothing extra, thanks',
     optional:'optional', targetDate:'Target date', locPlaceholder:'City, venue, or studio',
     remote:'Remote or flexible location', briefPlaceholder:'What is the story, the mood, the goal? Anything we should know.',
     refs:'Reference files', refsHint:'Images, decks or links — optional', addFiles:'Add files',
     fullName:'Full name', email:'Email', phone:'Phone', company:'Company or brand',
     back:'Back', cont:'Continue', submit:'Send request',
-    lType:'Project', lDeliverables:'Deliverables', lBudget:'Budget', lTimeline:'Timeline',
+    lType:'About', lDeliverables:'Extras', lBudget:'Indicative', lTimeline:'Timing',
     lLocation:'Location', lBrief:'Brief', lContact:'Contact', edit:'Edit', notSet:'Not set',
-    doneTitle:'Request received.', doneSub:'Our producers will review your brief and reply within one business day.',
+    doneTitle:'Request received.', doneSub:'We will read your brief and reply within one business day.',
     yourRef:'Your reference', trackThis:'Track this project', another:'Start another',
-    skip:'Skip', selected:'selected'
+    skip:'Skip', selected:'selected',
+    builtBy:'Site by the DIA PROD team'
   },
   it:{
     navHome:'Home', navWork:'Portfolio', navPackages:'Pacchetti', navTrack:'Traccia', navCall:'Prenota una call', navSignin:'Accedi',
     start:'Inizia il progetto',
-    heroEyebrow:'Studio di produzione · Film e fotografia',
-    heroTitle:'Video produzione per brand ambiziosi.',
+    heroEyebrow:'Fotografia · Videografia · Produzione creativa',
+    heroTitle:'Contenuti che la gente guarda davvero.',
     heroNote:'Raccontaci l’idea una volta. Pensiamo noi a tutto, dal concept alla consegna.',
-    heroFrom:'Progetti da €2.500',
-    metaYears:'Anni di produzione', metaYearsV:'12',
-    metaDelivered:'Film consegnati', metaDeliveredV:'340+',
-    metaReply:'Un producer risponde entro', metaReplyV:'1 giorno',
+    metaYears:'Anni dietro la macchina', metaYearsV:'6',
+    metaDelivered:'Video consegnati', metaDeliveredV:'50+',
+    metaReply:'Visualizzazioni per i clienti', metaReplyV:'5M+',
     workKicker:'Lavori selezionati', workTitle:'Lavori recenti.', workAll:'Vedi tutti i lavori',
     watch:'Guarda il film', view:'Vedi il progetto',
     curWatch:'Guarda', curView:'Apri',
-    awardsKicker:'Riconoscimenti', awardsTitle:'Selezionati a festival e premi.',
-    casesKicker:'Case study', casesTitle:'Progetti che fanno la differenza.',
-    casesSub:'Tre storie — il brief, il film e i risultati.',
-    viewCase:'Guarda il film',
+    awardsKicker:'Milano Fashion Week', awardsTitle:'Sul campo nel 2023 e nel 2025.',
+    casesKicker:'Cosa facciamo', casesTitle:'Tre modi di lavorare insieme.',
+    casesSub:'Scegli un pacchetto, oppure raccontaci cosa ti serve e ti facciamo un preventivo.',
+    viewCase:'Vedi i pacchetti',
     closeTitle:'Ogni grande storia inizia con la prima mossa.',
-    closeSub:'Raccontaci cosa stai costruendo. Un brief veloce, un producer ti risponde entro un giorno lavorativo.',
+    closeSub:'Raccontaci cosa stai costruendo. Un brief veloce, e ti rispondiamo entro un giorno lavorativo.',
     bookCall:'Prenota una call di 20 minuti',
-    footerTag:'Uno studio di produzione che racconta i brand con cuore e mestiere — dal concept al montaggio finale.',
+    footerTag:'Create. Capture. Connect. — fotografia, videografia e produzione creativa, da Torino.',
     pages:'Pagine', contact:'Contatti', studioLabel:'Studio', rights:'Tutti i diritti riservati.',
     privacy:'Privacy', cookies:'Cookie',
     pfTitle:'Ogni frame è nostro.', pfKicker:'Portfolio',
-    pfSub:'Brand film, spot e fotografia — girati, montati e colorati in casa.',
-    pfFilter:'Filtra', pfProjects:'progetti', pfAll:'Tutti', pfFilms:'Film', pfPhoto:'Fotografia',
+    pfSub:'Ritratto, sport, outdoor e street — girati, montati e colorati in casa.',
+    pfFilter:'Filtra', pfProjects:'progetti', pfAll:'Tutti', pfFilms:'Video', pfPhoto:'Fotografia',
     pkKicker:'Pacchetti', pkTitle:'Punti di partenza.',
-    pkSub:'Ogni progetto è costruito su misura. Da qui parte la maggior parte.',
+    pkSub:'I prezzi sono punti di partenza. Ogni progetto è costruito su ciò che serve davvero.',
     pkChoose:'Inizia da qui', pkMost:'Il più scelto',
+    pkExtras:'Extra', pkNotes:'Da sapere',
+    pkNote1:'I prezzi indicati sono prezzi di partenza e possono variare in base alle caratteristiche e alle esigenze del progetto.',
+    pkNote2:'Per produzioni commerciali, campagne pubblicitarie, eventi e progetti personalizzati è possibile richiedere un preventivo dedicato.',
+    pkNote3:'Tutti i prezzi si intendono IVA inclusa ove applicabile.',
+    pkPay:'Pagamento in tre parti: un terzo alla firma, un terzo il giorno delle riprese, un terzo alla consegna.',
     pkElse:'Hai in mente altro? Raccontaci cosa ti serve',
     trKicker:'Traccia', trTitle:'I tuoi progetti.',
     trSearch:'Cerca per riferimento, es. DIA-7K2P',
@@ -1610,19 +1821,28 @@ var T = {
     rqSending:'Invio…', rqFailed:'Non siamo riusciti a salvare. Riprova.',
     rqSignedFiles:'Accedi per allegare file di riferimento.',
     rqKicker:'Nuovo progetto', rqStep:'Passo',
-    step0:'Cosa realizziamo?', step1:'Cosa ti serve consegnato?', step2:'Qual è il budget?',
-    step3:'Quando ti serve?', step4:'Dove si gira?', step5:'Raccontaci il progetto.',
-    step6:'Come ti contattiamo?', step7:'Controlla tutto.',
+    step0:'Cosa ti serve?', step1:'Di cosa si tratta?', step2:'Qualcosa in più?',
+    step3:'Quando e dove?', step4:'Raccontaci il progetto.', step5:'Come ti contattiamo?',
+    step6:'Controlla tutto.',
+    pkNotSure:'Non lo so ancora', pkNotSureSub:'Raccontaci cosa ti serve e ti facciamo un preventivo',
+    pkOptions:'opzioni', pkBack:'Un\u2019altra categoria',
+    lFormat:'Cosa ti serve',
+    otherLabel:'Raccontaci cosa hai in mente', otherPlaceholder:'In una riga o due',
+    guidePrice:'Fascia indicativa', onRequest:'Su richiesta',
+    guideNoteShort:'Le fasce sono un\u2019indicazione di quanto costa questo tipo di lavoro in Italia. La cifra esatta arriva con il preventivo.',
+    guideNote:'Un\u2019indicazione, non un preventivo. La cifra reale dipende dalle ore, dalla location e da quanta post-produzione serve. Invia questo brief, oppure prenota una call, e ti diamo un prezzo preciso.',
+    extrasSkip:'Nessun extra, grazie',
     optional:'facoltativo', targetDate:'Data indicativa', locPlaceholder:'Città, venue o studio',
     remote:'Da remoto o location flessibile', briefPlaceholder:'Qual è la storia, il mood, l’obiettivo? Tutto ciò che dovremmo sapere.',
     refs:'File di riferimento', refsHint:'Immagini, deck o link — facoltativo', addFiles:'Aggiungi file',
     fullName:'Nome e cognome', email:'Email', phone:'Telefono', company:'Azienda o brand',
     back:'Indietro', cont:'Continua', submit:'Invia richiesta',
-    lType:'Progetto', lDeliverables:'Deliverable', lBudget:'Budget', lTimeline:'Tempi',
+    lType:'Di cosa si tratta', lDeliverables:'Extra', lBudget:'Indicativo', lTimeline:'Tempi',
     lLocation:'Location', lBrief:'Brief', lContact:'Contatti', edit:'Modifica', notSet:'Non indicato',
-    doneTitle:'Richiesta ricevuta.', doneSub:'I nostri producer leggeranno il brief e ti risponderanno entro un giorno lavorativo.',
+    doneTitle:'Richiesta ricevuta.', doneSub:'Leggiamo il tuo brief e ti rispondiamo entro un giorno lavorativo.',
     yourRef:'Il tuo riferimento', trackThis:'Traccia il progetto', another:'Nuova richiesta',
-    skip:'Salta', selected:'selezionati'
+    skip:'Salta', selected:'selezionati',
+    builtBy:'Sito realizzato dal team DIA PROD'
   }
 };
 
@@ -1648,7 +1868,7 @@ var S = {
 };
 function emptyDraft(){
   var u = (typeof S !== 'undefined' && S) ? S.user : null;
-  return {type:'', deliverables:[], budget:'', timeline:'', date:'', location:'', remote:false,
+  return {format:'', type:'', other:'', note:'', deliverables:[], budget:'', timeline:'', date:'', location:'', remote:false,
           brief:'', name:(u?u.name:''), email:(u?u.email:''), phone:'', company:''};
 }
 function t(){ return T[S.lang]; }
@@ -1792,7 +2012,7 @@ function submitBrief(){
   sb.rpc('submit_brief', {
     p_name: d.name.trim(), p_email: d.email.trim(),
     p_phone: d.phone.trim(), p_company: d.company.trim(),
-    p_type: d.type, p_deliverables: d.deliverables,
+    p_type: [d.format, d.type, d.other, d.note].filter(Boolean).join(' — '), p_deliverables: d.deliverables,
     p_budget: d.budget, p_timeline: d.timeline,
     p_shoot_date: d.date || null,
     p_location: d.location.trim(), p_remote: !!d.remote,
@@ -2026,6 +2246,12 @@ function logo(size, color){
   return '<svg viewBox="255 248 528 372" width="'+size+'" style="display:block;overflow:visible" role="img" aria-label="'+STUDIO+'">'+
     '<rect x="250" y="250" width="540" height="470" fill="'+color+'" mask="url(#diaLogoMask)"></rect></svg>';
 }
+/* the same mark as the brand, cropped to the camera alone — the
+   drawn name underneath it has no business inside a 44px button */
+function camMark(size, color){
+  return '<svg viewBox="291 257 490 350" width="'+size+'" style="display:block" aria-hidden="true">'+
+    '<rect x="285" y="251" width="502" height="362" fill="'+color+'" mask="url(#diaLogoMask)"></rect></svg>';
+}
 function workById(id){ for(var i=0;i<WORK.length;i++){ if(WORK[i].id===id) return WORK[i]; } return null; }
 function workTag(w){ return S.lang==='it' ? w.tagIt : w.tagEn; }
 function accentClass(a){ return a==='violet' ? ' violet' : a==='teal' ? ' teal' : ''; }
@@ -2070,20 +2296,23 @@ function renderNav(){
         '<button class="langbtn" data-lang="en" aria-pressed="'+(S.lang==='en')+'">EN</button>'+
         '<button class="langbtn" data-lang="it" aria-pressed="'+(S.lang==='it')+'">IT</button>'+
       '</div>'+
-      '<button class="btn btn-primary" data-go="request">'+esc(L.start)+'</button>'+
-      '<button class="burger" data-menu="1" aria-label="Menu"><span></span><span></span></button>'+
+      '<button class="btn btn-cta" data-go="request">'+esc(L.start)+'</button>'+
+      '<button class="burger" id="burger" data-menu="t" aria-controls="sheet"'+
+        ' aria-expanded="'+(S.menu?'true':'false')+'" aria-label="Menu">'+
+        '<span class="burger-lines" aria-hidden="true"><i></i><i></i></span>'+
+        '<span class="burger-mark">'+camMark(26,'currentColor')+'</span>'+
+      '</button>'+
     '</div>';
   syncNavPill(true);
 }
 
 function renderSheet(){
   var L = t(), el = document.getElementById('sheet');
-  el.hidden = !S.menu;
-  if(!S.menu){ el.innerHTML=''; return; }
+  el.hidden = false;
   var sheetRoutes = ROUTES;
   var links = [{id:'home', key:'navHome'}].concat(sheetRoutes).map(function(r){
     if(r.id === 'signin' && S.user) return '';   /* replaced by the account row below */
-    return '<button data-go="'+r.id+'">'+esc(L[r.key])+'</button>';
+    return '<button data-go="'+r.id+'"'+(S.route===r.id?' aria-current="page"':'')+'>'+esc(L[r.key])+'</button>';
   }).join('');
   var acct = S.user
     ? '<button class="sheet-acct" data-go="account" style="background:none;border:none;cursor:pointer;width:100%;text-align:left">'+
@@ -2095,15 +2324,34 @@ function renderSheet(){
     ? '<button class="btn-line" data-signout="1" style="width:100%;margin-top:12px">'+esc(L.acSignout)+'</button>'
     : '';
   el.innerHTML =
-    '<div class="sheet-top"><button class="iconbtn" data-menu="0" aria-label="Close">&times;</button></div>'+
     '<div class="sheet-links">'+acct+links+'</div>'+
-    '<div style="margin-top:auto;padding-top:32px">'+
+    '<div class="sheet-foot">'+
       '<div class="sheet-lang"><div class="langbox" role="group" aria-label="Language">'+
         '<button class="langbtn" data-lang="en" aria-pressed="'+(S.lang==='en')+'">EN</button>'+
         '<button class="langbtn" data-lang="it" aria-pressed="'+(S.lang==='it')+'">IT</button>'+
       '</div></div>'+
-      '<button class="btn btn-primary btn-lg" data-go="request" style="width:100%">'+esc(L.start)+'</button>'+out+'</div>';
+      '<button class="btn btn-cta btn-lg" data-go="request">'+esc(L.start)+'</button>'+out+'</div>';
+  syncMenu();
 }
+
+/* one class on <html> does the whole thing: the lines become the camera and
+   the names come up underneath. Nothing here redraws the bar, so the change
+   is something you watch rather than something that jumps. */
+function syncMenu(){
+  document.documentElement.classList.toggle('menu-open', !!S.menu);
+  var b = document.getElementById('burger');
+  if(b) b.setAttribute('aria-expanded', S.menu ? 'true' : 'false');
+}
+function measureNav(){
+  var nav = document.getElementById('nav');
+  if(nav) document.documentElement.style.setProperty('--nav-h', Math.round(nav.getBoundingClientRect().bottom) + 'px');
+}
+function setMenu(open){
+  S.menu = !!open;
+  if(S.menu) measureNav();
+  renderSheet();
+}
+window.addEventListener('resize', function(){ if(S.menu) measureNav(); });
 
 function renderFooter(){
   var L = t();
@@ -2118,7 +2366,7 @@ function renderFooter(){
     '<div class="footer-grid">'+
       '<div class="fcol">'+logo(72,'var(--frost-white)')+
         '<p class="small" style="max-width:34ch;margin-top:4px">'+esc(L.footerTag)+'</p>'+
-        '<button class="btn btn-primary" data-go="request">'+esc(L.start)+'</button>'+
+        '<button class="btn btn-cta" data-go="request">'+esc(L.start)+'</button>'+
       '</div>'+
       '<div class="fcol"><h4>'+esc(L.pages)+'</h4><div class="fstack">'+pages+'</div></div>'+
       '<div class="fcol"><h4>'+esc(L.studioLabel)+'</h4><div class="fstack">'+
@@ -2130,7 +2378,7 @@ function renderFooter(){
     '</div>'+
     '<div class="footer-base">'+
       '<span class="caption">© 2026 '+STUDIO+' — '+esc(L.rights)+' — P.IVA 13478040010</span>'+
-      '<span class="caption">'+esc(L.privacy)+' · '+esc(L.cookies)+'</span>'+
+      '<span class="caption">'+esc(L.privacy)+' · '+esc(L.cookies)+' · '+esc(L.builtBy)+'</span>'+
     '</div>'+
   '</div>';
 }
@@ -2157,8 +2405,7 @@ function screenHome(){
         '<p class="eyebrow">'+esc(L.heroEyebrow)+'</p>'+
         '<h1 class="hero-type">'+esc(L.heroTitle)+'</h1>'+
         '<div class="hero-actions">'+
-          '<span class="hero-note" style="color:var(--frost-white)">'+esc(L.heroFrom)+'</span>'+
-          '<button class="btn btn-primary" data-go="request">'+esc(L.start)+'</button>'+
+          '<button class="btn btn-cta" data-go="request">'+esc(L.start)+'</button>'+
         '</div>'+
         '<p class="hero-note">'+esc(L.heroNote)+'</p>'+
       '</div>'+
@@ -2218,11 +2465,11 @@ function screenHome(){
         '</button>'+
         '<div class="case-body">'+
           '<p class="eyebrow'+accentClass(cs.accent)+'">'+esc(S.lang==='it'?cs.catIt:cs.catEn)+'</p>'+
-          '<h3 class="display-type">'+esc(cs.client)+'</h3>'+
+          '<h3 class="display-type">'+esc(S.lang==='it'?(cs.clientIt||cs.client):cs.client)+'</h3>'+
           '<p class="body-copy" style="max-width:46ch">'+esc(S.lang==='it'?cs.it:cs.en)+'</p>'+
-          '<div class="metric"><b>'+esc(cs.metric)+'</b>'+
+          '<div class="metric"><b>'+esc(S.lang==='it'?'da ':'from ')+esc(cs.metric)+'</b>'+
             '<span class="small">'+esc(S.lang==='it'?cs.lIt:cs.lEn)+'</span></div>'+
-          '<button class="linky" data-open="'+cs.workId+'" style="margin-top:8px">'+esc(L.viewCase)+' &rsaquo;</button>'+
+          '<button class="linky" data-go="packages" style="margin-top:8px">'+esc(L.viewCase)+' &rsaquo;</button>'+
         '</div>'+
       '</article>';
     }).join('')+
@@ -2235,7 +2482,7 @@ function screenHome(){
       '<h2 class="hero-type" style="max-width:16ch">'+esc(L.closeTitle)+'</h2>'+
       '<p class="body-copy" style="max-width:48ch">'+esc(L.closeSub)+'</p>'+
       '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">'+
-        '<button class="btn btn-primary btn-lg" data-go="request">'+esc(L.start)+'</button>'+
+        '<button class="btn btn-cta btn-lg" data-go="request">'+esc(L.start)+'</button>'+
         '<button class="btn btn-outline btn-lg" data-go="call">'+esc(L.bookCall)+'</button>'+
       '</div>'+
     '</div>'+
@@ -2247,7 +2494,7 @@ function screenHome(){
 function screenWork(){
   var L = t();
   var list = WORK.filter(function(w){ return S.filter==='all' || w.cat===S.filter; });
-  var cats = [['all',L.pfAll],['film',L.pfFilms],['photo',L.pfPhoto]].map(function(c){
+  var cats = [['all',L.pfAll],['video',L.pfFilms],['photo',L.pfPhoto]].map(function(c){
     return '<button class="chip" data-filter="'+c[0]+'" aria-pressed="'+(S.filter===c[0])+'">'+esc(c[1])+'</button>';
   }).join('');
   var tiles = list.map(function(w, i){
@@ -2279,25 +2526,45 @@ function screenWork(){
 }
 
 function screenPackages(){
-  var L = t();
-  var rows = PACKAGES.map(function(p){
-    var pts = (S.lang==='it'?p.it:p.en).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('');
-    return '<div class="pkg">'+
-      '<div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">'+
-        (p.featured ? '<span class="badge">'+esc(L.pkMost)+'</span>' : '')+
-        '<h3 class="h-lg">'+esc(S.lang==='it'?p.nameIt:p.nameEn)+'</h3>'+
-        '<span class="price">'+esc(S.lang==='it'?p.priceIt:p.price)+'</span>'+
-      '</div>'+
-      '<ul class="pkg-points">'+pts+'</ul>'+
-      '<button class="btn '+(p.featured?'btn-primary':'btn-outline')+' btn-lg" data-pkg="'+p.id+'">'+esc(L.pkChoose)+'</button>'+
-    '</div>';
+  var L = t(), it = S.lang === 'it';
+
+  var groups = PACK_GROUPS.map(function(g){
+    var rows = PACKAGES.filter(function(p){ return p.group === g.id; }).map(function(p){
+      var pts = (it ? p.it : p.en).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('');
+      return '<div class="pkg">'+
+        '<div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">'+
+          '<h3 class="h-lg">'+esc(it ? p.nameIt : p.nameEn)+'</h3>'+
+          '<span class="price">'+esc(it ? p.priceIt : p.price)+'</span>'+
+          '<span class="small" style="max-width:30ch">'+esc(it ? p.dIt : p.dEn)+'</span>'+
+        '</div>'+
+        '<ul class="pkg-points">'+pts+'</ul>'+
+        '<button class="btn btn-cta btn-lg" data-pkg="'+p.id+'">'+esc(L.pkChoose)+'</button>'+
+      '</div>';
+    }).join('');
+    return '<h2 class="h-md" style="margin:56px 0 8px;color:var(--platinum)">'+esc(it ? g.it : g.en)+'</h2>'+rows;
+  }).join('');
+
+  var extras = EXTRAS.map(function(x){
+    var price = it ? (x.priceIt || x.price) : x.price;
+    return '<li style="display:flex;justify-content:space-between;gap:20px;padding:14px 0;border-bottom:1px solid var(--graphite)">'+
+      '<span class="small" style="color:var(--frost-white)">'+esc(it ? x.it : x.en)+'</span>'+
+      '<span class="small tnum" style="white-space:nowrap">'+esc(price)+'</span></li>';
   }).join('');
 
   return '<section class="stage"><div class="wrap band">'+
     '<p class="kicker">'+esc(L.pkKicker)+'</p>'+
     '<h1 class="hero-type" style="margin:16px 0 16px">'+esc(L.pkTitle)+'</h1>'+
-    '<p class="body-copy" style="max-width:48ch;margin-bottom:56px">'+esc(L.pkSub)+'</p>'+
-    rows+
+    '<p class="body-copy" style="max-width:48ch">'+esc(L.pkSub)+'</p>'+
+    groups+
+    '<h2 class="h-md" style="margin:72px 0 8px;color:var(--platinum)">'+esc(L.pkExtras)+'</h2>'+
+    '<ul style="list-style:none;margin:0;padding:0;max-width:560px">'+extras+'</ul>'+
+    '<h2 class="h-md" style="margin:72px 0 16px;color:var(--platinum)">'+esc(L.pkNotes)+'</h2>'+
+    '<div class="notice" style="max-width:640px">'+
+      '<p class="small" style="color:var(--frost-white)">'+esc(L.pkPay)+'</p>'+
+      '<p class="small">'+esc(L.pkNote1)+'</p>'+
+      '<p class="small">'+esc(L.pkNote2)+'</p>'+
+      '<p class="small">'+esc(L.pkNote3)+'</p>'+
+    '</div>'+
     '<div style="margin-top:40px"><button class="linky" data-go="request">'+esc(L.pkElse)+' &rsaquo;</button></div>'+
   '</div></section>';
 }
@@ -2540,12 +2807,11 @@ function errBar(){
 }
 
 /* ---------- request wizard ---------- */
-var STEP_COUNT = 8;
+var STEP_COUNT = 7;
 function stepTitle(i){ return t()['step'+i]; }
 
 function screenRequest(){
   var L = t();
-  if(!S.user && !S.submittedRef) return signinGate(L.rqKicker, L.start, L.gateBrief, 'request');
   if(S.submittedRef){
     var first = (S.draft.name || '').split(' ')[0];
     return '<section class="stage"><div class="wrap band"><div class="centered">'+
@@ -2563,24 +2829,53 @@ function screenRequest(){
   var d = S.draft, i = S.step, body = '';
 
   if(i===0){
-    body = '<div class="opt-grid">'+TYPES.map(function(o, k){
+    body = '<div class="opt-grid">'+FORMATS.map(function(o, k){
       var lbl = S.lang==='it'?o.it:o.en, desc = S.lang==='it'?o.dIt:o.dEn;
-      return '<button class="opt" data-type="'+k+'" aria-pressed="'+(d.type===lbl)+'">'+
+      return '<button class="opt" data-format="'+k+'" aria-pressed="'+(d.format===lbl)+'">'+
         '<span class="mark"></span><span class="label"><b>'+esc(lbl)+'</b>'+
-        '<span class="small">'+esc(desc)+'</span></span></button>';
-    }).join('')+'</div>';
-  } else if(i===1){
-    body = '<div class="tagwrap">'+DELIVERABLES.map(function(o, k){
-      var lbl = S.lang==='it'?o.it:o.en;
-      return '<button class="tag" data-deliv="'+k+'" aria-pressed="'+(d.deliverables.indexOf(lbl)>-1)+'">'+esc(lbl)+'</button>';
+        '<span class="small">'+esc(desc)+'</span></span>'+
+        '<span class="small tnum" style="margin-left:auto;white-space:nowrap;color:var(--frost-white)">'+esc(o.range)+'</span>'+
+        '</button>';
     }).join('')+'</div>'+
-    '<p class="small" style="margin-top:16px">'+d.deliverables.length+' '+esc(L.selected)+'</p>';
-  } else if(i===2){
-    body = '<div class="opt-grid">'+BUDGETS.map(function(o, k){
+    '<p class="small" style="margin-top:20px">'+esc(L.guideNoteShort)+'</p>';
+  } else if(i===1){
+    var fmt = fmtByLabel(d.format);
+    var list = fmt ? fmt.subjects : [];
+    var sub1 = subjByLabel(fmt, d.type);
+
+    body = '<div class="opt-grid">'+list.map(function(o, k){
       var lbl = S.lang==='it'?o.it:o.en;
-      return '<button class="opt" data-budget="'+k+'" aria-pressed="'+(d.budget===lbl)+'">'+
-        '<span class="mark"></span><span class="label"><b>'+esc(lbl)+'</b></span></button>';
+      var rng = o.onRequest ? L.onRequest : o.range;
+      return '<button class="opt" data-subject="'+k+'" aria-pressed="'+(d.type===lbl)+'">'+
+        '<span class="mark"></span><span class="label"><b>'+esc(lbl)+'</b></span>'+
+        '<span class="small tnum" style="margin-left:auto;white-space:nowrap">'+esc(rng)+'</span>'+
+        '</button>';
     }).join('')+'</div>';
+
+    if(sub1 && sub1.other){
+      body += '<label class="field" style="margin-top:24px"><span>'+esc(L.otherLabel)+'</span>'+
+        '<input class="input" id="other" data-input="other" value="'+esc(d.other)+'" '+
+        'placeholder="'+esc(L.otherPlaceholder)+'" aria-label="'+esc(L.otherLabel)+'"></label>';
+    }
+
+    if(sub1){
+      body += '<div class="notice" style="margin-top:32px">'+
+        '<span class="kicker">'+esc(L.guidePrice)+'</span>'+
+        '<b class="price tnum" style="font-size:var(--t-h-lg)">'+esc(sub1.onRequest ? L.onRequest : sub1.range)+'</b>'+
+        '<p class="small">'+esc(L.guideNote)+'</p>'+
+        '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">'+
+          '<button class="btn btn-cta" data-go="call">'+esc(L.bookCall)+'</button>'+
+        '</div>'+
+      '</div>';
+    }
+  } else if(i===2){
+    body = '<div class="tagwrap">'+EXTRAS.map(function(o, k){
+      var pr = S.lang==='it' ? (o.priceIt || o.price) : o.price;
+      var lbl = (S.lang==='it'?o.it:o.en) + ' · ' + pr;
+      return '<button class="tag" data-extra="'+k+'" aria-pressed="'+(d.deliverables.indexOf(lbl)>-1)+'">'+esc(lbl)+'</button>';
+    }).join('')+'</div>'+
+    '<p class="small" style="margin-top:16px">'+
+      (d.deliverables.length ? d.deliverables.length+' '+esc(L.selected) : esc(L.extrasSkip))+'</p>';
   } else if(i===3){
     body = '<div class="opt-grid">'+TIMELINES.map(function(o, k){
       var lbl = S.lang==='it'?o.it:o.en;
@@ -2588,14 +2883,13 @@ function screenRequest(){
         '<span class="mark"></span><span class="label"><b>'+esc(lbl)+'</b></span></button>';
     }).join('')+'</div>'+
     '<label class="field" style="margin-top:28px"><span>'+esc(L.targetDate)+' ('+esc(L.optional)+')</span>'+
-    '<input class="input" id="date" type="date" data-input="date" value="'+esc(d.date)+'"></label>';
-  } else if(i===4){
-    body = '<div style="display:flex;flex-direction:column;gap:16px">'+
+    '<input class="input" id="date" type="date" data-input="date" value="'+esc(d.date)+'"></label>'+
+    '<div style="display:flex;flex-direction:column;gap:16px;margin-top:28px">'+
       '<input class="input" id="location" data-input="location" value="'+esc(d.location)+'" placeholder="'+esc(L.locPlaceholder)+'" aria-label="'+esc(L.locPlaceholder)+'">'+
       '<button class="opt" data-remote="1" aria-pressed="'+(!!d.remote)+'"><span class="mark"></span>'+
       '<span class="label"><b>'+esc(L.remote)+'</b></span></button>'+
     '</div>';
-  } else if(i===5){
+  } else if(i===4){
     var chips = S.files.map(function(f, k){
       return '<span class="tag" style="cursor:default">'+esc(f.name)+' <span style="opacity:.6">'+fmtSize(f.size)+'</span>'+
         ' <button data-unfile="'+k+'" aria-label="Remove '+esc(f.name)+'" style="background:none;border:none;cursor:pointer;color:inherit;padding:0 0 0 6px">&times;</button></span>';
@@ -2611,7 +2905,7 @@ function screenRequest(){
       picker +
       (chips ? '<div class="tagwrap">'+chips+'</div>' : '')+
     '</div>';
-  } else if(i===6){
+  } else if(i===5){
     body = '<div style="display:flex;flex-direction:column;gap:16px">'+
       '<input class="input" id="name" data-input="name" value="'+esc(d.name)+'" placeholder="'+esc(L.fullName)+'" aria-label="'+esc(L.fullName)+'">'+
       '<input class="input" id="email" type="email" data-input="email" value="'+esc(d.email)+'" placeholder="'+esc(L.email)+'" aria-label="'+esc(L.email)+'">'+
@@ -2620,13 +2914,14 @@ function screenRequest(){
     '</div>';
   } else {
     var rows = [
-      [L.lType, d.type, 0],
-      [L.lDeliverables, d.deliverables.join(', '), 1],
-      [L.lBudget, d.budget, 2],
+      [L.lFormat, d.format + (d.note ? '  ·  ' + d.note : ''), 0],
+      [L.lType, d.type + (d.other ? ' — ' + d.other : ''), 1],
+      [L.lBudget, d.budget, 1],
+      [L.lDeliverables, d.deliverables.join(', '), 2],
       [L.lTimeline, d.timeline + (d.date ? ' · ' + d.date : ''), 3],
-      [L.lLocation, d.remote ? L.remote : d.location, 4],
-      [L.lBrief, d.brief, 5],
-      [L.lContact, [d.name, d.email, d.company].filter(Boolean).join(' · '), 6]
+      [L.lLocation, d.remote ? L.remote : d.location, 3],
+      [L.lBrief, d.brief, 4],
+      [L.lContact, [d.name, d.email, d.phone, d.company].filter(Boolean).join(' · '), 5]
     ].map(function(r){
       return '<button class="review-row" data-step="'+r[2]+'">'+
         '<span class="rv"><b>'+esc(r[0])+'</b><span>'+esc(r[1] || L.notSet)+'</span></span>'+
@@ -2660,13 +2955,16 @@ function screenRequest(){
 
 function stepReady(i){
   var d = S.draft;
-  if(i===0) return !!d.type;
-  if(i===1) return d.deliverables.length > 0;
-  if(i===2) return !!d.budget;
-  if(i===3) return !!d.timeline;
-  if(i===4) return !!(d.location || d.remote);
-  if(i===5) return d.brief.trim().length > 8;
-  if(i===6) return !!(d.name.trim() && /.+@.+\..+/.test(d.email));
+  if(i===0) return !!d.format;
+  if(i===1){
+    if(!d.type) return false;
+    var so = subjByLabel(fmtByLabel(d.format), d.type);
+    return so && so.other ? d.other.trim().length > 2 : true;
+  }
+  if(i===2) return true;                       /* extras are optional */
+  if(i===3) return !!d.timeline && !!(d.location || d.remote);
+  if(i===4) return d.brief.trim().length > 8;
+  if(i===5) return !!(d.name.trim() && /.+@.+\..+/.test(d.email));
   return !!(d.type && d.name && d.email);
 }
 
@@ -2754,7 +3052,7 @@ function goNow(route){
 /* ============================== EVENTS ============================== */
 document.addEventListener('click', function(e){
   var el = e.target.closest('[data-go],[data-lang],[data-menu],[data-reel],[data-reelstep],[data-open],'+
-    '[data-filter],[data-pkg],[data-slot],[data-book],[data-gate],[data-signin],[data-signout],[data-type],[data-deliv],[data-budget],'+
+    '[data-filter],[data-pkg],[data-extra],[data-slot],[data-book],[data-gate],[data-signin],[data-signout],[data-format],[data-subject],'+
     '[data-track],[data-file],'+
     '[data-timeline],[data-remote],[data-step],[data-stepmove],[data-submit],[data-restart],[data-close],[data-unfile]');
 
@@ -2768,7 +3066,7 @@ document.addEventListener('click', function(e){
 
   if(d.go){ go(d.go); return; }
   if(d.lang){ S.lang = d.lang; persist(); render(true); return; }
-  if(d.menu){ S.menu = d.menu === '1'; render(true); return; }
+  if(d.menu){ setMenu(d.menu === 't' ? !S.menu : d.menu === '1'); return; }
   if(d.reel){ S.reel = Number(d.reel); render(true); return; }
   if(d.reelstep){ S.reel = (S.reel + Number(d.reelstep) + WORK.length) % WORK.length; render(true); return; }
   if(d.open){ S.lightbox = d.open; renderLightbox(); return; }
@@ -2778,9 +3076,10 @@ document.addEventListener('click', function(e){
   if(d.pkg){
     var p = PACKAGES.filter(function(x){ return x.id === d.pkg; })[0];
     if(p){
-      var ty = TYPES[p.presetType];
-      S.draft.type = S.lang==='it' ? ty.it : ty.en;
-      S.step = 1; S.submittedRef = null;
+      var fmp = FORMATS.filter(function(x){ return x.id === p.group; })[0];
+      if(fmp) S.draft.format = S.lang==='it' ? fmp.it : fmp.en;
+      S.draft.note = (S.lang==='it' ? p.nameIt : p.nameEn) + ' — ' + (S.lang==='it' ? p.priceIt : p.price);
+      S.step = 1; S.submittedRef = null;        /* the format is known; the subject is not */
     }
     go('request'); return;
   }
@@ -2792,20 +3091,30 @@ document.addEventListener('click', function(e){
   if(d.track){ trackLookup(); return; }
   if(d.file){ openFile(d.file); return; }
 
-  if(d.type != null && el.hasAttribute('data-type')){
-    var ty2 = TYPES[Number(d.type)];
-    S.draft.type = S.lang==='it' ? ty2.it : ty2.en;
+  if(d.format != null && el.hasAttribute('data-format')){
+    var fm = FORMATS[Number(d.format)];
+    var wasFmt = S.draft.format;
+    S.draft.format = S.lang==='it' ? fm.it : fm.en;
+    if(wasFmt !== S.draft.format){ S.draft.type = ''; S.draft.other = ''; }
+    S.draft.budget = fm.range;
     render(true); return;
   }
-  if(d.deliv != null && el.hasAttribute('data-deliv')){
-    var dv = DELIVERABLES[Number(d.deliv)];
-    var lbl = S.lang==='it' ? dv.it : dv.en;
-    var idx = S.draft.deliverables.indexOf(lbl);
-    if(idx > -1) S.draft.deliverables.splice(idx, 1); else S.draft.deliverables.push(lbl);
+  if(d.subject != null && el.hasAttribute('data-subject')){
+    var fm2 = fmtByLabel(S.draft.format);
+    if(!fm2) return;
+    var sj = fm2.subjects[Number(d.subject)];
+    S.draft.type = S.lang==='it' ? sj.it : sj.en;
+    if(!sj.other) S.draft.other = '';
+    S.draft.budget = sj.onRequest ? t().onRequest : sj.range;
     render(true); return;
   }
-  if(d.budget != null && el.hasAttribute('data-budget')){
-    var b = BUDGETS[Number(d.budget)]; S.draft.budget = S.lang==='it'?b.it:b.en; render(true); return;
+  if(d.extra != null && el.hasAttribute('data-extra')){
+    var ex = EXTRAS[Number(d.extra)];
+    var pr = S.lang==='it' ? (ex.priceIt || ex.price) : ex.price;
+    var lbl2 = (S.lang==='it' ? ex.it : ex.en) + ' · ' + pr;
+    var idx2 = S.draft.deliverables.indexOf(lbl2);
+    if(idx2 > -1) S.draft.deliverables.splice(idx2, 1); else S.draft.deliverables.push(lbl2);
+    render(true); return;
   }
   if(d.timeline != null && el.hasAttribute('data-timeline')){
     var tl = TIMELINES[Number(d.timeline)]; S.draft.timeline = S.lang==='it'?tl.it:tl.en; render(true); return;
@@ -2864,7 +3173,7 @@ document.addEventListener('change', function(e){
 document.addEventListener('keydown', function(e){
   if(e.key === 'Escape'){
     if(S.lightbox){ S.lightbox = null; renderLightbox(); }
-    else if(S.menu){ S.menu = false; render(true); }
+    else if(S.menu){ setMenu(false); }
   }
   if(S.route === 'home' && !S.lightbox && !S.menu){
     if(e.key === 'ArrowRight'){ S.reel = (S.reel+1)%WORK.length; render(true); }
