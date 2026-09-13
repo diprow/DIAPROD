@@ -507,7 +507,7 @@ textarea.input{border-radius:var(--r-card);line-height:1.47}
   from{opacity:0;transform:translate3d(0,12px,0)}
   to{opacity:1;transform:none}
 }
-.page-in{animation:pageIn .6s cubic-bezier(.16,.84,.34,1) both}
+.page-in{animation:pageIn .42s cubic-bezier(.16,.84,.34,1) both}
 
 /* ---------- the hero, on first paint ---------- */
 @keyframes heroIn{
@@ -520,7 +520,7 @@ textarea.input{border-radius:var(--r-card);line-height:1.47}
 .hero-copy > *:nth-child(3){animation-delay:.28s}
 .hero-copy > *:nth-child(4){animation-delay:.36s}
 @keyframes stillIn{from{opacity:0}to{opacity:1}}
-.hero-still,.reel-still{animation:stillIn .7s ease both}
+.hero-still,.reel-still{animation:stillIn .5s ease both}
 
 /* ---------- stills drifting against the scroll ----------
    Each still is taller than the frame that crops it, so it can
@@ -686,9 +686,9 @@ html.cur-down .cur-glass{
    ============================================================ */
 :root{
   --ease-sig:cubic-bezier(.625,.05,0,1);   /* the signature curve */
-  --d-text:.8s;                            /* words arriving      */
-  --d-media:.9s;                           /* a frame opening     */
-  --d-roll:.42s;                           /* a label rolling     */
+  --d-text:.55s;                           /* words arriving      */
+  --d-media:.62s;                          /* a frame opening     */
+  --d-roll:.3s;                            /* a label rolling     */
 }
 
 /* the text as it really reads, for anything that isn't looking */
@@ -763,7 +763,7 @@ html.sig .hero-copy > *{animation:none}      /* the split handles these now */
 /* ---------- buttons opening from their own centre ---------- */
 [data-bwipe]{
   clip-path:inset(0 50%);
-  transition:clip-path .62s var(--ease-sig);
+  transition:clip-path .44s var(--ease-sig);
   transition-delay:var(--cd,0ms);
 }
 [data-bwipe].in{clip-path:inset(0 0%)}
@@ -790,11 +790,11 @@ html.sig .hero-copy > *{animation:none}      /* the split handles these now */
   position:fixed;inset:0;z-index:950;background:var(--pure-black);
   display:grid;place-items:center;pointer-events:none;
   clip-path:inset(0 0 100% 0);
-  transition:clip-path .46s var(--ease-sig);
+  transition:clip-path .34s var(--ease-sig);
   will-change:clip-path;
 }
 .curtain.cover{clip-path:inset(0 0 0 0);pointer-events:auto}
-.curtain.lift{clip-path:inset(100% 0 0 0);transition-duration:.58s}
+.curtain.lift{clip-path:inset(100% 0 0 0);transition-duration:.42s}
 .curtain.snap{transition:none}
 .curtain-mark{
   opacity:0;transform:translate3d(0,10px,0) scale(.96);
@@ -811,14 +811,14 @@ html.sig .hero-copy > *{animation:none}      /* the split handles these now */
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:var(--s24);padding:var(--gutter);
   clip-path:inset(0 0 0 0);
-  transition:clip-path .72s var(--ease-sig);
+  transition:clip-path .52s var(--ease-sig);
   /* if the script never runs, the panel takes itself away */
   animation:introFailsafe 0s linear 6s forwards;
 }
 @keyframes introFailsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
 .intro-mark{
   clip-path:inset(0 100% 0 0);
-  transition:clip-path 1s var(--ease-sig),opacity .5s ease,transform .6s var(--ease-sig);
+  transition:clip-path .7s var(--ease-sig),opacity .38s ease,transform .45s var(--ease-sig);
   will-change:clip-path;
 }
 .intro-rule{
@@ -827,7 +827,7 @@ html.sig .hero-copy > *{animation:none}      /* the split handles these now */
 .intro-rule i{
   position:absolute;inset:0;background:var(--frost-white);
   transform:scaleX(0);transform-origin:0 50%;
-  transition:transform 1.25s var(--ease-sig);
+  transition:transform .85s var(--ease-sig);
 }
 .intro-num{
   font-family:var(--display);font-size:var(--t-xs);font-weight:600;
@@ -843,14 +843,14 @@ html.sig-boot,html.sig-boot body{overflow:hidden}
 
 /* ---------- the menu, one line after another ---------- */
 @keyframes sheetIn{from{opacity:0;transform:translate3d(0,26px,0)}to{opacity:1;transform:none}}
-html.sig .sheet-links button{animation:sheetIn .62s var(--ease-sig) both}
-html.sig .sheet-links button:nth-child(1){animation-delay:.06s}
-html.sig .sheet-links button:nth-child(2){animation-delay:.12s}
-html.sig .sheet-links button:nth-child(3){animation-delay:.18s}
-html.sig .sheet-links button:nth-child(4){animation-delay:.24s}
-html.sig .sheet-links button:nth-child(5){animation-delay:.30s}
-html.sig .sheet-links button:nth-child(6){animation-delay:.36s}
-html.sig .sheet-links button:nth-child(n+7){animation-delay:.42s}
+html.sig .sheet-links button{animation:sheetIn .44s var(--ease-sig) both}
+html.sig .sheet-links button:nth-child(1){animation-delay:.04s}
+html.sig .sheet-links button:nth-child(2){animation-delay:.08s}
+html.sig .sheet-links button:nth-child(3){animation-delay:.12s}
+html.sig .sheet-links button:nth-child(4){animation-delay:.16s}
+html.sig .sheet-links button:nth-child(5){animation-delay:.20s}
+html.sig .sheet-links button:nth-child(6){animation-delay:.24s}
+html.sig .sheet-links button:nth-child(n+7){animation-delay:.28s}
 
 
 /* ============================================================
@@ -2836,7 +2836,7 @@ function bindReveal(){
     groups[pid] = (groups[pid] == null) ? 0 : groups[pid] + 1;
     var n = Math.min(groups[pid], 5);
     el.setAttribute('data-reveal','');
-    el.style.setProperty('--rd', (n * 80) + 'ms');
+    el.style.setProperty('--rd', (n * 55) + 'ms');
     /* anything already on screen when the page loads arrives at once —
        unless something is still covering the page, in which case it
        waits its turn, or unless nothing about this render is new. */
@@ -3029,7 +3029,7 @@ var SIG = {
   gate:true,            /* something is covering the page */
   anim:true,            /* this render is worth animating */
   pending:[],
-  char:18, line:50, item:80, dur:800
+  char:11, line:34, item:55, dur:550
 };
 
 var SPLIT_TITLE = '.hero-type,.display-type,.h-lg,.h-md,.h-sm,.kicker,.eyebrow';
@@ -3125,7 +3125,7 @@ function sigSplit(el, mode){
     } else {
       var inner = '';
       for(var c=0;c<txt.length;c++){
-        var d = base + Math.min(c, 46) * SIG.char;
+        var d = base + Math.min(c, 34) * SIG.char;   /* a long line never drags */
         if(d > longest) longest = d;
         inner += '<span class="sp-c" style="--cd:'+d+'ms">'+esc(txt.charAt(c))+'</span>';
       }
@@ -3134,7 +3134,7 @@ function sigSplit(el, mode){
   }
   el.__sigOrig = el.innerHTML;
   el.innerHTML = '<span class="sp-sr">'+esc(label)+'</span><span aria-hidden="true">'+out+'</span>';
-  return longest + SIG.dur + 80;
+  return longest + SIG.dur + 60;
 }
 
 function sigRevert(el){
@@ -3176,7 +3176,7 @@ function prepMedia(root){
     el.setAttribute('data-mrev','');
     if(!SIG.anim && !SIG.gate && sigInView(el)){ el.classList.add('now','in'); continue; }
     (function(el){
-      el.__sigPlay = function(){ el.classList.add('in'); sigFireInside(el, 140); };
+      el.__sigPlay = function(){ el.classList.add('in'); sigFireInside(el, 95); };
     })(el);
     sigWatch(el);
   }
@@ -3279,9 +3279,9 @@ function sigTransition(work){
         c.classList.remove('lift');
         void c.offsetWidth;
         c.classList.remove('snap');
-      }, 600);
+      }, 440);
     }, 80);
-  }, 460);
+  }, 340);
 }
 
 /* ---------- the mark, before any of it ---------- */
@@ -3308,13 +3308,13 @@ function sigBoot(){
 
   var seen = false;
   try{ seen = window.sessionStorage.getItem('dia-intro') === '1'; }catch(e){}
-  var hold = seen ? 420 : 1900;               /* once a visit, then briefly */
+  var hold = seen ? 300 : 1250;               /* once a visit, then briefly */
   var num  = document.getElementById('introNum');
   var t0   = Date.now();
 
   window.requestAnimationFrame(function(){
     intro.classList.add('go');
-    if(seen) intro.style.transitionDuration = '.5s';
+    if(seen) intro.style.transitionDuration = '.38s';
   });
 
   /* the count runs with the wipe, and lands on 100 as it finishes */
@@ -3331,10 +3331,10 @@ function sigBoot(){
     window.setTimeout(function(){
       SIG.gate = false;
       sigPlayPending();                        /* the hero arrives behind it */
-    }, 180);
+    }, 130);
     window.setTimeout(function(){
       if(intro.parentNode) intro.parentNode.removeChild(intro);
-    }, 1000);
+    }, 760);
   }
 
   /* it waits for the typeface and for nothing else — a slow photograph
@@ -3347,7 +3347,7 @@ function sigBoot(){
   try{
     if(document.fonts && document.fonts.ready) document.fonts.ready.then(ready);
   }catch(e){}
-  window.setTimeout(ready, hold + 350);
+  window.setTimeout(ready, hold + 260);
 }
 
 /* ---------- the reel answers a thumb ----------
