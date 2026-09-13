@@ -2914,6 +2914,11 @@ try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(functi
    and a curtain carries you from one screen to the next. Every
    piece runs on one curve and one set of timings.
    ============================================================ */
+/* The curtain between screens is off: moving between tabs is instant,
+   and the new screen introduces itself with its own text and frames.
+   Set this to true to bring the black sweep and the mark back.       */
+var USE_CURTAIN = false;
+
 var SIG = {
   on:!REDUCED,
   gate:true,            /* something is covering the page */
@@ -3139,7 +3144,7 @@ function bindSignature(routeChanged){
    while nothing can be seen, and then it keeps going the same way. */
 function sigTransition(work){
   var c = document.getElementById('curtain');
-  if(!SIG.on || !c){ work(); return; }
+  if(!USE_CURTAIN || !SIG.on || !c){ work(); return; }
   c.classList.remove('snap','lift');
   void c.offsetWidth;
   c.classList.add('cover');
@@ -3233,7 +3238,7 @@ function motionAfterRender(routeChanged){
   bindSignature(routeChanged);
   bindReveal();
   bindParallax();
-  if(routeChanged && !REDUCED && !SIG.on){
+  if(routeChanged && !REDUCED && !(SIG.on && USE_CURTAIN)){
     var app = document.getElementById('app');
     app.classList.remove('page-in');
     void app.offsetWidth;                           /* restart the animation */
