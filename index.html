@@ -1485,67 +1485,7 @@ var CASES = [
    metric:'€350', lEn:'Content · Production · Full Day', lIt:'Content · Production · Full Day'}
 ];
 
-var PACK_GROUPS = [
-  {id:'photo', en:'Photography',      it:'Fotografia'},
-  {id:'video', en:'Video production', it:'Produzione video'},
-  {id:'both',  en:'Photo + video',    it:'Foto + video'}
-];
 
-var PACKAGES = [
-  {id:'starter', group:'photo', nameEn:'Starter', nameIt:'Starter', price:'€150', priceIt:'€150',
-   dEn:'An essential session, made for social media and personal content.',
-   dIt:'Servizio fotografico essenziale, ideale per social media e contenuti personali.',
-   en:['1 hour of shooting','1 location','10 edited photographs','Colour correction','Digital delivery'],
-   it:['1 ora di shooting','1 location','10 fotografie post-prodotte','Color correction','Consegna digitale']},
-
-  {id:'pro', group:'photo', nameEn:'Pro', nameIt:'Pro', price:'€250', priceIt:'€250',
-   dEn:'A full session to show your style and your image at their best.',
-   dIt:'Un servizio completo per valorizzare il tuo stile e la tua immagine.',
-   en:['Up to 2 hours of shooting','Up to 2 outfits / looks','20 edited photographs','5 with professional retouching','Colour correction & grading','Digital delivery'],
-   it:['Fino a 2 ore di shooting','Fino a 2 outfit / look','20 fotografie post-prodotte','5 fotografie con ritocco professionale','Color correction & grading','Consegna digitale']},
-
-  {id:'premium', group:'photo', nameEn:'Premium', nameIt:'Premium', price:'€400', priceIt:'€400',
-   dEn:'A complete photographic experience for fashion, personal branding and professional portfolios.',
-   dIt:'Un\u2019esperienza fotografica completa, pensata per fashion, personal branding e portfolio professionali.',
-   en:['Up to 4 hours of shooting','Multiple locations / looks','40 edited photographs','10 with professional retouching','Creative direction','Professional colour grading','Digital delivery'],
-   it:['Fino a 4 ore di shooting','Multiple location / look','40 fotografie post-prodotte','10 fotografie con ritocco professionale','Direzione creativa','Color grading professionale','Consegna digitale']},
-
-  {id:'reel', group:'video', nameEn:'Reel', nameIt:'Reel', price:'€150', priceIt:'€150',
-   dEn:'Professional vertical content made for Instagram and TikTok.',
-   dIt:'Contenuti verticali professionali pensati per Instagram e TikTok.',
-   en:['Up to 1 hour of shooting','1 vertical reel','Professional editing','Colour grading','Music','9:16 format'],
-   it:['Fino a 1 ora di shooting','1 Reel verticale','Editing professionale','Color grading','Musica','Formato 9:16']},
-
-  {id:'social', group:'video', nameEn:'Social', nameIt:'Social', price:'€300', priceIt:'€300',
-   dEn:'Built to get several pieces of content out of a single session.',
-   dIt:'Un pacchetto pensato per creare pi\u00f9 contenuti da un\u2019unica sessione.',
-   en:['Up to 2 hours of shooting','3 vertical reels','Professional editing','Colour grading','Subtitles','Music & sound design','9:16 format'],
-   it:['Fino a 2 ore di shooting','3 Reel verticali','Editing professionale','Color grading','Sottotitoli','Musica & sound design','Formato 9:16']},
-
-  {id:'commercial', group:'video', nameEn:'Commercial', nameIt:'Commercial', price:'€600', priceIt:'€600',
-   dEn:'Professional video production for brands, companies and local businesses.',
-   dIt:'Produzione video professionale per brand, aziende e attivit\u00e0 commerciali.',
-   en:['Up to 4 hours of production','1 promotional video','Professional filming','Cinematic editing','Colour grading','Sound design','1 revision included'],
-   it:['Fino a 4 ore di produzione','1 video promozionale','Riprese professionali','Editing cinematografico','Color grading','Sound design','1 revisione inclusa']},
-
-  {id:'content', group:'both', nameEn:'Content', nameIt:'Content', price:'€350', priceIt:'€350',
-   dEn:'The straightforward way to get photographs and video out of one session.',
-   dIt:'La soluzione ideale per creare contenuti fotografici e video durante un\u2019unica sessione.',
-   en:['Up to 2 hours of shooting','15 edited photographs','2 vertical reels','Professional editing','Colour grading','Digital delivery'],
-   it:['Fino a 2 ore di shooting','15 fotografie post-prodotte','2 Reel verticali','Editing professionale','Color grading','Consegna digitale']},
-
-  {id:'production', group:'both', nameEn:'Production', nameIt:'Production', price:'€650', priceIt:'€650',
-   dEn:'A complete package for brands, professionals and social media.',
-   dIt:'Un pacchetto completo per brand, professionisti e social media.',
-   en:['Half a day of production','30 edited photographs','4 vertical reels','Professional photo retouching','Video editing','Colour grading','Creative direction'],
-   it:['Mezza giornata di produzione','30 fotografie post-prodotte','4 Reel verticali','Ritocco fotografico professionale','Video editing','Color grading','Direzione creativa']},
-
-  {id:'fullday', group:'both', nameEn:'Full Day', nameIt:'Full Day', price:'€950', priceIt:'€950',
-   dEn:'A whole day given over to producing professional content.',
-   dIt:'Una giornata completa dedicata alla produzione di contenuti professionali.',
-   en:['A full production day','Photography + videography','50+ edited photographs','6–8 vertical reels','Professional photo retouching','Advanced video editing','Cinematic colour grading','Creative direction'],
-   it:['Giornata completa di produzione','Fotografia + Videografia','50+ fotografie post-prodotte','6–8 Reel verticali','Ritocco fotografico professionale','Video editing avanzato','Color grading cinematografico','Direzione creativa']}
-];
 
 /* The extras, priced. These are also the choices in the brief. */
 var EXTRAS = [
@@ -1729,7 +1669,7 @@ var T = {
     step3:'When and where?', step4:'Tell us about it.', step5:'How do we reach you?',
     step6:'Check it over.',
     pkNotSure:'Not sure yet', pkNotSureSub:'Tell us what you need and we will quote it',
-    pkOptions:'options', pkBack:'Another category',
+    pkOptions:'options', pkBack:'Another category', pkAllThree:'All three',
     lFormat:'What you need',
     otherLabel:'Tell us what you have in mind', otherPlaceholder:'In a line or two',
     guidePrice:'Indicative range', onRequest:'On request',
@@ -1825,7 +1765,7 @@ var T = {
     step3:'Quando e dove?', step4:'Raccontaci il progetto.', step5:'Come ti contattiamo?',
     step6:'Controlla tutto.',
     pkNotSure:'Non lo so ancora', pkNotSureSub:'Raccontaci cosa ti serve e ti facciamo un preventivo',
-    pkOptions:'opzioni', pkBack:'Un\u2019altra categoria',
+    pkOptions:'opzioni', pkBack:'Un\u2019altra categoria', pkAllThree:'Tutte e tre',
     lFormat:'Cosa ti serve',
     otherLabel:'Raccontaci cosa hai in mente', otherPlaceholder:'In una riga o due',
     guidePrice:'Fascia indicativa', onRequest:'Su richiesta',
@@ -2528,20 +2468,15 @@ function screenWork(){
 function screenPackages(){
   var L = t(), it = S.lang === 'it';
 
-  var groups = PACK_GROUPS.map(function(g){
-    var rows = PACKAGES.filter(function(p){ return p.group === g.id; }).map(function(p){
-      var pts = (it ? p.it : p.en).map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('');
-      return '<div class="pkg">'+
-        '<div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">'+
-          '<h3 class="h-lg">'+esc(it ? p.nameIt : p.nameEn)+'</h3>'+
-          '<span class="price">'+esc(it ? p.priceIt : p.price)+'</span>'+
-          '<span class="small" style="max-width:30ch">'+esc(it ? p.dIt : p.dEn)+'</span>'+
-        '</div>'+
-        '<ul class="pkg-points">'+pts+'</ul>'+
-        '<button class="btn btn-cta btn-lg" data-pkg="'+p.id+'">'+esc(L.pkChoose)+'</button>'+
-      '</div>';
-    }).join('');
-    return '<h2 class="h-md" style="margin:56px 0 8px;color:var(--platinum)">'+esc(it ? g.it : g.en)+'</h2>'+rows;
+  var cards = FORMATS.map(function(f){
+    return '<button class="pkg" data-pkview="'+f.id+'" style="cursor:pointer;text-align:left;background:none;border:none;border-top:1px solid var(--graphite);width:100%;color:inherit">'+
+      '<div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">'+
+        '<h3 class="h-lg">'+esc(it ? f.it : f.en)+'</h3>'+
+        '<span class="price">'+esc(f.range)+'</span>'+
+      '</div>'+
+      '<p class="small" style="max-width:38ch">'+esc(it ? f.dIt : f.dEn)+'</p>'+
+      '<span class="btn btn-cta btn-lg" aria-hidden="true">'+esc(L.pkChoose)+' &rsaquo;</span>'+
+    '</button>';
   }).join('');
 
   var extras = EXTRAS.map(function(x){
@@ -2554,8 +2489,8 @@ function screenPackages(){
   return '<section class="stage"><div class="wrap band">'+
     '<p class="kicker">'+esc(L.pkKicker)+'</p>'+
     '<h1 class="hero-type" style="margin:16px 0 16px">'+esc(L.pkTitle)+'</h1>'+
-    '<p class="body-copy" style="max-width:48ch">'+esc(L.pkSub)+'</p>'+
-    groups+
+    '<p class="body-copy" style="max-width:48ch;margin-bottom:40px">'+esc(L.pkSub)+'</p>'+
+    cards+
     '<h2 class="h-md" style="margin:72px 0 8px;color:var(--platinum)">'+esc(L.pkExtras)+'</h2>'+
     '<ul style="list-style:none;margin:0;padding:0;max-width:560px">'+extras+'</ul>'+
     '<h2 class="h-md" style="margin:72px 0 16px;color:var(--platinum)">'+esc(L.pkNotes)+'</h2>'+
@@ -3052,7 +2987,7 @@ function goNow(route){
 /* ============================== EVENTS ============================== */
 document.addEventListener('click', function(e){
   var el = e.target.closest('[data-go],[data-lang],[data-menu],[data-reel],[data-reelstep],[data-open],'+
-    '[data-filter],[data-pkg],[data-extra],[data-slot],[data-book],[data-gate],[data-signin],[data-signout],[data-format],[data-subject],'+
+    '[data-filter],[data-pkview],[data-extra],[data-slot],[data-book],[data-gate],[data-signin],[data-signout],[data-format],[data-subject],'+
     '[data-track],[data-file],'+
     '[data-timeline],[data-remote],[data-step],[data-stepmove],[data-submit],[data-restart],[data-close],[data-unfile]');
 
@@ -3073,15 +3008,16 @@ document.addEventListener('click', function(e){
   if(d.close){ S.lightbox = null; renderLightbox(); return; }
   if(d.filter){ S.filter = d.filter; render(true); return; }
 
-  if(d.pkg){
-    var p = PACKAGES.filter(function(x){ return x.id === d.pkg; })[0];
-    if(p){
-      var fmp = FORMATS.filter(function(x){ return x.id === p.group; })[0];
-      if(fmp) S.draft.format = S.lang==='it' ? fmp.it : fmp.en;
-      S.draft.note = (S.lang==='it' ? p.nameIt : p.nameEn) + ' — ' + (S.lang==='it' ? p.priceIt : p.price);
-      S.step = 1; S.submittedRef = null;        /* the format is known; the subject is not */
+  if(d.pkview != null && el.hasAttribute('data-pkview')){
+    var fmv = FORMATS.filter(function(x){ return x.id === d.pkview; })[0];
+    if(fmv){
+      S.draft.format = S.lang==='it' ? fmv.it : fmv.en;
+      S.draft.type = ''; S.draft.other = '';
+      S.draft.budget = fmv.range;
     }
-    go('request'); return;
+    S.step = 1; S.submittedRef = null;          /* the format is known; the subject is not */
+    if(S.user){ go('request'); return; }
+    S.afterSignin = 'request'; go('signin'); return;
   }
   if(d.slot != null && el.hasAttribute('data-slot')){ S.slot = d.slot; render(true); return; }
   if(d.book){ submitCall(); return; }
