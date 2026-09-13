@@ -158,15 +158,89 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;margin:0;text-wrap:balanc
 .light .linky{color:var(--link-blue)}
 .linky:hover{text-decoration:underline}
 
-/* ---------- nav ---------- */
-.navwrap{position:sticky;top:0;z-index:60;padding:var(--s12) var(--gutter);background:var(--pure-black)}
+/* ---------- nav ----------
+   Glass, not a black band. At the top of a page the bar is not there
+   at all: no pane, no rim, the hero reads straight through it. The
+   moment the page moves under it, it takes a frosted pane, a hairline
+   of light along its upper edge and a shadow it did not have before.
+   The strip it sits in carries a second, softer blur that fades out
+   below the bar, so whatever passes underneath dissolves instead of
+   being cut off by a hard edge.                                     */
+.navwrap{position:sticky;top:0;z-index:60;padding:var(--s12) var(--gutter);background:transparent}
+
+/* the fade under the bar — masked, so the blur itself falls away */
+.navwrap::after{
+  content:'';position:absolute;left:0;right:0;top:0;height:calc(100% + 36px);
+  z-index:-1;pointer-events:none;opacity:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.58),rgba(0,0,0,0));
+  backdrop-filter:blur(14px) saturate(140%);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 55%,rgba(0,0,0,.5) 80%,transparent 100%);
+          mask-image:linear-gradient(to bottom,#000 0,#000 55%,rgba(0,0,0,.5) 80%,transparent 100%);
+  transition:opacity .45s ease;
+}
+html.nav-lift .navwrap::after{opacity:1}
+
 .nav{
   max-width:var(--page);margin:0 auto;display:flex;align-items:center;gap:var(--s16);
   justify-content:space-between;border-radius:var(--r-pill);
-  background:rgba(0,0,0,.72);backdrop-filter:saturate(180%) blur(20px);
-  -webkit-backdrop-filter:saturate(180%) blur(20px);
-  border:1px solid var(--graphite);padding:8px 8px 8px 20px;
+  padding:8px 8px 8px 20px;
+  background:rgba(0,0,0,0);
+  backdrop-filter:saturate(100%) blur(0px);
+  -webkit-backdrop-filter:saturate(100%) blur(0px);
+  border:1px solid transparent;box-shadow:none;
+  transition:background .45s ease,border-color .45s ease,box-shadow .45s ease,
+             backdrop-filter .45s ease,-webkit-backdrop-filter .45s ease;
 }
+html.nav-lift .nav{
+  background:rgba(14,14,16,.52);
+  backdrop-filter:saturate(185%) blur(22px);
+  -webkit-backdrop-filter:saturate(185%) blur(22px);
+  border-color:rgba(245,245,247,.09);
+}
+
+/* ---------- the bar takes its tone from whatever is under it ----------
+   Flat in both states — a pane of tinted glass, no rim light and no
+   shadow under it. Over the dark bands it darkens slightly; the moment
+   a white section passes beneath, the pane and everything written on
+   it turn over together.                                             */
+html.nav-lift.nav-light .nav{
+  background:rgba(255,255,255,.62);
+  border-color:rgba(0,0,0,.07);
+}
+.nav .brand-name,.nav .navlink,.nav .acct-chip,.nav .langbtn,.nav .burger span,
+.nav .langbox,.nav .brand svg rect{
+  transition:color .35s ease,background .35s ease,border-color .35s ease,fill .35s ease;
+}
+html.nav-light .nav .brand-name,
+html.nav-light .nav .navlink,
+html.nav-light .nav .acct-chip{color:var(--obsidian)}
+html.nav-light .nav .brand svg rect{fill:var(--obsidian)}
+html.nav-light .nav .langbox{border-color:rgba(0,0,0,.13)}
+html.nav-light .nav .langbtn[aria-pressed="true"]{background:var(--obsidian);color:var(--paper-white)}
+html.nav-light .nav .burger span{background:var(--obsidian)}
+html.nav-light .nav-pill{background:rgba(0,0,0,.07)}
+html.nav-light .navwrap::after{
+  background:linear-gradient(to bottom,rgba(255,255,255,.62),rgba(255,255,255,0));
+}
+
+/* no backdrop to filter, no glass — the bar stays readable anyway */
+@supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){
+  html.nav-lift .nav{background:rgba(0,0,0,.92)}
+  html.nav-lift.nav-light .nav{background:rgba(255,255,255,.94)}
+  .navwrap::after{background:linear-gradient(to bottom,rgba(0,0,0,.92),rgba(0,0,0,0))}
+  html.nav-light .navwrap::after{background:linear-gradient(to bottom,rgba(255,255,255,.94),rgba(255,255,255,0))}
+}
+
+/* with no pane under it at the top of a page, the lettering carries its
+   own shadow instead — invisible on black, insurance over a bright still */
+.nav .brand-name,.nav .navlink,.nav .langbtn,.nav .acct-chip{
+  text-shadow:0 1px 14px rgba(0,0,0,.55);
+}
+html.nav-lift .nav .brand-name,html.nav-lift .nav .navlink,
+html.nav-lift .nav .langbtn,html.nav-lift .nav .acct-chip,
+html.nav-light .nav .brand-name,html.nav-light .nav .navlink,
+html.nav-light .nav .langbtn,html.nav-light .nav .acct-chip{text-shadow:none}
 .brand{display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;padding:6px 0}
 .brand-name{font-family:var(--display);font-size:var(--t-body);font-weight:600;letter-spacing:.02em;color:var(--frost-white);text-transform:uppercase}
 .navlinks{display:flex;align-items:center;gap:2px}
@@ -653,7 +727,7 @@ html.cur-down .cur-glass{
 .navlink{position:relative;z-index:1}
 .nav-pill{
   position:absolute;top:0;left:0;width:0;height:0;z-index:0;opacity:0;
-  border-radius:var(--r-pill);background:var(--graphite);pointer-events:none;
+  border-radius:var(--r-pill);background:rgba(245,245,247,.12);pointer-events:none;
   transition:transform .42s cubic-bezier(.16,.84,.34,1),
              width .42s cubic-bezier(.16,.84,.34,1),
              height .42s cubic-bezier(.16,.84,.34,1),
@@ -2651,6 +2725,7 @@ function render(keepScroll){
   } else {
     window.scrollTo(0, 0);
   }
+  NAVLIFT();
 }
 
 function go(route){
@@ -2883,6 +2958,42 @@ function onScroll(){
   pxTicking = true;
   window.requestAnimationFrame(updateParallax);
 }
+
+/* ---------- the bar only becomes glass once there is something behind it ----------
+   Kept off the parallax path on purpose: that one bows out under
+   prefers-reduced-motion, and the glass is not motion, it is state.  */
+function initNavLift(){
+  var root = document.documentElement, ticking = false, on = null, wasLight = null;
+  function toneUnderBar(){
+    var wrap = document.querySelector('.navwrap');
+    if(!wrap) return false;
+    var y = wrap.getBoundingClientRect().bottom + 2;
+    var secs = document.querySelectorAll('#app > section, .footer');
+    for(var i=0;i<secs.length;i++){
+      var r = secs[i].getBoundingClientRect();
+      if(r.top <= y && r.bottom > y){
+        return secs[i].classList.contains('light') || secs[i].classList.contains('frost');
+      }
+    }
+    return false;
+  }
+  function apply(){
+    ticking = false;
+    var lift = (window.scrollY || window.pageYOffset || 0) > 12;
+    var light = toneUnderBar();
+    if(lift !== on){ on = lift; root.classList.toggle('nav-lift', lift); }
+    if(light !== wasLight){ wasLight = light; root.classList.toggle('nav-light', light); }
+  }
+  window.addEventListener('scroll', function(){
+    if(ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(apply);
+  }, {passive:true});
+  window.addEventListener('resize', apply, {passive:true});
+  apply();
+  NAVLIFT = apply;
+}
+var NAVLIFT = function(){};
 
 /* ---------- the cursor ---------- */
 var CUR = {on:false, x:0, y:0, gx:0, gy:0, glass:null, cap:null, core:null, label:null, ang:0};
@@ -3420,6 +3531,7 @@ function motionAfterRender(routeChanged){
 window.addEventListener('scroll', onScroll, {passive:true});
 window.addEventListener('resize', function(){ bindParallax(); }, {passive:true});
 initReveal();
+initNavLift();
 initCursor();
 initReelSwipe();
 sigInit();
