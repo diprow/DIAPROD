@@ -696,115 +696,84 @@ textarea.input{border-radius:var(--r-card);line-height:1.47}
 .tile:hover .tile-still{--ts:1.045;transform:translate3d(0,var(--py,0px),0) scale(var(--ts,1))}
 
 /* ---------- the cursor ----------
-   A bead of glass that carries whatever is under it: the backdrop is
-   blurred and lifted inside the disc, a specular highlight sits off
-   to one side, and the rim picks up a little colour the way a real
-   lens does at its edge. It lags a few frames behind the pointer and
-   stretches along the direction of travel, so it moves like a drop
-   of liquid rather than a sprite. A small solid core stays exactly on
-   the point, so clicking is still precise.                        */
-.cur-glass,.cur-cap,.cur-core{
+   A pointer cast in glass. The arrow is a real piece of material: the
+   backdrop is bent and lifted inside it, the wall between the outer
+   edge and the inner edge catches the light the way a thick bevel
+   does, and the rim splits that light into a little blue and violet
+   where it leaves the glass. The tip sits exactly on the pointer, so
+   nothing about the aim changes; everything that moves — the tilt
+   into the direction of travel, the swell over a link, the squash on
+   a press — happens around that one fixed point.                   */
+.cur-arrow,.cur-cap{
   position:fixed;top:0;left:0;z-index:900;pointer-events:none;opacity:0;
   will-change:transform;
 }
-html.cur-on .cur-glass,html.cur-on .cur-cap,html.cur-on .cur-core{opacity:1}
+.cur-arrow{width:40px;height:52px;transform-origin:4px 3px}
+html.cur-on .cur-arrow,html.cur-on .cur-cap{opacity:1}
 html.cur-on,html.cur-on body{cursor:none}
 html.cur-on a,html.cur-on button,html.cur-on .chip,html.cur-on .tag,html.cur-on .dot,
 html.cur-on label,html.cur-on summary{cursor:none}
 html.cur-on input,html.cur-on textarea,html.cur-on select{cursor:auto}
 
-.cur-glass{
-  width:42px;height:42px;margin:-21px 0 0 -21px;
-  border-radius:50%;
-  background:rgba(245,245,247,.05);
-  backdrop-filter:blur(.6px) saturate(190%) brightness(1.1) contrast(1.04);
-  -webkit-backdrop-filter:blur(.6px) saturate(190%) brightness(1.1) contrast(1.04);
-  box-shadow:inset 0 1px 1px rgba(255,255,255,.55),
-             inset 0 -1px 2px rgba(255,255,255,.2),
-             inset 0 0 10px rgba(255,255,255,.07),
-             0 4px 14px rgba(0,0,0,.26);
-  transition:width .45s cubic-bezier(.22,1.2,.36,1),
-             height .45s cubic-bezier(.22,1.2,.36,1),
-             margin .45s cubic-bezier(.22,1.2,.36,1),
-             opacity .3s ease, background-color .35s ease;
-  animation:curWobble 7s ease-in-out infinite;
+/* the piece itself — scaled about its tip, so the point never moves */
+.cur-in{
+  position:absolute;inset:0;transform-origin:4px 3px;
+  transform:scale(var(--cs,.74));
+  transition:transform .42s cubic-bezier(.22,1.2,.36,1);
 }
-/* the disc is never quite a circle, and never quite the same one */
-@keyframes curWobble{
-  0%  {border-radius:50% 50% 50% 50%}
-  25% {border-radius:54% 46% 49% 51%}
-  50% {border-radius:47% 53% 52% 48%}
-  75% {border-radius:51% 49% 46% 54%}
-  100%{border-radius:50% 50% 50% 50%}
-}
+.cur-shadow,.cur-body,.cur-art{position:absolute;inset:0;pointer-events:none}
 
-/* the highlight, off to one side as if lit from above and left */
-.cur-spec{
-  position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-  background:radial-gradient(circle at 32% 26%,
-             rgba(255,255,255,.34) 0%, rgba(255,255,255,.07) 34%, transparent 58%);
-}
-/* the rim, where a lens splits the light it bends */
-.cur-rim{
-  position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-  background:conic-gradient(from 210deg,
-             rgba(41,151,255,.6), rgba(134,104,255,.45), rgba(255,255,255,.5),
-             rgba(0,161,179,.45), rgba(41,151,255,.6));
-  -webkit-mask:radial-gradient(closest-side, transparent 84%, #000 91%);
-  mask:radial-gradient(closest-side, transparent 84%, #000 91%);
-  opacity:.55;
-}
-.cur-core{
-  width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;
-  background:rgba(255,255,255,.9);
-  box-shadow:0 0 6px rgba(0,0,0,.5);
-  transition:opacity .25s ease, width .3s ease, height .3s ease, margin .3s ease;
+/* the body — whatever is behind, seen through the glass */
+.cur-body{
+  -webkit-clip-path:url(#curArrowClip);clip-path:url(#curArrowClip);
+  background:linear-gradient(138deg,
+    rgba(255,255,255,.30) 0%, rgba(255,255,255,.07) 26%,
+    rgba(255,255,255,.02) 54%, rgba(255,255,255,.17) 100%);
+  backdrop-filter:blur(.7px) saturate(205%) brightness(1.15) contrast(1.06);
+  -webkit-backdrop-filter:blur(.7px) saturate(205%) brightness(1.15) contrast(1.06);
+  transition:backdrop-filter .35s ease,-webkit-backdrop-filter .35s ease,background .35s ease;
 }
 
 /* over a text field the caret does the job on its own */
-html.cur-text .cur-glass,html.cur-text .cur-cap,html.cur-text .cur-core{opacity:0!important}
+html.cur-text .cur-arrow,html.cur-text .cur-cap{opacity:0!important}
 
-/* over anything clickable the bead swells and thickens */
-html.cur-link .cur-glass{
-  width:58px;height:58px;margin:-29px 0 0 -29px;
-  background:rgba(245,245,247,.09);
-  backdrop-filter:blur(1.4px) saturate(215%) brightness(1.16) contrast(1.06);
-  -webkit-backdrop-filter:blur(1.4px) saturate(215%) brightness(1.16) contrast(1.06);
+/* over anything clickable the glass thickens and opens up */
+html.cur-link .cur-in{--cs:.88}
+html.cur-link .cur-body{
+  backdrop-filter:blur(1.5px) saturate(230%) brightness(1.22) contrast(1.08);
+  -webkit-backdrop-filter:blur(1.5px) saturate(230%) brightness(1.22) contrast(1.08);
 }
-html.cur-link .cur-core{opacity:.5}
+html.cur-media .cur-in{--cs:.80}
 
-/* over a film or a photograph it opens and names the action */
-html.cur-media .cur-glass{
-  width:112px;height:112px;margin:-56px 0 0 -56px;
-  background:rgba(245,245,247,.08);
-  backdrop-filter:blur(2.4px) saturate(190%) brightness(1.04);
-  -webkit-backdrop-filter:blur(2.4px) saturate(190%) brightness(1.04);
-}
-html.cur-media .cur-core{opacity:0}
+/* pressed — the piece is pushed into the page and springs back */
+html.cur-down .cur-in{--cs:.62}
+html.cur-down .cur-body{background:linear-gradient(138deg,
+  rgba(255,255,255,.42) 0%, rgba(255,255,255,.14) 30%,
+  rgba(255,255,255,.08) 56%, rgba(255,255,255,.26) 100%)}
 
-.cur-cap{display:flex;align-items:center;justify-content:center;width:0;height:0}
+/* the word the pointer carries over a film or a photograph */
+.cur-cap{width:0;height:0}
 .cur-label{
+  position:absolute;left:26px;top:22px;
   font-size:var(--t-caption);font-weight:600;letter-spacing:.14em;
-  text-transform:uppercase;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.75);
-  opacity:0;transition:opacity .3s ease;white-space:nowrap;
+  text-transform:uppercase;color:#fff;white-space:nowrap;
+  padding:7px 14px;border-radius:var(--r-pill);
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);
+  backdrop-filter:blur(10px) saturate(180%);
+  -webkit-backdrop-filter:blur(10px) saturate(180%);
+  box-shadow:0 6px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.3);
+  opacity:0;transform:scale(.88) translateY(4px);transform-origin:0 0;
+  transition:opacity .3s ease,transform .42s cubic-bezier(.22,1.2,.36,1);
 }
-html.cur-media .cur-label{opacity:1}
-
-/* pressed — the drop flattens, then springs back */
-html.cur-down .cur-glass{
-  background:rgba(245,245,247,.22);
-  box-shadow:inset 0 1px 2px rgba(255,255,255,.6),
-             inset 0 0 18px rgba(255,255,255,.2),
-             0 3px 10px rgba(0,0,0,.4);
-}
+html.cur-media .cur-label{opacity:1;transform:scale(1) translateY(0)}
 
 /* no backdrop to filter, no glass — fall back to something visible */
 @supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){
-  .cur-glass{background:rgba(245,245,247,.24)}
+  .cur-body{background:rgba(245,245,247,.26)}
 }
 
 @media (hover:none),(pointer:coarse){
-  .cur-glass,.cur-cap,.cur-core{display:none}
+  .cur-arrow,.cur-cap{display:none}
 }
 
 /* ---------- the pill that follows the pointer across the nav ---------- */
@@ -828,7 +797,7 @@ html.cur-down .cur-glass{
   .hero-copy > *{animation:none}
   .hero-still,.reel-still{animation:none}
   .hero-still,.reel-still,.case-still,.tile-still{top:0;bottom:0;transform:none}
-  .cur-glass,.cur-cap,.cur-core{display:none}
+  .cur-arrow,.cur-cap{display:none}
   html.cur-on,html.cur-on body{cursor:auto}
 }
 
@@ -1156,9 +1125,42 @@ button,a,.chip,.tag,.dot,.slot,.opt,.filechip,.review-row,.job-head{touch-action
 <main id="app"></main>
 <footer class="footer" id="footer"></footer>
 <div class="lightbox" id="lightbox" hidden></div>
-<span class="cur-glass" id="curGlass" aria-hidden="true"><span class="cur-spec"></span><span class="cur-rim"></span></span>
+<span class="cur-arrow" id="curArrow" aria-hidden="true"><span class="cur-in">
+  <svg class="cur-shadow" viewBox="0 0 40 52" fill="none"><g filter="url(#curSoft)"><path d="M5.65,4.46Q4.00,3.00 4.00,5.20L4.00,35.80Q4.00,38.00 5.68,36.58L11.52,31.62Q13.20,30.20 14.07,32.22L18.53,42.58Q19.40,44.60 21.38,43.64L23.62,42.56Q25.60,41.60 24.72,39.58L20.48,29.82Q19.60,27.80 21.79,27.56L28.41,26.84Q30.60,26.60 28.95,25.14Z" fill="rgba(0,0,0,.42)" transform="translate(.6,2.2)"/></g></svg>
+  <span class="cur-body"></span>
+  <svg class="cur-art" viewBox="0 0 40 52" fill="none">
+    <!-- a soft dark contour, so the piece still reads against a bright photograph -->
+    <path d="M5.65,4.46Q4.00,3.00 4.00,5.20L4.00,35.80Q4.00,38.00 5.68,36.58L11.52,31.62Q13.20,30.20 14.07,32.22L18.53,42.58Q19.40,44.60 21.38,43.64L23.62,42.56Q25.60,41.60 24.72,39.58L20.48,29.82Q19.60,27.80 21.79,27.56L28.41,26.84Q30.60,26.60 28.95,25.14Z" stroke="rgba(8,12,20,.3)" stroke-width="1.7"/>
+    <!-- the wall between the outer edge and the inner one: thick glass seen edge-on -->
+    <path d="M5.65,4.46Q4.00,3.00 4.00,5.20L4.00,35.80Q4.00,38.00 5.68,36.58L11.52,31.62Q13.20,30.20 14.07,32.22L18.53,42.58Q19.40,44.60 21.38,43.64L23.62,42.56Q25.60,41.60 24.72,39.58L20.48,29.82Q19.60,27.80 21.79,27.56L28.41,26.84Q30.60,26.60 28.95,25.14Z M6.79,7.24Q5.37,5.98 5.37,7.88L5.37,34.18Q5.37,36.08 6.82,34.85L11.83,30.60Q13.28,29.38 14.03,31.12L17.86,40.01Q18.61,41.76 20.32,40.93L22.23,40.01Q23.94,39.18 23.19,37.44L19.54,29.05Q18.78,27.31 20.67,27.11L26.35,26.49Q28.24,26.28 26.82,25.02Z" fill-rule="evenodd" fill="url(#curWall)"/>
+    <!-- the rim, where light leaves the glass and comes apart -->
+    <g filter="url(#curEdge)" opacity=".5">
+      <path d="M5.65,4.46Q4.00,3.00 4.00,5.20L4.00,35.80Q4.00,38.00 5.68,36.58L11.52,31.62Q13.20,30.20 14.07,32.22L18.53,42.58Q19.40,44.60 21.38,43.64L23.62,42.56Q25.60,41.60 24.72,39.58L20.48,29.82Q19.60,27.80 21.79,27.56L28.41,26.84Q30.60,26.60 28.95,25.14Z" stroke="#2997ff" stroke-width=".75" transform="translate(-.45,-.35)"/>
+      <path d="M5.65,4.46Q4.00,3.00 4.00,5.20L4.00,35.80Q4.00,38.00 5.68,36.58L11.52,31.62Q13.20,30.20 14.07,32.22L18.53,42.58Q19.40,44.60 21.38,43.64L23.62,42.56Q25.60,41.60 24.72,39.58L20.48,29.82Q19.60,27.80 21.79,27.56L28.41,26.84Q30.60,26.60 28.95,25.14Z" stroke="#b58cff" stroke-width=".7" transform="translate(.45,.4)"/>
+    </g>
+    <path d="M5.65,4.46Q4.00,3.00 4.00,5.20L4.00,35.80Q4.00,38.00 5.68,36.58L11.52,31.62Q13.20,30.20 14.07,32.22L18.53,42.58Q19.40,44.60 21.38,43.64L23.62,42.56Q25.60,41.60 24.72,39.58L20.48,29.82Q19.60,27.80 21.79,27.56L28.41,26.84Q30.60,26.60 28.95,25.14Z" stroke="rgba(255,255,255,.88)" stroke-width="1.05"/>
+    <path d="M6.79,7.24Q5.37,5.98 5.37,7.88L5.37,34.18Q5.37,36.08 6.82,34.85L11.83,30.60Q13.28,29.38 14.03,31.12L17.86,40.01Q18.61,41.76 20.32,40.93L22.23,40.01Q23.94,39.18 23.19,37.44L19.54,29.05Q18.78,27.31 20.67,27.11L26.35,26.49Q28.24,26.28 26.82,25.02Z" stroke="rgba(255,255,255,.5)" stroke-width=".8"/>
+    <path d="M8.13,10.46Q6.93,9.39 6.93,10.99L6.93,32.29Q6.93,33.89 8.15,32.86L12.15,29.47Q13.37,28.43 14.00,29.90L17.08,37.04Q17.71,38.51 19.15,37.82L20.61,37.11Q22.05,36.41 21.41,34.95L18.49,28.22Q17.85,26.75 19.44,26.58L23.96,26.09Q25.55,25.91 24.35,24.85Z" stroke="rgba(255,255,255,.34)" stroke-width=".6"/>
+    <!-- specular: one long streak down the straight edge, one flash at the tip -->
+    <g filter="url(#curSpec)">
+      <path d="M5.6,8.4 L5.6,31" stroke="rgba(255,255,255,.75)" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M7.2,5.6 L24.5,23.6" stroke="rgba(255,255,255,.22)" stroke-width="1" stroke-linecap="round"/>
+      <path d="M20.6,39.4 L22.4,38.5" stroke="rgba(255,255,255,.55)" stroke-width="1.2" stroke-linecap="round"/>
+    </g>
+  </svg>
+</span></span>
 <span class="cur-cap" id="curCap" aria-hidden="true"><span class="cur-label" id="curLabel"></span></span>
-<span class="cur-core" id="curCore" aria-hidden="true"></span>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <clipPath id="curArrowClip" clipPathUnits="userSpaceOnUse"><path d="M5.65,4.46Q4.00,3.00 4.00,5.20L4.00,35.80Q4.00,38.00 5.68,36.58L11.52,31.62Q13.20,30.20 14.07,32.22L18.53,42.58Q19.40,44.60 21.38,43.64L23.62,42.56Q25.60,41.60 24.72,39.58L20.48,29.82Q19.60,27.80 21.79,27.56L28.41,26.84Q30.60,26.60 28.95,25.14Z"/></clipPath>
+  <linearGradient id="curWall" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#fff" stop-opacity=".6"/>
+    <stop offset=".45" stop-color="#fff" stop-opacity=".22"/>
+    <stop offset="1" stop-color="#fff" stop-opacity=".42"/>
+  </linearGradient>
+  <filter id="curSoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.6"/></filter>
+  <filter id="curEdge" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation=".45"/></filter>
+  <filter id="curSpec" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation=".55"/></filter>
+</defs></svg>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
     <mask id="diaLogoMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
       <g fill="#ffffff">
@@ -3261,7 +3263,7 @@ function initNavLift(){
 var NAVLIFT = function(){};
 
 /* ---------- the cursor ---------- */
-var CUR = {on:false, x:0, y:0, gx:0, gy:0, glass:null, cap:null, core:null, label:null, ang:0};
+var CUR = {on:false, x:0, y:0, arrow:null, cap:null, label:null, ang:0};
 var CUR_LINK = 'a,button,[data-go],[data-open],[data-lang],[data-menu],[data-reel],'+
                '[data-reelstep],.chip,.tag,.dot,label,summary';
 
@@ -3271,16 +3273,15 @@ function initCursor(){
   try{ fine = window.matchMedia('(pointer:fine)').matches; }catch(e){}
   if(!fine) return;
 
-  CUR.glass = document.getElementById('curGlass');
+  CUR.arrow = document.getElementById('curArrow');
   CUR.cap   = document.getElementById('curCap');
-  CUR.core  = document.getElementById('curCore');
   CUR.label = document.getElementById('curLabel');
-  if(!CUR.glass || !CUR.core) return;
+  if(!CUR.arrow || !CUR.cap) return;
 
   document.addEventListener('mousemove', function(e){
     CUR.x = e.clientX; CUR.y = e.clientY;
     if(!CUR.on){
-      CUR.on = true; CUR.gx = CUR.x; CUR.gy = CUR.y;
+      CUR.on = true;
       document.documentElement.classList.add('cur-on');
       loop();
     }
@@ -3318,25 +3319,23 @@ function hoverState(target){
   root.classList.toggle('cur-link', !!target.closest(CUR_LINK));
 }
 
-/* The bead chases the pointer rather than sitting on it, and the gap
-   between the two is what makes it look like liquid: the faster it is
-   travelling, the more it stretches along its own direction.        */
+/* The tip stays exactly where the pointer is — aim is never guesswork.
+   What lags is the tilt: the piece leans into the direction of travel
+   and settles back upright a few frames later, which is what makes a
+   solid object read as heavy rather than drawn.                     */
+var CUR_PX = 0;
 function loop(){
   if(!CUR.on) return;
-  var dx = CUR.x - CUR.gx, dy = CUR.y - CUR.gy;
-  CUR.gx += dx * 0.22;
-  CUR.gy += dy * 0.22;
+  var vx = CUR.x - CUR_PX;
+  CUR_PX = CUR.x;
 
-  var speed = Math.sqrt(dx*dx + dy*dy);
-  var pull  = Math.min(speed / 130, 0.32);          /* how far it draws out */
-  if(speed > 1.5) CUR.ang = Math.atan2(dy, dx) * 180 / Math.PI;
+  var want = Math.max(-15, Math.min(15, vx * 1.1));
+  CUR.ang += (want - CUR.ang) * 0.12;
+  if(Math.abs(CUR.ang) < 0.02) CUR.ang = 0;
 
-  CUR.glass.style.transform =
-    'translate3d('+CUR.gx.toFixed(1)+'px,'+CUR.gy.toFixed(1)+'px,0) '+
-    'rotate('+CUR.ang.toFixed(1)+'deg) '+
-    'scale('+(1 + pull).toFixed(3)+','+(1 - pull * 0.62).toFixed(3)+')';
-  CUR.cap.style.transform  = 'translate3d('+CUR.gx.toFixed(1)+'px,'+CUR.gy.toFixed(1)+'px,0)';
-  CUR.core.style.transform = 'translate3d('+CUR.x+'px,'+CUR.y+'px,0)';
+  CUR.arrow.style.transform =
+    'translate3d('+(CUR.x - 4)+'px,'+(CUR.y - 3)+'px,0) rotate('+CUR.ang.toFixed(2)+'deg)';
+  CUR.cap.style.transform = 'translate3d('+CUR.x+'px,'+CUR.y+'px,0)';
 
   window.requestAnimationFrame(loop);
 }
