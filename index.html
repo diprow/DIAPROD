@@ -1308,6 +1308,92 @@ html.sig .hero-half.in{--hx:0%}
 .marq:hover .marq-t{animation-play-state:paused}
 @keyframes marqRun{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 
+
+/* ---------- the hero, at the width of the screen ----------
+   The same band the cycling word sits in, given to the opening
+   line: photograph to all four edges, one vignette over it, and
+   the sentence set in the middle of the screen rather than
+   tucked into a corner of a card.                            */
+.hero-band{
+  position:relative;overflow:hidden;background:var(--pure-black);
+  min-height:min(94vh,940px);
+  display:flex;align-items:center;justify-content:center;
+  padding-block:var(--band);
+}
+.hero-band .hero-half{opacity:.62}
+.hero-band .hero-vignette{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(120% 82% at 50% 46%,rgba(0,0,0,.12) 0%,rgba(0,0,0,.62) 58%,rgba(0,0,0,.92) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 26%,rgba(0,0,0,0) 62%,rgba(0,0,0,.72) 100%);
+}
+.hero-band .hero-copy{
+  position:relative;left:auto;right:auto;bottom:auto;padding:0;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  gap:var(--s20);max-width:min(100%,1040px);margin:0 auto;
+}
+.hero-band .hero-type{
+  font-size:clamp(38px,6.6vw,88px);line-height:1.04;
+  max-width:15ch;margin-inline:auto;
+}
+.hero-band .eyebrow{max-width:none}
+.hero-band .hero-actions{justify-content:center;margin-top:var(--s8)}
+.hero-band .hero-note{max-width:42ch;color:var(--silver-mist)}
+@media (max-width:700px){
+  .hero-band{min-height:min(92vh,780px)}
+  .hero-band .hero-type{max-width:100%}
+}
+
+/* ---------- the work, as a pile that comes apart ----------
+   Every frame starts on top of the one before it in a single
+   pile at the middle of the stage. As the band climbs the
+   screen the pile opens: the frames turn on a vertical axis,
+   push apart in depth, and then come down flat into their own
+   place in the arrangement. The turning is strongest halfway
+   through and gone at both ends, so the pile and the finished
+   arrangement are both square to the screen and only the
+   travel between them is loose.
+
+   No word anywhere on a frame. The photograph is the whole of
+   it; the pointer grows the picture a little and deepens the
+   shadow, and a press opens the frame full size.             */
+.collage{
+  position:relative;width:100%;aspect-ratio:16/8.6;
+  margin-top:clamp(20px,3vw,40px);
+  perspective:1500px;perspective-origin:50% 48%;
+  --cgs:1;
+}
+.cg-slot{
+  position:absolute;
+  left:calc(50% + var(--fx,0%));top:calc(50% + var(--fy,0%));
+  width:calc(var(--w,20%) * var(--cgs));
+  transform:translate(-50%,-50%);
+  transform-style:preserve-3d;
+}
+.cg-card{
+  position:relative;display:block;width:100%;
+  aspect-ratio:var(--ar,1);
+  border:none;padding:0;margin:0;background:var(--carbon);
+  border-radius:clamp(10px,1.3vw,18px);
+  overflow:hidden;cursor:pointer;
+  box-shadow:0 20px 44px rgba(0,0,0,.55);
+  transform-origin:50% 50%;
+  will-change:transform;
+  transition:box-shadow .45s var(--ease-sig);
+}
+.cg-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  border-radius:inherit;border:1px solid rgba(245,245,247,.09);
+}
+.cg-still{
+  position:absolute;inset:0;background-size:cover;background-position:center;
+  transition:transform .8s var(--ease-sig);
+}
+.cg-card:hover,.cg-card:focus-visible{box-shadow:0 30px 68px rgba(0,0,0,.72)}
+.cg-card:hover .cg-still,.cg-card:focus-visible .cg-still{transform:scale(1.07)}
+@media (max-width:860px){ .collage{--cgs:1.16;aspect-ratio:4/3} }
+@media (max-width:560px){ .collage{--cgs:1.52;aspect-ratio:1/1;perspective:900px} }
+
 /* ---------- and none of it for anyone who asked for less ---------- */
 @media (prefers-reduced-motion:reduce){
   .sheet-links button,.sheet-acct,.sheet-foot{animation:none!important}
@@ -1315,6 +1401,7 @@ html.sig .hero-half.in{--hx:0%}
   .sp-c,.sp-f,.bm-c,.od-r,[data-mrev],[data-bwipe]{transition:none!important;transform:none!important;opacity:1!important;clip-path:none!important}
   .curtain,.intro{display:none!important}
   .hero-half,.cyc-r,.led-rule,.fan-card{transition:none!important;transform:none!important;opacity:1!important}
+  .cg-card{transition:none!important}
   #app.stacked > section{position:static!important;transform:none!important;box-shadow:none!important;margin-top:0!important}
   .sec-cov{display:none}
   .marq-t{animation:none!important}
@@ -2578,7 +2665,6 @@ function renderFooter(){
 /* ============================== SCREENS ============================== */
 function screenHome(){
   var L = t();
-  var w = WORK[S.reel];
 
   /* The hero photograph comes in as two halves that meet in the middle.
      Each half carries the whole frame and shows only its own side, so
@@ -2586,50 +2672,55 @@ function screenHome(){
   var plate = '<span class="hero-plate" data-px style="'+stillStyle(HERO,'hero-dia',900,506)+'"></span>';
 
   var hero =
-  '<section class="stage"><div class="wrap hero">'+
-    '<div class="hero-stage">'+
-      '<div class="hero-half hh-l" data-converge>'+plate+'</div>'+
-      '<div class="hero-half hh-r" data-converge>'+plate+'</div>'+
-      '<div class="hero-scrim"></div>'+
-      '<div class="hero-copy">'+
-        '<p class="eyebrow">'+esc(L.heroEyebrow)+'</p>'+
-        '<h1 class="hero-type" data-dim="'+L.heroDim+'">'+esc(L.heroTitle)+'</h1>'+
-        '<div class="hero-actions">'+
-          '<button class="btn btn-cta" data-go="request">'+esc(L.start)+'</button>'+
-        '</div>'+
-        '<p class="hero-note">'+esc(L.heroNote)+'</p>'+
+  '<section class="stage hero-band">'+
+    '<div class="hero-half hh-l" data-converge>'+plate+'</div>'+
+    '<div class="hero-half hh-r" data-converge>'+plate+'</div>'+
+    '<div class="hero-vignette"></div>'+
+    '<div class="wrap"><div class="hero-copy">'+
+      '<p class="eyebrow">'+esc(L.heroEyebrow)+'</p>'+
+      '<h1 class="hero-type" data-dim="'+L.heroDim+'">'+esc(L.heroTitle)+'</h1>'+
+      '<div class="hero-actions">'+
+        '<button class="btn btn-cta" data-go="request">'+esc(L.start)+'</button>'+
       '</div>'+
-    '</div>'+
-  '</div></section>';
+      '<p class="hero-note">'+esc(L.heroNote)+'</p>'+
+    '</div></div>'+
+  '</section>';
 
-  var dots = WORK.map(function(it, i){
-    return '<button class="dot" data-reel="'+i+'" aria-pressed="'+(i===S.reel)+'">'+esc(it.title)+'</button>';
+  /* The arrangement the pile opens into. Each frame carries where it
+     ends up (fx, fy from the middle of the stage, width, proportion),
+     which frame sits over which, and how far it turns and pushes back
+     on the way there. The turning is script-driven from the scroll;
+     these are only the two ends of it. */
+  var CG = [
+    {i:1, fx:'-24%', fy:'-7%',  w:'17%', ar:'1/1',   z:5, ry: 20, rz:-3, tz:-180},
+    {i:6, fx:'-14%', fy:'3%',   w:'13%', ar:'3/4',   z:4, ry: 26, rz: 2, tz:-300},
+    {i:4, fx:'4%',   fy:'-25%', w:'19%', ar:'16/10', z:3, ry: -7, rz: 1, tz:-360},
+    {i:0, fx:'-1%',  fy:'-2%',  w:'24%', ar:'4/5',   z:8, ry:-10, rz: 0, tz: 120},
+    {i:8, fx:'17%',  fy:'-11%', w:'16%', ar:'3/4',   z:2, ry:-28, rz:-2, tz:-320},
+    {i:2, fx:'24%',  fy:'7%',   w:'23%', ar:'4/3',   z:6, ry:-20, rz: 2, tz:-120},
+    {i:5, fx:'-15%', fy:'21%',  w:'21%', ar:'3/4',   z:5, ry: 14, rz:-2, tz: -60},
+    {i:9, fx:'7%',   fy:'27%',  w:'14%', ar:'1/1',   z:4, ry:  5, rz: 3, tz:-200}
+  ];
+
+  var cards = CG.map(function(c){
+    var it = WORK[c.i] || WORK[0];
+    return '<span class="cg-slot" style="--fx:'+c.fx+';--fy:'+c.fy+';--w:'+c.w+';z-index:'+c.z+'"'+
+      ' data-ry="'+c.ry+'" data-rz="'+c.rz+'" data-tz="'+c.tz+'">'+
+      '<button class="cg-card" style="--ar:'+c.ar+'" data-open="'+it.id+'"'+
+        ' aria-label="'+esc(it.title)+'">'+
+        '<span class="cg-still" style="'+stillStyle(it,'cg-'+c.i,760,760)+'"></span>'+
+      '</button>'+
+    '</span>';
   }).join('');
 
   var reel =
-  '<section class="stage"><div class="wrap band" style="padding-top:0">'+
+  '<section class="stage"><div class="wrap band" style="padding-top:0;padding-bottom:var(--s48)">'+
     '<div class="sec-head">'+
       '<div class="stack"><p class="kicker">'+esc(L.workKicker)+'</p>'+
         '<h2 class="display-type">'+esc(L.workTitle)+'</h2></div>'+
       '<button class="linky" data-go="work">'+esc(L.workAll)+' &rsaquo;</button>'+
     '</div>'+
-    '<div class="reel">'+
-      '<button class="reel-frame" data-open="'+w.id+'" data-cursor="'+esc(w.yt ? L.curWatch : L.curView)+'">'+
-        '<span class="reel-still" data-px style="'+stillStyle(w,w.id,900,506)+'"></span>'+
-        '<span class="reel-scrim"></span>'+
-        '<span class="reel-count tnum">'+pad(S.reel+1)+' / '+pad(WORK.length)+'</span>'+
-        '<span class="reel-cap">'+
-          '<span style="display:flex;flex-direction:column;gap:8px">'+
-            '<span class="eyebrow'+accentClass(w.accent)+'">'+esc(workTag(w))+'</span>'+
-            '<span class="display-type" style="color:var(--paper-white)">'+esc(w.title)+'</span>'+
-          '</span>'+
-          '<span class="btn btn-primary" aria-hidden="true">'+(w.yt ? esc(L.watch) : esc(L.view))+'</span>'+
-        '</span>'+
-      '</button>'+
-      '<button class="reel-nav reel-prev" data-reelstep="-1" aria-label="Previous">&#8592;</button>'+
-      '<button class="reel-nav reel-next" data-reelstep="1" aria-label="Next">&#8594;</button>'+
-    '</div>'+
-    '<div class="reel-dots">'+dots+'</div>'+
+    '<div class="collage" data-collage>'+cards+'</div>'+
   '</div></section>';
 
   var awards =
@@ -2710,28 +2801,6 @@ function screenHome(){
     '<div class="ledger">'+ledRows+'</div>'+
   '</div></section>';
 
-  /* ---------- a hand of frames opening out of a single stack ----------
-     Five pictures that start piled on the middle one and come out to
-     their own place in the arch, each a beat behind the one before.
-     The outer pair sit lower, which is what makes it read as a curve. */
-  var fanPicks = [0,2,4,6,8];
-  var fanRot = [-11,-5.5,0,5.5,11];
-  var fanY   = [40,12,24,12,40];
-  var fanCards = fanPicks.map(function(idx, i){
-    var it = WORK[idx] || WORK[i] || null;
-    return '<span class="fan-card" style="--fr:'+fanRot[i]+'deg;--fy:'+fanY[i]+'px;'+
-      '--sx:'+((2 - i) * 104)+'%;--fd:'+(i * 85)+'ms">'+
-      '<span class="fan-still" style="'+stillStyle(it,'fan-'+i,420,900)+'"></span>'+
-    '</span>';
-  }).join('');
-
-  var fan =
-  '<section class="stage"><div class="wrap band">'+
-    '<p class="kicker" style="text-align:center">'+esc(L.fanKicker)+'</p>'+
-    '<h2 class="display-type" data-dim="'+L.fanDim+'" style="margin:16px auto 0;max-width:20ch;text-align:center">'+esc(L.fanTitle)+'</h2>'+
-    '<div class="fan">'+fanCards+'</div>'+
-  '</div></section>';
-
   /* ---------- and one line of type that never stops ---------- */
   var marqOnce = L.marqWords.map(function(word, i){
     return '<span'+(i % 2 ? ' class="dim"' : '')+'>'+esc(word)+'</span>';
@@ -2752,7 +2821,7 @@ function screenHome(){
   '<div class="marq" aria-hidden="true"><span class="marq-t">'+marqOnce+marqOnce+'</span></div>'+
   '</section>';
 
-  return hero + reel + manifesto + ledger + awards + cases + fan + closing;
+  return hero + reel + manifesto + ledger + awards + cases + closing;
 }
 
 function screenWork(){
@@ -3438,10 +3507,6 @@ document.addEventListener('keydown', function(e){
     if(S.lightbox){ S.lightbox = null; renderLightbox(); }
     else if(S.menu){ setMenu(false); }
   }
-  if(S.route === 'home' && !S.lightbox && !S.menu){
-    if(e.key === 'ArrowRight'){ S.reel = (S.reel+1)%WORK.length; render(true); }
-    if(e.key === 'ArrowLeft'){ S.reel = (S.reel-1+WORK.length)%WORK.length; render(true); }
-  }
 });
 
 /* ============================== MOTION ==============================
@@ -3524,6 +3589,7 @@ function updateParallax(){
     el.style.setProperty('--py', (p * -22).toFixed(1) + 'px');
   }
   updateStack();
+  updateCollage();
   pxTicking = false;
 }
 
@@ -4025,6 +4091,78 @@ function prepCycle(root){
   }
 }
 
+/* ---------- the pile that comes apart ----------
+   One pile at the middle of the stage at the start, the finished
+   arrangement at the end, and the scroll between the two. Two
+   curves drive it: `e` carries each frame from the middle of the
+   pile out to its own place, and `ch` — a half sine, nothing at
+   either end and everything in the middle — turns the frames on
+   their vertical axis and pushes them apart in depth on the way.
+   That is why the pile and the arrangement both sit square to
+   the screen and only the travel between them is loose.
+
+   Each frame's place is read from the page once and kept in
+   pixels, so the run only writes transforms: no property any
+   child inherits, no measurement, nothing that forces a layout. */
+var cgStage = null, cgBand = null, cgCards = [];
+
+function bindCollage(){
+  cgStage = document.querySelector('[data-collage]');
+  cgCards = [];
+  cgBand = null;
+  if(!cgStage) return;
+  cgBand = cgStage.closest ? cgStage.closest('section') : null;
+  var slots = cgStage.querySelectorAll('.cg-slot');
+  var sr = cgStage.getBoundingClientRect();
+  var mx = sr.left + sr.width / 2, my = sr.top + sr.height / 2;
+  for(var i=0;i<slots.length;i++){
+    var r = slots[i].getBoundingClientRect();
+    cgCards.push({
+      el: slots[i].firstElementChild,
+      cx: (r.left + r.width / 2) - mx,
+      cy: (r.top + r.height / 2) - my,
+      ry: Number(slots[i].getAttribute('data-ry')) || 0,
+      rz: Number(slots[i].getAttribute('data-rz')) || 0,
+      tz: Number(slots[i].getAttribute('data-tz')) || 0
+    });
+  }
+  if(REDUCED){                      /* the arrangement, and none of the travel */
+    for(var j=0;j<cgCards.length;j++) cgCards[j].el.style.transform = 'none';
+    return;
+  }
+  updateCollage();
+}
+
+function updateCollage(){
+  if(REDUCED || !cgStage || !cgCards.length) return;
+  var vh = window.innerHeight || 1;
+  var r = cgStage.getBoundingClientRect();
+  var mid = r.top + r.height / 2;               /* the middle of the stage */
+  /* The pile shows itself at the bottom edge of the screen and is fully
+     open by the time the arrangement reaches the middle of it. */
+  var p = (vh * 1.02 - mid) / (vh * 0.50);
+  if(p < 0) p = 0;
+  if(p > 1) p = 1;
+  /* once the band has pinned nothing moves again, so finish it there
+     whatever the arithmetic says on an unusual screen */
+  if(cgBand){
+    var st = parseFloat(cgBand.style.top || '0') || 0;
+    if(cgBand.getBoundingClientRect().top <= st + 1) p = 1;
+  }
+  /* out of the pile on a long ease, so the last of the travel is slow */
+  var e = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2;
+  var ch = Math.sin(p * Math.PI);
+  for(var i=0;i<cgCards.length;i++){
+    var c = cgCards[i], back = 1 - e;
+    c.el.style.transform =
+      'translate3d(' + (-c.cx * back).toFixed(1) + 'px,' + (-c.cy * back).toFixed(1) + 'px,' +
+        (c.tz * ch).toFixed(1) + 'px) ' +
+      'rotateY(' + (c.ry * ch).toFixed(2) + 'deg) ' +
+      'rotate(' + (c.rz * ch).toFixed(2) + 'deg) ' +
+      'scale(' + (1 - 0.07 * ch).toFixed(3) + ')';
+  }
+}
+
 /* ---------- bands that pin and are climbed over ----------
    Each band on the home screen stops once it has been read and the
    next one comes up over it. A band taller than the screen scrolls
@@ -4064,9 +4202,9 @@ function bindStack(){
      height, and a band pinned at the wrong height is a band pinned with
      some of it still unread. Measure again once the type has settled. */
   if(window.document.fonts && document.fonts.ready && document.fonts.ready.then){
-    document.fonts.ready.then(function(){ layoutStack(); });
+    document.fonts.ready.then(function(){ bindCollage(); layoutStack(); });
   }
-  window.setTimeout(layoutStack, 1200);
+  window.setTimeout(function(){ bindCollage(); layoutStack(); }, 1200);
 }
 
 function layoutStack(){
@@ -4123,6 +4261,32 @@ function updateStack(){
     if(p === stackAt[j]) continue;               /* and nothing is written twice */
     stackAt[j] = p;
     stackCovs[j].style.opacity = p * 0.58;
+  }
+}
+
+/* Anything still holding its turn while it is already on the screen has
+   missed it: a band that pins before the reveal line reaches it, or a
+   render that lands while the opening curtain is still up, would leave
+   a button clipped to nothing with no scroll left to free it. After
+   every render, whatever is waiting inside the first screenful is let
+   through; everything below the fold still waits for the scroll.    */
+function sigSettle(){
+  if(!SIG.on || SIG.gate || REDUCED) return;
+  var app = document.getElementById('app');
+  if(!app) return;
+  var vh = window.innerHeight || 800;
+  var all = app.querySelectorAll('*');
+  for(var i=0;i<all.length;i++){
+    if(!all[i].__sigPlay) continue;
+    if(all[i].getBoundingClientRect().top < vh) sigFire(all[i]);
+  }
+  var rev = app.querySelectorAll('[data-reveal]');
+  for(var j=0;j<rev.length;j++){
+    if(rev[j].classList.contains('in')) continue;
+    if(rev[j].getBoundingClientRect().top < vh){
+      rev[j].classList.add('in');
+      if(revealObserver){ try{ revealObserver.unobserve(rev[j]); }catch(e){} }
+    }
   }
 }
 
@@ -4211,6 +4375,7 @@ function sigBoot(){
     window.setTimeout(function(){
       SIG.gate = false;
       sigPlayPending();                        /* the hero arrives behind it */
+      window.setTimeout(sigSettle, 120);       /* and nothing is left waiting */
     }, 130);
     window.setTimeout(function(){
       if(intro.parentNode) intro.parentNode.removeChild(intro);
@@ -4290,7 +4455,9 @@ function motionAfterRender(routeChanged){
   bindReveal();
   bindParallax();
   prepCycle(document.getElementById('app'));
+  bindCollage();
   bindStack();
+  window.setTimeout(sigSettle, 80);
   syncReelStrip();
   if(routeChanged && !REDUCED && !(SIG.on && USE_CURTAIN)){
     var app = document.getElementById('app');
@@ -4301,7 +4468,7 @@ function motionAfterRender(routeChanged){
 }
 
 window.addEventListener('scroll', onScroll, {passive:true});
-window.addEventListener('resize', function(){ bindParallax(); layoutStack(); }, {passive:true});
+window.addEventListener('resize', function(){ bindParallax(); bindCollage(); layoutStack(); }, {passive:true});
 initReveal();
 initNavLift();
 initCursor();
