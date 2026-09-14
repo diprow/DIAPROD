@@ -4130,7 +4130,7 @@ function prepCycle(root){
    Each frame's place is read from the page once and kept in
    pixels, so the run only writes transforms: no property any
    child inherits, no measurement, nothing that forces a layout. */
-var cgStage = null, cgTrack = null, cgCards = [];
+var cgStage = null, cgTrack = null, cgCards = [], cgTopA = null, cgTopB = null;
 
 function bindCollage(){
   cgStage = document.querySelector('[data-collage]');
@@ -4148,6 +4148,10 @@ function bindCollage(){
       el: slots[i].firstElementChild,
       cx: (r.left + r.width / 2) - mx,
       cy: (r.top + r.height / 2) - my,
+      /* the frame's own size, read from layout so a transform already
+         written on it this frame cannot corrupt the measurement */
+      w: slots[i].firstElementChild.offsetWidth  || 1,
+      h: slots[i].firstElementChild.offsetHeight || 1,
       ry: Number(slots[i].getAttribute('data-ry')) || 0,
       rz: Number(slots[i].getAttribute('data-rz')) || 0,
       tz: Number(slots[i].getAttribute('data-tz')) || 0,
@@ -4162,6 +4166,18 @@ function bindCollage(){
     var o = cgCards[cgCards[i].pair] || cgCards[i];
     cgCards[i].px = o.cx; cgCards[i].py = o.cy; cgCards[i].pz = o.bz;
   }
+  /* Which frame is in front when the pile is closed — the deepest-resting
+     one before the trade, and whichever inherits that depth after it. The
+     closed pile takes that frame's exact size, so the frame you can see is
+     itself and everything else is hidden square behind it. Before this,
+     the frames only shared a centre, and a pile of eight different sizes
+     read as a mistake rather than as one card. */
+  var ta = 0, tb = 0;
+  for(i=1;i<cgCards.length;i++){
+    if(cgCards[i].bz > cgCards[ta].bz) ta = i;
+    if(cgCards[i].pz > cgCards[tb].pz) tb = i;
+  }
+  cgTopA = cgCards[ta]; cgTopB = cgCards[tb];
   if(REDUCED){                      /* the arrangement, and none of the travel */
     for(i=0;i<cgCards.length;i++) cgCards[i].el.style.transform = 'none';
     return;
@@ -4215,6 +4231,15 @@ function updateCollage(){
   }
   var cross = Math.sin(trade * Math.PI);        /* nothing at either end of the trade */
 
+  /* the size of the closed pile: the front frame's own, so it is undistorted
+     and every other frame is squared away exactly behind it */
+  var pw = cgTopA.w + (cgTopB.w - cgTopA.w) * trade;
+  var ph = cgTopA.h + (cgTopB.h - cgTopA.h) * trade;
+  /* and that matching is finished well before the frames are, so nothing is
+     still being squeezed while it is out in the open */
+  var fit = 1 - open * 1.7;
+  if(fit < 0) fit = 0;
+
   for(var i=0;i<cgCards.length;i++){
     var c = cgCards[i];
     /* where it is meant to be once the pile is open, this far through the trade */
@@ -4224,15 +4249,19 @@ function updateCollage(){
     /* the frame itself already sits at (cx, cy), so only the difference moves */
     var dx = tx * open - c.cx;
     var dy = ty * open - c.cy;
-    var dz = bz * open + c.tz * turn + c.dir * 300 * cross;
+    /* a sliver of the resting depth survives into the pile: far too little to
+       change any size, just enough to keep the front frame in front */
+    var dz = bz * (0.06 + 0.94 * open) + c.tz * turn + c.dir * 300 * cross;
     var ry = c.ry * turn + c.dir * 30 * cross;
     var rz = c.rz * turn + c.dir * 4 * cross;
     var sc = 1 - 0.07 * turn - 0.04 * cross;
+    var sx = sc * (1 + (pw / c.w - 1) * fit);
+    var sy = sc * (1 + (ph / c.h - 1) * fit);
     c.el.style.transform =
       'translate3d(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px,' + dz.toFixed(1) + 'px) ' +
       'rotateY(' + ry.toFixed(2) + 'deg) ' +
       'rotate(' + rz.toFixed(2) + 'deg) ' +
-      'scale(' + sc.toFixed(3) + ')';
+      'scale(' + sx.toFixed(4) + ',' + sy.toFixed(4) + ')';
   }
 }
 
