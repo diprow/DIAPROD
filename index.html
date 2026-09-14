@@ -1375,6 +1375,11 @@ html.sig .hero-half.in{--hx:0%}
   aspect-ratio:16/8.6;margin-inline:auto;
   perspective:1500px;perspective-origin:50% 48%;
   transform-style:preserve-3d;   /* depth decides what covers what */
+  /* and the stage keeps its hands off the pointer: its own plane sits at
+     zero depth, and anything it holds behind that plane would otherwise be
+     unreachable — which is half the arrangement, since half the frames
+     rest behind the front one by design. */
+  pointer-events:none;
   --cgs:1;
 }
 .cg-slot{
@@ -1383,13 +1388,18 @@ html.sig .hero-half.in{--hx:0%}
   width:calc(var(--w,20%) * var(--cgs));
   transform:translate(-50%,-50%);
   transform-style:preserve-3d;
+  /* The slot stays where the layout put it while the frame inside travels
+     away from it, so its box would otherwise sit in empty space catching
+     presses meant for whichever frame has moved over that spot. Only the
+     frames themselves are pressable. */
+  pointer-events:none;
 }
 .cg-card{
   position:relative;display:block;width:100%;
   aspect-ratio:var(--ar,1);
   border:none;padding:0;margin:0;background:var(--carbon);
   border-radius:clamp(10px,1.3vw,18px);
-  overflow:hidden;cursor:pointer;
+  overflow:hidden;cursor:pointer;pointer-events:auto;
   box-shadow:0 20px 44px rgba(0,0,0,.55);
   transform-origin:50% 50%;
   will-change:transform;
@@ -2715,20 +2725,20 @@ function screenHome(){
      with in the middle act. `pair` points at the other frame; `dir`
      says which of the two comes forward on the way past. */
   var CG = [
-    {i:1, fx:'-24%', fy:'-7%',  w:'17%', ar:'1/1',   bz:  14, ry: 20, rz:-3, tz:-180, pair:5, dir: 1},
-    {i:6, fx:'-14%', fy:'3%',   w:'13%', ar:'3/4',   bz:  -8, ry: 26, rz: 2, tz:-300, pair:4, dir: 1},
-    {i:4, fx:'4%',   fy:'-25%', w:'19%', ar:'16/10', bz: -34, ry: -7, rz: 1, tz:-360, pair:7, dir: 1},
-    {i:0, fx:'-1%',  fy:'-2%',  w:'24%', ar:'4/5',   bz:  68, ry:-10, rz: 0, tz: 120, pair:6, dir: 1},
-    {i:8, fx:'17%',  fy:'-11%', w:'16%', ar:'3/4',   bz: -56, ry:-28, rz:-2, tz:-320, pair:1, dir:-1},
-    {i:2, fx:'24%',  fy:'7%',   w:'23%', ar:'4/3',   bz:  40, ry:-20, rz: 2, tz:-120, pair:0, dir:-1},
-    {i:5, fx:'-15%', fy:'21%',  w:'21%', ar:'3/4',   bz:  22, ry: 14, rz:-2, tz: -60, pair:3, dir:-1},
-    {i:9, fx:'7%',   fy:'27%',  w:'14%', ar:'1/1',   bz:  -4, ry:  5, rz: 3, tz:-200, pair:2, dir:-1}
+    {i:1, fx:'-29%', fy:'-9%',  w:'17%', ar:'1/1',   bz:  14, ry: 20, rz:-3, pair:5, dir: 1},
+    {i:6, fx:'-17%', fy:'4%',   w:'13%', ar:'3/4',   bz:  -8, ry: 26, rz: 2, pair:4, dir: 1},
+    {i:4, fx:'5%',   fy:'-29%', w:'19%', ar:'16/10', bz: -34, ry: -7, rz: 1, pair:7, dir: 1},
+    {i:0, fx:'-1%',  fy:'-2%',  w:'24%', ar:'4/5',   bz:  68, ry:-10, rz: 0, pair:6, dir: 1},
+    {i:8, fx:'20%',  fy:'-13%', w:'16%', ar:'3/4',   bz: -56, ry:-28, rz:-2, pair:1, dir:-1},
+    {i:2, fx:'29%',  fy:'8%',   w:'23%', ar:'4/3',   bz:  40, ry:-20, rz: 2, pair:0, dir:-1},
+    {i:5, fx:'-18%', fy:'24%',  w:'21%', ar:'3/4',   bz:  22, ry: 14, rz:-2, pair:3, dir:-1},
+    {i:9, fx:'9%',   fy:'31%',  w:'14%', ar:'1/1',   bz:  -4, ry:  5, rz: 3, pair:2, dir:-1}
   ];
 
   var cards = CG.map(function(c){
     var it = WORK[c.i] || WORK[0];
     return '<span class="cg-slot" style="--fx:'+c.fx+';--fy:'+c.fy+';--w:'+c.w+'"'+
-      ' data-ry="'+c.ry+'" data-rz="'+c.rz+'" data-tz="'+c.tz+'"'+
+      ' data-ry="'+c.ry+'" data-rz="'+c.rz+'"'+
       ' data-bz="'+c.bz+'" data-pair="'+c.pair+'" data-dir="'+c.dir+'">'+
       '<button class="cg-card" style="--ar:'+c.ar+'" data-open="'+it.id+'"'+
         ' aria-label="'+esc(it.title)+'">'+
@@ -4154,7 +4164,6 @@ function bindCollage(){
       h: slots[i].firstElementChild.offsetHeight || 1,
       ry: Number(slots[i].getAttribute('data-ry')) || 0,
       rz: Number(slots[i].getAttribute('data-rz')) || 0,
-      tz: Number(slots[i].getAttribute('data-tz')) || 0,
       bz: Number(slots[i].getAttribute('data-bz')) || 0,
       pair: Number(slots[i].getAttribute('data-pair')) || 0,
       dir: Number(slots[i].getAttribute('data-dir')) || 1
@@ -4231,8 +4240,14 @@ function updateCollage(){
   }
   var cross = Math.sin(trade * Math.PI);        /* nothing at either end of the trade */
 
-  /* the size of the closed pile: the front frame's own, so it is undistorted
-     and every other frame is squared away exactly behind it */
+  /* How far a frame falls back while it is travelling. It is worked out
+     from the depth it is resting at rather than picked per frame, and that
+     is not a tidiness: with `dz = bz·k + (A + B·bz)·turn` the multiplier on
+     bz stays positive for every k and every turn, so the order of the eight
+     frames can never invert on the way in or out. A hand-picked push could
+     — and did — send one frame past another while the two were already
+     sitting on top of each other, which the eye reads not as depth but as
+     the photograph suddenly being replaced by a different one. */
   var pw = cgTopA.w + (cgTopB.w - cgTopA.w) * trade;
   var ph = cgTopA.h + (cgTopB.h - cgTopA.h) * trade;
   /* and that matching is finished well before the frames are, so nothing is
@@ -4251,7 +4266,7 @@ function updateCollage(){
     var dy = ty * open - c.cy;
     /* a sliver of the resting depth survives into the pile: far too little to
        change any size, just enough to keep the front frame in front */
-    var dz = bz * (0.06 + 0.94 * open) + c.tz * turn + c.dir * 300 * cross;
+    var dz = bz * (0.06 + 0.94 * open + 3 * turn) - 300 * turn + c.dir * 300 * cross;
     var ry = c.ry * turn + c.dir * 30 * cross;
     var rz = c.rz * turn + c.dir * 4 * cross;
     var sc = 1 - 0.07 * turn - 0.04 * cross;
