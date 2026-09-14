@@ -1425,6 +1425,147 @@ html.sig .hero-band .hero-in.in{opacity:.62}
 @media (max-width:700px){ .cg-track{height:210vh} }
 @media (max-width:560px){ .collage{--cgs:1.52;aspect-ratio:1/1;perspective:900px;width:min(100%,calc(100vh - 290px))} }
 
+
+/* ============================================================
+   THE SIGN-IN, IN GLASS
+   One photograph at the width of the screen and a single pane
+   of frosted glass resting on it. The glass is real: it takes
+   its colour from whatever is behind it rather than being a
+   grey rectangle, which is why the pane, the rows inside it
+   and the field all filter the backdrop instead of painting
+   over it. Everything is stacked on one surface — a lit rim
+   along the top edge, a shadow under the whole pane, and the
+   rows a shade brighter than the pane they sit in, so the
+   depth reads even where the photograph behind is flat.
+
+   Where a browser has no backdrop-filter the whole thing
+   falls back to a solid dark pane at the end of the block:
+   the same layout, none of the glass.
+   ============================================================ */
+.signin-stage{
+  position:relative;overflow:hidden;background:var(--pure-black);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:clamp(88px,11vh,124px) var(--gutter) clamp(36px,6vh,72px);
+}
+.si-still{
+  position:absolute;left:0;right:0;top:-6%;bottom:-6%;
+  background-size:cover;
+  background-position:50% 40%;   /* the face clear of the pane, on a wide screen */
+  opacity:.86;
+}
+@media (max-width:760px){
+  /* a wide frame on a tall screen crops hard to its middle, which on this
+     photograph is hair and nothing else — so the crop moves to the face */
+  .si-still{background-position:34% 36%}
+}
+.si-wash{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(92% 72% at 50% 42%,rgba(0,0,0,0) 0%,rgba(0,0,0,.34) 58%,rgba(0,0,0,.72) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.44) 0%,rgba(0,0,0,0) 28%,rgba(0,0,0,0) 64%,rgba(0,0,0,.52) 100%);
+}
+
+/* ---------- the pane ---------- */
+.glass{
+  position:relative;width:100%;max-width:440px;
+  border-radius:clamp(26px,3.4vw,34px);
+  padding:clamp(24px,3.4vw,34px);
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(34px) saturate(180%);
+  -webkit-backdrop-filter:blur(34px) saturate(180%);
+  box-shadow:
+    0 40px 90px rgba(0,0,0,.55),
+    0 2px 0 rgba(255,255,255,.14) inset,
+    0 -1px 0 rgba(255,255,255,.04) inset;
+  display:flex;flex-direction:column;gap:var(--s20);
+}
+/* the light that catches the top edge of a thick pane */
+.glass::before{
+  content:'';position:absolute;left:12%;right:12%;top:-1px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);
+  pointer-events:none;
+}
+
+.si-mark{
+  font-family:var(--display);font-weight:600;
+  font-size:var(--t-caption);letter-spacing:.3em;
+  color:rgba(245,245,247,.62);
+}
+.si-mark i{font-style:normal;margin-right:.3em}
+.si-mark i:last-child{margin-right:0}
+.glass h1{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(26px,3.4vw,34px);line-height:1.12;letter-spacing:-0.02em;
+  color:var(--frost-white);margin:0;
+}
+.glass .si-sub{margin:0;font-size:var(--t-body);color:rgba(245,245,247,.62);line-height:1.5}
+
+/* ---------- a row inside the pane ---------- */
+.si-rows{display:flex;flex-direction:column;gap:var(--s12)}
+.si-row{
+  position:relative;border-radius:var(--r-pill);
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(8px) saturate(140%);
+  -webkit-backdrop-filter:blur(8px) saturate(140%);
+  box-shadow:0 1px 0 rgba(255,255,255,.1) inset;
+  transition:background .25s ease,border-color .25s ease;
+}
+.si-row:hover,.si-row:focus-within{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.26)}
+.si-row .input{
+  background:transparent;border:none;border-radius:var(--r-pill);
+  padding:16px 22px;font-size:var(--t-body);
+}
+.si-row .input::placeholder{color:rgba(245,245,247,.42)}
+.si-row .input:focus{border:none}
+
+/* the Google button, kept inside a row of its own */
+.si-row.si-gsi{padding:8px;display:flex;justify-content:center;background:rgba(255,255,255,.12)}
+.si-row.si-gsi .gsi-slot{min-height:40px;justify-content:center;width:100%}
+
+/* ---------- the way out of the pane ---------- */
+.si-go{
+  width:100%;border:none;border-radius:var(--r-pill);
+  padding:17px 24px;cursor:pointer;
+  background:var(--frost-white);color:var(--obsidian);
+  font-family:var(--display);font-size:var(--t-body);font-weight:600;letter-spacing:-0.012em;
+  transition:background .25s ease,transform .25s var(--ease-sig),opacity .25s ease;
+}
+.si-go:hover{background:var(--paper-white)}
+.si-go:active{transform:scale(.985)}
+.si-go:disabled{opacity:.42;cursor:not-allowed}
+
+.si-or{
+  display:flex;align-items:center;gap:var(--s12);
+  color:rgba(245,245,247,.42);font-size:var(--t-caption);
+  letter-spacing:.14em;text-transform:uppercase;
+}
+.si-or::before,.si-or::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.14)}
+.si-foot{margin:0;font-size:var(--t-caption);color:rgba(245,245,247,.42);line-height:1.5;text-align:center}
+.si-foot a{color:rgba(245,245,247,.72)}
+.si-err{margin:0;font-size:var(--t-xs);color:#ffb38a}
+.glass .setup-note{background:rgba(0,0,0,.28);border-color:rgba(255,255,255,.14)}
+
+/* ---------- the pane arriving ---------- */
+html.sig .glass{
+  opacity:0;transform:translate3d(0,22px,0) scale(.97);
+  transition:opacity .8s var(--ease-sig),transform 1s var(--ease-sig);
+}
+html.sig .glass.in{opacity:1;transform:none}
+
+@media (max-width:560px){
+  .glass{max-width:100%;padding:22px}
+  .signin-stage{padding-inline:16px}
+}
+
+/* no backdrop-filter, no glass: the same pane, painted instead of filtered */
+@supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){
+  .glass{background:rgba(18,18,20,.92)}
+  .si-row{background:rgba(255,255,255,.06)}
+  .si-row.si-gsi{background:rgba(255,255,255,.1)}
+}
+
 /* ---------- and none of it for anyone who asked for less ---------- */
 @media (prefers-reduced-motion:reduce){
   .sheet-links button,.sheet-acct,.sheet-foot{animation:none!important}
@@ -1434,6 +1575,7 @@ html.sig .hero-band .hero-in.in{opacity:.62}
   .hero-in{transition:none!important;transform:none!important;filter:none!important}
   .cyc-r,.led-rule,.fan-card{transition:none!important;transform:none!important;opacity:1!important}
   .cg-card{transition:none!important;transform:none!important}
+  .glass{transition:none!important;transform:none!important;opacity:1!important}
   .cg-track{height:auto!important}
   .cg-pin{position:static!important;min-height:0!important;padding-block:0!important}
   #app.stacked > section{position:static!important;transform:none!important;box-shadow:none!important;margin-top:0!important}
@@ -1796,6 +1938,13 @@ var WORK = [
 ];
 
 var HERO = {img:'photos/13.jpg', pos:'center 55%'};
+
+/* The sign-in backdrop: the only photograph on the site seen at the full
+   size of the screen, so it gets a file of its own rather than one of the
+   portfolio crops. Where it is cropped to lives in the stylesheet, because
+   a wide frame on a tall phone needs a different part of the picture than
+   the same frame on a desktop. */
+var LOGIN = {img:'photos/login.jpg'};
 
 /* A real frame when there is one, the canvas placeholder when there isn't. */
 function bgImage(w, key, cw, ch){
@@ -3084,34 +3233,42 @@ function screenSignin(){
   if(S.user) return screenAccount();
 
   var gblock = GOOGLE_CLIENT_ID
-    ? '<div class="gsi-slot" id="gsi-slot"></div>'+
-      '<p class="small">'+esc(L.siTerms)+'</p>'
+    ? '<div class="si-row si-gsi"><div class="gsi-slot" id="gsi-slot"></div></div>'
     : '<div class="setup-note"><strong style="color:var(--frost-white)">'+esc(L.siSetup)+'</strong>'+
       '<p class="small">'+esc(L.siSetupSub)+'</p>'+
       '<code>var GOOGLE_CLIENT_ID = &#39;…apps.googleusercontent.com&#39;;</code></div>';
 
   var err = S.authError
-    ? '<p class="small" role="alert" style="color:var(--signal-orange)">'+esc(S.authError)+'</p>' : '';
+    ? '<p class="si-err" role="alert">'+esc(S.authError)+'</p>' : '';
 
   var email = S.signinSent
-    ? '<div class="notice"><h2 class="h-lg" style="color:var(--frost-white)">'+esc(L.siSent)+'</h2>'+
-      '<p class="body-copy">'+esc(L.siSentSub)+' '+esc(S.signinEmail)+'.</p></div>'
-    : '<div style="display:flex;flex-direction:column;gap:12px">'+
-      '<label class="small" for="signinEmail">'+esc(L.siEmailAlt)+'</label>'+
-      '<input class="input" id="signinEmail" type="email" data-input="signinEmail" value="'+esc(S.signinEmail)+'" placeholder="'+esc(L.siPlaceholder)+'" aria-label="Email">'+
-      '<div><button class="btn btn-ghost" data-signin="1"'+(S.signinEmail?'':' disabled')+'>'+esc(L.siContinue)+'</button></div>'+
+    ? '<p class="si-sub" role="status">'+esc(L.siSent)+' '+esc(L.siSentSub)+' '+esc(S.signinEmail)+'.</p>'
+    : '<div style="display:flex;flex-direction:column;gap:var(--s12)">'+
+      '<div class="si-row">'+
+        '<input class="input" id="signinEmail" type="email" data-input="signinEmail" value="'+esc(S.signinEmail)+'"'+
+          ' placeholder="'+esc(L.siPlaceholder)+'" aria-label="'+esc(L.siEmailAlt)+'">'+
+      '</div>'+
+      '<button class="si-go" data-signin="1"'+(S.signinEmail?'':' disabled')+'>'+esc(L.siContinue)+'</button>'+
+      '<p class="si-foot">'+esc(L.siTerms)+'</p>'+
     '</div>';
 
-  return '<section class="stage"><div class="wrap band"><div class="form-col" style="max-width:460px">'+
-    logo(56,'var(--frost-white)')+
-    '<h1 class="display-type" style="margin:28px 0 12px">'+esc(L.siTitle)+'</h1>'+
-    '<p class="body-copy">'+esc(L.siSub)+'</p>'+
-    '<div style="display:flex;flex-direction:column;gap:16px;margin-top:40px">'+
-      gblock + err +
-      '<div class="or-rule" style="margin:8px 0">'+esc(L.siOr)+'</div>'+
+  /* One pane of glass on one photograph. Everything the screen asks for
+     sits inside the pane, and the way out of it is the one solid thing
+     on the whole surface. */
+  return '<section class="stage signin-stage">'+
+    '<div class="si-still" data-px style="background-image:'+bgImage(LOGIN,'signin-dia',1600,900)+'"></div>'+
+    '<div class="si-wash"></div>'+
+    '<div class="glass" data-glass>'+
+      '<p class="si-mark">'+introWord()+'</p>'+
+      '<div style="display:flex;flex-direction:column;gap:8px">'+
+        '<h1>'+esc(L.siTitle)+'</h1>'+
+        '<p class="si-sub">'+esc(L.siSub)+'</p>'+
+      '</div>'+
+      '<div class="si-rows">'+ gblock + err +'</div>'+
+      '<div class="si-or">'+esc(L.siOr)+'</div>'+
       email +
     '</div>'+
-  '</div></div></section>';
+  '</section>';
 }
 
 /* signed-in client area — briefs come from the database, filtered by RLS */
@@ -4077,7 +4234,7 @@ function prepOdo(root){
    It waits in the dark, too close and out of focus, until the page is
    ready for it, and then takes its time settling into the frame.   */
 function prepConverge(root){
-  var els = root.querySelectorAll('[data-herorise]');
+  var els = root.querySelectorAll('[data-herorise],[data-glass]');
   for(var i=0;i<els.length;i++){
     var el = els[i];
     if(el.__sigConv) continue;
