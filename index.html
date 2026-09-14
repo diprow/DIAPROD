@@ -685,7 +685,7 @@ textarea.input{border-radius:var(--r-card);line-height:1.47}
    Each still is taller than the frame that crops it, so it can
    travel without ever showing an edge. The hover scale lives in
    its own variable so the two never fight over `transform`.   */
-.hero-still,.reel-still,.case-still,.tile-still{
+.hero-still,.hero-plate,.man-still,.reel-still,.case-still,.tile-still{
   top:-9%;bottom:-9%;
   transform:translate3d(0,var(--py,0px),0) scale(var(--ts,1));
   transition:transform .45s cubic-bezier(.16,.84,.34,1);
@@ -1101,12 +1101,223 @@ button,a,.chip,.tag,.dot,.slot,.opt,.filechip,.review-row,.job-head{touch-action
   .filters{gap:var(--s8)}
 }
 
+
+/* ============================================================
+   SECOND MOVEMENT
+   A reference reel came in with five things worth taking, and
+   this is all five, translated into the studio's own material:
+   a frame that arrives in two halves and meets in the middle,
+   sections that stop and let the next one climb over them, a
+   word that turns over on a fixed line, numbers that roll up
+   behind a rule drawing itself across, a hand of frames that
+   opens out of a single stack, and one long line of type that
+   never stops moving. One curve for all of it — the signature
+   one — and none of it for anyone who asked for less motion.
+   ============================================================ */
+
+/* ---------- type that hands the sentence over halfway ----------
+   The first half carries the weight; the rest of the line steps
+   back a tone. Both halves are the same size and the same face,
+   so it reads as one sentence, not two.                        */
+.sp-dim,.dim{color:var(--platinum)}
+.light .sp-dim,.light .dim,.frost .sp-dim,.frost .dim{color:var(--silver-mist)}
+
+/* ---------- a frame that arrives in two halves ----------
+   Each half carries the whole photograph and shows only its own
+   side of it, so when the two meet there is no seam: what lands
+   is one picture, not two pressed together.                    */
+.hero-half{position:absolute;inset:0;overflow:hidden;will-change:transform}
+.hero-half.hh-l{-webkit-clip-path:inset(0 50% 0 0);clip-path:inset(0 50% 0 0)}
+.hero-half.hh-r{-webkit-clip-path:inset(0 0 0 50%);clip-path:inset(0 0 0 50%)}
+html.sig .hero-half{
+  transform:translate3d(var(--hx,0),0,0);
+  transition:transform 1.15s var(--ease-sig);
+}
+html.sig .hh-l{--hx:-26%}
+html.sig .hh-r{--hx:26%}
+html.sig .hero-half.in{--hx:0%}
+.hero-plate{position:absolute;left:0;right:0;background-size:cover;background-position:center}
+
+/* ---------- sections that stop and are climbed over ----------
+   Every band on the home screen pins itself once it has been
+   read, and the next one comes up over it with its own top
+   corners and its own shadow, and the one underneath takes a
+   shade so the eye knows which of the two is on top. `top` is
+   set from script: a band taller than the screen scrolls all
+   the way through before it pins.
+
+   Three things here are deliberate and should stay that way:
+
+   - Nothing is scaled. A band scaled down no longer fills its
+     own box, and the sliver it gives up shows whatever is
+     behind it — which is what a seam and a flickering edge
+     between two bands actually are.
+   - The shade is a real element, not a custom property read by
+     `::after`. A custom property set on a band inherits into
+     everything inside it, so writing one on every scroll frame
+     asks the browser to recalculate the whole subtree each
+     time. An element with its own opacity touches one node.
+   - Each band overlaps the one before it by a pixel. At a
+     fractional scroll offset or a fractional device pixel
+     ratio, a pinned band and the band climbing over it round
+     to different pixels, and a hairline of whatever is behind
+     shows through between them — a one-pixel slice of another
+     part of the page, blinking on and off as the offset moves.
+     Two pixels of overlap close it at any ratio; the covering
+     band is opaque and paints last, so nothing is lost.      */
+#app{background:var(--pure-black)}
+#app.stacked > section{position:sticky;top:0}
+.sec-cov{
+  position:absolute;inset:0;z-index:5;pointer-events:none;
+  border-radius:inherit;
+  background:var(--pure-black);opacity:0;
+}
+#app.stacked > section + section{
+  margin-top:-2px;
+  border-top-left-radius:var(--r-card-lg);
+  border-top-right-radius:var(--r-card-lg);
+  box-shadow:0 -24px 52px rgba(0,0,0,.55);
+}
+
+/* ---------- a word that turns over on a fixed line ----------
+   One clipped line with the whole list stacked inside it. The
+   first word is repeated at the bottom, so the roll from the
+   last back to the first goes the same way as all the others
+   and the return is never seen.                              */
+.cyc{
+  display:inline-block;overflow:hidden;vertical-align:bottom;
+  height:var(--ch,1.16em);line-height:var(--ch,1.16em);
+}
+.cyc-r{display:block;transition:transform .66s var(--ease-sig);will-change:transform}
+.cyc-d{display:block;height:var(--ch,1.16em);line-height:var(--ch,1.16em);white-space:nowrap}
+
+/* ---------- the band that goes to the edges ---------- */
+.manifesto{
+  position:relative;overflow:hidden;background:var(--pure-black);
+  min-height:min(84vh,760px);display:flex;flex-direction:column;justify-content:center;
+  padding-block:var(--band);
+}
+.man-still{position:absolute;left:0;right:0;background-size:cover;background-position:center;opacity:.42}
+.man-scrim{
+  position:absolute;inset:0;
+  background:radial-gradient(120% 78% at 50% 50%,rgba(0,0,0,.18) 0%,rgba(0,0,0,.72) 62%,rgba(0,0,0,.94) 100%);
+}
+.man-word{
+  position:relative;text-align:center;margin:0;
+  font-family:var(--display);font-weight:500;
+  font-size:clamp(24px,5.6vw,68px);line-height:1.16;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--frost-white);
+  text-indent:.2em;   /* the tracking would otherwise push it off centre */
+}
+.man-foot{
+  position:absolute;left:0;right:0;bottom:clamp(26px,4.6vw,64px);
+  display:flex;justify-content:flex-end;
+}
+.man-foot > div{display:flex;flex-direction:column;gap:var(--s8);max-width:44ch}
+.man-foot p:not(.eyebrow){margin:0;font-size:var(--t-body);color:var(--silver-mist);line-height:1.6}
+@media (max-width:700px){
+  .man-foot{justify-content:flex-start}
+  .man-word{letter-spacing:.12em;text-indent:.12em}
+}
+
+/* ---------- numbers under a rule that draws itself ---------- */
+.ledger{display:flex;flex-direction:column;margin-top:clamp(28px,4vw,52px)}
+.led{
+  position:relative;display:grid;gap:var(--s12) var(--s24);
+  grid-template-columns:minmax(0,1fr) auto;align-items:center;
+  padding-block:clamp(22px,3.2vw,40px);
+}
+.led-rule{
+  position:absolute;left:0;right:0;top:0;height:1px;background:var(--graphite);
+  transform:scaleX(0);transform-origin:0 50%;
+  transition:transform 1.05s var(--ease-sig);
+  transition-delay:var(--rd,0ms);
+}
+.led[data-reveal].in .led-rule,.led.in .led-rule{transform:scaleX(1)}
+.led-n{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(40px,7.4vw,96px);line-height:.94;letter-spacing:-0.035em;
+  color:var(--frost-white);font-variant-numeric:tabular-nums;
+  display:flex;align-items:center;gap:var(--s16);
+}
+.led-dot{
+  width:26px;height:26px;border-radius:50%;flex:0 0 auto;
+  border:1px solid var(--graphite);
+  display:flex;align-items:center;justify-content:center;
+}
+.led-dot i{width:5px;height:5px;border-radius:50%;background:var(--smoke);display:block}
+.led-l{margin:0;font-size:var(--t-xs);color:var(--platinum);letter-spacing:.06em;text-transform:uppercase;text-align:right}
+@media (max-width:640px){
+  .led{grid-template-columns:1fr}
+  .led-l{text-align:left}
+}
+
+/* ---------- a hand of frames, opening out of one stack ----------
+   Every frame starts where the middle one is and comes out to
+   its own place in the arch, each a beat behind the one before
+   it. The outer pair sit lower, which is what makes the row
+   read as a curve rather than a line.                         */
+.fan{
+  display:flex;justify-content:center;align-items:flex-start;
+  gap:clamp(4px,.9vw,16px);
+  margin-top:clamp(36px,5vw,72px);
+  padding-bottom:clamp(30px,4vw,56px);
+}
+.fan-card{
+  position:relative;flex:0 0 auto;
+  width:clamp(52px,12.6vw,186px);aspect-ratio:9/16.6;
+  border-radius:clamp(12px,1.5vw,20px);overflow:hidden;
+  background:var(--carbon);
+  box-shadow:0 26px 60px rgba(0,0,0,.5);
+  transform:translate3d(var(--sx,0),18px,0) rotate(0deg) scale(.9);
+  opacity:0;
+  transition:transform 1.05s var(--ease-sig),opacity .7s var(--ease-sig);
+  transition-delay:var(--fd,0ms);
+}
+.fan[data-reveal].in .fan-card,.fan.in .fan-card{
+  transform:translate3d(0,var(--fy,0px),0) rotate(var(--fr,0deg)) scale(1);
+  opacity:1;
+}
+.fan-still{position:absolute;inset:0;background-size:cover;background-position:center}
+@media (max-width:700px){
+  .fan{gap:3px}
+  .fan-card{box-shadow:0 14px 34px rgba(0,0,0,.5)}
+}
+.fan-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  border-radius:inherit;border:1px solid rgba(245,245,247,.1);
+  background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.45) 100%);
+}
+
+/* ---------- one line of type that never stops ---------- */
+.marq{
+  overflow:hidden;white-space:nowrap;user-select:none;
+  margin-top:clamp(44px,6vw,88px);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+          mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+}
+.marq-t{
+  display:inline-block;
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(34px,8.4vw,112px);line-height:1.1;letter-spacing:-0.035em;
+  color:var(--frost-white);
+  animation:marqRun 34s linear infinite;
+  will-change:transform;
+}
+.marq-t span{padding-right:.34em}
+.marq:hover .marq-t{animation-play-state:paused}
+@keyframes marqRun{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+
 /* ---------- and none of it for anyone who asked for less ---------- */
 @media (prefers-reduced-motion:reduce){
   .sheet-links button,.sheet-acct,.sheet-foot{animation:none!important}
   .burger-lines i,.burger-mark,.sheet{transition-duration:.01ms!important}
   .sp-c,.sp-f,.bm-c,.od-r,[data-mrev],[data-bwipe]{transition:none!important;transform:none!important;opacity:1!important;clip-path:none!important}
   .curtain,.intro{display:none!important}
+  .hero-half,.cyc-r,.led-rule,.fan-card{transition:none!important;transform:none!important;opacity:1!important}
+  #app.stacked > section{position:static!important;transform:none!important;box-shadow:none!important;margin-top:0!important}
+  .sec-cov{display:none}
+  .marq-t{animation:none!important}
   html.sig-boot,html.sig-boot body{overflow:auto}
 }
 </style>
@@ -1632,6 +1843,16 @@ var T = {
     closeTitle:'Every great story starts with the first move.',
     closeSub:'Tell us what you are building. A quick brief, and we reply within a business day.',
     bookCall:'Book a 20-minute call',
+    heroDim:1, casesDim:2, closeDim:3,
+    manKicker:'The studio',
+    manWords:['Portrait','Sport','Outdoor','Street'],
+    manBody:'Create. Capture. Connect. \u2014 every frame shot, cut and coloured in house, in Turin and wherever the work takes us.',
+    ledgerKicker:'Where we stand',
+    ledgerTitle:'The work, in numbers.', ledgerDim:2,
+    ledgerAwards:'Milano Fashion Week',
+    fanKicker:'In the frame',
+    fanTitle:'Recent frames, straight from the card.', fanDim:4,
+    marqWords:['DIA PROD','Create.','Capture.','Connect.'],
     footerTag:'Create. Capture. Connect. — photography, videography and creative production, from Turin.',
     pages:'Pages', contact:'Contact', studioLabel:'Studio', rights:'All rights reserved.',
     privacy:'Privacy Policy', cookies:'Cookie Policy',
@@ -1728,6 +1949,16 @@ var T = {
     closeTitle:'Ogni grande storia inizia con la prima mossa.',
     closeSub:'Raccontaci cosa stai costruendo. Un brief veloce, e ti rispondiamo entro un giorno lavorativo.',
     bookCall:'Prenota una call di 20 minuti',
+    heroDim:1, casesDim:2, closeDim:3,
+    manKicker:'Lo studio',
+    manWords:['Ritratto','Sport','Outdoor','Street'],
+    manBody:'Create. Capture. Connect. \u2014 ogni frame girato, montato e colorato in casa, a Torino e ovunque ci porti il lavoro.',
+    ledgerKicker:'A che punto siamo',
+    ledgerTitle:'Il lavoro, in numeri.', ledgerDim:2,
+    ledgerAwards:'Milano Fashion Week',
+    fanKicker:'Nell\u2019inquadratura',
+    fanTitle:'Frame recenti, direttamente dalla scheda.', fanDim:3,
+    marqWords:['DIA PROD','Create.','Capture.','Connect.'],
     footerTag:'Create. Capture. Connect. — fotografia, videografia e produzione creativa, da Torino.',
     pages:'Pagine', contact:'Contatti', studioLabel:'Studio', rights:'Tutti i diritti riservati.',
     privacy:'Privacy', cookies:'Cookie',
@@ -2349,29 +2580,26 @@ function screenHome(){
   var L = t();
   var w = WORK[S.reel];
 
-  var meta = [
-    [L.metaYearsV, L.metaYears],
-    [L.metaDeliveredV, L.metaDelivered],
-    [L.metaReplyV, L.metaReply]
-  ].map(function(m){
-    return '<div><b>'+esc(m[0])+'</b><span class="small">'+esc(m[1])+'</span></div>';
-  }).join('');
+  /* The hero photograph comes in as two halves that meet in the middle.
+     Each half carries the whole frame and shows only its own side, so
+     what lands is one picture with no seam down it. */
+  var plate = '<span class="hero-plate" data-px style="'+stillStyle(HERO,'hero-dia',900,506)+'"></span>';
 
   var hero =
   '<section class="stage"><div class="wrap hero">'+
     '<div class="hero-stage">'+
-      '<div class="hero-still" data-px style="'+stillStyle(HERO,'hero-dia',900,506)+'"></div>'+
+      '<div class="hero-half hh-l" data-converge>'+plate+'</div>'+
+      '<div class="hero-half hh-r" data-converge>'+plate+'</div>'+
       '<div class="hero-scrim"></div>'+
       '<div class="hero-copy">'+
         '<p class="eyebrow">'+esc(L.heroEyebrow)+'</p>'+
-        '<h1 class="hero-type">'+esc(L.heroTitle)+'</h1>'+
+        '<h1 class="hero-type" data-dim="'+L.heroDim+'">'+esc(L.heroTitle)+'</h1>'+
         '<div class="hero-actions">'+
           '<button class="btn btn-cta" data-go="request">'+esc(L.start)+'</button>'+
         '</div>'+
         '<p class="hero-note">'+esc(L.heroNote)+'</p>'+
       '</div>'+
     '</div>'+
-    '<div class="hero-meta">'+meta+'</div>'+
   '</div></section>';
 
   var dots = WORK.map(function(it, i){
@@ -2416,7 +2644,7 @@ function screenHome(){
   var cases =
   '<section class="light"><div class="wrap" style="padding-top:var(--band)">'+
     '<p class="eyebrow">'+esc(L.casesKicker)+'</p>'+
-    '<h2 class="display-type" style="margin:16px 0 12px;max-width:18ch">'+esc(L.casesTitle)+'</h2>'+
+    '<h2 class="display-type" data-dim="'+L.casesDim+'" style="margin:16px 0 12px;max-width:18ch">'+esc(L.casesTitle)+'</h2>'+
     '<p class="body-copy">'+esc(L.casesSub)+'</p>'+
     CASES.map(function(cs){
       var wk = workById(cs.workId);
@@ -2437,20 +2665,94 @@ function screenHome(){
     }).join('')+
   '</div></section>';
 
+  /* ---------- the band that runs to the edges ----------
+     One photograph at the full width of the screen, a single word
+     turning over on the centre line, and the studio's sentence in
+     the corner under it. The list of words is the studio's own
+     subjects, so the line is never decoration alone. */
+  var cyc = L.manWords.concat([L.manWords[0]]).map(function(word){
+    return '<span class="cyc-d">'+esc(word)+'</span>';
+  }).join('');
+
+  var manifesto =
+  '<section class="manifesto">'+
+    '<div class="man-still" data-px style="'+stillStyle(WORK[8],'man-dia',1280,720)+'"></div>'+
+    '<div class="man-scrim"></div>'+
+    '<p class="man-word"><span class="cyc" data-cyc><span class="cyc-r">'+cyc+'</span></span></p>'+
+    '<div class="wrap man-foot"><div>'+
+      '<p class="eyebrow">'+esc(L.manKicker)+'</p>'+
+      '<p>'+esc(L.manBody)+'</p>'+
+    '</div></div>'+
+  '</section>';
+
+  /* ---------- the numbers, each under a rule that draws itself ----------
+     The same three figures that used to sit under the hero, given
+     the room to be read one at a time. They roll up to their value
+     as the rule above them finishes crossing the page. */
+  var ledRows = [
+    [L.metaYearsV, L.metaYears],
+    [L.metaDeliveredV, L.metaDelivered],
+    [L.metaReplyV, L.metaReply],
+    [String(AWARDS.length), L.ledgerAwards]
+  ].map(function(row){
+    return '<div class="led">'+
+      '<span class="led-rule" aria-hidden="true"></span>'+
+      '<span class="led-n"><b>'+esc(row[0])+'</b>'+
+        '<span class="led-dot" aria-hidden="true"><i></i></span></span>'+
+      '<p class="led-l">'+esc(row[1])+'</p>'+
+    '</div>';
+  }).join('');
+
+  var ledger =
+  '<section class="stage"><div class="wrap band">'+
+    '<p class="kicker">'+esc(L.ledgerKicker)+'</p>'+
+    '<h2 class="display-type" data-dim="'+L.ledgerDim+'" style="margin:16px 0 0;max-width:14ch">'+esc(L.ledgerTitle)+'</h2>'+
+    '<div class="ledger">'+ledRows+'</div>'+
+  '</div></section>';
+
+  /* ---------- a hand of frames opening out of a single stack ----------
+     Five pictures that start piled on the middle one and come out to
+     their own place in the arch, each a beat behind the one before.
+     The outer pair sit lower, which is what makes it read as a curve. */
+  var fanPicks = [0,2,4,6,8];
+  var fanRot = [-11,-5.5,0,5.5,11];
+  var fanY   = [40,12,24,12,40];
+  var fanCards = fanPicks.map(function(idx, i){
+    var it = WORK[idx] || WORK[i] || null;
+    return '<span class="fan-card" style="--fr:'+fanRot[i]+'deg;--fy:'+fanY[i]+'px;'+
+      '--sx:'+((2 - i) * 104)+'%;--fd:'+(i * 85)+'ms">'+
+      '<span class="fan-still" style="'+stillStyle(it,'fan-'+i,420,900)+'"></span>'+
+    '</span>';
+  }).join('');
+
+  var fan =
+  '<section class="stage"><div class="wrap band">'+
+    '<p class="kicker" style="text-align:center">'+esc(L.fanKicker)+'</p>'+
+    '<h2 class="display-type" data-dim="'+L.fanDim+'" style="margin:16px auto 0;max-width:20ch;text-align:center">'+esc(L.fanTitle)+'</h2>'+
+    '<div class="fan">'+fanCards+'</div>'+
+  '</div></section>';
+
+  /* ---------- and one line of type that never stops ---------- */
+  var marqOnce = L.marqWords.map(function(word, i){
+    return '<span'+(i % 2 ? ' class="dim"' : '')+'>'+esc(word)+'</span>';
+  }).join('');
+
   var closing =
   '<section class="stage"><div class="wrap band">'+
     '<div class="closing">'+
       '<p class="kicker">'+esc(L.rqKicker)+'</p>'+
-      '<h2 class="hero-type" style="max-width:16ch">'+esc(L.closeTitle)+'</h2>'+
+      '<h2 class="hero-type" data-dim="'+L.closeDim+'" style="max-width:16ch">'+esc(L.closeTitle)+'</h2>'+
       '<p class="body-copy" style="max-width:48ch">'+esc(L.closeSub)+'</p>'+
       '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">'+
         '<button class="btn btn-cta btn-lg" data-go="request">'+esc(L.start)+'</button>'+
         '<button class="btn btn-outline btn-lg" data-go="call">'+esc(L.bookCall)+'</button>'+
       '</div>'+
     '</div>'+
-  '</div></section>';
+  '</div>'+
+  '<div class="marq" aria-hidden="true"><span class="marq-t">'+marqOnce+marqOnce+'</span></div>'+
+  '</section>';
 
-  return hero + reel + awards + cases + closing;
+  return hero + reel + manifesto + ledger + awards + cases + fan + closing;
 }
 
 function screenWork(){
@@ -2963,7 +3265,10 @@ function render(keepScroll){
   var caret = null;
   if(focusId && active.selectionStart != null){ caret = active.selectionStart; }
 
-  document.getElementById('app').innerHTML = (SCREENS[S.route] || screenHome)();
+  var appEl = document.getElementById('app');
+  appEl.innerHTML = (SCREENS[S.route] || screenHome)();
+  /* only the home screen is built as a stack of bands */
+  appEl.classList.toggle('stacked', S.route === 'home' && !REDUCED);
   renderNav(); renderSheet(); renderFooter(); renderLightbox();
   mountGoogle();
 
@@ -3151,7 +3456,8 @@ try{ REDUCED = window.matchMedia('(prefers-reduced-motion:reduce)').matches; }ca
 
 /* ---------- sections arriving ---------- */
 var REVEAL_SEL = '.sec-head,.tile,.case,.pkg,.awards-list li,.closing,.hero-meta > div,'+
-                 '.job,.step-card,.notice,.refbox,.slot-grid,.form-col > .kicker';
+                 '.job,.step-card,.notice,.refbox,.slot-grid,.form-col > .kicker,'+
+                 '.led,.fan';
 var revealObserver = null;
 
 function initReveal(){
@@ -3217,6 +3523,7 @@ function updateParallax(){
     if(p > 1.4) p = 1.4; if(p < -1.4) p = -1.4;
     el.style.setProperty('--py', (p * -22).toFixed(1) + 'px');
   }
+  updateStack();
   pxTicking = false;
 }
 
@@ -3483,6 +3790,22 @@ function sigLines(el){
   return lines;
 }
 
+/* ---------- a sentence that hands itself over halfway ----------
+   `data-dim="n"` steps the last n words back a tone. It is one
+   sentence in one face and one size: only the colour changes, and
+   it survives the split being taken back off again.            */
+function sigTone(text, n){
+  var parts = text.split(/(\s+)/), idx = [], out = '', open = false;
+  for(var i=0;i<parts.length;i++) if(parts[i].trim()) idx.push(i);
+  var from = idx.length - n;
+  if(n <= 0 || from <= 0) return esc(text);
+  for(var j=0;j<parts.length;j++){
+    if(parts[j].trim() && !open && idx.indexOf(j) >= from){ out += '<span class="dim">'; open = true; }
+    out += esc(parts[j]);
+  }
+  return out + (open ? '</span>' : '');
+}
+
 function sigSplit(el, mode){
   if(!sigPlain(el)) return 0;
   var label = el.textContent;
@@ -3490,26 +3813,49 @@ function sigSplit(el, mode){
   var lines = sigLines(el);
   if(!lines || !lines.length) return 0;
 
+  var dim = Number(el.getAttribute('data-dim') || 0), words = 0;
+  for(var q=0;q<lines.length;q++) words += lines[q].length;
+  var dimFrom = (dim > 0) ? words - dim : words + 1;
+  var wi = 0;
+
   var out = '', longest = 0;
   for(var i=0;i<lines.length;i++){
-    var txt = lines[i].join(' ');
     var base = i * SIG.line;
     if(mode === 'fade'){
-      out += '<span class="sp-line"><span class="sp-f" style="--cd:'+base+'ms">'+esc(txt)+'</span></span>';
+      out += '<span class="sp-line"><span class="sp-f" style="--cd:'+base+'ms">'+esc(lines[i].join(' '))+'</span></span>';
       if(base > longest) longest = base;
+      wi += lines[i].length;
     } else {
-      var inner = '';
-      for(var c=0;c<txt.length;c++){
-        var d = base + Math.min(c, 34) * SIG.char;   /* a long line never drags */
-        if(d > longest) longest = d;
-        inner += '<span class="sp-c" style="--cd:'+d+'ms">'+esc(txt.charAt(c))+'</span>';
+      var inner = '', c = 0;
+      for(var w=0;w<lines[i].length;w++){
+        var word = lines[i][w] + (w < lines[i].length - 1 ? ' ' : '');
+        var cls = (wi >= dimFrom) ? 'sp-c sp-dim' : 'sp-c';
+        for(var k=0;k<word.length;k++){
+          var d = base + Math.min(c, 34) * SIG.char;   /* a long line never drags */
+          if(d > longest) longest = d;
+          inner += '<span class="'+cls+'" style="--cd:'+d+'ms">'+esc(word.charAt(k))+'</span>';
+          c++;
+        }
+        wi++;
       }
       out += '<span class="sp-line">'+inner+'</span>';
     }
   }
-  el.__sigOrig = el.innerHTML;
+  el.__sigOrig = (dim > 0) ? sigTone(label, dim) : el.innerHTML;
   el.innerHTML = '<span class="sp-sr">'+esc(label)+'</span><span aria-hidden="true">'+out+'</span>';
   return longest + SIG.dur + 60;
+}
+
+/* the same two tones for anything the split never reached */
+function prepTone(root){
+  var els = root.querySelectorAll('[data-dim]');
+  for(var i=0;i<els.length;i++){
+    var el = els[i];
+    if(el.__sigTone || !sigPlain(el)) continue;
+    el.__sigTone = 1;
+    var n = Number(el.getAttribute('data-dim') || 0);
+    if(n > 0) el.innerHTML = sigTone(el.textContent, n);
+  }
 }
 
 function sigRevert(el){
@@ -3529,6 +3875,7 @@ function prepSplits(root){
     var fade = el.className.indexOf('body-copy') > -1;
     var total = sigSplit(el, fade ? 'fade' : 'char');
     if(!total) continue;
+    el.__sigTone = 1;
     (function(el, total){
       el.__sigPlay = function(){
         el.classList.add('sp-on');
@@ -3590,7 +3937,7 @@ function prepButtons(root){
 
 /* ---------- numbers climbing to their value ---------- */
 function prepOdo(root){
-  var els = root.querySelectorAll('.metric b,.hero-meta b');
+  var els = root.querySelectorAll('.metric b,.hero-meta b,.led-n b');
   for(var i=0;i<els.length;i++){
     var el = els[i];
     if(el.__sigOdo || !sigPlain(el)) continue;
@@ -3622,6 +3969,163 @@ function prepOdo(root){
   }
 }
 
+/* ---------- the frame that arrives in two halves ----------
+   Both halves wait off their own edge and come in together. They
+   are two pieces of one photograph, so the moment they meet the
+   seam disappears and there is simply a picture there.        */
+function prepConverge(root){
+  var els = root.querySelectorAll('[data-converge]');
+  for(var i=0;i<els.length;i++){
+    var el = els[i];
+    if(el.__sigConv) continue;
+    el.__sigConv = 1;
+    if(!SIG.on){ continue; }
+    if(!SIG.anim && !SIG.gate && sigInView(el)){ el.classList.add('in'); continue; }
+    (function(el){ el.__sigPlay = function(){ el.classList.add('in'); }; })(el);
+    sigWatch(el);
+  }
+}
+
+/* ---------- a word that turns over on a fixed line ----------
+   The list is stacked inside one clipped line with the first word
+   repeated at the bottom, so the return from the last to the first
+   travels the same way as every other turn and is never seen. It
+   stops whenever the line is off the screen.                    */
+var cycTimers = [];
+function prepCycle(root){
+  for(var i=0;i<cycTimers.length;i++) window.clearInterval(cycTimers[i]);
+  cycTimers = [];
+  if(REDUCED) return;
+  var els = root.querySelectorAll('[data-cyc]');
+  for(var j=0;j<els.length;j++){
+    (function(el){
+      var row = el.querySelector('.cyc-r');
+      if(!row) return;
+      var n = row.children.length - 1;          /* the repeat does not count */
+      if(n < 2) return;
+      var at = 0, step = 1.16, held = false;
+      cycTimers.push(window.setInterval(function(){
+        if(!document.body.contains(el) || held) return;
+        var r = el.getBoundingClientRect();
+        if(r.bottom < 0 || r.top > (window.innerHeight || 800)) return;
+        at++;
+        row.style.transform = 'translate3d(0,-' + (at * step).toFixed(3) + 'em,0)';
+        if(at >= n){
+          held = true;
+          window.setTimeout(function(){
+            row.style.transition = 'none';
+            row.style.transform = 'translate3d(0,0,0)';
+            void row.offsetWidth;
+            row.style.transition = '';
+            at = 0; held = false;
+          }, 760);
+        }
+      }, 2600));
+    })(els[j]);
+  }
+}
+
+/* ---------- bands that pin and are climbed over ----------
+   Each band on the home screen stops once it has been read and the
+   next one comes up over it. A band taller than the screen scrolls
+   all the way through first — that is what the negative `top` is
+   for — so nothing is ever pinned with half of it unread. The one
+   underneath takes a shade, and that is the whole of the depth: no
+   scaling, no blur, no filter, nothing that has to be recomputed.
+
+   The shade is a real element with its own opacity rather than a
+   variable the stylesheet reads. Writing a custom property on a
+   band invalidates everything inside it, and doing that on every
+   scroll frame is what turns a smooth cover into a stutter.     */
+var stackNodes = [], stackCovs = [], stackAt = [];
+
+function bindStack(){
+  var app = document.getElementById('app');
+  stackNodes = []; stackCovs = []; stackAt = [];
+  if(!app) return;
+  var on = app.classList.contains('stacked');
+  var kids = app.children;
+  for(var i=0;i<kids.length;i++){
+    if(kids[i].tagName !== 'SECTION') continue;
+    if(!on){ kids[i].style.top = ''; continue; }
+    stackNodes.push(kids[i]);
+  }
+  /* every band but the last carries the shade that falls over it */
+  for(var j=0;j<stackNodes.length-1;j++){
+    var cov = document.createElement('span');
+    cov.className = 'sec-cov';
+    cov.setAttribute('aria-hidden','true');
+    stackNodes[j].appendChild(cov);
+    stackCovs.push(cov);
+    stackAt.push(-1);
+  }
+  layoutStack();
+  /* A band measured before the webfont lands is measured at the wrong
+     height, and a band pinned at the wrong height is a band pinned with
+     some of it still unread. Measure again once the type has settled. */
+  if(window.document.fonts && document.fonts.ready && document.fonts.ready.then){
+    document.fonts.ready.then(function(){ layoutStack(); });
+  }
+  window.setTimeout(layoutStack, 1200);
+}
+
+function layoutStack(){
+  if(!stackNodes.length) return;
+  var vh = window.innerHeight || 1;
+  var tops = [];
+  for(var i=0;i<stackNodes.length;i++) tops.push(stackNodes[i].offsetHeight);  /* read */
+  for(var j=0;j<stackNodes.length;j++){                                        /* then write */
+    stackNodes[j].style.top = (tops[j] > vh ? Math.round(vh - tops[j]) : 0) + 'px';
+  }
+  updateStack();
+}
+
+/* A pinned band stops moving, so anything inside it that was still
+   waiting its turn would wait for ever. The moment a band has been
+   seen all the way to its bottom edge, everything left in it is let
+   through — in the order it sits on the page, so the arrival still
+   reads as a sequence rather than a switch being thrown.          */
+function stackFlush(sec){
+  if(sec.__flushed) return;
+  sec.__flushed = 1;
+  var els = sec.querySelectorAll('[data-reveal],[data-mrev],[data-bwipe],[data-converge],.fan,.led'), n = 0;
+  for(var i=0;i<els.length;i++){
+    (function(el, k){
+      window.setTimeout(function(){
+        el.classList.add('in');
+        if(revealObserver){ try{ revealObserver.unobserve(el); }catch(e){} }
+        sigFire(el);
+      }, k * 45);
+    })(els[i], n++);
+  }
+  /* the split lines and the rolling numbers keep their own handlers */
+  var rest = sec.querySelectorAll('*');
+  for(var j=0;j<rest.length;j++){
+    if(!rest[j].__sigPlay) continue;
+    (function(el, k){ window.setTimeout(function(){ sigFire(el); }, k * 45); })(rest[j], n++);
+  }
+}
+
+function updateStack(){
+  if(REDUCED || !stackNodes.length) return;
+  var vh = window.innerHeight || 1, n = stackNodes.length;
+  /* every measurement first, every write after: reading a rect once a
+     style has been written on the same frame forces a second layout. */
+  var rects = [];
+  for(var i=0;i<n;i++) rects.push(stackNodes[i].getBoundingClientRect());
+  for(var j=0;j<n;j++){
+    if(rects[j].bottom <= vh + 4 && rects[j].bottom > 0) stackFlush(stackNodes[j]);
+    if(j === n - 1) break;
+    var p = 1 - (rects[j+1].top / vh);
+    if(p < 0) p = 0;
+    if(p > 1) p = 1;
+    p = Math.round(p * 50) / 50;                 /* fifty steps is past seeing */
+    if(p === stackAt[j]) continue;               /* and nothing is written twice */
+    stackAt[j] = p;
+    stackCovs[j].style.opacity = p * 0.58;
+  }
+}
+
 function bindSignature(routeChanged){
   if(!SIG.on) return;
   SIG.anim = !!routeChanged;
@@ -3630,6 +4134,7 @@ function bindSignature(routeChanged){
   prepMedia(app);
   prepButtons(app);
   prepOdo(app);
+  prepConverge(app);
 }
 
 /* ---------- the curtain ----------
@@ -3781,8 +4286,11 @@ function syncReelStrip(){
 function motionAfterRender(routeChanged){
   SIG.anim = !!routeChanged;
   bindSignature(routeChanged);
+  if(!SIG.on) prepTone(document.getElementById('app'));
   bindReveal();
   bindParallax();
+  prepCycle(document.getElementById('app'));
+  bindStack();
   syncReelStrip();
   if(routeChanged && !REDUCED && !(SIG.on && USE_CURTAIN)){
     var app = document.getElementById('app');
@@ -3793,7 +4301,7 @@ function motionAfterRender(routeChanged){
 }
 
 window.addEventListener('scroll', onScroll, {passive:true});
-window.addEventListener('resize', function(){ bindParallax(); }, {passive:true});
+window.addEventListener('resize', function(){ bindParallax(); layoutStack(); }, {passive:true});
 initReveal();
 initNavLift();
 initCursor();
