@@ -1357,10 +1357,24 @@ html.sig .hero-half.in{--hx:0%}
    No word anywhere on a frame. The photograph is the whole of
    it; the pointer grows the picture a little and deepens the
    shadow, and a press opens the frame full size.             */
+/* The band gives the arrangement two and a half screens of scroll and
+   holds it still in the middle of them. Everything the frames do —
+   opening, changing places, closing — is spent against that travel,
+   so the whole move belongs to the scroll and never runs on its own. */
+.cg-track{position:relative;height:250vh}
+.cg-pin{
+  position:sticky;top:0;min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  gap:clamp(16px,2.4vw,32px);
+  padding-block:clamp(88px,11vh,124px) clamp(24px,5vh,56px);  /* clear of the bar */
+}
+.cg-pin .sec-head{margin-bottom:0}
 .collage{
-  position:relative;width:100%;aspect-ratio:16/8.6;
-  margin-top:clamp(20px,3vw,40px);
+  position:relative;
+  width:min(100%,calc((100vh - 290px) * 1.86));
+  aspect-ratio:16/8.6;margin-inline:auto;
   perspective:1500px;perspective-origin:50% 48%;
+  transform-style:preserve-3d;   /* depth decides what covers what */
   --cgs:1;
 }
 .cg-slot{
@@ -1391,8 +1405,9 @@ html.sig .hero-half.in{--hx:0%}
 }
 .cg-card:hover,.cg-card:focus-visible{box-shadow:0 30px 68px rgba(0,0,0,.72)}
 .cg-card:hover .cg-still,.cg-card:focus-visible .cg-still{transform:scale(1.07)}
-@media (max-width:860px){ .collage{--cgs:1.16;aspect-ratio:4/3} }
-@media (max-width:560px){ .collage{--cgs:1.52;aspect-ratio:1/1;perspective:900px} }
+@media (max-width:860px){ .collage{--cgs:1.16;aspect-ratio:4/3;width:min(100%,calc((100vh - 270px) * 1.33))} }
+@media (max-width:700px){ .cg-track{height:210vh} }
+@media (max-width:560px){ .collage{--cgs:1.52;aspect-ratio:1/1;perspective:900px;width:min(100%,calc(100vh - 290px))} }
 
 /* ---------- and none of it for anyone who asked for less ---------- */
 @media (prefers-reduced-motion:reduce){
@@ -1401,7 +1416,9 @@ html.sig .hero-half.in{--hx:0%}
   .sp-c,.sp-f,.bm-c,.od-r,[data-mrev],[data-bwipe]{transition:none!important;transform:none!important;opacity:1!important;clip-path:none!important}
   .curtain,.intro{display:none!important}
   .hero-half,.cyc-r,.led-rule,.fan-card{transition:none!important;transform:none!important;opacity:1!important}
-  .cg-card{transition:none!important}
+  .cg-card{transition:none!important;transform:none!important}
+  .cg-track{height:auto!important}
+  .cg-pin{position:static!important;min-height:0!important;padding-block:0!important}
   #app.stacked > section{position:static!important;transform:none!important;box-shadow:none!important;margin-top:0!important}
   .sec-cov{display:none}
   .marq-t{animation:none!important}
@@ -2691,21 +2708,28 @@ function screenHome(){
      which frame sits over which, and how far it turns and pushes back
      on the way there. The turning is script-driven from the scroll;
      these are only the two ends of it. */
+  /* Where each frame ends up, how deep it rests — depth, not z-index,
+     decides what covers what, so a frame that comes forward genuinely
+     passes in front of its neighbour — how far it turns and pushes
+     back while the pile is opening, and which frame it trades places
+     with in the middle act. `pair` points at the other frame; `dir`
+     says which of the two comes forward on the way past. */
   var CG = [
-    {i:1, fx:'-24%', fy:'-7%',  w:'17%', ar:'1/1',   z:5, ry: 20, rz:-3, tz:-180},
-    {i:6, fx:'-14%', fy:'3%',   w:'13%', ar:'3/4',   z:4, ry: 26, rz: 2, tz:-300},
-    {i:4, fx:'4%',   fy:'-25%', w:'19%', ar:'16/10', z:3, ry: -7, rz: 1, tz:-360},
-    {i:0, fx:'-1%',  fy:'-2%',  w:'24%', ar:'4/5',   z:8, ry:-10, rz: 0, tz: 120},
-    {i:8, fx:'17%',  fy:'-11%', w:'16%', ar:'3/4',   z:2, ry:-28, rz:-2, tz:-320},
-    {i:2, fx:'24%',  fy:'7%',   w:'23%', ar:'4/3',   z:6, ry:-20, rz: 2, tz:-120},
-    {i:5, fx:'-15%', fy:'21%',  w:'21%', ar:'3/4',   z:5, ry: 14, rz:-2, tz: -60},
-    {i:9, fx:'7%',   fy:'27%',  w:'14%', ar:'1/1',   z:4, ry:  5, rz: 3, tz:-200}
+    {i:1, fx:'-24%', fy:'-7%',  w:'17%', ar:'1/1',   bz:  14, ry: 20, rz:-3, tz:-180, pair:5, dir: 1},
+    {i:6, fx:'-14%', fy:'3%',   w:'13%', ar:'3/4',   bz:  -8, ry: 26, rz: 2, tz:-300, pair:4, dir: 1},
+    {i:4, fx:'4%',   fy:'-25%', w:'19%', ar:'16/10', bz: -34, ry: -7, rz: 1, tz:-360, pair:7, dir: 1},
+    {i:0, fx:'-1%',  fy:'-2%',  w:'24%', ar:'4/5',   bz:  68, ry:-10, rz: 0, tz: 120, pair:6, dir: 1},
+    {i:8, fx:'17%',  fy:'-11%', w:'16%', ar:'3/4',   bz: -56, ry:-28, rz:-2, tz:-320, pair:1, dir:-1},
+    {i:2, fx:'24%',  fy:'7%',   w:'23%', ar:'4/3',   bz:  40, ry:-20, rz: 2, tz:-120, pair:0, dir:-1},
+    {i:5, fx:'-15%', fy:'21%',  w:'21%', ar:'3/4',   bz:  22, ry: 14, rz:-2, tz: -60, pair:3, dir:-1},
+    {i:9, fx:'7%',   fy:'27%',  w:'14%', ar:'1/1',   bz:  -4, ry:  5, rz: 3, tz:-200, pair:2, dir:-1}
   ];
 
   var cards = CG.map(function(c){
     var it = WORK[c.i] || WORK[0];
-    return '<span class="cg-slot" style="--fx:'+c.fx+';--fy:'+c.fy+';--w:'+c.w+';z-index:'+c.z+'"'+
-      ' data-ry="'+c.ry+'" data-rz="'+c.rz+'" data-tz="'+c.tz+'">'+
+    return '<span class="cg-slot" style="--fx:'+c.fx+';--fy:'+c.fy+';--w:'+c.w+'"'+
+      ' data-ry="'+c.ry+'" data-rz="'+c.rz+'" data-tz="'+c.tz+'"'+
+      ' data-bz="'+c.bz+'" data-pair="'+c.pair+'" data-dir="'+c.dir+'">'+
       '<button class="cg-card" style="--ar:'+c.ar+'" data-open="'+it.id+'"'+
         ' aria-label="'+esc(it.title)+'">'+
         '<span class="cg-still" style="'+stillStyle(it,'cg-'+c.i,760,760)+'"></span>'+
@@ -2714,13 +2738,15 @@ function screenHome(){
   }).join('');
 
   var reel =
-  '<section class="stage"><div class="wrap band" style="padding-top:0;padding-bottom:var(--s48)">'+
-    '<div class="sec-head">'+
-      '<div class="stack"><p class="kicker">'+esc(L.workKicker)+'</p>'+
-        '<h2 class="display-type">'+esc(L.workTitle)+'</h2></div>'+
-      '<button class="linky" data-go="work">'+esc(L.workAll)+' &rsaquo;</button>'+
-    '</div>'+
-    '<div class="collage" data-collage>'+cards+'</div>'+
+  '<section class="stage"><div class="wrap" style="padding-top:0">'+
+    '<div class="cg-track" data-cgtrack><div class="cg-pin">'+
+      '<div class="sec-head">'+
+        '<div class="stack"><p class="kicker">'+esc(L.workKicker)+'</p>'+
+          '<h2 class="display-type">'+esc(L.workTitle)+'</h2></div>'+
+        '<button class="linky" data-go="work">'+esc(L.workAll)+' &rsaquo;</button>'+
+      '</div>'+
+      '<div class="collage" data-collage>'+cards+'</div>'+
+    '</div></div>'+
   '</div></section>';
 
   var awards =
@@ -4104,18 +4130,19 @@ function prepCycle(root){
    Each frame's place is read from the page once and kept in
    pixels, so the run only writes transforms: no property any
    child inherits, no measurement, nothing that forces a layout. */
-var cgStage = null, cgBand = null, cgCards = [];
+var cgStage = null, cgTrack = null, cgCards = [];
 
 function bindCollage(){
   cgStage = document.querySelector('[data-collage]');
   cgCards = [];
-  cgBand = null;
+  cgTrack = null;
   if(!cgStage) return;
-  cgBand = cgStage.closest ? cgStage.closest('section') : null;
+  cgTrack = document.querySelector('[data-cgtrack]');
   var slots = cgStage.querySelectorAll('.cg-slot');
   var sr = cgStage.getBoundingClientRect();
   var mx = sr.left + sr.width / 2, my = sr.top + sr.height / 2;
-  for(var i=0;i<slots.length;i++){
+  var i;
+  for(i=0;i<slots.length;i++){
     var r = slots[i].getBoundingClientRect();
     cgCards.push({
       el: slots[i].firstElementChild,
@@ -4123,43 +4150,89 @@ function bindCollage(){
       cy: (r.top + r.height / 2) - my,
       ry: Number(slots[i].getAttribute('data-ry')) || 0,
       rz: Number(slots[i].getAttribute('data-rz')) || 0,
-      tz: Number(slots[i].getAttribute('data-tz')) || 0
+      tz: Number(slots[i].getAttribute('data-tz')) || 0,
+      bz: Number(slots[i].getAttribute('data-bz')) || 0,
+      pair: Number(slots[i].getAttribute('data-pair')) || 0,
+      dir: Number(slots[i].getAttribute('data-dir')) || 1
     });
   }
+  /* each frame keeps the place and the depth of the one it trades with,
+     so the swap is a read of two numbers rather than a search */
+  for(i=0;i<cgCards.length;i++){
+    var o = cgCards[cgCards[i].pair] || cgCards[i];
+    cgCards[i].px = o.cx; cgCards[i].py = o.cy; cgCards[i].pz = o.bz;
+  }
   if(REDUCED){                      /* the arrangement, and none of the travel */
-    for(var j=0;j<cgCards.length;j++) cgCards[j].el.style.transform = 'none';
+    for(i=0;i<cgCards.length;i++) cgCards[i].el.style.transform = 'none';
     return;
   }
   updateCollage();
 }
 
+function cgEase(q){                 /* a heavy start and a long glide out */
+  return q < 0.5 ? 4*q*q*q : 1 - Math.pow(-2*q + 2, 3) / 2;
+}
+
+/* ---------- the three acts, all of them spent against the scroll ----------
+   OPEN    the pile comes apart: every frame turns on its vertical axis,
+           pushes back in depth and lands flat in its own place.
+   TRADE   the frames change places in pairs. One of each pair comes
+           forward and the other goes back, so they pass through each
+           other's depth rather than around it — which is why one really
+           does cover the other on the way past — and they arrive at each
+           other's place and each other's resting depth.
+   CLOSE   the same move as OPEN, run backwards from wherever the trade
+           left them, back into one pile.
+   The turn is strongest in the middle of each act and nothing at its
+   ends, so every state the scroll can rest on is square to the screen. */
+var CG_OPEN = 0.30, CG_TRADE = 0.72;
+
 function updateCollage(){
   if(REDUCED || !cgStage || !cgCards.length) return;
-  var vh = window.innerHeight || 1;
-  var r = cgStage.getBoundingClientRect();
-  var mid = r.top + r.height / 2;               /* the middle of the stage */
-  /* The pile shows itself at the bottom edge of the screen and is fully
-     open by the time the arrangement reaches the middle of it. */
-  var p = (vh * 1.02 - mid) / (vh * 0.50);
+  var vh = window.innerHeight || 1, p;
+
+  if(cgTrack){
+    var tr = cgTrack.getBoundingClientRect();
+    var run = tr.height - vh;
+    p = run > 0 ? (-tr.top) / run : 1;
+  } else {
+    var r = cgStage.getBoundingClientRect();
+    p = (vh * 1.02 - (r.top + r.height / 2)) / (vh * 0.50);
+  }
   if(p < 0) p = 0;
   if(p > 1) p = 1;
-  /* once the band has pinned nothing moves again, so finish it there
-     whatever the arithmetic says on an unusual screen */
-  if(cgBand){
-    var st = parseFloat(cgBand.style.top || '0') || 0;
-    if(cgBand.getBoundingClientRect().top <= st + 1) p = 1;
+
+  var open, trade, turn, q;
+  if(p <= CG_OPEN){
+    q = p / CG_OPEN;
+    open = cgEase(q); trade = 0; turn = Math.sin(q * Math.PI);
+  } else if(p <= CG_TRADE){
+    q = (p - CG_OPEN) / (CG_TRADE - CG_OPEN);
+    open = 1; trade = cgEase(q); turn = 0;
+  } else {
+    q = (p - CG_TRADE) / (1 - CG_TRADE);
+    open = 1 - cgEase(q); trade = 1; turn = Math.sin(q * Math.PI);
   }
-  /* out of the pile on a long ease, so the last of the travel is slow */
-  var e = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2;
-  var ch = Math.sin(p * Math.PI);
+  var cross = Math.sin(trade * Math.PI);        /* nothing at either end of the trade */
+
   for(var i=0;i<cgCards.length;i++){
-    var c = cgCards[i], back = 1 - e;
+    var c = cgCards[i];
+    /* where it is meant to be once the pile is open, this far through the trade */
+    var tx = c.cx + (c.px - c.cx) * trade;
+    var ty = c.cy + (c.py - c.cy) * trade;
+    var bz = c.bz + (c.pz - c.bz) * trade;
+    /* the frame itself already sits at (cx, cy), so only the difference moves */
+    var dx = tx * open - c.cx;
+    var dy = ty * open - c.cy;
+    var dz = bz * open + c.tz * turn + c.dir * 300 * cross;
+    var ry = c.ry * turn + c.dir * 30 * cross;
+    var rz = c.rz * turn + c.dir * 4 * cross;
+    var sc = 1 - 0.07 * turn - 0.04 * cross;
     c.el.style.transform =
-      'translate3d(' + (-c.cx * back).toFixed(1) + 'px,' + (-c.cy * back).toFixed(1) + 'px,' +
-        (c.tz * ch).toFixed(1) + 'px) ' +
-      'rotateY(' + (c.ry * ch).toFixed(2) + 'deg) ' +
-      'rotate(' + (c.rz * ch).toFixed(2) + 'deg) ' +
-      'scale(' + (1 - 0.07 * ch).toFixed(3) + ')';
+      'translate3d(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px,' + dz.toFixed(1) + 'px) ' +
+      'rotateY(' + ry.toFixed(2) + 'deg) ' +
+      'rotate(' + rz.toFixed(2) + 'deg) ' +
+      'scale(' + sc.toFixed(3) + ')';
   }
 }
 
