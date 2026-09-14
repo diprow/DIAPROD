@@ -944,28 +944,31 @@ html.sig .hero-copy > *{animation:none}      /* the split handles these now */
   animation:introFailsafe 0s linear 6s forwards;
 }
 @keyframes introFailsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
-.intro-mark{
-  clip-path:inset(0 100% 0 0);
-  transition:clip-path .7s var(--ease-sig),opacity .38s ease,transform .45s var(--ease-sig);
-  will-change:clip-path;
+/* The name, and nothing else on the screen with it. The letters come
+   up from under their own line one after another, stand still for a
+   beat, and leave upward together as the panel lifts. No mark, no
+   rule, no counter: the studio says its name and gets out of the way. */
+.intro-word{
+  display:block;overflow:clip;
+  padding-bottom:.2em;margin-bottom:-.2em;      /* room for the descender */
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(24px,5vw,54px);line-height:1.15;
+  /* the tracking is carried by the letters themselves and dropped after
+     the last one, so there is no trailing space to throw the centring */
+  color:var(--frost-white);white-space:nowrap;
+  transition:opacity .55s ease,transform .8s var(--ease-sig);
 }
-.intro-rule{
-  width:min(240px,44vw);height:1px;background:var(--graphite);position:relative;overflow:hidden;
+.intro-word i{
+  font-style:normal;display:inline-block;white-space:pre;
+  margin-right:.34em;
+  transform:translate3d(0,112%,0);opacity:0;
+  transition:transform 1.05s var(--ease-sig),opacity .75s var(--ease-sig);
+  transition-delay:var(--id,0ms);
+  will-change:transform;
 }
-.intro-rule i{
-  position:absolute;inset:0;background:var(--frost-white);
-  transform:scaleX(0);transform-origin:0 50%;
-  transition:transform .85s var(--ease-sig);
-}
-.intro-num{
-  font-family:var(--display);font-size:var(--t-xs);font-weight:600;
-  letter-spacing:.16em;color:var(--platinum);font-variant-numeric:tabular-nums;
-  transition:opacity .4s ease;
-}
-.intro.go .intro-mark{clip-path:inset(0 0% 0 0)}
-.intro.go .intro-rule i{transform:scaleX(1)}
-.intro.out .intro-mark{opacity:0;transform:translate3d(0,-18px,0)}
-.intro.out .intro-num{opacity:0}
+.intro-word i:last-child{margin-right:0}
+.intro.go .intro-word i{transform:none;opacity:1}
+.intro.out .intro-word{opacity:0;transform:translate3d(0,-14px,0)}
 .intro.out{clip-path:inset(100% 0 0 0)}
 html.sig-boot,html.sig-boot body{overflow:hidden}
 
@@ -1122,21 +1125,23 @@ button,a,.chip,.tag,.dot,.slot,.opt,.filechip,.review-row,.job-head{touch-action
 .sp-dim,.dim{color:var(--platinum)}
 .light .sp-dim,.light .dim,.frost .sp-dim,.frost .dim{color:var(--silver-mist)}
 
-/* ---------- a frame that arrives in two halves ----------
-   Each half carries the whole photograph and shows only its own
-   side of it, so when the two meet there is no seam: what lands
-   is one picture, not two pressed together.                    */
-.hero-half{position:absolute;inset:0;overflow:hidden;will-change:transform}
-.hero-half.hh-l{-webkit-clip-path:inset(0 50% 0 0);clip-path:inset(0 50% 0 0)}
-.hero-half.hh-r{-webkit-clip-path:inset(0 0 0 50%);clip-path:inset(0 0 0 50%)}
-html.sig .hero-half{
-  transform:translate3d(var(--hx,0),0,0);
-  transition:transform 1.15s var(--ease-sig);
-}
-html.sig .hh-l{--hx:-26%}
-html.sig .hh-r{--hx:26%}
-html.sig .hero-half.in{--hx:0%}
+/* ---------- the photograph arriving ----------
+   One picture, once. It comes out of the dark already a little too
+   close and a little out of focus, and settles back into the frame:
+   the light arrives first, the focus after it, and the movement is
+   the slowest of the three, so the last thing that happens is the
+   frame coming to rest. Nothing is cut in two and nothing meets in
+   the middle — there is simply a photograph there.               */
+.hero-in{position:absolute;inset:0;overflow:hidden}
 .hero-plate{position:absolute;left:0;right:0;background-size:cover;background-position:center}
+html.sig .hero-in{
+  opacity:0;transform:scale(1.13);filter:blur(10px);
+  transition:opacity 1.25s var(--ease-sig),
+             transform 2.2s var(--ease-sig),
+             filter 1.15s var(--ease-sig);
+  will-change:transform,opacity,filter;
+}
+html.sig .hero-in.in{opacity:1;transform:none;filter:blur(0)}
 
 /* ---------- sections that stop and are climbed over ----------
    Every band on the home screen pins itself once it has been
@@ -1207,7 +1212,8 @@ html.sig .hero-half.in{--hx:0%}
   font-family:var(--display);font-weight:500;
   font-size:clamp(24px,5.6vw,68px);line-height:1.16;
   letter-spacing:.2em;text-transform:uppercase;color:var(--frost-white);
-  text-indent:.2em;   /* the tracking would otherwise push it off centre */
+  margin-right:-.1em; /* half the tracking: the line is centred inside the block,
+                         so the space after the last letter throws it by half */
 }
 .man-foot{
   position:absolute;left:0;right:0;bottom:clamp(26px,4.6vw,64px);
@@ -1217,7 +1223,7 @@ html.sig .hero-half.in{--hx:0%}
 .man-foot p:not(.eyebrow){margin:0;font-size:var(--t-body);color:var(--silver-mist);line-height:1.6}
 @media (max-width:700px){
   .man-foot{justify-content:flex-start}
-  .man-word{letter-spacing:.12em;text-indent:.12em}
+  .man-word{letter-spacing:.12em;margin-right:-.06em}
 }
 
 /* ---------- numbers under a rule that draws itself ---------- */
@@ -1320,7 +1326,8 @@ html.sig .hero-half.in{--hx:0%}
   display:flex;align-items:center;justify-content:center;
   padding-block:var(--band);
 }
-.hero-band .hero-half{opacity:.62}
+.hero-band .hero-in{opacity:.62}
+html.sig .hero-band .hero-in.in{opacity:.62}
 .hero-band .hero-vignette{
   position:absolute;inset:0;pointer-events:none;
   background:
@@ -1336,7 +1343,6 @@ html.sig .hero-half.in{--hx:0%}
   font-size:clamp(38px,6.6vw,88px);line-height:1.04;
   max-width:15ch;margin-inline:auto;
 }
-.hero-band .eyebrow{max-width:none}
 .hero-band .hero-actions{justify-content:center;margin-top:var(--s8)}
 .hero-band .hero-note{max-width:42ch;color:var(--silver-mist)}
 @media (max-width:700px){
@@ -1425,7 +1431,8 @@ html.sig .hero-half.in{--hx:0%}
   .burger-lines i,.burger-mark,.sheet{transition-duration:.01ms!important}
   .sp-c,.sp-f,.bm-c,.od-r,[data-mrev],[data-bwipe]{transition:none!important;transform:none!important;opacity:1!important;clip-path:none!important}
   .curtain,.intro{display:none!important}
-  .hero-half,.cyc-r,.led-rule,.fan-card{transition:none!important;transform:none!important;opacity:1!important}
+  .hero-in{transition:none!important;transform:none!important;filter:none!important}
+  .cyc-r,.led-rule,.fan-card{transition:none!important;transform:none!important;opacity:1!important}
   .cg-card{transition:none!important;transform:none!important}
   .cg-track{height:auto!important}
   .cg-pin{position:static!important;min-height:0!important;padding-block:0!important}
@@ -1438,9 +1445,7 @@ html.sig .hero-half.in{--hx:0%}
 </head>
 <body>
 <div class="intro" id="intro" aria-hidden="true">
-  <div class="intro-mark" id="introMark"></div>
-  <div class="intro-rule"><i></i></div>
-  <div class="intro-num tnum" id="introNum">00</div>
+  <div class="intro-word" id="introMark"></div>
 </div>
 <div class="curtain" id="curtain" aria-hidden="true"><div class="curtain-mark" id="curtainMark"></div></div>
 <div class="navwrap">
@@ -2693,18 +2698,15 @@ function renderFooter(){
 function screenHome(){
   var L = t();
 
-  /* The hero photograph comes in as two halves that meet in the middle.
-     Each half carries the whole frame and shows only its own side, so
-     what lands is one picture with no seam down it. */
+  /* One photograph, arriving once: out of the dark a little too close
+     and a little out of focus, settling into the frame. */
   var plate = '<span class="hero-plate" data-px style="'+stillStyle(HERO,'hero-dia',900,506)+'"></span>';
 
   var hero =
   '<section class="stage hero-band">'+
-    '<div class="hero-half hh-l" data-converge>'+plate+'</div>'+
-    '<div class="hero-half hh-r" data-converge>'+plate+'</div>'+
+    '<div class="hero-in" data-herorise>'+plate+'</div>'+
     '<div class="hero-vignette"></div>'+
     '<div class="wrap"><div class="hero-copy">'+
-      '<p class="eyebrow">'+esc(L.heroEyebrow)+'</p>'+
       '<h1 class="hero-type" data-dim="'+L.heroDim+'">'+esc(L.heroTitle)+'</h1>'+
       '<div class="hero-actions">'+
         '<button class="btn btn-cta" data-go="request">'+esc(L.start)+'</button>'+
@@ -4071,19 +4073,26 @@ function prepOdo(root){
   }
 }
 
-/* ---------- the frame that arrives in two halves ----------
-   Both halves wait off their own edge and come in together. They
-   are two pieces of one photograph, so the moment they meet the
-   seam disappears and there is simply a picture there.        */
+/* ---------- the photograph arriving ----------
+   It waits in the dark, too close and out of focus, until the page is
+   ready for it, and then takes its time settling into the frame.   */
 function prepConverge(root){
-  var els = root.querySelectorAll('[data-converge]');
+  var els = root.querySelectorAll('[data-herorise]');
   for(var i=0;i<els.length;i++){
     var el = els[i];
     if(el.__sigConv) continue;
     el.__sigConv = 1;
     if(!SIG.on){ continue; }
     if(!SIG.anim && !SIG.gate && sigInView(el)){ el.classList.add('in'); continue; }
-    (function(el){ el.__sigPlay = function(){ el.classList.add('in'); }; })(el);
+    (function(el){
+      el.__sigPlay = function(){
+        el.classList.add('in');
+        /* the hint is worth a layer for the two seconds the photograph is
+           moving and not a pixel after: a standing filter layer the size
+           of the screen is paid for on every scroll frame that follows. */
+        window.setTimeout(function(){ el.style.willChange = 'auto'; }, 2400);
+      };
+    })(el);
     sigWatch(el);
   }
 }
@@ -4343,7 +4352,7 @@ function layoutStack(){
 function stackFlush(sec){
   if(sec.__flushed) return;
   sec.__flushed = 1;
-  var els = sec.querySelectorAll('[data-reveal],[data-mrev],[data-bwipe],[data-converge],.fan,.led'), n = 0;
+  var els = sec.querySelectorAll('[data-reveal],[data-mrev],[data-bwipe],[data-herorise],.fan,.led'), n = 0;
   for(var i=0;i<els.length;i++){
     (function(el, k){
       window.setTimeout(function(){
@@ -4446,15 +4455,22 @@ function sigTransition(work){
 }
 
 /* ---------- the mark, before any of it ---------- */
-function introLogo(size){
-  return '<svg viewBox="288 252 500 462" width="'+size+'" style="display:block;overflow:visible" role="img" aria-label="'+STUDIO+'">'+
-    '<rect x="250" y="250" width="540" height="470" fill="var(--frost-white)" mask="url(#diaLogoMask)"></rect></svg>';
+/* ---------- the mark, before any of it ----------
+   The studio's name, set letter by letter, each one waiting under its
+   own line for its turn. Nothing else is on the screen with it. */
+function introWord(){
+  var out = '';
+  for(var i=0;i<STUDIO.length;i++){
+    var ch = STUDIO.charAt(i);
+    out += '<i style="--id:' + (i * 36) + 'ms">' + (ch === ' ' ? '&nbsp;' : esc(ch)) + '</i>';
+  }
+  return out;
 }
 
 function sigBoot(){
   var intro = document.getElementById('intro');
   var mark  = document.getElementById('curtainMark');
-  if(mark) mark.innerHTML = introLogo(74);
+  if(mark) mark.innerHTML = '<span class="intro-word">' + introWord() + '</span>';
 
   if(!intro) { SIG.gate = false; return; }
   if(!SIG.on){
@@ -4465,25 +4481,18 @@ function sigBoot(){
 
   document.documentElement.classList.add('sig-boot');
   var host = document.getElementById('introMark');
-  if(host) host.innerHTML = introLogo(Math.min(300, Math.round(window.innerWidth * 0.46)));
+  if(host) host.innerHTML = introWord();
 
   var seen = false;
   try{ seen = window.sessionStorage.getItem('dia-intro') === '1'; }catch(e){}
-  var hold = seen ? 300 : 1250;               /* once a visit, then briefly */
-  var num  = document.getElementById('introNum');
+  /* long enough for the last letter to arrive and stand still for a
+     moment; shorter, but never clipped, on a second visit */
+  var hold = seen ? 820 : 1620;
   var t0   = Date.now();
 
   window.requestAnimationFrame(function(){
     intro.classList.add('go');
-    if(seen) intro.style.transitionDuration = '.38s';
   });
-
-  /* the count runs with the wipe, and lands on 100 as it finishes */
-  (function tick(){
-    var p = Math.min(1, (Date.now() - t0) / hold);
-    if(num) num.textContent = (p < 1 ? (p * 100 < 10 ? '0' : '') + Math.floor(p * 100) : '100');
-    if(p < 1) window.requestAnimationFrame(tick);
-  })();
 
   function leave(){
     intro.classList.add('out');
