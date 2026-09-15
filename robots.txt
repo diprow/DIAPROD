@@ -1,0 +1,29 @@
+# diaprod.it — the site is served from the repo root.
+#
+# Nothing that should disappear from Google is listed here on purpose: a URL
+# blocked in robots.txt cannot be crawled, so its 404 (or its noindex) is never
+# seen and the old entry can sit in the index for months. Deleting the file and
+# leaving it crawlable is what actually removes it.
+#   /studiov3/  — deleted 2026-09-15, left crawlable so the 404 is picked up
+#   /admin/     — carries its own noindex, so it must stay crawlable to honour it
+
+User-agent: *
+Allow: /
+
+# offline copiers: the photographs are the studio's stock in trade
+User-agent: HTTrack
+Disallow: /
+User-agent: Wget
+Disallow: /
+User-agent: WebZIP
+Disallow: /
+User-agent: WebCopier
+Disallow: /
+User-agent: SiteSnagger
+Disallow: /
+User-agent: Teleport
+Disallow: /
+User-agent: TeleportPro
+Disallow: /
+
+Sitemap: https://diaprod.it/sitemap.xml
