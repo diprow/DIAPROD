@@ -20,11 +20,12 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:locale:alternate" content="it_IT">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" as="image" href="photos/hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://accounts.google.com">
 <link rel="preconnect" href="https://aznelawjlyoklmjcxylq.supabase.co">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
 <style>
@@ -275,6 +276,11 @@ html.nav-lift .nav .brand-name,html.nav-lift .nav .navlink,
 html.nav-lift .nav .langbtn,html.nav-lift .nav .acct-chip,
 html.nav-light .nav .brand-name,html.nav-light .nav .navlink,
 html.nav-light .nav .langbtn,html.nav-light .nav .acct-chip{text-shadow:none}
+/* and with no pane behind them either, the quiet parts of the bar — the
+   language that is not chosen, and the box around it — have to hold their
+   own against a bright still instead of a black band */
+html:not(.nav-lift):not(.nav-light) .nav .langbtn{color:rgba(245,245,247,.82)}
+html:not(.nav-lift):not(.nav-light) .nav .langbox{border-color:rgba(245,245,247,.34)}
 .brand{display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;padding:6px 0}
 .brand-name{font-family:var(--display);font-size:var(--t-body);font-weight:600;letter-spacing:.02em;color:var(--frost-white);text-transform:uppercase}
 .navlinks{display:flex;align-items:center;gap:2px}
@@ -1315,39 +1321,177 @@ html.sig .hero-in.in{opacity:1;transform:none;filter:blur(0)}
 @keyframes marqRun{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 
 
-/* ---------- the hero, at the width of the screen ----------
-   The same band the cycling word sits in, given to the opening
-   line: photograph to all four edges, one vignette over it, and
-   the sentence set in the middle of the screen rather than
-   tucked into a corner of a card.                            */
-.hero-band{
-  position:relative;overflow:hidden;background:var(--pure-black);
-  min-height:min(94vh,940px);
-  display:flex;align-items:center;justify-content:center;
-  padding-block:var(--band);
+/* ---------- the hero, split by a pane of ground glass ----------
+   One photograph, one pane of frost over the left of it, and the
+   studio's name written once across the seam: DIA is a window cut
+   through the frost onto the sharp picture, PROD sits solid white
+   on the picture in the clear.
+
+   The band is a track. The frame is pinned inside it while the pane
+   slides off, the name comes apart, and the band that follows climbs
+   over what is left. The plate and the letter-cut are two full-bleed
+   boxes carrying the same background geometry and the same transform,
+   so the window stays in register with the picture frame for frame —
+   no second copy of the photograph and no arithmetic.
+
+   Everything written on the pane is the site's own hero copy, so it
+   turns over with the language like the rest of the page.          */
+.hero-split{
+  position:relative;isolation:isolate;overflow:visible;
+  height:215vh;padding:0;background:var(--pure-black);
+  margin-top:calc(-1 * var(--navh,0px));   /* the picture runs up behind the bar */
+
+  --seam:45%;          /* where the pane ends and the picture begins */
+  --sh-blur:22px;
+  --sh-frost:.17;
+  --sh-shade:.12;
+  --sh-word:15vw;
+  /* the tooth of ground glass */
+  --sh-grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='170' height='170'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='170' height='170' filter='url(%23n)' opacity='.32'/></svg>");
 }
-.hero-band .hero-in{opacity:.62}
-html.sig .hero-band .hero-in.in{opacity:.62}
-.hero-band .hero-vignette{
+/* the track is its own mechanism: it is not one of the bands that pin,
+   and it carries no shade of its own — the frame dims itself instead */
+#app.stacked > section.hero-split{position:relative!important;top:auto!important}
+#app.stacked > section.hero-split > .sec-cov{display:none}
+#app.stacked > section.hero-split + section{
+  margin-top:-62vh;box-shadow:0 -40px 90px rgba(0,0,0,.72);
+}
+
+.sh-stage{
+  position:sticky;top:0;height:100svh;overflow:hidden;
+  background:var(--pure-black);
+  transform-origin:50% 8%;
+  will-change:transform,filter;
+}
+.sh-plate,.sh-cut{
+  position:absolute;inset:0;
+  background-size:cover;background-repeat:no-repeat;
+  transform:scale(var(--sh-scale,1.06));
+  transform-origin:center 45%;
+}
+.sh-plate{will-change:transform}
+.sh-cut{
+  z-index:4;pointer-events:none;
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent;
+}
+/* the word has to sit in normal flow: an absolutely positioned child is
+   painted outside the box whose background is being clipped to text, and
+   the letters simply never appear. The flex row places it instead, and
+   the letters move by margin — layout, not transform — so the picture
+   under them never moves and the window stays on it.               */
+.sh-cut-in{height:100%;display:flex;align-items:center;justify-content:flex-end}
+
+.sh-vig{
   position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(120% 82% at 50% 46%,rgba(0,0,0,.12) 0%,rgba(0,0,0,.62) 58%,rgba(0,0,0,.92) 100%),
-    linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 26%,rgba(0,0,0,0) 62%,rgba(0,0,0,.72) 100%);
+    radial-gradient(122% 86% at 62% 46%,rgba(0,0,0,.04) 0%,rgba(0,0,0,.34) 60%,rgba(0,0,0,.7) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.46) 0%,rgba(0,0,0,0) 26%,rgba(0,0,0,0) 58%,rgba(0,0,0,.58) 100%);
 }
-.hero-band .hero-copy{
-  position:relative;left:auto;right:auto;bottom:auto;padding:0;
-  display:flex;flex-direction:column;align-items:center;text-align:center;
-  gap:var(--s20);max-width:min(100%,1040px);margin:0 auto;
+/* what darkens the picture behind the pane — under the glass, never over
+   the lettering */
+.sh-tint{
+  position:absolute;z-index:1;inset:0 auto 0 0;width:var(--seam);pointer-events:none;
+  background:linear-gradient(196deg,rgba(0,0,0,.2) 0%,rgba(0,0,0,0) 58%),rgba(0,0,0,var(--sh-shade));
 }
-.hero-band .hero-type{
-  font-size:clamp(38px,6.6vw,88px);line-height:1.04;
-  max-width:15ch;margin-inline:auto;
+
+.sh-glass{
+  position:absolute;z-index:3;inset:0 auto 0 0;width:var(--seam);
+  backdrop-filter:blur(var(--sh-blur)) saturate(86%) brightness(1.09);
+  -webkit-backdrop-filter:blur(var(--sh-blur)) saturate(86%) brightness(1.09);
+  background-image:linear-gradient(150deg,
+    rgba(255,255,255,calc(var(--sh-frost) * 1.35)) 0%,
+    rgba(255,255,255,calc(var(--sh-frost) * .5)) 48%,
+    rgba(255,255,255,calc(var(--sh-frost) * 1)) 100%);
+  border-right:1px solid rgba(255,255,255,.14);
+  box-shadow:14px 0 70px rgba(0,0,0,.32),inset -60px 0 70px -70px rgba(255,255,255,.5);
+  will-change:transform;
 }
-.hero-band .hero-actions{justify-content:center;margin-top:var(--s8)}
-.hero-band .hero-note{max-width:42ch;color:var(--silver-mist)}
-@media (max-width:700px){
-  .hero-band{min-height:min(92vh,780px)}
-  .hero-band .hero-type{max-width:100%}
+.sh-glass::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:var(--sh-grain);background-size:170px 170px;
+  mix-blend-mode:overlay;
+}
+.sh-glass::after{
+  content:'';position:absolute;top:0;bottom:0;right:-1px;width:2px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.3) 32%,rgba(255,255,255,.09) 70%,rgba(255,255,255,0));
+}
+.sh-glass-in{
+  position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:clamp(20px,3vw,44px);
+  padding-bottom:calc(clamp(24px,3.4vw,52px) + env(safe-area-inset-bottom,0px));
+  will-change:transform,opacity;
+}
+@supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){
+  .sh-glass{background-color:rgba(18,18,20,.66)}
+}
+
+/* ---------- the name, one line across the seam ---------- */
+.sh-w{
+  font-family:var(--display);font-weight:200;
+  font-size:var(--sh-word);line-height:1;letter-spacing:.038em;white-space:nowrap;
+}
+/* DIA ends exactly where the pane ends; PROD begins there */
+.sh-dia{margin-right:calc(100% - var(--seam) + var(--dx,0px) - .038em);margin-bottom:8svh}
+.sh-prod{
+  position:absolute;top:calc(46% - .5em);left:var(--seam);z-index:5;color:#fff;
+  text-shadow:0 2px 60px rgba(0,0,0,.45),0 1px 3px rgba(0,0,0,.22);
+  transform:translate3d(var(--px,0px),0,0);
+  will-change:transform,opacity;
+}
+
+/* ---------- what is written on the pane ---------- */
+.sh-foot{display:flex;flex-direction:column;gap:clamp(12px,1.7vw,18px);max-width:40ch}
+.sh-foot .kicker{color:rgba(245,245,247,.74)}
+.sh-title{
+  margin:0;font-family:var(--display);font-weight:600;
+  font-size:clamp(25px,2.9vw,38px);line-height:1.08;letter-spacing:-0.018em;
+  color:var(--paper-white);max-width:20ch;text-wrap:balance;
+}
+.sh-note{margin:0;font-size:var(--t-body);line-height:1.55;color:rgba(245,245,247,.82);max-width:38ch}
+.sh-row{display:flex;align-items:center;justify-content:space-between;gap:var(--s20);flex-wrap:wrap;margin-top:var(--s4)}
+.sh-socials{display:flex;align-items:center;gap:14px}
+.sh-socials a{display:inline-flex;color:rgba(245,245,247,.7);transition:color .3s ease,transform .3s var(--ease-sig)}
+.sh-socials a:hover{color:var(--paper-white);transform:translateY(-2px)}
+.sh-socials svg{width:17px;height:17px;display:block}
+
+.sh-cue{
+  position:absolute;z-index:6;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:9px;
+  font-family:var(--display);font-size:var(--t-caption);font-weight:500;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(245,245,247,.6);will-change:opacity;
+}
+.sh-cue i{display:block;width:1px;height:32px;background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,0))}
+
+/* ---------- the same hero, on a narrow screen ----------
+   The pane lies across the top instead of down the side, and the name
+   comes apart upward and downward rather than left and right.      */
+@media (max-width:760px){
+  .hero-split{--seam:100%;--sh-shade:.14;--sh-word:20vw;height:200vh}
+  /* a 16:9 frame in a portrait window is cropped to a sliver of its width, and
+     the sliver that fits happens to be the subject's legs. Held to 150% of the
+     height and anchored at the top, the figure lands in the clear band under
+     the pane instead. Both boxes take it, so the window keeps its register. */
+  .sh-plate,.sh-cut{background-size:auto 150%;background-position:50% 0%!important}
+  .sh-glass,.sh-tint{inset:0 0 auto 0;width:100%;height:60%}
+  .sh-glass{
+    border-right:0;border-bottom:1px solid rgba(255,255,255,.14);
+    box-shadow:0 14px 60px rgba(0,0,0,.32),inset 0 -60px 70px -70px rgba(255,255,255,.5);
+  }
+  .sh-glass::after{
+    top:auto;bottom:-1px;right:0;left:0;width:auto;height:2px;
+    background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.28) 36%,rgba(255,255,255,0));
+  }
+  .sh-cut-in{align-items:flex-start;justify-content:center}
+  .sh-dia{margin:calc(17svh - .5em + var(--dy,0px)) 0 0 0}
+  .sh-prod{
+    left:0;right:0;text-align:center;top:calc(78% - .5em);
+    transform:translate3d(0,var(--py,0px),0);
+  }
+  .sh-note{display:none}
+  .sh-row{gap:var(--s12)}
+  #app.stacked > section.hero-split + section{margin-top:-54vh}
 }
 
 /* ---------- the work, as a pile that comes apart ----------
@@ -1581,6 +1725,10 @@ html.sig .glass.in{opacity:1;transform:none}
   #app.stacked > section{position:static!important;transform:none!important;box-shadow:none!important;margin-top:0!important}
   .sec-cov{display:none}
   .marq-t{animation:none!important}
+  .hero-split{height:auto!important}
+  .sh-stage{position:relative!important;height:100svh}
+  .sh-plate,.sh-cut{transform:none!important}
+  .sh-cue{display:none}
   html.sig-boot,html.sig-boot body{overflow:auto}
 }
 </style>
@@ -1937,7 +2085,7 @@ var WORK = [
   {id:'work-10',title:'Street',    tagEn:'Street',    tagIt:'Street',    cat:'photo', accent:'teal',   img:'photos/04.jpg', pos:'center 55%'}
 ];
 
-var HERO = {img:'photos/13.jpg', pos:'center 55%'};
+var HERO = {img:'photos/hero.jpg', pos:'32% 55%'};
 
 /* The sign-in backdrop: the only photograph on the site seen at the full
    size of the screen, so it gets a file of its own rather than one of the
@@ -2094,7 +2242,7 @@ var SOCIALS = [
 var T = {
   en:{
     navHome:'Home', navWork:'Portfolio', navPackages:'Packages', navTrack:'Track', navCall:'Book a call', navSignin:'Sign in',
-    start:'Start a project',
+    start:'Start a project', scrollCue:'Scroll',
     heroEyebrow:'Photography · Videography · Creative Production',
     heroTitle:'Content people actually watch.',
     heroNote:'Brief us once. We take it from concept to final delivery.',
@@ -2200,7 +2348,7 @@ var T = {
   },
   it:{
     navHome:'Home', navWork:'Portfolio', navPackages:'Pacchetti', navTrack:'Traccia', navCall:'Prenota una call', navSignin:'Accedi',
-    start:'Inizia il progetto',
+    start:'Inizia il progetto', scrollCue:'Scorri',
     heroEyebrow:'Fotografia · Videografia · Produzione creativa',
     heroTitle:'Contenuti che la gente guarda davvero.',
     heroNote:'Raccontaci l’idea una volta. Pensiamo noi a tutto, dal concept alla consegna.',
@@ -2843,25 +2991,69 @@ function renderFooter(){
   '</div>';
 }
 
+/* The contacts in SOCIALS, drawn rather than spelled out — the pane has
+   room for a mark and not for a word. Anything without a glyph of its own
+   keeps its name. */
+function socialIcon(label){
+  var k = String(label || '').toLowerCase();
+  var open = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">';
+  if(k.indexOf('insta') === 0){
+    return open + '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>'+
+      '<circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>';
+  }
+  if(k.indexOf('what') === 0){
+    return open + '<path d="M20.3 12a8.3 8.3 0 01-12.2 7.3L3.7 20.3l1.1-4.3A8.3 8.3 0 1120.3 12z" stroke-linejoin="round"/></svg>';
+  }
+  if(k.indexOf('you') === 0 || k.indexOf('tube') > -1){
+    return open + '<rect x="2.5" y="5" width="19" height="14" rx="4.5"/><path d="M10.5 9.2l4.6 2.8-4.6 2.8z" fill="currentColor" stroke="none"/></svg>';
+  }
+  if(k.indexOf('tik') === 0){
+    return open + '<path d="M14 4v9.2a3.4 3.4 0 11-3.4-3.4" stroke-linejoin="round"/><path d="M14 4a4.6 4.6 0 004.6 4.4" stroke-linejoin="round"/></svg>';
+  }
+  return '<span class="caption">' + esc(label) + '</span>';
+}
+
 /* ============================== SCREENS ============================== */
 function screenHome(){
   var L = t();
 
-  /* One photograph, arriving once: out of the dark a little too close
-     and a little out of focus, settling into the frame. */
-  var plate = '<span class="hero-plate" data-px style="'+stillStyle(HERO,'hero-dia',900,506)+'"></span>';
+  /* The opening frame: one photograph behind a pane of ground glass, with
+     the studio's name written once across the seam — DIA cut through the
+     frost as a window onto the picture, PROD solid on the picture in the
+     clear. The name is lettering, not a heading: the sentence on the pane
+     is the one the page is about, and it turns over with the language. */
+  var heroSocials = SOCIALS.map(function(so){
+    return '<a href="'+so.href+'" target="_blank" rel="noopener" aria-label="'+esc(so.label)+'">'+socialIcon(so.label)+'</a>';
+  }).join('');
+  var heroStill = stillStyle(HERO,'hero-dia',900,506);
 
   var hero =
-  '<section class="stage hero-band">'+
-    '<div class="hero-in" data-herorise>'+plate+'</div>'+
-    '<div class="hero-vignette"></div>'+
-    '<div class="wrap"><div class="hero-copy">'+
-      '<h1 class="hero-type" data-dim="'+L.heroDim+'">'+esc(L.heroTitle)+'</h1>'+
-      '<div class="hero-actions">'+
-        '<button class="btn btn-cta" data-go="request">'+esc(L.start)+'</button>'+
+  '<section class="hero-split" id="shTrack">'+
+    '<div class="sh-stage" id="shStage">'+
+      '<div class="sh-plate" id="shPlate" style="'+heroStill+'"></div>'+
+      '<div class="sh-vig"></div>'+
+      '<div class="sh-tint" id="shTint"></div>'+
+      '<div class="sh-glass" id="shGlass">'+
+        '<div class="sh-glass-in" id="shGlassIn">'+
+          '<div class="sh-foot">'+
+            '<p class="kicker">'+esc(L.heroEyebrow)+'</p>'+
+            '<h1 class="sh-title">'+esc(L.heroTitle)+'</h1>'+
+            '<p class="sh-note">'+esc(L.heroNote)+'</p>'+
+            '<div class="sh-row">'+
+              '<button class="btn btn-cta" data-go="request">'+esc(L.start)+'</button>'+
+              '<div class="sh-socials">'+heroSocials+'</div>'+
+            '</div>'+
+          '</div>'+
+        '</div>'+
       '</div>'+
-      '<p class="hero-note">'+esc(L.heroNote)+'</p>'+
-    '</div></div>'+
+      /* the same photograph again, cut to the letterforms: a window through
+         the frost, in register with the picture behind it */
+      '<div class="sh-cut" id="shCut" aria-hidden="true" style="'+heroStill+'">'+
+        '<div class="sh-cut-in"><span class="sh-w sh-dia" id="shDia">DIA</span></div>'+
+      '</div>'+
+      '<span class="sh-w sh-prod" id="shProd" aria-hidden="true">PROD</span>'+
+      '<div class="sh-cue" id="shCue" aria-hidden="true"><span>'+esc(L.scrollCue)+'</span><i></i></div>'+
+    '</div>'+
   '</section>';
 
   /* The arrangement the pile opens into. Each frame carries where it
@@ -3785,6 +3977,7 @@ function updateParallax(){
   }
   updateStack();
   updateCollage();
+  splitHeroFrame();
   pxTicking = false;
 }
 
@@ -3792,6 +3985,98 @@ function onScroll(){
   if(pxTicking || REDUCED) return;
   pxTicking = true;
   window.requestAnimationFrame(updateParallax);
+}
+
+/* ---------- the pane sliding off the opening frame ----------
+   Everything here is read from one number: how far the track has been
+   scrolled through, 0 at the top and 1 when the frame has been climbed
+   over. Nothing measures anything twice and nothing is written that has
+   not changed shape since the frame before.                          */
+var SH = null;
+
+/* the bar sits in the flow, and the hero has to start above it, so the
+   photograph runs to the top edge and the links float on it */
+function measureNav(){
+  var wrap = document.querySelector('.navwrap');
+  document.documentElement.style.setProperty('--navh', ((wrap ? wrap.offsetHeight : 0) | 0) + 'px');
+}
+
+function bindSplitHero(){
+  SH = null;
+  measureNav();
+  var track = document.getElementById('shTrack');
+  if(!track || REDUCED) return;
+  SH = {
+    track:track,
+    stage:document.getElementById('shStage'),
+    plate:document.getElementById('shPlate'),
+    cut:document.getElementById('shCut'),
+    dia:document.getElementById('shDia'),
+    prod:document.getElementById('shProd'),
+    glass:document.getElementById('shGlass'),
+    tint:document.getElementById('shTint'),
+    gin:document.getElementById('shGlassIn'),
+    cue:document.getElementById('shCue'),
+    p:0
+  };
+  splitHeroFrame();
+}
+
+function splitHeroFrame(){
+  if(!SH || REDUCED) return;
+  var vh = window.innerHeight || 1, vw = window.innerWidth || 1;
+  var rect = SH.track.getBoundingClientRect();
+  var span = rect.height - vh;
+  var p = span > 0 ? Math.max(0, Math.min(1, -rect.top / span)) : 0;
+  if(Math.abs(p - SH.p) < 0.0015 && p > 0 && p < 1) return;
+  SH.p = p;
+
+  var narrow = vw <= 760;
+  function seg(a,b){ var t = (p - a) / (b - a); return t < 0 ? 0 : t > 1 ? 1 : t; }
+  function ease(t){ return 1 - Math.pow(1 - t, 3); }
+  function easeIO(t){ return t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; }
+
+  /* 1 — what is written on the pane leaves first, quietly */
+  var q = ease(seg(0,.26));
+  SH.gin.style.opacity = String(1 - q);
+  SH.gin.style.transform = narrow
+    ? 'translate3d(0,' + (-34 * q).toFixed(1) + 'px,0)'
+    : 'translate3d(' + (-44 * q).toFixed(1) + 'px,0,0)';
+
+  /* 2 — the cue goes with it */
+  SH.cue.style.opacity = String(1 - ease(seg(0,.14)));
+
+  /* 3 — the pane slides away, and the name comes apart. DIA is a window
+         cut in the frost, so it fades before the pane's edge reaches it:
+         past that edge it would be a shifted crop of the picture lying
+         on the picture itself. */
+  var g = easeIO(seg(.06,.74));
+  var d = easeIO(seg(.02,.70));
+  var seamPx = narrow ? vw : vw * (parseFloat(getComputedStyle(SH.track).getPropertyValue('--seam')) / 100);
+
+  if(narrow){
+    SH.glass.style.transform = SH.tint.style.transform = 'translate3d(0,' + (-112 * g).toFixed(2) + '%,0)';
+    SH.dia.style.setProperty('--dy', (-0.62 * vh * d).toFixed(1) + 'px');
+    SH.prod.style.setProperty('--py', (0.52 * vh * d).toFixed(1) + 'px');
+  }else{
+    SH.glass.style.transform = SH.tint.style.transform = 'translate3d(' + (-108 * g).toFixed(2) + '%,0,0)';
+    SH.dia.style.setProperty('--dx', ((seamPx + 240) * d).toFixed(1) + 'px');
+    SH.prod.style.setProperty('--px', (0.52 * (vw - seamPx) * d).toFixed(1) + 'px');
+  }
+  SH.cut.style.opacity  = String(1 - ease(seg(.20,.58)));
+  SH.prod.style.opacity = String(1 - ease(seg(.40,.84)));
+
+  /* 4 — the photograph settles out of its opening scale. The cut carries
+         the identical transform, so the window never loses its register. */
+  var sc = (1.06 - .06 * ease(seg(0,.58))).toFixed(4);
+  SH.plate.style.setProperty('--sh-scale', sc);
+  SH.cut.style.setProperty('--sh-scale', sc);
+
+  /* 5 — the frame pushes back so the band after it can climb over */
+  var recede = ease(seg(.44,.96));
+  SH.stage.style.transform = 'scale(' + (1 - .075 * recede).toFixed(4) + ')';
+  SH.stage.style.filter = 'brightness(' + (1 - .34 * recede).toFixed(3) + ')';
+  SH.stage.style.borderRadius = (recede * 30).toFixed(1) + 'px';
 }
 
 /* ---------- the bar only becomes glass once there is something behind it ----------
@@ -3815,6 +4100,9 @@ function initNavLift(){
   function apply(){
     ticking = false;
     var lift = (window.scrollY || window.pageYOffset || 0) > 12;
+    /* on the home screen the frame is the page for its first screenful: the
+       links sit straight on the photograph until it has been climbed over */
+    if(SH && SH.p < 0.58) lift = false;
     var light = toneUnderBar();
     if(lift !== on){ on = lift; root.classList.toggle('nav-lift', lift); }
     if(light !== wasLight){ wasLight = light; root.classList.toggle('nav-light', light); }
@@ -4740,6 +5028,7 @@ function motionAfterRender(routeChanged){
   prepCycle(document.getElementById('app'));
   bindCollage();
   bindStack();
+  bindSplitHero();
   window.setTimeout(sigSettle, 80);
   syncReelStrip();
   if(routeChanged && !REDUCED && !(SIG.on && USE_CURTAIN)){
@@ -4751,7 +5040,7 @@ function motionAfterRender(routeChanged){
 }
 
 window.addEventListener('scroll', onScroll, {passive:true});
-window.addEventListener('resize', function(){ bindParallax(); bindCollage(); layoutStack(); }, {passive:true});
+window.addEventListener('resize', function(){ measureNav(); bindParallax(); bindCollage(); layoutStack(); }, {passive:true});
 initReveal();
 initNavLift();
 initCursor();
