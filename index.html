@@ -279,7 +279,7 @@ html.nav-light .nav .langbtn,html.nav-light .nav .acct-chip{text-shadow:none}
 /* and with no pane behind them either, the quiet parts of the bar — the
    language that is not chosen, and the box around it — have to hold their
    own against a bright still instead of a black band */
-html:not(.nav-lift):not(.nav-light) .nav .langbtn{color:rgba(245,245,247,.82)}
+html:not(.nav-lift):not(.nav-light) .nav .langbtn:not([aria-pressed="true"]){color:rgba(245,245,247,.82)}
 html:not(.nav-lift):not(.nav-light) .nav .langbox{border-color:rgba(245,245,247,.34)}
 .brand{display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;padding:6px 0}
 .brand-name{font-family:var(--display);font-size:var(--t-body);font-weight:600;letter-spacing:.02em;color:var(--frost-white);text-transform:uppercase}
@@ -449,18 +449,49 @@ html.menu-open .sheet{
 }
 .chip:hover{color:var(--frost-white);border-color:var(--smoke)}
 .chip[aria-pressed="true"]{background:var(--frost-white);border-color:var(--frost-white);color:var(--pure-black)}
-.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,3vw,var(--s60)) clamp(16px,2.4vw,var(--s40))}
-@media (max-width:700px){.gallery{grid-template-columns:1fr}}
-.tile{background:none;border:none;padding:0;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:var(--s16)}
-.tile-media{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:var(--r-card);background:var(--carbon)}
-.tile-still{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .8s cubic-bezier(.16,.84,.34,1)}
-.tile:hover .tile-still{transform:scale(1.045)}
-.tile-play{position:absolute;right:var(--s16);bottom:var(--s16);width:44px;height:44px;border-radius:var(--r-pill);
-  background:rgba(0,0,0,.6);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;
-  color:var(--frost-white);font-size:13px;opacity:0;transform:translateY(6px);transition:.28s ease}
-.tile:hover .tile-play{opacity:1;transform:none}
-.tile-foot{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s16)}
-.tile-index{font-size:var(--t-xs);color:var(--smoke);font-variant-numeric:tabular-nums}
+/* the work itself: one project to a row, the photograph never cropped,
+   the words beside it. Rows alternate side so the page keeps moving. */
+.pf-list{display:flex;flex-direction:column;gap:clamp(48px,7vw,116px)}
+.pf-row{
+  display:grid;grid-template-columns:minmax(0,1.3fr) minmax(240px,.85fr);
+  gap:clamp(24px,4vw,var(--s60));align-items:center;
+}
+.pf-row:nth-child(even) .pf-media{order:2}
+.pf-row[data-shape="tall"]{grid-template-columns:minmax(0,.85fr) minmax(240px,1fr)}
+.pf-row[data-shape="square"]{grid-template-columns:minmax(0,1.05fr) minmax(240px,.95fr)}
+.pf-media{
+  display:block;width:100%;margin:0;padding:0;border:none;line-height:0;cursor:pointer;
+  background:none;
+}
+/* the frame whole: its own proportions, only held back by the height of
+   the screen so a tall photograph never pushes its own caption off it */
+.pf-media img{
+  display:block;margin:0 auto;width:auto;height:auto;max-width:100%;
+  max-height:min(72vh,840px);border-radius:var(--r-card);background:var(--carbon);
+  transition:transform .9s cubic-bezier(.16,.84,.34,1);
+}
+.pf-media:hover img{transform:scale(1.02)}
+/* a tall frame is narrower than its column: keep it against the outer
+   edge of the page, so the gap stays between picture and words */
+.pf-row:nth-child(odd) .pf-media img{margin-left:0;margin-right:auto}
+.pf-row:nth-child(even) .pf-media img{margin-left:auto;margin-right:0}
+.pf-ph{display:block;width:100%;aspect-ratio:16/10;background-size:cover;background-position:center;border-radius:var(--r-card);background-color:var(--carbon)}
+.pf-body{display:flex;flex-direction:column;gap:var(--s16);align-items:flex-start}
+.pf-meta{
+  display:flex;align-items:center;gap:var(--s12);margin:0;
+  font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--smoke);font-variant-numeric:tabular-nums;
+}
+.pf-meta i{display:block;width:28px;height:1px;background:var(--graphite);font-style:normal;flex:none}
+.pf-empty{
+  display:flex;flex-direction:column;align-items:flex-start;gap:var(--s12);max-width:620px;
+  border:1px dashed var(--graphite);border-radius:var(--r-card);padding:clamp(28px,5vw,var(--s60));
+}
+.pf-empty .btn{margin-top:var(--s8)}
+@media (max-width:860px){
+  .pf-row{grid-template-columns:1fr;gap:var(--s24)}
+  .pf-row:nth-child(even) .pf-media{order:0}
+}
 
 /* ---------- packages (rows, not cards) ---------- */
 .pkg{
@@ -576,6 +607,8 @@ textarea.input{border-radius:var(--r-card);line-height:1.47}
 .lb-still{position:absolute;inset:0;background-size:cover;background-position:center}
 /* real photographs show whole in the lightbox — no crop on the big view */
 .lb-still.fit{background-size:contain;background-repeat:no-repeat;background-color:#000}
+.lb-img{display:block;width:auto;max-width:100%;max-height:min(68vh,760px);margin:0 auto;border-radius:var(--r-card)}
+.lb-note{max-width:46ch}
 .lb-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s20);flex-wrap:wrap}
 .lb-close{position:fixed;top:var(--s20);right:var(--s20);z-index:101}
 
@@ -1370,6 +1403,21 @@ html.sig .hero-in.in{opacity:1;transform:none;filter:blur(0)}
   transform-origin:center 45%;
 }
 .sh-plate{will-change:transform}
+/* the figure, cut out of the same frame and laid over the lettering, so the
+   word passes behind him. It is the same pixels as the plate underneath, so
+   anywhere the cut-out is a shade generous nothing shows — only where it
+   crosses a letter does it do any work. Clipped at the pane's edge (written
+   from script, in the layer's own scaled coordinates) so the sharp figure
+   never appears on top of the frost: behind the pane he is the blurred one
+   in the plate, and he steps out of it exactly as the pane slides off. */
+.sh-front{
+  position:absolute;inset:0;z-index:6;pointer-events:none;
+  background-size:cover;background-repeat:no-repeat;
+  transform:scale(var(--sh-scale,1.06));
+  transform-origin:center 45%;
+  clip-path:inset(0 0 0 var(--front-clip,var(--seam)));
+  will-change:transform,clip-path;
+}
 .sh-cut{
   z-index:4;pointer-events:none;
   -webkit-background-clip:text;background-clip:text;
@@ -1472,8 +1520,11 @@ html.sig .hero-in.in{opacity:1;transform:none;filter:blur(0)}
   /* a 16:9 frame in a portrait window is cropped to a sliver of its width, and
      the sliver that fits happens to be the subject's legs. Held to 150% of the
      height and anchored at the top, the figure lands in the clear band under
-     the pane instead. Both boxes take it, so the window keeps its register. */
-  .sh-plate,.sh-cut{background-size:auto 150%;background-position:50% 0%!important}
+     the pane instead, and a couple of points off centre keep him clear of the
+     word he now stands in front of. All three boxes take the same geometry, so
+     the window and the cut-out keep their register. */
+  .sh-plate,.sh-cut,.sh-front{background-size:auto 150%;background-position:44% 0%!important}
+  .sh-front{clip-path:inset(var(--front-clip,60%) 0 0 0)}
   .sh-glass,.sh-tint{inset:0 0 auto 0;width:100%;height:60%}
   .sh-glass{
     border-right:0;border-bottom:1px solid rgba(255,255,255,.14);
@@ -1727,7 +1778,7 @@ html.sig .glass.in{opacity:1;transform:none}
   .marq-t{animation:none!important}
   .hero-split{height:auto!important}
   .sh-stage{position:relative!important;height:100svh}
-  .sh-plate,.sh-cut{transform:none!important}
+  .sh-plate,.sh-cut,.sh-front{transform:none!important}
   .sh-cue{display:none}
   html.sig-boot,html.sig-boot body{overflow:auto}
 }
@@ -2073,19 +2124,60 @@ var BUCKET            = 'brief-files';
    comes back for that project. photos/06.jpg and photos/10.jpg are unused
    spares, ready to swap in. */
 var WORK = [
-  {id:'work-1', title:'Portrait',  tagEn:'Portrait',  tagIt:'Ritratto',  cat:'photo', accent:'violet', img:'photos/02.jpg', pos:'center 45%'},
-  {id:'work-2', title:'Portrait',  tagEn:'Editorial', tagIt:'Editoriale',cat:'photo', accent:'violet', img:'photos/11.jpg', pos:'center 42%'},
-  {id:'work-3', title:'Sport',     tagEn:'Sport',     tagIt:'Sport',     cat:'video', accent:'orange', img:'photos/07.jpg', pos:'center 30%'},
-  {id:'work-4', title:'Portrait',  tagEn:'Portrait',  tagIt:'Ritratto',  cat:'photo', accent:'violet', img:'photos/08.jpg', pos:'center 42%'},
-  {id:'work-5', title:'Outdoor',   tagEn:'Outdoor',   tagIt:'Outdoor',   cat:'video', accent:'orange', img:'photos/05.jpg', pos:'center 55%'},
-  {id:'work-6', title:'Street',    tagEn:'Street',    tagIt:'Street',    cat:'photo', accent:'teal',   img:'photos/12.jpg', pos:'center 40%'},
-  {id:'work-7', title:'Outdoor',   tagEn:'Outdoor',   tagIt:'Outdoor',   cat:'video', accent:'teal',   img:'photos/01.jpg', pos:'center 25%'},
-  {id:'work-8', title:'Street',    tagEn:'Street',    tagIt:'Street',    cat:'photo', accent:'violet', img:'photos/09.jpg', pos:'center 38%'},
-  {id:'work-9', title:'Sport',     tagEn:'Sport',     tagIt:'Sport',     cat:'video', accent:'orange', img:'photos/03.jpg', pos:'center 28%'},
-  {id:'work-10',title:'Street',    tagEn:'Street',    tagIt:'Street',    cat:'photo', accent:'teal',   img:'photos/04.jpg', pos:'center 55%'}
+  {id:'work-1', title:'Presence', titleIt:'Presenza', tagEn:'Portrait', tagIt:'Ritratto',
+   cat:'photo', img:'photos/02.jpg', pos:'center 45%',
+   dEn:'A face in the light that is already there, close enough to read. We work quickly and quietly, so the person in front of the camera stays themselves.',
+   dIt:'Un volto nella luce che c\u2019\u00e8 gi\u00e0, abbastanza vicino da leggerlo. Lavoriamo in fretta e in silenzio, cos\u00ec chi sta davanti all\u2019obiettivo resta s\u00e9 stesso.'},
+
+  {id:'work-2', title:'Character', titleIt:'Carattere', tagEn:'Editorial', tagIt:'Editoriale',
+   cat:'photo', img:'photos/11.jpg', pos:'center 42%',
+   dEn:'Editorial portraits for profiles, press pages and about sections \u2014 framed for the page they will live on, not only for the screen on the back of the camera.',
+   dIt:'Ritratti editoriali per profili, pagine stampa e sezioni \u201cchi siamo\u201d \u2014 inquadrati per la pagina su cui vivranno, non solo per il display della fotocamera.'},
+
+  {id:'work-3', title:'Momentum', titleIt:'Slancio', tagEn:'Sport', tagIt:'Sport',
+   cat:'photo', img:'photos/07.jpg', pos:'center 30%',
+   dEn:'Sport is shot at the speed it happens: fast glass, a short shutter, and a position chosen before the action arrives.',
+   dIt:'Lo sport si riprende alla velocit\u00e0 con cui accade: ottiche luminose, tempi brevi e una posizione scelta prima che arrivi l\u2019azione.'},
+
+  {id:'work-4', title:'Stillness', titleIt:'Quiete', tagEn:'Portrait', tagIt:'Ritratto',
+   cat:'photo', img:'photos/08.jpg', pos:'center 42%',
+   dEn:'The quiet frame in every session \u2014 no pose to hold, no direction for a moment. It is usually the one people choose.',
+   dIt:'Il fotogramma silenzioso di ogni servizio \u2014 nessuna posa da tenere, nessuna indicazione per un attimo. Di solito \u00e8 quello che scelgono.'},
+
+  {id:'work-5', title:'Open air', titleIt:'Aria aperta', tagEn:'Outdoor', tagIt:'Outdoor',
+   cat:'photo', img:'photos/05.jpg', pos:'center 55%',
+   dEn:'Outdoors the light sets the schedule. We pick the hour first and the frame second, so the place does half of the work.',
+   dIt:'All\u2019aperto \u00e8 la luce a dettare gli orari. Prima scegliamo l\u2019ora, poi l\u2019inquadratura: cos\u00ec \u00e8 il luogo a fare met\u00e0 del lavoro.'},
+
+  {id:'work-6', title:'Passing through', titleIt:'Di passaggio', tagEn:'Street', tagIt:'Street',
+   cat:'photo', img:'photos/12.jpg', pos:'center 40%',
+   dEn:'Street work, unstaged. Nothing here was arranged \u2014 it was waited for, from a corner picked in advance.',
+   dIt:'Street, senza messa in scena. Qui non \u00e8 stato preparato nulla: \u00e8 stato atteso, da un angolo scelto in anticipo.'},
+
+  {id:'work-7', title:'Distance', titleIt:'Distanza', tagEn:'Outdoor', tagIt:'Outdoor',
+   cat:'photo', img:'photos/01.jpg', pos:'center 25%',
+   dEn:'Wide, with room to breathe \u2014 the subject small in the frame and the landscape given its share of the picture.',
+   dIt:'Campo largo, con aria intorno \u2014 il soggetto piccolo nell\u2019inquadratura e al paesaggio la sua parte di immagine.'},
+
+  {id:'work-8', title:'Corners', titleIt:'Angoli', tagEn:'Street', tagIt:'Street',
+   cat:'photo', img:'photos/09.jpg', pos:'center 38%',
+   dEn:'Geometry, shadow, and one person walking into it. Framed on the street and kept close to the way it came out of the camera.',
+   dIt:'Geometrie, ombra e una persona che ci entra dentro. Inquadrato in strada e tenuto vicino a com\u2019\u00e8 uscito dalla macchina.'},
+
+  {id:'work-9', title:'Effort', titleIt:'Sforzo', tagEn:'Sport', tagIt:'Sport',
+   cat:'photo', img:'photos/03.jpg', pos:'center 28%',
+   dEn:'The part of sport that does not photograph itself: the breath between two efforts, while the result is still open.',
+   dIt:'La parte dello sport che non si fotografa da sola: il respiro tra due sforzi, quando il risultato \u00e8 ancora aperto.'},
+
+  {id:'work-10',title:'Everyday', titleIt:'Quotidiano', tagEn:'Street', tagIt:'Street',
+   cat:'photo', img:'photos/04.jpg', pos:'center 55%',
+   dEn:'An ordinary hour, photographed as if it mattered. Most of what a city is happens at this level.',
+   dIt:'Un\u2019ora qualsiasi, fotografata come se contasse. Gran parte di ci\u00f2 che \u00e8 una citt\u00e0 accade a questo livello.'}
 ];
 
-var HERO = {img:'photos/hero.jpg', pos:'32% 55%'};
+/* `front` is the same frame with everything but the figure cut away — it is
+   laid over the lettering so the word runs behind him. */
+var HERO = {img:'photos/hero.jpg', front:'photos/hero-front.webp', pos:'32% 55%'};
 
 /* The sign-in backdrop: the only photograph on the site seen at the full
    size of the screen, so it gets a file of its own rather than one of the
@@ -2273,8 +2365,12 @@ var T = {
     pages:'Pages', contact:'Contact', studioLabel:'Studio', rights:'All rights reserved.',
     privacy:'Privacy Policy', cookies:'Cookie Policy',
     pfTitle:'Every frame is ours.', pfKicker:'Portfolio',
-    pfSub:'Portrait, sport, outdoor and street — shot, cut and coloured in house.',
+    pfSub:'Portrait, sport, outdoor and street — shot, edited and coloured in house.',
     pfFilter:'Filter', pfProjects:'projects', pfAll:'All', pfFilms:'Video', pfPhoto:'Photography',
+    pfOpen:'View the full frame',
+    pfSoon:'Coming soon', pfSoonTitle:'The films are still in the edit.',
+    pfSoonSub:'We are cutting the first pieces now. Until they are ready, everything on this page is photography — and it is the same eye behind both.',
+    pfSeePhoto:'See the photography',
     pkKicker:'Packages', pkTitle:'Starting points.',
     pkSub:'Prices are starting points. Every project is scoped to what it actually needs.',
     pkChoose:'Start with this', pkMost:'Most chosen',
@@ -2379,8 +2475,12 @@ var T = {
     pages:'Pagine', contact:'Contatti', studioLabel:'Studio', rights:'Tutti i diritti riservati.',
     privacy:'Privacy', cookies:'Cookie',
     pfTitle:'Ogni frame è nostro.', pfKicker:'Portfolio',
-    pfSub:'Ritratto, sport, outdoor e street — girati, montati e colorati in casa.',
+    pfSub:'Ritratto, sport, outdoor e street — scattati, montati e colorati in casa.',
     pfFilter:'Filtra', pfProjects:'progetti', pfAll:'Tutti', pfFilms:'Video', pfPhoto:'Fotografia',
+    pfOpen:'Apri il fotogramma intero',
+    pfSoon:'In arrivo', pfSoonTitle:'I video sono ancora in montaggio.',
+    pfSoonSub:'Stiamo montando i primi lavori. Finché non sono pronti, in questa pagina c’è solo fotografia — ed è lo stesso occhio dietro entrambe.',
+    pfSeePhoto:'Vedi la fotografia',
     pkKicker:'Pacchetti', pkTitle:'Punti di partenza.',
     pkSub:'I prezzi sono punti di partenza. Ogni progetto è costruito su ciò che serve davvero.',
     pkChoose:'Inizia da qui', pkMost:'Il più scelto',
@@ -3026,6 +3126,7 @@ function screenHome(){
     return '<a href="'+so.href+'" target="_blank" rel="noopener" aria-label="'+esc(so.label)+'">'+socialIcon(so.label)+'</a>';
   }).join('');
   var heroStill = stillStyle(HERO,'hero-dia',900,506);
+  var frontStill = "background-image:url('" + HERO.front + "');background-position:" + (HERO.pos || 'center');
 
   var hero =
   '<section class="hero-split" id="shTrack">'+
@@ -3052,6 +3153,7 @@ function screenHome(){
         '<div class="sh-cut-in"><span class="sh-w sh-dia" id="shDia">DIA</span></div>'+
       '</div>'+
       '<span class="sh-w sh-prod" id="shProd" aria-hidden="true">PROD</span>'+
+      '<div class="sh-front" id="shFront" aria-hidden="true" style="'+frontStill+'"></div>'+
       '<div class="sh-cue" id="shCue" aria-hidden="true"><span>'+esc(L.scrollCue)+'</span><i></i></div>'+
     '</div>'+
   '</section>';
@@ -3204,26 +3306,41 @@ function screenHome(){
 }
 
 function screenWork(){
-  var L = t();
+  var L = t(), it = S.lang === 'it';
   var list = WORK.filter(function(w){ return S.filter==='all' || w.cat===S.filter; });
-  var cats = [['all',L.pfAll],['video',L.pfFilms],['photo',L.pfPhoto]].map(function(c){
+  var cats = [['all',L.pfAll],['photo',L.pfPhoto],['video',L.pfFilms]].map(function(c){
     return '<button class="chip" data-filter="'+c[0]+'" aria-pressed="'+(S.filter===c[0])+'">'+esc(c[1])+'</button>';
   }).join('');
-  var tiles = list.map(function(w, i){
-    return '<button class="tile" data-open="'+w.id+'" data-cursor="'+esc(w.yt ? L.curWatch : L.curView)+'">'+
-      '<span class="tile-media">'+
-        '<span class="tile-still" data-px style="'+stillStyle(w,w.id,760,475)+'"></span>'+
-        '<span class="tile-play">&#9654;</span>'+
-      '</span>'+
-      '<span class="tile-foot">'+
-        '<span style="display:flex;flex-direction:column;gap:4px">'+
-          '<span class="eyebrow'+accentClass(w.accent)+'" style="font-size:var(--t-body)">'+esc(workTag(w))+'</span>'+
-          '<span class="h-md">'+esc(w.title)+'</span>'+
-        '</span>'+
-        '<span class="tile-index">'+pad(i+1)+'</span>'+
-      '</span>'+
-    '</button>';
+
+  /* one project to a row: the photograph at its own proportions, and
+     beside it the few words that say what it is. */
+  var rows = list.map(function(w, i2){
+    var title = it ? (w.titleIt || w.title) : w.title;
+    var copy  = it ? (w.dIt || '') : (w.dEn || '');
+    var media = w.img
+      ? '<img src="'+w.img+'" alt="'+esc(title+' \u2014 '+workTag(w))+'" loading="lazy" decoding="async">'
+      : '<span class="pf-ph" style="'+stillStyle(w,w.id,760,475)+'"></span>';
+    return '<article class="pf-row">'+
+      '<button class="pf-media" data-open="'+w.id+'" data-cursor="'+esc(L.curView)+'"'+
+        ' aria-label="'+esc(title)+'">'+media+'</button>'+
+      '<div class="pf-body">'+
+        '<p class="pf-meta"><span>'+pad(i2+1)+'</span><i></i><span>'+esc(workTag(w))+'</span></p>'+
+        '<h2 class="display-type">'+esc(title)+'</h2>'+
+        (copy ? '<p class="body-copy" style="max-width:42ch">'+esc(copy)+'</p>' : '')+
+        '<button class="linky" data-open="'+w.id+'">'+esc(L.pfOpen)+' &rsaquo;</button>'+
+      '</div>'+
+    '</article>';
   }).join('');
+
+  /* nothing to show yet under a filter \u2014 say so, rather than an empty page */
+  var body = list.length
+    ? '<div class="pf-list">'+rows+'</div>'
+    : '<div class="pf-empty">'+
+        '<p class="pf-meta"><span>'+esc(L.pfSoon)+'</span></p>'+
+        '<h2 class="h-lg">'+esc(L.pfSoonTitle)+'</h2>'+
+        '<p class="body-copy">'+esc(L.pfSoonSub)+'</p>'+
+        '<button class="btn btn-outline" data-filter="photo">'+esc(L.pfSeePhoto)+'</button>'+
+      '</div>';
 
   return '<section class="stage"><div class="wrap band">'+
     '<p class="kicker">'+esc(L.pfKicker)+'</p>'+
@@ -3233,7 +3350,7 @@ function screenWork(){
       '<div class="filters">'+cats+'</div>'+
       '<span class="small tnum">'+list.length+' '+esc(L.pfProjects)+'</span>'+
     '</div>'+
-    '<div class="gallery">'+tiles+'</div>'+
+    body+
   '</div></section>';
 }
 
@@ -3689,21 +3806,28 @@ function renderLightbox(){
   el.hidden = !S.lightbox;
   if(!S.lightbox){ el.innerHTML=''; return; }
   var w = workById(S.lightbox), L = t();
+  var it = S.lang === 'it';
+  var title = it ? (w.titleIt || w.title) : w.title;
+  var copy  = it ? (w.dIt || '') : (w.dEn || '');
+  /* the photograph whole, at its own proportions \u2014 never cropped on the big view */
   var media = w.yt
-    ? '<iframe src="https://www.youtube.com/embed/'+w.yt+'?autoplay=1&rel=0" title="'+esc(w.title)+'" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>'
-    : '<span class="lb-still'+(w.img?' fit':'')+'" style="background-image:'+bgImage(w,w.id,1100,619)+';background-position:center"></span>';
+    ? '<div class="lb-media"><iframe src="https://www.youtube.com/embed/'+w.yt+'?autoplay=1&rel=0" title="'+esc(title)+'" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>'
+    : (w.img
+        ? '<img class="lb-img" src="'+w.img+'" alt="'+esc(title)+'">'
+        : '<div class="lb-media"><span class="lb-still" style="background-image:'+bgImage(w,w.id,1100,619)+';background-position:center"></span></div>');
   el.innerHTML =
     '<button class="iconbtn lb-close" data-close="1" aria-label="Close">&times;</button>'+
     '<div class="lb-inner" data-stop="1">'+
-      '<div class="lb-media">'+media+'</div>'+
+      media+
       '<div class="lb-foot">'+
-        '<div style="display:flex;flex-direction:column;gap:6px">'+
-          '<span class="eyebrow'+accentClass(w.accent)+'">'+esc(workTag(w))+'</span>'+
-          '<span class="display-type">'+esc(w.title)+'</span>'+
+        '<div style="display:flex;flex-direction:column;gap:6px;min-width:0">'+
+          '<span class="pf-meta"><span>'+esc(workTag(w))+'</span></span>'+
+          '<span class="display-type">'+esc(title)+'</span>'+
+          (copy ? '<p class="small lb-note">'+esc(copy)+'</p>' : '')+
         '</div>'+
         (w.yt
           ? '<a class="linky" href="https://youtube.com/watch?v='+w.yt+'" target="_blank" rel="noopener">'+esc(L.watch)+' &#8599;</a>'
-          : '<span class="small">'+esc(L.view)+'</span>')+
+          : '')+
       '</div>'+
     '</div>';
 }
@@ -3907,7 +4031,7 @@ var REDUCED = false;
 try{ REDUCED = window.matchMedia('(prefers-reduced-motion:reduce)').matches; }catch(e){}
 
 /* ---------- sections arriving ---------- */
-var REVEAL_SEL = '.sec-head,.tile,.case,.pkg,.awards-list li,.closing,.hero-meta > div,'+
+var REVEAL_SEL = '.sec-head,.tile,.pf-row,.pf-empty,.case,.pkg,.awards-list li,.closing,.hero-meta > div,'+
                  '.job,.step-card,.notice,.refbox,.slot-grid,.form-col > .kicker,'+
                  '.led,.fan';
 var revealObserver = null;
@@ -4016,6 +4140,7 @@ function bindSplitHero(){
     glass:document.getElementById('shGlass'),
     tint:document.getElementById('shTint'),
     gin:document.getElementById('shGlassIn'),
+    front:document.getElementById('shFront'),
     cue:document.getElementById('shCue'),
     p:0
   };
@@ -4071,6 +4196,20 @@ function splitHeroFrame(){
   var sc = (1.06 - .06 * ease(seg(0,.58))).toFixed(4);
   SH.plate.style.setProperty('--sh-scale', sc);
   SH.cut.style.setProperty('--sh-scale', sc);
+  SH.front.style.setProperty('--sh-scale', sc);
+
+  /* the figure is clipped at the pane's edge, but the layer is scaled, so the
+     edge has to be carried back into its own coordinates before it is written */
+  var scn = parseFloat(sc);
+  if(narrow){
+    var paneB = 0.60 * vh * (1 - 1.12 * g);
+    var localT = 0.45 * vh + (paneB - 0.45 * vh) / scn;
+    SH.front.style.setProperty('--front-clip', Math.max(0, localT).toFixed(1) + 'px');
+  }else{
+    var paneR = seamPx * (1 - 1.08 * g);
+    var localL = vw / 2 + (paneR - vw / 2) / scn;
+    SH.front.style.setProperty('--front-clip', Math.max(0, localL).toFixed(1) + 'px');
+  }
 
   /* 5 — the frame pushes back so the band after it can climb over */
   var recede = ease(seg(.44,.96));
@@ -5018,6 +5157,27 @@ function syncReelStrip(){
   catch(e){ strip.scrollLeft = Math.max(0, left); }
 }
 
+/* A frame carries its own proportions, and the row is told which they are
+   as soon as the file reports them: a tall photograph is narrower than the
+   column it sits in, so the words move closer to it rather than waiting at
+   the far edge of the page. */
+function tagFrames(){
+  var imgs = document.querySelectorAll('.pf-media img');
+  for(var i=0;i<imgs.length;i++){
+    (function(img){
+      function mark(){
+        var row = img.parentNode && img.parentNode.parentNode;
+        if(!row || !row.classList || !row.classList.contains('pf-row')) return;
+        if(!img.naturalWidth || !img.naturalHeight) return;
+        var r = img.naturalWidth / img.naturalHeight;
+        row.setAttribute('data-shape', r < 0.95 ? 'tall' : (r > 1.55 ? 'wide' : 'square'));
+      }
+      if(img.complete && img.naturalWidth) mark();
+      else img.addEventListener('load', mark);
+    })(imgs[i]);
+  }
+}
+
 /* ---------- called after every render ---------- */
 function motionAfterRender(routeChanged){
   SIG.anim = !!routeChanged;
@@ -5025,6 +5185,7 @@ function motionAfterRender(routeChanged){
   if(!SIG.on) prepTone(document.getElementById('app'));
   bindReveal();
   bindParallax();
+  tagFrames();
   prepCycle(document.getElementById('app'));
   bindCollage();
   bindStack();
