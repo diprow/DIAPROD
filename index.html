@@ -2994,7 +2994,7 @@ function screenHome(){
 
   var hero =
   '<section class="stage hero-band">'+
-    '<div class="hero-in" data-herorise>'+plate+'<video class="hero-vid" id="heroVid" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>'+'</div>'+
+    '<div class="hero-in" data-herorise>'+plate+'<video class="hero-vid" id="heroVid" muted autoplay loop playsinline webkit-playsinline preload="none" aria-hidden="true" tabindex="-1"></video>'+'</div>'+
     '<div class="hero-vignette"></div>'+
     '<div class="wrap"><div class="hero-copy">'+
       '<h1 class="hero-type" data-dim="'+L.heroDim+'">'+esc(L.heroTitle)+'</h1>'+
@@ -3974,14 +3974,18 @@ function measureNav(){
 }
 
 /* ---------- the film on the opening frame ----------
-   Nothing is fetched until it is clear the film is wanted: not on a narrow
-   screen, where the band is a tall crop of a wide picture and the data is
-   the visitor's; not under prefers-reduced-motion; and not on a metered or
-   slow connection. When it is wanted, the file is asked for, and only once
-   the browser says it can play is it brought up over the photograph. It is
-   stopped whenever the band is off screen, so it costs nothing to scroll
-   past.                                                                */
-var HERO_VID_SRC = 'photos/hero.mp4';
+   Plays on every screen, phones included. A narrow screen gets its own
+   lighter file (hero-m.mp4: the centre of the same film, cropped upright,
+   about half the weight), since a phone only ever shows that middle slice.
+   iPhone Safari never buffers a video on load() alone, so waiting for
+   'canplay' left phones on the still for ever: play() is asked for
+   straight away, and the film is brought up over the photograph only once
+   it is actually 'playing'. If the phone refuses autoplay (Low Power
+   Mode, for instance), the first touch anywhere on the page starts it.
+   Skipped only under prefers-reduced-motion and when the visitor has
+   switched on Data Saver. Paused whenever the band is off screen.     */
+var HERO_VID_SRC   = 'photos/hero.mp4';
+var HERO_VID_SRC_M = 'photos/hero-m.mp4';
 var heroVidIO = null;
 
 function bindHeroVideo(){
@@ -3989,22 +3993,48 @@ function bindHeroVideo(){
   var v = document.getElementById('heroVid');
   if(!v) return;
   if(REDUCED) return;
-  if(window.matchMedia && window.matchMedia('(max-width:820px)').matches) return;
   var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  if(c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ''))) return;
+  if(c && c.saveData) return;
 
-  v.addEventListener('canplay', function(){
+  var narrow = window.matchMedia && window.matchMedia('(max-width:820px)').matches;
+
+  /* iOS reads these as properties, not only as attributes */
+  v.muted = true; v.defaultMuted = true;
+  v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+  v.setAttribute('webkit-playsinline', ''); v.setAttribute('autoplay', '');
+  v.playsInline = true; v.loop = true;
+  v.preload = 'auto';
+
+  function tryPlay(){
     var t = v.play();
-    if(t && t.catch) t.catch(function(){});   /* refused autoplay: the still stays */
-    v.classList.add('on');
-  }, {once:true});
-  v.src = HERO_VID_SRC;
+    if(t && t.catch) t.catch(function(){ armTouch(); });
+  }
+  function onTouch(){
+    document.removeEventListener('touchstart', onTouch, true);
+    document.removeEventListener('click', onTouch, true);
+    if(document.getElementById('heroVid') === v) tryPlay();
+  }
+  function armTouch(){
+    document.addEventListener('touchstart', onTouch, {capture:true, passive:true, once:true});
+    document.addEventListener('click', onTouch, {capture:true, once:true});
+  }
+
+  v.addEventListener('playing', function(){ v.classList.add('on'); }, {once:true});
+  v.addEventListener('error', function(){
+    /* the light file is missing or unplayable: fall back to the full one */
+    if(narrow && v.getAttribute('src') !== HERO_VID_SRC){
+      v.src = HERO_VID_SRC; v.load(); tryPlay();
+    }
+  });
+
+  v.src = narrow ? HERO_VID_SRC_M : HERO_VID_SRC;
   v.load();
+  tryPlay();
 
   if(!('IntersectionObserver' in window)) return;
   heroVidIO = new IntersectionObserver(function(es){
     for(var i=0;i<es.length;i++){
-      if(es[i].isIntersecting){ var t = v.play(); if(t && t.catch) t.catch(function(){}); }
+      if(es[i].isIntersecting) tryPlay();
       else v.pause();
     }
   }, {threshold:0.01});
