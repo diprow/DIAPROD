@@ -1,5 +1,5 @@
 // سرویس‌ورکر دیاپی — کش ساده تا اپ آفلاین هم باز شود
-const CACHE = 'diapay-v3';
+const CACHE = 'diapay-v4';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -15,11 +15,19 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  const url = e.request.url;
+
+  // حساب کاربری و پنل مدیریت و سوپابیس: همیشه از شبکه، هیچ‌وقت کش نشوند
+  if (url.indexOf('supabase.co') > -1 || url.indexOf('/diapay/panel') > -1 || url.indexOf('/diapay/admin') > -1) {
+    return;
+  }
+
   // نرخ‌ها همیشه تازه از شبکه، بدون کش
-  if (e.request.url.indexOf('rates.json') > -1) {
+  if (url.indexOf('rates.json') > -1) {
     e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
     return;
   }
+
   e.respondWith(
     fetch(e.request)
       .then(r => {
