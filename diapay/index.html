@@ -479,7 +479,15 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
   function hideSplash(){ splash.classList.add("gone"); setTimeout(function(){ splash.hidden = true; }, 600); }
   // ---- نرخ زنده از rates.json ----
   var GROUPS = {currency:"ارز", gold:"طلا و سکه"};
+  // نرخ‌ها مستقیم از ریپوی DIAPAY خوانده می‌شوند (ربات هر ساعت این فایل را به‌روز می‌کند)
+  var RATES_URL = "https://raw.githubusercontent.com/diprow/DIAPAY/main/rates.json";
   function fmt(n){ return Math.round(n).toLocaleString("fa-IR"); }
+  function stampText(d){
+    var t = "آخرین بروزرسانی " + (d.updated_fa || "");
+    var age = d.updated_iso ? (Date.now() - Date.parse(d.updated_iso)) : 0;
+    if (age > 20*3600*1000 && d.updated_date) t += " · " + d.updated_date.replace(/-/g, "/").replace(/\d/g, function(c){ return "۰۱۲۳۴۵۶۷۸۹"[c]; });
+    return t;
+  }
   function chg(it){
     var cls = it.change > 0 ? "up" : it.change < 0 ? "dn" : "fl";
     var ar  = it.change > 0 ? "▲" : it.change < 0 ? "▼" : "—";
@@ -490,7 +498,7 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
     var stamp  = document.getElementById("stamp");
     var qstamp = document.getElementById("qstamp");
     var dots   = document.querySelectorAll(".dot");
-    fetch("rates.json", {cache:"no-store"})
+    fetch(RATES_URL + "?t=" + Math.floor(Date.now() / 60000), {cache:"no-store"})
       .then(function(r){ if(!r.ok) throw 0; return r.json(); })
       .then(function(d){
         if (!d || !d.items || !d.items.length) throw 0;
@@ -512,7 +520,7 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
           }
         });
         rows.innerHTML = html;
-        var t = "آخرین بروزرسانی " + (d.updated_fa || "");
+        var t = stampText(d);
         stamp.textContent = t; qstamp.textContent = t;
         dots.forEach(function(x){ x.classList.remove("off"); });
       })
