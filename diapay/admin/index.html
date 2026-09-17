@@ -6,6 +6,7 @@
 <title>پنل مدیریت | دیاپی</title>
 <meta name="theme-color" content="#F5F7FA">
 <meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-store">
 <link rel="icon" href="../icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -153,10 +154,10 @@ tr.pend{background:#FFFBEB}
   <section class="view" id="vAuth" hidden>
     <div class="card" style="max-width:400px;margin-inline:auto">
       <h2>ورود مدیر</h2>
-      <p class="sub">این صفحه فقط برای حساب‌های مدیر دیاپی کار می‌کند. نام کاربری مدیر کافی است.</p>
+      <p class="sub">این صفحه فقط برای حساب‌های مدیر دیاپی کار می‌کند.</p>
       <form id="fAuth">
-        <label for="aMail">نام کاربری یا ایمیل</label>
-        <input id="aMail" dir="ltr" autocomplete="username" autocapitalize="off" spellcheck="false" required>
+        <label for="aMail">نام کاربری</label>
+        <input id="aMail" dir="ltr" inputmode="text" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="diapayadmin" required>
         <label for="aPass">رمز عبور</label>
         <input id="aPass" type="password" dir="ltr" autocomplete="current-password" required>
         <div style="margin-top:18px"><button class="btn btn-a" id="bAuth" type="submit">ورود</button></div>
