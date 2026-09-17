@@ -125,6 +125,8 @@ h2{font-size:clamp(21px,4vw,27px)}
 .qmeta{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--muted)}
 .dot{width:8px;height:8px;border-radius:50%;background:#16b364;flex:none;animation:ping 2.4s var(--ease) infinite}
 .dot.off{background:#c8cdd8;animation:none}
+.qnote{grid-column:1/-1;margin-top:2px;padding:10px 14px;border-radius:12px;background:var(--surface-2);font-size:12.8px;line-height:1.9;color:var(--muted);text-align:center}
+.qnote b{color:var(--ink);font-weight:700}
 
 /* ---------- اعلان نصب ---------- */
 .sheet{
@@ -244,6 +246,7 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
         <a class="tile" href="#rates" data-id="eur"><span class="tn">🇪🇺 یورو</span><span class="tv">—</span><span class="tc fl">&nbsp;</span></a>
         <a class="tile" href="#rates" data-id="usd"><span class="tn">🇺🇸 دلار</span><span class="tv">—</span><span class="tc fl">&nbsp;</span></a>
         <div class="qmeta"><span class="dot"></span><span id="qstamp">در حال دریافت نرخ…</span><span>· تومان</span></div>
+        <div class="qnote">این نرخ‌ها <b>نرخ بازار آزاد</b> هستند و <b>نرخ معاملاتی دیاپی نیستند</b>.<br>نرخ قطعی هر معامله هنگام ثبت سفارش اعلام می‌شود.</div>
       </div>
       <div class="cta">
         <a class="btn btn-a" href="https://t.me/diapayadmin">ثبت سفارش</a>
