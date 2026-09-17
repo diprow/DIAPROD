@@ -156,6 +156,26 @@ h2{font-size:clamp(21px,4vw,27px)}
 .sheet .btn[hidden]{display:none}
 .sheet .x{position:absolute;top:-10px;left:-6px;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center;font-family:inherit;padding:0}
 
+/* ---------- آگهی‌ها ---------- */
+.ads{margin-top:34px;text-align:center}
+.ads[hidden]{display:none}
+.ads h2{font-size:clamp(19px,4.4vw,23px)}
+.ads .sub{margin:6px auto 16px}
+.adlist{display:flex;flex-direction:column;gap:11px;text-align:start}
+.ad{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;
+  transition:transform .25s var(--ease),border-color .25s,box-shadow .25s var(--ease)}
+.ad:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 12px 30px -20px rgba(10,12,18,.5)}
+.ad .tag{flex:none;font-size:12.5px;font-weight:700;padding:4px 12px;border-radius:999px}
+.ad .tag.sell{background:#e6f6ee;color:#0f7a45}
+.ad .tag.buy{background:#e6f3ff;color:#0069b4}
+.ad .bd{display:flex;flex-direction:column;min-width:0;flex:1}
+.ad .am{font-weight:700;font-size:16px;font-variant-numeric:tabular-nums;line-height:1.7}
+.ad .rt{font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ad .rt b{color:var(--ink)}
+.ad .nt{font-size:13px;color:var(--muted);line-height:1.7;margin-top:2px}
+.ad .go{flex:none;color:var(--accent);font-size:13.5px;font-weight:700;white-space:nowrap}
+@media(max-width:430px){.ad{flex-wrap:wrap}.ad .go{width:100%;text-align:center;padding-top:8px;border-top:1px solid var(--line)}}
+
 /* ---------- خدمات ---------- */
 .svc{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:13px}
 .svc .card{transition:transform .25s var(--ease),border-color .25s}
@@ -265,6 +285,13 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
         <a class="btn btn-b" href="#rates">نرخ لحظه‌ای</a>
       </div>
     </div>
+    <div class="ads" id="ads" hidden>
+      <div class="eyebrow">آگهی‌ها</div>
+      <h2>آگهی‌های خرید و فروش دیاپی</h2>
+      <p class="sub">برای هر آگهی مستقیم در تلگرام پیام دهید.</p>
+      <div class="adlist" id="adlist"></div>
+    </div>
+
     <a class="remind" href="#terms">
       <span class="ic">📋</span>
       <span class="tx"><b>قبل از معامله حتماً قوانین خوانده شود</b>
@@ -558,6 +585,39 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
       });
   }
   loadRates();
+
+  // ---- آگهی‌ها از ads.json ----
+  var ADS_URL = "https://raw.githubusercontent.com/diprow/DIAPAY/main/ads.json";
+  var CUR = {EUR:"یورو", USD:"دلار", USDT:"تتر"};
+  function esc(t){ return String(t == null ? "" : t).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function loadAds(){
+    fetch(ADS_URL + "?t=" + Math.floor(Date.now() / 60000), {cache:"no-store"})
+      .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+      .then(function(d){
+        var list = (d && d.ads || []).filter(function(a){ return a.active !== false; });
+        var box = document.getElementById("ads");
+        if (!list.length){ box.hidden = true; return; }
+        document.getElementById("adlist").innerHTML = list.slice(0, 8).map(function(a){
+          var sell = a.type === "sell";
+          var kind = sell ? "فروش" : "خرید";
+          var cur = CUR[a.currency] || a.currency;
+          var amount = fmt(a.amount) + " " + cur;
+          var msg = "سلام، درباره‌ی آگهی " + kind + " " + amount + (a.rate ? " با نرخ " + fmt(a.rate) + " تومان" : "") + " در سایت دیاپی پیام می‌دهم.";
+          return '<a class="ad" href="https://t.me/diapayadmin?text=' + encodeURIComponent(msg) + '" target="_blank" rel="noopener">' +
+                   '<span class="tag ' + (sell ? "sell" : "buy") + '">' + kind + '</span>' +
+                   '<span class="bd"><span class="am">' + esc(amount) + '</span>' +
+                     (a.rate ? '<span class="rt">نرخ: <b>' + fmt(a.rate) + '</b> تومان</span>' : '') +
+                     (a.note ? '<span class="nt">' + esc(a.note) + '</span>' : '') +
+                   '</span>' +
+                   '<span class="go">پیام در تلگرام ‹</span>' +
+                 '</a>';
+        }).join("");
+        box.hidden = false;
+      })
+      .catch(function(){});
+  }
+  loadAds();
+  setInterval(loadAds, 5*60*1000);
   setInterval(loadRates, 5*60*1000);   // هر ۵ دقیقه یک بار تازه‌سازی
 
   // ---- اعلان موقت نصب وب‌اپ ----
