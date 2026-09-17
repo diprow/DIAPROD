@@ -1,5 +1,5 @@
 // سرویس‌ورکر دیاپی — کش ساده تا اپ آفلاین هم باز شود
-const CACHE = 'diapay-v2';
+const CACHE = 'diapay-v3';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -28,5 +28,34 @@ self.addEventListener('fetch', e => {
         return r;
       })
       .catch(() => caches.match(e.request).then(r => r || caches.match('./index.html')))
+  );
+});
+
+// ---- نوتیف ----
+self.addEventListener('push', e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (_) { d = {body: e.data ? e.data.text() : ''}; }
+  e.waitUntil(self.registration.showNotification(d.title || 'دیاپی', {
+    body: d.body || '',
+    icon: 'icon-192.png',
+    badge: 'icon-192.png',
+    tag: d.tag || 'diapay',
+    renotify: true,
+    lang: 'fa',
+    dir: 'rtl',
+    data: {url: d.url || './'}
+  }));
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = new URL((e.notification.data && e.notification.data.url) || './', self.registration.scope).href;
+  e.waitUntil(
+    clients.matchAll({type: 'window', includeUncontrolled: true}).then(list => {
+      for (const c of list) {
+        if (c.url.startsWith(self.registration.scope) && 'focus' in c) { c.navigate(url); return c.focus(); }
+      }
+      return clients.openWindow(url);
+    })
   );
 });
