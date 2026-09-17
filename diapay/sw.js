@@ -15,6 +15,11 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  // نرخ‌ها همیشه تازه از شبکه، بدون کش
+  if (e.request.url.indexOf('rates.json') > -1) {
+    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+    return;
+  }
   e.respondWith(
     fetch(e.request)
       .then(r => {

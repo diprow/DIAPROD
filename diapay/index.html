@@ -4,18 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>دیاپی صرافی | تبدیل ارز بدون مرز</title>
-  <meta name="description" content="دیاپی — حواله یورو، خرید و فروش نقدی یورو و دلار در تهران و تورین، و معامله‌ی تتر. نرخ شفاف و تسویه تا ۲۴ ساعت.">
+  <meta name="description" content="دیاپی — نرخ لحظه‌ای ارز و طلا، حواله یورو، ارز نقدی در تهران و تورین، و معامله‌ی تتر.">
   <meta name="theme-color" content="#F5F7FA">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon-192.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="دیاپی">
   <meta name="mobile-web-app-capable" content="yes">
   <meta property="og:type" content="website">
   <meta property="og:title" content="دیاپی — تبدیل ارز بدون مرز">
-  <meta property="og:description" content="حواله یورو، ارز نقدی در تهران و تورین، و معامله‌ی تتر.">
+  <meta property="og:description" content="نرخ لحظه‌ای ارز و طلا · حواله یورو · تهران و تورین">
   <meta property="og:image" content="icon-512.png">
   <meta property="og:locale" content="fa_IR">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -129,6 +128,24 @@ h2{font-size:clamp(21px,4vw,27px)}
 .rates p{margin:0 0 16px;color:#B9BEE6;font-size:14.5px}
 .rates a{display:inline-flex;background:var(--logo-blue);color:#04121F;padding:11px 24px;border-radius:999px;font-weight:700;font-size:15px}
 
+/* ---------- نرخ زنده ---------- */
+.board{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.board .hd{display:flex;align-items:center;gap:10px;padding:15px 20px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.board .hd b{font-family:"Noto Kufi Arabic",sans-serif;font-size:14.5px}
+.board .hd span{margin-inline-start:auto;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.board .dot{width:8px;height:8px;border-radius:50%;background:#16b364;flex:none;box-shadow:0 0 0 0 rgba(22,179,100,.5);animation:ping 2.4s var(--ease) infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(22,179,100,.45)}70%{box-shadow:0 0 0 9px rgba(22,179,100,0)}100%{box-shadow:0 0 0 0 rgba(22,179,100,0)}}
+.row{display:flex;align-items:center;gap:12px;padding:14px 20px;border-top:1px solid var(--line);animation:pop .45s var(--ease) backwards}
+.row:first-child{border-top:none}
+.row .em{font-size:18px;line-height:1;flex:none}
+.row .nm{font-size:14.8px}
+.row .vl{margin-inline-start:auto;font-weight:700;font-size:16px;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.row .ch{flex:none;font-size:12.5px;font-weight:500;font-variant-numeric:tabular-nums;min-width:74px;text-align:start}
+.up{color:#0f9d58}.dn{color:#e5484d}.fl{color:var(--muted)}
+.grp{padding:11px 20px;background:var(--surface-2);border-top:1px solid var(--line);font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700}
+.unit{text-align:center;font-size:12.5px;color:var(--muted);margin-top:12px}
+.skel{padding:34px 20px;text-align:center;color:var(--muted);font-size:14.5px}
+
 /* ---------- قوانین ---------- */
 ol.terms{list-style:none;counter-reset:t;padding:0;margin:0;display:flex;flex-direction:column;gap:11px}
 ol.terms>li{counter-increment:t;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
@@ -212,7 +229,7 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
       <p>حواله یورو، خرید و فروش نقدی یورو و دلار در تهران و تورین، و معامله‌ی تتر — با نرخ شفاف و تسویه‌ی سریع.</p>
       <div class="cta">
         <a class="btn btn-a" href="https://t.me/diapayadmin">ثبت سفارش</a>
-        <a class="btn btn-b" href="#services">خدمات ما</a>
+        <a class="btn btn-b" href="#rates">نرخ لحظه‌ای</a>
       </div>
     </div>
     <a class="remind" href="#terms">
@@ -232,6 +249,25 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
     <div class="foot">
       <div>© ۱۴۰۵ دیاپی — تمامی حقوق محفوظ است.</div>
       <div>طراحی و توسعه: <a href="https://diaprod.it">diaprod.it</a></div>
+    </div>
+  </section>
+
+  <!-- نرخ‌ها -->
+  <section class="view" id="rates" hidden>
+    <div class="center">
+      <div class="eyebrow">نرخ</div>
+      <h2>نرخ لحظه‌ای</h2>
+      <p class="sub">قیمت‌ها به تومان و بر اساس بازار آزاد. جنبه‌ی اطلاع‌رسانی دارد؛ نرخ معامله در لحظه‌ی تأیید سفارش اعلام می‌شود.</p>
+    </div>
+    <div class="board" id="board">
+      <div class="hd"><span class="dot"></span><b>بازار آزاد</b><span id="stamp">در حال دریافت…</span></div>
+      <div class="skel" id="skel">در حال دریافت نرخ‌ها…</div>
+    </div>
+    <div class="unit">همه‌ی مبالغ به <b>تومان</b> · منبع: navasan.tech</div>
+    <div class="rates" style="margin-top:20px">
+      <h3>آپدیت خودکار در کانال</h3>
+      <p>هر ساعت از ۱۰ تا ۱۷ به وقت تهران، مستقیم در تلگرام.</p>
+      <a href="https://t.me/diapaychanel">@diapaychanel</a>
     </div>
   </section>
 
@@ -369,6 +405,7 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
 
 <nav class="nav">
   <a href="#home">خانه</a>
+  <a href="#rates">نرخ</a>
   <a href="#services">خدمات</a>
   <a href="#terms">قوانین</a>
   <a href="#contact">تماس</a>
@@ -376,7 +413,7 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
 
 <script>
 (function(){
-  var IDS = ["home","services","terms","contact"];
+  var IDS = ["home","rates","services","terms","contact"];
   var views = {}, links = {};
   IDS.forEach(function(id){
     views[id] = document.getElementById(id);
@@ -419,6 +456,47 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
   // محو شدن لودینگ
   var splash = document.getElementById("splash");
   function hideSplash(){ splash.classList.add("gone"); setTimeout(function(){ splash.hidden = true; }, 600); }
+  // ---- نرخ زنده از rates.json ----
+  var GROUPS = {currency:"ارز", gold:"طلا و سکه"};
+  function fmt(n){
+    return Math.round(n).toLocaleString("fa-IR");
+  }
+  function loadRates(){
+    var board = document.getElementById("board");
+    var skel  = document.getElementById("skel");
+    var stamp = document.getElementById("stamp");
+    fetch("rates.json", {cache:"no-store"})
+      .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(function(d){
+        if (!d || !d.items || !d.items.length) throw 0;
+        var html = "", last = null, i = 0;
+        d.items.forEach(function(it){
+          if (it.group !== last){ html += '<div class="grp">' + (GROUPS[it.group]||"") + '</div>'; last = it.group; }
+          var cls = it.change > 0 ? "up" : it.change < 0 ? "dn" : "fl";
+          var ar  = it.change > 0 ? "▲" : it.change < 0 ? "▼" : "—";
+          var ch  = it.change ? ar + " " + fmt(Math.abs(it.change)) : ar;
+          html += '<div class="row" style="animation-delay:' + (i*0.035).toFixed(3) + 's">' +
+                    '<span class="em">' + it.emoji + '</span>' +
+                    '<span class="nm">' + it.title + '</span>' +
+                    '<span class="vl">' + fmt(it.value) + '</span>' +
+                    '<span class="ch ' + cls + '">' + ch + '</span>' +
+                  '</div>';
+          i++;
+        });
+        skel.remove();
+        board.insertAdjacentHTML("beforeend", html);
+        stamp.textContent = "آخرین بروزرسانی " + (d.updated_fa || "");
+      })
+      .catch(function(){
+        skel.innerHTML = 'نرخ‌ها فعلاً از این صفحه در دسترس نیست.<br>آخرین نرخ‌ها را در کانال ببینید.';
+        stamp.textContent = "";
+        document.querySelector("#rates .dot").style.background = "#c8cdd8";
+        document.querySelector("#rates .dot").style.animation = "none";
+      });
+  }
+  loadRates();
+  setInterval(loadRates, 5*60*1000);   // هر ۵ دقیقه یک بار تازه‌سازی
+
   // ---- نصب وب‌اپ ----
   var deferred = null;
   var box  = document.getElementById("install");
@@ -453,9 +531,7 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
 
 <script>
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function(){
-    navigator.serviceWorker.register("./sw.js").catch(function(){});
-  });
+  window.addEventListener("load", function(){ navigator.serviceWorker.register("./sw.js").catch(function(){}); });
 }
 </script>
 </body>
