@@ -153,10 +153,10 @@ tr.pend{background:#FFFBEB}
   <section class="view" id="vAuth" hidden>
     <div class="card" style="max-width:400px;margin-inline:auto">
       <h2>ورود مدیر</h2>
-      <p class="sub">این صفحه فقط برای حساب‌های مدیر دیاپی کار می‌کند.</p>
+      <p class="sub">این صفحه فقط برای حساب‌های مدیر دیاپی کار می‌کند. نام کاربری مدیر کافی است.</p>
       <form id="fAuth">
-        <label for="aMail">ایمیل</label>
-        <input id="aMail" type="email" dir="ltr" autocomplete="email" required>
+        <label for="aMail">نام کاربری یا ایمیل</label>
+        <input id="aMail" dir="ltr" autocomplete="username" autocapitalize="off" spellcheck="false" required>
         <label for="aPass">رمز عبور</label>
         <input id="aPass" type="password" dir="ltr" autocomplete="current-password" required>
         <div style="margin-top:18px"><button class="btn btn-a" id="bAuth" type="submit">ورود</button></div>
@@ -192,6 +192,25 @@ tr.pend{background:#FFFBEB}
     </div>
 
     <div id="tabPeople" hidden>
+      <div class="card">
+        <div class="eyebrow">حساب تازه</div>
+        <h2>ساخت حساب مشتری</h2>
+        <p class="sub">نام کاربری و رمز را شما تعیین می‌کنید و به مشتری می‌دهید. هیچ ایمیلی فرستاده نمی‌شود.</p>
+        <form id="fNewUser">
+          <div class="row">
+            <div><label for="uName">نام کاربری</label><input id="uName" dir="ltr" autocapitalize="off" spellcheck="false" placeholder="reza.k"></div>
+            <div><label for="uPass">رمز عبور</label><input id="uPass" dir="ltr" placeholder="حداقل ۶ نویسه"></div>
+            <div><label for="uFull">نام و نام خانوادگی</label><input id="uFull" maxlength="120"></div>
+          </div>
+          <div class="row">
+            <div><label for="uPhone">شماره تماس</label><input id="uPhone" dir="ltr" maxlength="40"></div>
+            <div><label for="uTg">آیدی تلگرام</label><input id="uTg" dir="ltr" maxlength="60" placeholder="@username"></div>
+            <div><label for="uNid">کد ملی</label><input id="uNid" dir="ltr" maxlength="20"></div>
+          </div>
+          <div class="calc" id="newOut" hidden></div>
+          <div class="btns"><button class="btn btn-a" id="bNewUser" type="submit">ساخت حساب</button></div>
+        </form>
+      </div>
       <input id="qp" placeholder="جست‌وجوی مشتری" style="margin-bottom:14px">
       <div id="people"><div class="empty">در حال دریافت…</div></div>
     </div>
@@ -204,13 +223,12 @@ tr.pend{background:#FFFBEB}
 
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 (function(){
   "use strict";
   var SB_URL = "https://aznelawjlyoklmjcxylq.supabase.co";
   var SB_KEY = "sb_publishable_4Lhz2fJueL6UuRYHcmMWGA_bDmZZ6-R";
-  var sb = window.supabase.createClient(SB_URL, SB_KEY);
+  var SESS   = "dp_admin_session";
 
   var CUR = {EUR:"یورو", USD:"دلار", USDT:"تتر", GBP:"پوند"};
   var ST  = ["در انتظار تأیید","در جریان","تکمیل شده","لغو شده"];
@@ -255,10 +273,50 @@ tr.pend{background:#FFFBEB}
     if (/Invalid login/i.test(m)) m = "ایمیل یا رمز درست نیست";
     toast(m, true);
   }
+  // ---------- ارتباط مستقیم با سوپابیس (بدون کتابخانه‌ی بیرونی) ----------
+  function getSess(){ try { return JSON.parse(localStorage.getItem(SESS) || "null"); } catch(e){ return null; } }
+  function setSess(s){ try { s ? localStorage.setItem(SESS, JSON.stringify(s)) : localStorage.removeItem(SESS); } catch(e){} }
+  function store(d){
+    setSess({ access_token: d.access_token, refresh_token: d.refresh_token,
+              expires_at: Date.now() + ((d.expires_in || 3600) * 1000) });
+  }
+  async function api(path, o){
+    o = o || {};
+    var hd = { "apikey": SB_KEY, "Content-Type": "application/json" };
+    if (o.token) hd["Authorization"] = "Bearer " + o.token;
+    var r = await fetch(SB_URL + path, {
+      method: o.method || "POST", headers: hd,
+      body: o.body === undefined ? undefined : JSON.stringify(o.body)
+    });
+    var txt = await r.text(), j = null;
+    try { j = txt ? JSON.parse(txt) : null; } catch(e){}
+    if (!r.ok){
+      throw new Error((j && (j.error_description || j.msg || j.message || j.error)) || ("خطای سرور " + r.status));
+    }
+    return j;
+  }
+  async function token(){
+    var s = getSess();
+    if (!s || !s.refresh_token) return null;
+    if (Date.now() < s.expires_at - 60000) return s.access_token;
+    try {
+      var d = await api("/auth/v1/token?grant_type=refresh_token", { body: { refresh_token: s.refresh_token } });
+      store(d);
+      return d.access_token;
+    } catch(e){ setSess(null); return null; }
+  }
+  async function doSignIn(email, password){
+    store(await api("/auth/v1/token?grant_type=password", { body: { email: email, password: password } }));
+  }
+  async function doSignOut(){
+    var s = getSess();
+    if (s){ try { await api("/auth/v1/logout", { token: s.access_token }); } catch(e){} }
+    setSess(null);
+  }
   async function rpc(fn, args){
-    var r = await sb.rpc(fn, args || {});
-    if (r.error) throw r.error;
-    return r.data;
+    var t = await token();
+    if (!t) throw new Error("ابتدا وارد حساب شوید");
+    return await api("/rest/v1/rpc/" + fn, { token: t, body: args || {} });
   }
   function busy(btn, on, label){
     if(!btn) return;
@@ -279,14 +337,16 @@ tr.pend{background:#FFFBEB}
     var b = $("bAuth");
     busy(b, true);
     try {
-      var s = await sb.auth.signInWithPassword({ email: $("aMail").value.trim(), password: $("aPass").value });
-      if (s.error) throw s.error;
+      var who = $("aMail").value.trim().toLowerCase().replace(/^@/, "");
+      if (who.indexOf("@") === -1) who = who + "@panel.diaprod.it";
+      await doSignIn(who, $("aPass").value);
+      $("aPass").value = "";
       await boot();
     } catch(x){ err(x); }
     busy(b, false, "ورود");
   });
   async function signOut(){
-    await sb.auth.signOut();
+    await doSignOut();
     deals = []; people = []; openDeal = null;
     $("out").hidden = true;
     show("vAuth");
@@ -410,7 +470,7 @@ tr.pend{background:#FFFBEB}
       + '<h2>' + esc(title(d)) + '</h2><span class="pill s' + d.status + '">' + ST[d.status] + '</span>'
       + '<span style="margin-inline-start:auto;font-size:12.5px;color:var(--muted);direction:ltr">' + esc(d.ref) + '</span></div>'
       + '<div class="kv"><span>مشتری</span><b>' + esc(c.name || "بی‌نام") + '</b></div>'
-      + '<div class="kv"><span>ایمیل</span><b style="direction:ltr">' + esc(c.email || "—") + '</b></div>'
+      + '<div class="kv"><span>نام کاربری</span><b style="direction:ltr">' + esc(c.username || "—") + '</b></div>'
       + '<div class="kv"><span>تماس</span><b style="direction:ltr">' + esc(c.phone || "—") + '</b></div>'
       + '<div class="kv"><span>تلگرام</span><b>' + (tgUrl ? '<a href="' + esc(tgUrl) + '" target="_blank" rel="noopener" style="color:var(--accent);direction:ltr">' + esc(c.telegram) + '</a>' : "—") + '</b></div>'
       + '<div class="kv"><span>کد ملی</span><b style="direction:ltr">' + esc(c.national_id || "—") + '</b></div>'
@@ -537,16 +597,19 @@ tr.pend{background:#FFFBEB}
         + (p.status === "blocked" ? '<span class="pill blk">مسدود</span>' : '')
         + '<span style="margin-inline-start:auto;font-size:12.5px;color:var(--muted)">'
         + fmt(p.deal_count) + ' معامله · ' + fmt(p.open_count) + ' باز</span></div>'
-        + '<div class="kv"><span>ایمیل</span><b style="direction:ltr">' + esc(p.email || "—") + '</b></div>'
+        + '<div class="kv"><span>نام کاربری</span><b style="direction:ltr">' + esc(p.username || "—") + '</b></div>'
         + '<div class="kv"><span>تماس</span><b style="direction:ltr">' + esc(p.phone || "—") + '</b></div>'
         + '<div class="kv"><span>تلگرام</span><b>' + (tgUrl ? '<a href="' + esc(tgUrl) + '" target="_blank" rel="noopener" style="color:var(--accent);direction:ltr">' + esc(p.telegram) + '</a>' : "—") + '</b></div>'
         + '<div class="kv"><span>کد ملی</span><b style="direction:ltr">' + esc(p.national_id || "—") + '</b></div>'
-        + '<label>یادداشت خصوصی</label><textarea data-note maxlength="2000">' + esc(p.admin_note) + '</textarea>'
+        + '<div class="row"><div><label>رمز تازه</label><input data-pw dir="ltr" placeholder="حداقل ۶ نویسه"></div>'
+        + '<div><label>یادداشت خصوصی</label><textarea data-note maxlength="2000">' + esc(p.admin_note) + '</textarea></div></div>'
         + '<div class="btns">'
+        + '<button class="btn btn-b btn-s" data-p="pw">ذخیره‌ی رمز تازه</button>'
         + '<button class="btn btn-b btn-s" data-p="save">ذخیره‌ی یادداشت</button>'
         + '<button class="btn ' + (p.status === "blocked" ? "btn-b" : "btn-d") + ' btn-s" data-p="' + (p.status === "blocked" ? "unblock" : "block") + '">'
         + (p.status === "blocked" ? "رفع مسدودی" : "مسدود کردن") + '</button>'
         + '<button class="btn btn-b btn-s" data-p="new">ثبت معامله برای این مشتری</button>'
+        + (p.deal_count === 0 ? '<button class="btn btn-d btn-s" data-p="del">حذف حساب</button>' : '')
         + '</div>'
         + '<div data-newform hidden style="margin-top:14px;border-top:1px solid var(--line);padding-top:14px">'
         + '<div class="row">'
@@ -568,6 +631,25 @@ tr.pend{background:#FFFBEB}
       if (act === "new"){
         var f = card.querySelector("[data-newform]");
         f.hidden = !f.hidden;
+        return;
+      }
+      if (act === "pw"){
+        var pw = card.querySelector("[data-pw]").value;
+        if ((pw || "").length < 6){ toast("رمز باید حداقل ۶ نویسه باشد", true); return; }
+        busy(b, true);
+        await rpc("dp_admin_set_password", { p_user_id: uid, p_password: pw });
+        card.querySelector("[data-pw]").value = "";
+        busy(b, false, "ذخیره‌ی رمز تازه");
+        toast("رمز تازه ذخیره شد؛ ورودهای قبلی این مشتری بسته شد.");
+        return;
+      }
+      if (act === "del"){
+        if (!confirm("حساب این مشتری کامل حذف شود؟ این کار برگشت‌پذیر نیست.")) return;
+        busy(b, true);
+        people = await rpc("dp_admin_delete_customer", { p_user_id: uid });
+        toast("حساب حذف شد.");
+        paintPeople();
+        loadAll();
         return;
       }
       if (act === "create"){
@@ -596,6 +678,29 @@ tr.pend{background:#FFFBEB}
     } catch(x){ err(x); busy(b, false); }
   });
 
+  $("fNewUser").addEventListener("submit", async function(e){
+    e.preventDefault();
+    var b = $("bNewUser");
+    var uname = $("uName").value.trim().toLowerCase().replace(/^@/, "");
+    var upass = $("uPass").value;
+    busy(b, true);
+    try {
+      people = await rpc("dp_admin_create_customer", {
+        p_username: uname, p_password: upass,
+        p_full_name: $("uFull").value, p_phone: $("uPhone").value,
+        p_national_id: $("uNid").value, p_telegram: $("uTg").value
+      });
+      ["uName","uPass","uFull","uPhone","uNid","uTg"].forEach(function(k){ $(k).value = ""; });
+      $("newOut").hidden = false;
+      $("newOut").innerHTML = 'حساب ساخته شد — نام کاربری <b style="direction:ltr;display:inline-block">'
+        + esc(uname) + '</b> و رمز <b style="direction:ltr;display:inline-block">' + esc(upass)
+        + '</b><br><span class="note">این رمز دیگر جایی نگهداری نمی‌شود؛ همین حالا برای مشتری بفرستید.</span>';
+      paintPeople();
+      loadAll();
+    } catch(x){ err(x); }
+    busy(b, false, "ساخت حساب");
+  });
+
   // ---------- بارگذاری ----------
   async function loadDeals(){
     deals = await rpc("dp_admin_deals", {
@@ -617,8 +722,8 @@ tr.pend{background:#FFFBEB}
   }
 
   async function boot(){
-    var s = await sb.auth.getSession();
-    if (!s.data.session){ $("out").hidden = true; show("vAuth"); return; }
+    var t = await token();
+    if (!t){ $("out").hidden = true; show("vAuth"); return; }
     $("out").hidden = false;
     var me;
     try { me = await rpc("dp_me"); } catch(x){ err(x); return; }
