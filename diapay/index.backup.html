@@ -115,36 +115,6 @@ h2{font-size:clamp(21px,4vw,27px)}
 .remind:hover .ar{transform:translateX(-4px)}
 @media(max-width:430px){.remind b{font-size:14.5px}.remind .ar{display:none}}
 
-/* ---------- نرخ در خانه ---------- */
-.quick{display:grid;grid-template-columns:1fr 1fr;gap:11px;width:100%;max-width:440px}
-.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 12px 12px;display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .25s var(--ease),border-color .25s}
-.tile:hover{transform:translateY(-3px);border-color:var(--accent)}
-.tile .tn{font-size:13.5px;color:var(--muted)}
-.tile .tv{font-weight:700;font-size:clamp(19px,5.4vw,24px);font-variant-numeric:tabular-nums;line-height:1.5}
-.tile .tc{font-size:12px;font-variant-numeric:tabular-nums;min-height:1.6em}
-.qmeta{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--muted)}
-.dot{width:8px;height:8px;border-radius:50%;background:#16b364;flex:none;animation:ping 2.4s var(--ease) infinite}
-.dot.off{background:#c8cdd8;animation:none}
-
-/* ---------- اعلان نصب ---------- */
-.sheet{
-  position:fixed;left:50%;bottom:calc(var(--nav-h) + 26px + env(safe-area-inset-bottom,0px));z-index:40;
-  width:min(460px,calc(100vw - 24px));transform:translate(-50%,24px);opacity:0;
-  display:flex;align-items:center;gap:12px;padding:14px 14px 14px 16px;
-  background:var(--surface);border:1px solid var(--line);border-radius:20px;
-  box-shadow:0 18px 44px -18px rgba(10,12,18,.45);
-  transition:transform .45s var(--ease),opacity .45s var(--ease);
-}
-.sheet.show{transform:translate(-50%,0);opacity:1}
-.sheet[hidden]{display:none}
-.sheet img{border-radius:12px;flex:none}
-.sheet .st{display:flex;flex-direction:column;min-width:0;flex:1}
-.sheet b{font-family:"Noto Kufi Arabic",sans-serif;font-size:14.5px;line-height:1.7}
-.sheet em{font-style:normal;font-size:12.8px;color:var(--muted);line-height:1.7}
-.sheet .btn{flex:none;padding:9px 18px;font-size:14px;cursor:pointer;font-family:inherit}
-.sheet .btn[hidden]{display:none}
-.sheet .x{position:absolute;top:-10px;left:-6px;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center;font-family:inherit;padding:0}
-
 /* ---------- خدمات ---------- */
 .svc{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:13px}
 .svc .card{transition:transform .25s var(--ease),border-color .25s}
@@ -195,6 +165,22 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
 .contact .k{font-size:12.5px;color:var(--muted)}
 .contact .v{font-weight:700;font-size:16px;margin-top:3px;direction:ltr}
 
+.install{
+  display:flex;align-items:center;gap:15px;margin-top:13px;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 7%,var(--surface)),var(--surface));
+  border:1px solid color-mix(in srgb,var(--accent) 28%,var(--line));
+  border-radius:var(--r);padding:19px 22px;text-align:start;
+}
+.install .ic{font-size:23px;line-height:1;flex:none}
+.install .tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.install b{font-family:"Noto Kufi Arabic",sans-serif;font-size:15.5px;line-height:1.7}
+.install em{font-style:normal;font-size:13px;color:var(--muted);line-height:1.75}
+.install .btn{margin-inline-start:auto;flex:none;padding:10px 20px;font-size:14px;cursor:pointer;font-family:inherit}
+.install[hidden]{display:none!important}
+@media(max-width:480px){
+  .install{flex-wrap:wrap}
+  .install .btn{margin-inline-start:0;width:100%;margin-top:6px}
+}
 .foot{margin-top:34px;text-align:center;font-size:13px;color:var(--muted);line-height:2}
 .foot a{color:var(--accent)}
 
@@ -238,13 +224,9 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
   <!-- خانه -->
   <section class="view" id="home" hidden>
     <div class="hero center">
+      <span class="plate"><svg viewBox="242 606 966 228" role="img" aria-label="دیاپی"><path fill="var(--logo-ink)" d=" M 1147.78 617.12 Q 1154.04 619.25 1156.09 620.18 C 1165.72 624.53 1172.13 634.13 1174.97 643.94 Q 1176.23 648.32 1175.68 656.60 Q 1175.58 658.17 1175.83 670.88 Q 1175.87 672.83 1175.85 685.15 Q 1175.74 749.54 1175.89 809.07 C 1175.90 813.06 1175.61 818.78 1175.76 823.75 L 663.81 823.64 A 0.31 0.31 0.0 0 1 663.50 823.33 L 663.50 617.21 A 0.67 0.67 0.0 0 1 664.17 616.54 Q 903.56 616.55 1142.64 616.57 Q 1143.94 616.57 1147.78 617.12 Z M 696.57 634.97 A 13.12 13.12 0.0 0 0 683.45 621.85 A 13.12 13.12 0.0 0 0 670.33 634.97 A 13.12 13.12 0.0 0 0 683.45 648.09 A 13.12 13.12 0.0 0 0 696.57 634.97 Z M 920.43 772.30 Q 954.68 772.33 955.07 772.35 A 1.30 1.30 0.0 0 1 956.21 773.14 L 973.82 813.84 A 1.01 1.00 -11.4 0 0 974.75 814.45 L 1009.56 814.45 A 0.64 0.63 -12.4 0 0 1010.14 813.55 L 920.86 623.17 A 0.13 0.05 68.0 0 0 920.82 623.13 Q 920.69 623.05 920.55 623.05 Q 920.41 623.05 920.28 623.13 A 0.13 0.05 -67.9 0 0 920.24 623.17 L 830.65 813.40 A 0.64 0.63 12.5 0 0 831.23 814.30 L 866.04 814.36 A 1.01 1.00 11.5 0 0 866.97 813.75 L 884.64 773.08 A 1.30 1.30 0.0 0 1 885.79 772.29 Q 886.18 772.27 920.43 772.30 Z M 739.65 737.46 Q 740.60 737.52 775.02 737.47 C 790.54 737.45 804.92 733.55 816.78 724.26 C 838.07 707.60 843.37 677.11 829.53 654.17 C 818.08 635.19 796.79 626.47 774.79 626.53 Q 759.56 626.57 704.83 626.57 A 0.44 0.43 -90.0 0 0 704.40 627.01 L 704.40 813.68 A 0.71 0.71 0.0 0 0 705.11 814.39 L 738.20 814.39 A 1.02 1.02 0.0 0 0 739.22 813.37 L 739.22 737.86 A 0.40 0.40 0.0 0 1 739.65 737.46 Z M 1066.52 700.14 L 1022.88 627.11 A 1.17 1.16 74.5 0 0 1021.88 626.54 L 985.59 626.54 A 0.40 0.40 0.0 0 0 985.21 627.06 Q 985.74 628.69 986.93 630.56 Q 1021.25 684.55 1049.00 728.90 A 6.43 6.38 -61.3 0 1 1049.98 732.31 L 1049.98 813.98 A 0.42 0.42 0.0 0 0 1050.40 814.40 L 1082.48 814.40 A 1.08 1.08 0.0 0 0 1083.56 813.32 L 1083.56 731.72 A 5.47 5.42 61.6 0 1 1084.42 728.78 L 1149.48 627.26 A 0.47 0.47 0.0 0 0 1149.08 626.54 L 1112.40 626.54 A 1.58 1.58 0.0 0 0 1111.05 627.30 L 1067.12 700.14 A 0.35 0.35 0.0 0 1 1066.52 700.14 Z"/> <path fill="var(--logo-blue)" d=" M 1166.29 617.08 Q 1168.23 618.09 1171.77 619.52 Q 1180.67 623.11 1185.42 631.21 C 1189.62 638.37 1192.73 644.85 1192.57 652.50 C 1192.30 665.12 1192.76 676.01 1192.70 688.19 Q 1192.52 725.74 1192.63 797.23 C 1192.64 803.97 1192.35 814.91 1192.79 823.86 L 1175.76 823.75 C 1175.61 818.78 1175.90 813.06 1175.89 809.07 Q 1175.74 749.54 1175.85 685.15 Q 1175.87 672.83 1175.83 670.88 Q 1175.58 658.17 1175.68 656.60 Q 1176.23 648.32 1174.97 643.94 C 1172.13 634.13 1165.72 624.53 1156.09 620.18 Q 1154.04 619.25 1147.78 617.12 Q 1157.34 615.83 1166.29 617.08 Z"/> <path fill="var(--logo-shade)" d=" M 1166.29 617.08 Q 1171.84 616.93 1178.44 618.35 Q 1199.66 622.93 1206.89 643.56 Q 1208.27 647.49 1208.28 650.37 Q 1208.32 659.88 1208.25 823.23 A 0.51 0.50 -90.0 0 1 1207.75 823.74 L 1192.79 823.86 C 1192.35 814.91 1192.64 803.97 1192.63 797.23 Q 1192.52 725.74 1192.70 688.19 C 1192.76 676.01 1192.30 665.12 1192.57 652.50 C 1192.73 644.85 1189.62 638.37 1185.42 631.21 Q 1180.67 623.11 1171.77 619.52 Q 1168.23 618.09 1166.29 617.08 Z"/> <circle fill="var(--logo-paper)" cx="683.45" cy="634.97" r="13.12"/> <path fill="var(--logo-ink)" d=" M 558.02 622.12 Q 558.15 622.12 558.27 622.19 Q 558.37 622.25 558.44 622.40 Q 595.81 703.67 644.28 806.84 Q 646.43 811.41 647.72 814.12 A 0.39 0.39 0.0 0 1 647.37 814.68 L 611.91 814.68 A 1.34 1.33 78.1 0 1 610.69 813.88 L 593.11 773.24 A 1.42 1.41 -11.8 0 0 591.80 772.39 Q 588.57 772.40 558.05 772.41 Q 527.52 772.42 524.29 772.40 A 1.42 1.41 11.8 0 0 522.98 773.25 L 505.42 813.90 A 1.34 1.33 -78.2 0 1 504.20 814.70 L 468.74 814.71 A 0.39 0.39 0.0 0 1 468.39 814.15 Q 469.68 811.44 471.83 806.87 Q 520.26 703.68 557.59 622.40 Q 557.66 622.25 557.76 622.19 Q 557.89 622.12 558.02 622.12 Z M 535.73 743.02 A 0.33 0.33 0.0 0 0 536.04 743.48 L 580.28 743.48 A 0.33 0.33 0.0 0 0 580.59 743.02 L 558.46 691.91 A 0.33 0.33 0.0 0 0 557.86 691.91 L 535.73 743.02 Z"/> <path fill="var(--logo-paper)" d=" M 920.55 623.05 Q 920.69 623.05 920.82 623.13 A 0.13 0.05 68.0 0 1 920.86 623.17 L 1010.14 813.55 A 0.64 0.63 -12.4 0 1 1009.56 814.45 L 974.75 814.45 A 1.01 1.00 -11.4 0 1 973.82 813.84 L 956.21 773.14 A 1.30 1.30 0.0 0 0 955.07 772.35 Q 954.68 772.33 920.43 772.30 Q 886.18 772.27 885.79 772.29 A 1.30 1.30 0.0 0 0 884.64 773.08 L 866.97 813.75 A 1.01 1.00 11.5 0 1 866.04 814.36 L 831.23 814.30 A 0.64 0.63 12.5 0 1 830.65 813.40 L 920.24 623.17 A 0.13 0.05 -67.9 0 1 920.28 623.13 Q 920.41 623.05 920.55 623.05 Z M 898.03 742.86 A 0.34 0.34 0.0 0 0 898.34 743.34 L 942.66 743.34 A 0.34 0.34 0.0 0 0 942.97 742.86 L 920.81 692.09 A 0.34 0.34 0.0 0 0 920.19 692.09 L 898.03 742.86 Z"/> <path fill="var(--logo-ink)" d=" M 242.63 627.35 A 1.21 1.21 0.0 0 1 243.84 626.14 L 312.54 626.02 A 94.09 94.07 -0.1 0 1 406.79 719.93 L 406.79 720.59 A 94.09 94.07 -0.1 0 1 312.86 814.82 L 244.16 814.94 A 1.21 1.21 0.0 0 1 242.95 813.73 L 242.63 627.35 Z M 278.44 783.48 Q 281.44 783.80 285.50 783.76 Q 300.84 783.62 309.30 783.68 C 319.99 783.75 328.98 782.57 337.29 778.30 C 369.54 761.76 380.17 721.68 364.83 689.68 C 355.82 670.88 337.10 658.53 316.27 657.86 Q 308.29 657.60 278.41 657.84 A 0.83 0.83 0.0 0 0 277.59 658.67 L 277.59 782.53 A 0.96 0.95 -87.0 0 0 278.44 783.48 Z"/> <rect fill="var(--logo-ink)" x="422.23" y="626.20" width="35.30" height="188.52" rx="0.50"/> <path fill="var(--logo-paper)" d=" M 739.65 737.46 A 0.40 0.40 0.0 0 0 739.22 737.86 L 739.22 813.37 A 1.02 1.02 0.0 0 1 738.20 814.39 L 705.11 814.39 A 0.71 0.71 0.0 0 1 704.40 813.68 L 704.40 627.01 A 0.44 0.43 90.0 0 1 704.83 626.57 Q 759.56 626.57 774.79 626.53 C 796.79 626.47 818.08 635.19 829.53 654.17 C 843.37 677.11 838.07 707.60 816.78 724.26 C 804.92 733.55 790.54 737.45 775.02 737.47 Q 740.60 737.52 739.65 737.46 Z M 739.30 658.10 L 739.14 706.10 A 0.41 0.41 0.0 0 0 739.54 706.51 L 777.60 706.64 A 24.19 22.86 0.2 0 0 801.87 683.87 L 801.89 680.77 A 24.19 22.86 0.2 0 0 777.78 657.83 L 739.72 657.69 A 0.41 0.41 0.0 0 0 739.30 658.10 Z"/> <path fill="var(--logo-paper)" d=" M 1066.52 700.14 A 0.35 0.35 0.0 0 0 1067.12 700.14 L 1111.05 627.30 A 1.58 1.58 0.0 0 1 1112.40 626.54 L 1149.08 626.54 A 0.47 0.47 0.0 0 1 1149.48 627.26 L 1084.42 728.78 A 5.47 5.42 61.6 0 0 1083.56 731.72 L 1083.56 813.32 A 1.08 1.08 0.0 0 1 1082.48 814.40 L 1050.40 814.40 A 0.42 0.42 0.0 0 1 1049.98 813.98 L 1049.98 732.31 A 6.43 6.38 -61.3 0 0 1049.00 728.90 Q 1021.25 684.55 986.93 630.56 Q 985.74 628.69 985.21 627.06 A 0.40 0.40 0.0 0 1 985.59 626.54 L 1021.88 626.54 A 1.17 1.16 74.5 0 1 1022.88 627.11 L 1066.52 700.14 Z"/> <path fill="var(--logo-paper)" d=" M 278.44 783.48 A 0.96 0.95 -87.0 0 1 277.59 782.53 L 277.59 658.67 A 0.83 0.83 0.0 0 1 278.41 657.84 Q 308.29 657.60 316.27 657.86 C 337.10 658.53 355.82 670.88 364.83 689.68 C 380.17 721.68 369.54 761.76 337.29 778.30 C 328.98 782.57 319.99 783.75 309.30 783.68 Q 300.84 783.62 285.50 783.76 Q 281.44 783.80 278.44 783.48 Z"/> <path fill="var(--logo-ink)" d=" M 739.30 658.10 A 0.41 0.41 0.0 0 1 739.72 657.69 L 777.78 657.83 A 24.19 22.86 0.2 0 1 801.89 680.77 L 801.87 683.87 A 24.19 22.86 0.2 0 1 777.60 706.64 L 739.54 706.51 A 0.41 0.41 0.0 0 1 739.14 706.10 L 739.30 658.10 Z"/> <path fill="var(--logo-paper)" d=" M 535.73 743.02 L 557.86 691.91 A 0.33 0.33 0.0 0 1 558.46 691.91 L 580.59 743.02 A 0.33 0.33 0.0 0 1 580.28 743.48 L 536.04 743.48 A 0.33 0.33 0.0 0 1 535.73 743.02 Z"/> <path fill="var(--logo-ink)" d=" M 898.03 742.86 L 920.19 692.09 A 0.34 0.34 0.0 0 1 920.81 692.09 L 942.97 742.86 A 0.34 0.34 0.0 0 1 942.66 743.34 L 898.34 743.34 A 0.34 0.34 0.0 0 1 898.03 742.86 Z"/></svg></span>
       <h1>تبدیل ارز بدون مرز</h1>
       <p>حواله یورو، خرید و فروش نقدی یورو و دلار در تهران و تورین، و معامله‌ی تتر — با نرخ شفاف و تسویه‌ی سریع.</p>
-      <div class="quick" id="quick">
-        <a class="tile" href="#rates" data-id="eur"><span class="tn">🇪🇺 یورو</span><span class="tv">—</span><span class="tc fl">&nbsp;</span></a>
-        <a class="tile" href="#rates" data-id="usd"><span class="tn">🇺🇸 دلار</span><span class="tv">—</span><span class="tc fl">&nbsp;</span></a>
-        <div class="qmeta"><span class="dot"></span><span id="qstamp">در حال دریافت نرخ…</span><span>· تومان</span></div>
-      </div>
       <div class="cta">
         <a class="btn btn-a" href="https://t.me/diapayadmin">ثبت سفارش</a>
         <a class="btn btn-b" href="#rates">نرخ لحظه‌ای</a>
@@ -256,6 +238,13 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
         <em>ثبت سفارش به منزله‌ی پذیرش قوانین است</em></span>
       <span class="ar">‹</span>
     </a>
+
+    <div class="install" id="install">
+      <span class="ic">📲</span>
+      <span class="tx"><b>وب‌اپ دیاپی را روی گوشی نصب کنید</b>
+        <em id="installHint">با نصب، دیاپی مثل یک اپ باز می‌شود — سریع‌تر و همیشه در دسترس.</em></span>
+      <button class="btn btn-a" id="installBtn" hidden>نصب</button>
+    </div>
 
     <div class="foot">
       <div>© ۱۴۰۵ دیاپی — تمامی حقوق محفوظ است.</div>
@@ -272,7 +261,7 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
     </div>
     <div class="board" id="board">
       <div class="hd"><span class="dot"></span><b>بازار آزاد</b><span id="stamp">در حال دریافت…</span></div>
-      <div id="rows"><div class="skel">در حال دریافت نرخ‌ها…</div></div>
+      <div class="skel" id="skel">در حال دریافت نرخ‌ها…</div>
     </div>
     <div class="unit">همه‌ی مبالغ به <b>تومان</b> · منبع: navasan.tech</div>
     <div class="rates" style="margin-top:20px">
@@ -414,16 +403,6 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
   </section>
 </main>
 
-<div class="sheet" id="sheet" role="dialog" aria-live="polite" aria-labelledby="sheetT" hidden>
-  <button class="x" id="sheetX" aria-label="بستن">×</button>
-  <img src="icon-192.png" alt="" width="46" height="46">
-  <div class="st">
-    <b id="sheetT">دیاپی را مثل یک اپ نصب کنید</b>
-    <em id="sheetHint">نرخ دلار و یورو همیشه روی گوشی‌تان، با یک لمس.</em>
-  </div>
-  <button class="btn btn-a" id="sheetBtn">نصب</button>
-</div>
-
 <nav class="nav">
   <a href="#home">خانه</a>
   <a href="#rates">نرخ</a>
@@ -479,115 +458,68 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
   function hideSplash(){ splash.classList.add("gone"); setTimeout(function(){ splash.hidden = true; }, 600); }
   // ---- نرخ زنده از rates.json ----
   var GROUPS = {currency:"ارز", gold:"طلا و سکه"};
-  function fmt(n){ return Math.round(n).toLocaleString("fa-IR"); }
-  function chg(it){
-    var cls = it.change > 0 ? "up" : it.change < 0 ? "dn" : "fl";
-    var ar  = it.change > 0 ? "▲" : it.change < 0 ? "▼" : "—";
-    return {cls:cls, txt: it.change ? ar + " " + fmt(Math.abs(it.change)) : ar};
+  function fmt(n){
+    return Math.round(n).toLocaleString("fa-IR");
   }
   function loadRates(){
-    var rows   = document.getElementById("rows");
-    var stamp  = document.getElementById("stamp");
-    var qstamp = document.getElementById("qstamp");
-    var dots   = document.querySelectorAll(".dot");
+    var board = document.getElementById("board");
+    var skel  = document.getElementById("skel");
+    var stamp = document.getElementById("stamp");
     fetch("rates.json", {cache:"no-store"})
       .then(function(r){ if(!r.ok) throw 0; return r.json(); })
       .then(function(d){
         if (!d || !d.items || !d.items.length) throw 0;
-        var html = "", last = null;
-        d.items.forEach(function(it, i){
+        var html = "", last = null, i = 0;
+        d.items.forEach(function(it){
           if (it.group !== last){ html += '<div class="grp">' + (GROUPS[it.group]||"") + '</div>'; last = it.group; }
-          var c = chg(it);
+          var cls = it.change > 0 ? "up" : it.change < 0 ? "dn" : "fl";
+          var ar  = it.change > 0 ? "▲" : it.change < 0 ? "▼" : "—";
+          var ch  = it.change ? ar + " " + fmt(Math.abs(it.change)) : ar;
           html += '<div class="row" style="animation-delay:' + (i*0.035).toFixed(3) + 's">' +
                     '<span class="em">' + it.emoji + '</span>' +
                     '<span class="nm">' + it.title + '</span>' +
                     '<span class="vl">' + fmt(it.value) + '</span>' +
-                    '<span class="ch ' + c.cls + '">' + c.txt + '</span>' +
+                    '<span class="ch ' + cls + '">' + ch + '</span>' +
                   '</div>';
-          var tile = document.querySelector('.tile[data-id="' + it.id + '"]');
-          if (tile){
-            tile.querySelector(".tv").textContent = fmt(it.value);
-            var tc = tile.querySelector(".tc");
-            tc.className = "tc " + c.cls; tc.textContent = c.txt;
-          }
+          i++;
         });
-        rows.innerHTML = html;
-        var t = "آخرین بروزرسانی " + (d.updated_fa || "");
-        stamp.textContent = t; qstamp.textContent = t;
-        dots.forEach(function(x){ x.classList.remove("off"); });
+        skel.remove();
+        board.insertAdjacentHTML("beforeend", html);
+        stamp.textContent = "آخرین بروزرسانی " + (d.updated_fa || "");
       })
       .catch(function(){
-        if (rows.querySelector(".row")) return;   // نرخ قبلی را پاک نکن
-        rows.innerHTML = '<div class="skel">نرخ‌ها فعلاً از این صفحه در دسترس نیست.<br>آخرین نرخ‌ها را در کانال ببینید.</div>';
+        skel.innerHTML = 'نرخ‌ها فعلاً از این صفحه در دسترس نیست.<br>آخرین نرخ‌ها را در کانال ببینید.';
         stamp.textContent = "";
-        qstamp.innerHTML = 'نرخ در دسترس نیست — <a href="https://t.me/diapaychanel" style="color:var(--accent)">کانال</a>';
-        dots.forEach(function(x){ x.classList.add("off"); });
+        document.querySelector("#rates .dot").style.background = "#c8cdd8";
+        document.querySelector("#rates .dot").style.animation = "none";
       });
   }
   loadRates();
   setInterval(loadRates, 5*60*1000);   // هر ۵ دقیقه یک بار تازه‌سازی
 
-  // ---- اعلان موقت نصب وب‌اپ ----
+  // ---- نصب وب‌اپ ----
   var deferred = null;
-  var sheet = document.getElementById("sheet");
-  var sBtn  = document.getElementById("sheetBtn");
-  var sHint = document.getElementById("sheetHint");
-  var ua = navigator.userAgent || "";
-  var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  var inApp = /Telegram|Instagram|FBAN|FBAV|WhatsApp|Line\//i.test(ua);
+  var box  = document.getElementById("install");
+  var btn  = document.getElementById("installBtn");
+  var hint = document.getElementById("installHint");
   var standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
-  var hideTimer = null, shown = false;
 
-  function store(k, v){
-    try{ if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }
-    catch(e){ return null; }
+  if (standalone){
+    box.hidden = true;
+  } else if (/iPad|iPhone|iPod/.test(navigator.userAgent || "")){
+    hint.textContent = "در سافاری: دکمه‌ی اشتراک‌گذاری ← «Add to Home Screen»";
   }
-  function recentlyDismissed(){ var t = +store("diapay-install-later") || 0; return Date.now() - t < 3*24*3600*1000; }
-
-  function openSheet(){
-    if (shown || standalone || store("diapay-installed") || recentlyDismissed()) return;
-    shown = true;
-    sheet.hidden = false; void sheet.offsetWidth; sheet.classList.add("show");
-    hideTimer = setTimeout(function(){ closeSheet(false); }, 15000);   // موقت: خودش بسته می‌شود
-  }
-  function closeSheet(byUser){
-    clearTimeout(hideTimer);
-    if (byUser) store("diapay-install-later", String(Date.now()));
-    sheet.classList.remove("show");
-    setTimeout(function(){ sheet.hidden = true; }, 450);
-  }
-  function guide(html){
-    sHint.innerHTML = html; sBtn.hidden = true;
-    clearTimeout(hideTimer); hideTimer = setTimeout(function(){ closeSheet(false); }, 25000);
-  }
-
-  document.getElementById("sheetX").addEventListener("click", function(){ closeSheet(true); });
-
-  sBtn.addEventListener("click", function(){
-    if (deferred){
-      deferred.prompt();
-      deferred.userChoice.then(function(r){
-        deferred = null;
-        if (r && r.outcome === "accepted"){ store("diapay-installed", "1"); closeSheet(false); }
-        else closeSheet(true);
-      });
-    } else if (inApp){
-      guide('از منوی <b>⋮</b> بالای صفحه «Open in browser» را بزنید و از آنجا نصب کنید.');
-    } else if (isIOS){
-      guide('در سافاری دکمه‌ی <b>اشتراک‌گذاری ⬆︎</b> را بزنید، سپس <b>«Add to Home Screen»</b>.');
-    } else {
-      guide('از منوی مرورگر <b>⋮</b> گزینه‌ی <b>«Install app»</b> یا <b>«Add to Home screen»</b> را بزنید.');
-    }
-  });
 
   window.addEventListener("beforeinstallprompt", function(e){
-    e.preventDefault(); deferred = e;
-    setTimeout(openSheet, 2500);
+    e.preventDefault(); deferred = e; btn.hidden = false;
+    hint.textContent = "با نصب، دیاپی مثل یک اپ باز می‌شود — سریع‌تر و همیشه در دسترس.";
   });
-  window.addEventListener("appinstalled", function(){ store("diapay-installed", "1"); closeSheet(false); });
-
-  // مرورگرهایی که رویداد نصب ندارند (آیفون و…) هم بعد از چند ثانیه اعلان را ببینند
-  if (!standalone) setTimeout(openSheet, 4500);
+  btn.addEventListener("click", function(){
+    if (!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.then(function(){ deferred = null; btn.hidden = true; });
+  });
+  window.addEventListener("appinstalled", function(){ box.hidden = true; });
 
   var start = Date.now();
   window.addEventListener("load", function(){

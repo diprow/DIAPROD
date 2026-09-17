@@ -1,5 +1,5 @@
 // سرویس‌ورکر دیاپی — کش ساده تا اپ آفلاین هم باز شود
-const CACHE = 'diapay-v1';
+const CACHE = 'diapay-v2';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
