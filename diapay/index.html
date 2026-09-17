@@ -251,6 +251,72 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
+/* ---------- حساب کاربری ---------- */
+#account .ac-sub{color:var(--muted);font-size:14px;margin:4px 0 18px}
+#account label{display:block;font-size:13px;color:var(--muted);margin:12px 0 5px;text-align:start}
+#account input,#account select,#account textarea{
+  width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:12px;
+  background:var(--surface);color:var(--ink);font-family:inherit;font-size:15px;line-height:1.7;outline:none;
+  transition:border-color .2s,box-shadow .2s}
+#account input:focus,#account select:focus,#account textarea:focus{
+  border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 16%,transparent)}
+#account textarea{resize:vertical;min-height:70px}
+#account input[dir=ltr]{direction:ltr;text-align:left}
+#account .card{text-align:start;margin-bottom:16px}
+#account h3{font-size:15px;margin-bottom:10px}
+.arow{display:flex;gap:12px;flex-wrap:wrap}
+.arow>*{flex:1 1 170px;min-width:0}
+.anote{font-size:12.5px;color:var(--muted);line-height:1.9;text-align:start}
+.abtns{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.btn-s{padding:9px 17px;font-size:13px}
+.seg{display:flex;gap:4px;padding:4px;background:var(--surface-2);border-radius:999px;margin-bottom:6px}
+.seg button{flex:1;border:0;background:transparent;color:var(--muted);border-radius:999px;padding:9px 10px;
+  font-size:14px;cursor:pointer;font-family:inherit;transition:background .2s,color .2s}
+.seg button.on{background:var(--surface);color:var(--ink);font-weight:500;box-shadow:0 2px 8px -4px rgba(10,12,18,.3)}
+.pill{display:inline-flex;align-items:center;font-size:12px;padding:3px 11px;border-radius:999px;
+  background:var(--surface-2);color:var(--muted);font-weight:500;white-space:nowrap}
+.pill.s0{background:#FEF3C7;color:#92400E}
+.pill.s1{background:#DBEAFE;color:#1E40AF}
+.pill.s2{background:#D1FAE5;color:#065F46}
+.pill.s3{background:#F3F4F6;color:#6B7280}
+.deal{display:block;width:100%;text-align:start;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r);padding:18px 20px;margin-bottom:12px;cursor:pointer;font-family:inherit;color:inherit;
+  transition:transform .22s var(--ease),border-color .22s,box-shadow .22s var(--ease)}
+.deal:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 12px 30px -20px rgba(10,12,18,.5)}
+.deal:active{transform:scale(.99)}
+.deal .hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.deal .ttl{font-weight:700;font-size:15.5px;font-family:"Noto Kufi Arabic","Vazirmatn",sans-serif}
+.deal .ref{font-size:12.5px;color:var(--muted);direction:ltr;margin-inline-start:auto}
+.deal .terms{font-size:13.5px;color:var(--muted);margin-bottom:12px}
+.meter{margin-top:13px}
+.meter .lb{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:12.5px;color:var(--muted);margin-bottom:5px}
+.meter .lb b{color:var(--ink);font-weight:500;font-size:13px}
+.bar{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--accent);transition:width .6s var(--ease)}
+.bar i.done{background:#0E9F6E}
+.meter .ft{font-size:12.5px;color:var(--muted);margin-top:5px}
+.meter .ft b{color:var(--ink);font-weight:500}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px;text-align:start}
+.kv:last-child{border-bottom:0}
+.kv span{color:var(--muted)}
+.kv b{font-weight:500}
+#account table{width:100%;border-collapse:collapse;font-size:13.5px}
+#account th,#account td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:start}
+#account th{font-size:12px;color:var(--muted);font-weight:500}
+#account td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+#account tr.pend td{color:var(--muted)}
+.tl{list-style:none;margin:0;padding:0;font-size:13px;color:var(--muted);text-align:start}
+.tl li{padding:6px 0;border-inline-start:2px solid var(--line);padding-inline-start:14px;position:relative}
+.tl li::before{content:"";position:absolute;inset-inline-start:-5px;top:14px;width:8px;height:8px;border-radius:50%;background:var(--line)}
+.tl li:first-child::before{background:var(--accent)}
+.ac-empty{text-align:center;color:var(--muted);font-size:14px;padding:30px 10px}
+.ac-back{background:none;border:0;color:var(--muted);font-size:14px;cursor:pointer;padding:4px 0;margin-bottom:12px;font-family:inherit}
+.ac-back:hover{color:var(--accent)}
+.spin{display:inline-block;width:15px;height:15px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+/* نوار پایین با شش تب روی گوشی‌های باریک */
+@media(max-width:430px){.nav{gap:0;padding:5px}.nav a{padding:9px 10px;font-size:12.5px}}
+@media(max-width:360px){.nav a{padding:8px 8px;font-size:11.5px}}
 </style>
 </head>
 <body>
@@ -454,6 +520,97 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
       <div>طراحی و توسعه: <a href="https://diaprod.it">diaprod.it</a></div>
     </div>
   </section>
+  <!-- حساب کاربری -->
+  <section class="view" id="account" hidden>
+
+    <div id="acAuth" hidden>
+      <div class="center">
+        <div class="eyebrow">حساب کاربری</div>
+        <h2>ورود به حساب</h2>
+        <p class="sub">نام کاربری و رمز را دیاپی به شما می‌دهد. اگر هنوز حساب ندارید، در تلگرام به <b dir="ltr" style="display:inline-block">@diapayadmin</b> پیام دهید.</p>
+      </div>
+      <div class="card" style="max-width:400px;margin-inline:auto">
+        <form id="acLogin">
+          <label for="acUser">نام کاربری</label>
+          <input id="acUser" dir="ltr" autocomplete="username" autocapitalize="off" spellcheck="false" required>
+          <label for="acPass">رمز عبور</label>
+          <input id="acPass" type="password" dir="ltr" autocomplete="current-password" required>
+          <div style="margin-top:18px"><button class="btn btn-a" id="acLoginBtn" type="submit">ورود</button></div>
+        </form>
+        <p class="anote" style="margin-top:16px">رمزتان را فراموش کرده‌اید؟ به <b dir="ltr" style="display:inline-block">@diapayadmin</b> پیام دهید تا رمز تازه بگذاریم.</p>
+      </div>
+    </div>
+
+    <div id="acApp" hidden>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px">
+          <h2 id="acHello" style="font-size:19px">حساب من</h2>
+          <button class="btn btn-b btn-s" id="acOut" type="button" style="margin-inline-start:auto">خروج</button>
+        </div>
+        <p class="ac-sub" id="acWho"></p>
+        <form id="acProfile">
+          <div class="arow">
+            <div><label for="acName">نام و نام خانوادگی</label><input id="acName" maxlength="120"></div>
+            <div><label for="acPhone">شماره تماس</label><input id="acPhone" dir="ltr" maxlength="40" inputmode="tel"></div>
+          </div>
+          <div class="arow">
+            <div><label for="acTg">آیدی تلگرام</label><input id="acTg" dir="ltr" maxlength="60" placeholder="@username"></div>
+            <div><label for="acNid">کد ملی</label><input id="acNid" dir="ltr" maxlength="20" inputmode="numeric"></div>
+          </div>
+          <div class="abtns"><button class="btn btn-b btn-s" type="submit">ذخیره‌ی مشخصات</button></div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3>تغییر رمز</h3>
+        <form id="acPw">
+          <div class="arow">
+            <div><label for="acPw1">رمز تازه</label><input id="acPw1" type="password" dir="ltr" autocomplete="new-password"></div>
+            <div><label for="acPw2">تکرار رمز تازه</label><input id="acPw2" type="password" dir="ltr" autocomplete="new-password"></div>
+          </div>
+          <div class="abtns"><button class="btn btn-b btn-s" id="acPwBtn" type="submit">ذخیره‌ی رمز تازه</button></div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">سفارش تازه</div>
+        <h2 style="font-size:18px">درخواست معامله</h2>
+        <p class="ac-sub">مقدار را بنویسید؛ نرخ قطعی را دیاپی اعلام و تأیید می‌کند.</p>
+        <form id="acNew">
+          <div class="seg" id="acSide">
+            <button type="button" data-v="buy" class="on">می‌خرم</button>
+            <button type="button" data-v="sell">می‌فروشم</button>
+          </div>
+          <div class="arow">
+            <div>
+              <label for="acCur">ارز</label>
+              <select id="acCur">
+                <option value="EUR">یورو</option>
+                <option value="USD">دلار</option>
+                <option value="USDT">تتر</option>
+                <option value="GBP">پوند</option>
+              </select>
+            </div>
+            <div><label for="acFx">مقدار ارز</label><input id="acFx" dir="ltr" inputmode="decimal" placeholder="5000"></div>
+            <div><label for="acTm">یا مبلغ تومان</label><input id="acTm" dir="ltr" inputmode="numeric" placeholder="1320000000"></div>
+          </div>
+          <label for="acNote">توضیح (اختیاری)</label>
+          <textarea id="acNote" maxlength="2000" placeholder="مثلاً: حواله به حساب شخصی، شماره شبا…"></textarea>
+          <div class="abtns"><button class="btn btn-a" id="acNewBtn" type="submit">ثبت درخواست</button></div>
+        </form>
+      </div>
+
+      <h3 style="margin:26px 0 12px;text-align:start">معامله‌های من</h3>
+      <div id="acList"><div class="ac-empty">در حال دریافت…</div></div>
+    </div>
+
+    <div id="acDeal" hidden>
+      <button class="ac-back" id="acBack" type="button">‹ بازگشت به حساب</button>
+      <div id="acBody"></div>
+    </div>
+
+  </section>
+
 </main>
 
 <div class="sheet" id="sheet" role="dialog" aria-live="polite" aria-labelledby="sheetT" hidden>
@@ -482,11 +639,12 @@ ol.terms ul ul{margin-block:6px;padding-inline-start:16px;list-style:"— ";font
   <a href="#services">خدمات</a>
   <a href="#terms">قوانین</a>
   <a href="#contact">تماس</a>
+  <a href="#account">حساب</a>
 </nav>
 
 <script>
 (function(){
-  var IDS = ["home","rates","services","terms","contact"];
+  var IDS = ["home","rates","services","terms","contact","account"];
   var views = {}, links = {};
   IDS.forEach(function(id){
     views[id] = document.getElementById(id);
@@ -779,5 +937,382 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", function(){ navigator.serviceWorker.register("./sw.js").catch(function(){}); });
 }
 </script>
+<script>
+/* ---------- حساب کاربری دیاپی ---------- */
+(function(){
+  "use strict";
+  var SB_URL  = "https://aznelawjlyoklmjcxylq.supabase.co";
+  var SB_KEY  = "sb_publishable_4Lhz2fJueL6UuRYHcmMWGA_bDmZZ6-R";
+  var DOMAIN  = "@panel.diaprod.it";
+  var SESS    = "dp_session";
+
+  var CUR = {EUR:"یورو", USD:"دلار", USDT:"تتر", GBP:"پوند"};
+  var ST  = ["در انتظار تأیید","در جریان","تکمیل شده","لغو شده"];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var started = false, me = null, deals = [], openDeal = null, side = "buy";
+
+  var tEl = document.getElementById("toast"), tT = null;
+  function toast(t, bad){
+    if (!tEl) return;
+    tEl.textContent = t;
+    tEl.style.background = bad ? "#DC2626" : "";
+    tEl.classList.add("show");
+    clearTimeout(tT);
+    tT = setTimeout(function(){ tEl.classList.remove("show"); }, bad ? 5200 : 3600);
+  }
+  function acShow(id){
+    ["acAuth","acApp","acDeal"].forEach(function(v){ $(v).hidden = (v !== id); });
+  }
+  function digits(s){
+    return String(s == null ? "" : s)
+      .replace(/[۰-۹]/g, function(d){ return String(d.charCodeAt(0) - 0x6F0); })
+      .replace(/[٠-٩]/g, function(d){ return String(d.charCodeAt(0) - 0x660); })
+      .replace(/[,٬،\s_]/g, "").replace(/٫/g, ".");
+  }
+  function num(s){ var n = parseFloat(digits(s)); return isFinite(n) ? n : 0; }
+  function nf(n, dec){
+    n = Number(n) || 0;
+    return n.toLocaleString("fa-IR", {minimumFractionDigits:0, maximumFractionDigits: dec == null ? 0 : dec});
+  }
+  function fxn(n){ return nf(n, 2); }
+  function when(s){
+    if (!s) return "—";
+    try { return new Date(s).toLocaleDateString("fa-IR", {year:"numeric", month:"long", day:"numeric"}); }
+    catch(e){ return "—"; }
+  }
+  function esc(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[c];
+    });
+  }
+  function err(e){
+    var m = (e && (e.message || e.error_description)) || "خطای ناشناخته";
+    if (/Invalid login/i.test(m)) m = "نام کاربری یا رمز درست نیست";
+    if (/Password should be|at least/i.test(m)) m = "رمز باید حداقل ۶ نویسه باشد";
+    if (/should be different/i.test(m)) m = "رمز تازه باید با رمز فعلی فرق کند";
+    if (/rate limit|Too many|For security/i.test(m)) m = "درخواست زیاد بود؛ کمی بعد دوباره تلاش کنید";
+    if (/Failed to fetch|NetworkError/i.test(m)) m = "اتصال برقرار نشد؛ اینترنت را بررسی کنید";
+    toast(m, true);
+  }
+  // ---------- ارتباط مستقیم با سوپابیس (بدون کتابخانه‌ی بیرونی) ----------
+  function getSess(){ try { return JSON.parse(localStorage.getItem(SESS) || "null"); } catch(e){ return null; } }
+  function setSess(s){ try { s ? localStorage.setItem(SESS, JSON.stringify(s)) : localStorage.removeItem(SESS); } catch(e){} }
+  function store(d){
+    setSess({ access_token: d.access_token, refresh_token: d.refresh_token,
+              expires_at: Date.now() + ((d.expires_in || 3600) * 1000) });
+  }
+  async function api(path, o){
+    o = o || {};
+    var hd = { "apikey": SB_KEY, "Content-Type": "application/json" };
+    if (o.token) hd["Authorization"] = "Bearer " + o.token;
+    var r = await fetch(SB_URL + path, {
+      method: o.method || "POST", headers: hd,
+      body: o.body === undefined ? undefined : JSON.stringify(o.body)
+    });
+    var txt = await r.text(), j = null;
+    try { j = txt ? JSON.parse(txt) : null; } catch(e){}
+    if (!r.ok){
+      throw new Error((j && (j.error_description || j.msg || j.message || j.error)) || ("خطای سرور " + r.status));
+    }
+    return j;
+  }
+  async function token(){
+    var s = getSess();
+    if (!s || !s.refresh_token) return null;
+    if (Date.now() < s.expires_at - 60000) return s.access_token;
+    try {
+      var d = await api("/auth/v1/token?grant_type=refresh_token", { body: { refresh_token: s.refresh_token } });
+      store(d);
+      return d.access_token;
+    } catch(e){ setSess(null); return null; }
+  }
+  async function signIn(email, password){
+    store(await api("/auth/v1/token?grant_type=password", { body: { email: email, password: password } }));
+  }
+  async function signOut(){
+    var s = getSess();
+    if (s){ try { await api("/auth/v1/logout", { token: s.access_token }); } catch(e){} }
+    setSess(null);
+  }
+  async function setPassword(pw){
+    var t = await token();
+    if (!t) throw new Error("ابتدا وارد حساب شوید");
+    await api("/auth/v1/user", { method: "PUT", token: t, body: { password: pw } });
+  }
+  async function rpc(fn, args){
+    var t = await token();
+    if (!t) throw new Error("ابتدا وارد حساب شوید");
+    return await api("/rest/v1/rpc/" + fn, { token: t, body: args || {} });
+  }
+  function busy(btn, on, label){
+    if (!btn) return;
+    btn.disabled = !!on;
+    if (on){ btn.dataset.t = btn.innerHTML; btn.innerHTML = '<span class="spin"></span>'; }
+    else if (btn.dataset.t){ btn.innerHTML = label || btn.dataset.t; }
+  }
+
+  function start(){
+    if (started) return;
+    started = true;
+    acShow("acAuth");
+    wire();
+    boot();
+  }
+  function maybe(){ if ((location.hash || "") === "#account") start(); }
+  window.addEventListener("hashchange", maybe);
+  maybe();
+
+  // ---------- اتصال رویدادها ----------
+  function wire(){
+    $("acLogin").addEventListener("submit", async function(e){
+      e.preventDefault();
+      var b = $("acLoginBtn"), u = $("acUser").value.trim().toLowerCase().replace(/^@/, "");
+      if (!u){ toast("نام کاربری را وارد کنید", true); return; }
+      busy(b, true);
+      try {
+        await signIn(u + DOMAIN, $("acPass").value);
+        $("acPass").value = "";
+        await boot();
+      } catch(x){ err(x); }
+      busy(b, false, "ورود");
+    });
+
+    $("acOut").addEventListener("click", async function(){
+      await signOut();
+      me = null; deals = []; openDeal = null;
+      acShow("acAuth");
+    });
+
+    $("acProfile").addEventListener("submit", async function(e){
+      e.preventDefault();
+      try {
+        me = await rpc("dp_save_profile", {
+          p_full_name: $("acName").value, p_phone: $("acPhone").value,
+          p_national_id: $("acNid").value, p_telegram: $("acTg").value
+        });
+        paintMe();
+        toast("مشخصات ذخیره شد.");
+      } catch(x){ err(x); }
+    });
+
+    $("acPw").addEventListener("submit", async function(e){
+      e.preventDefault();
+      var b = $("acPwBtn"), p1 = $("acPw1").value, p2 = $("acPw2").value;
+      if (p1.length < 6){ toast("رمز باید حداقل ۶ نویسه باشد", true); return; }
+      if (p1 !== p2){ toast("دو رمز یکی نیستند", true); return; }
+      busy(b, true);
+      try {
+        await setPassword(p1);
+        $("acPw1").value = ""; $("acPw2").value = "";
+        toast("رمز تازه ذخیره شد.");
+      } catch(x){ err(x); }
+      busy(b, false, "ذخیره‌ی رمز تازه");
+    });
+
+    $("acSide").addEventListener("click", function(e){
+      var b = e.target.closest("button[data-v]"); if (!b) return;
+      side = b.dataset.v;
+      [].forEach.call(this.children, function(c){ c.classList.toggle("on", c === b); });
+    });
+
+    $("acNew").addEventListener("submit", async function(e){
+      e.preventDefault();
+      var b = $("acNewBtn"), f = num($("acFx").value), t = num($("acTm").value);
+      if (f <= 0 && t <= 0){ toast("مقدار ارز یا مبلغ تومان را وارد کنید", true); return; }
+      busy(b, true);
+      try {
+        await rpc("dp_request_deal", {
+          p_side: side, p_currency: $("acCur").value,
+          p_fx_amount: f > 0 ? f : null, p_toman_amount: t > 0 ? Math.round(t) : null,
+          p_note: $("acNote").value
+        });
+        $("acFx").value = ""; $("acTm").value = ""; $("acNote").value = "";
+        toast("درخواست ثبت شد؛ بعد از بررسی نرخ، تأیید می‌شود.");
+        await loadDeals();
+      } catch(x){ err(x); }
+      busy(b, false, "ثبت درخواست");
+    });
+
+    $("acList").addEventListener("click", function(e){
+      var b = e.target.closest(".deal[data-id]"); if (!b) return;
+      openDetail(b.dataset.id);
+    });
+
+    $("acBack").addEventListener("click", function(){
+      openDeal = null; acShow("acApp"); window.scrollTo({top:0, behavior:"smooth"});
+    });
+  }
+
+  // ---------- نمایش ----------
+  function paintMe(){
+    $("acHello").textContent = me.full_name ? ("سلام " + me.full_name) : "حساب من";
+    $("acWho").textContent = "نام کاربری: " + (me.username || "—")
+      + (me.status === "blocked" ? " · حساب مسدود است" : "");
+    $("acName").value  = me.full_name || "";
+    $("acPhone").value = me.phone || "";
+    $("acTg").value    = me.telegram || "";
+    $("acNid").value   = me.national_id || "";
+  }
+
+  function legs(d){
+    var unit = CUR[d.currency] || d.currency;
+    var tm = {
+      title: d.side === "buy" ? "واریز شما (تومان)" : "واریز دیاپی به شما (تومان)",
+      done: Number(d.paid_toman), total: Number(d.toman_amount),
+      rest: Number(d.remaining_toman), pend: Number(d.pending_toman), dec: 0, unit: "تومان"
+    };
+    var fl = {
+      title: d.side === "buy" ? ("حواله‌ی دیاپی به شما (" + unit + ")") : ("ارسال شما (" + unit + ")"),
+      done: Number(d.sent_fx), total: Number(d.fx_amount),
+      rest: Number(d.remaining_fx), pend: Number(d.pending_fx), dec: 2, unit: unit
+    };
+    return d.side === "buy" ? [tm, fl] : [fl, tm];
+  }
+  function meter(m){
+    var pc = m.total > 0 ? Math.min(100, Math.round(m.done / m.total * 100)) : 0;
+    var rest = m.rest > 0
+      ? ("مانده " + nf(m.rest, m.dec) + " " + m.unit)
+      : (m.rest < 0 ? ("اضافه " + nf(-m.rest, m.dec) + " " + m.unit) : "تسویه شد");
+    return '<div class="meter">'
+      + '<div class="lb"><span>' + esc(m.title) + '</span><b>' + nf(pc) + '٪</b></div>'
+      + '<div class="bar"><i class="' + (pc >= 100 ? "done" : "") + '" style="width:' + pc + '%"></i></div>'
+      + '<div class="ft"><b>' + nf(m.done, m.dec) + '</b> از ' + nf(m.total, m.dec) + ' · ' + rest
+      + (m.pend > 0 ? ' · <span style="color:#B45309">' + nf(m.pend, m.dec) + ' در انتظار تأیید</span>' : '')
+      + '</div></div>';
+  }
+  function title(d){ return (d.side === "buy" ? "خرید " : "فروش ") + (CUR[d.currency] || d.currency); }
+  function termsLine(d){
+    if (Number(d.rate) > 0 && Number(d.fx_amount) > 0){
+      return fxn(d.fx_amount) + " " + (CUR[d.currency] || d.currency)
+           + " × " + nf(d.rate) + " = " + nf(d.toman_amount) + " تومان";
+    }
+    var want = Number(d.req_fx_amount) > 0
+      ? (fxn(d.req_fx_amount) + " " + (CUR[d.currency] || d.currency))
+      : (Number(d.req_toman_amount) > 0 ? (nf(d.req_toman_amount) + " تومان") : "—");
+    return "درخواست: " + want + " · نرخ هنوز اعلام نشده";
+  }
+
+  function paintList(){
+    var el = $("acList");
+    if (!deals.length){ el.innerHTML = '<div class="ac-empty">هنوز معامله‌ای ثبت نشده است.</div>'; return; }
+    el.innerHTML = deals.map(function(d){
+      var L = Number(d.rate) > 0 ? legs(d).map(meter).join("") : "";
+      return '<button class="deal" data-id="' + d.id + '">'
+        + '<div class="hd"><span class="ttl">' + esc(title(d)) + '</span>'
+        + '<span class="pill s' + d.status + '">' + ST[d.status] + '</span>'
+        + '<span class="ref">' + esc(d.ref) + '</span></div>'
+        + '<div class="terms">' + esc(termsLine(d)) + '</div>' + L + '</button>';
+    }).join("");
+  }
+
+  async function openDetail(id){
+    try {
+      openDeal = await rpc("dp_deal", { p_id: id });
+      paintDetail();
+      acShow("acDeal");
+      window.scrollTo({top:0, behavior:"smooth"});
+    } catch(x){ err(x); }
+  }
+
+  function paintDetail(){
+    var d = openDeal, unit = CUR[d.currency] || d.currency;
+    var canReport = (d.status === 1 || d.status === 2);
+    var myLeg = d.side === "buy" ? "toman" : "fx";
+    var myUnit = d.side === "buy" ? "تومان" : unit;
+
+    var rows = (d.entries || []).map(function(e){
+      var u = e.leg === "toman" ? "تومان" : unit;
+      return '<tr class="' + (e.confirmed ? "" : "pend") + '">'
+        + '<td>' + esc(u) + '</td>'
+        + '<td class="n">' + nf(e.amount, e.leg === "toman" ? 0 : 2) + '</td>'
+        + '<td class="n">' + when(e.happened_at) + '</td>'
+        + '<td>' + (e.confirmed ? "ثبت شد" : "در انتظار تأیید") + '</td>'
+        + '<td>' + (e.by_admin ? "دیاپی" : "اعلام شما") + (e.note ? " · " + esc(e.note) : "") + '</td></tr>';
+    }).join("");
+
+    var EV = {created:"درخواست ثبت شد", approved:"نرخ اعلام و تأیید شد", updated:"شرایط به‌روز شد",
+              toman:"واریز تومانی ثبت شد", fx:"حواله‌ی ارزی ثبت شد", reported:"واریز اعلام شد",
+              confirmed:"یک ردیف تأیید شد", unconfirmed:"تأیید یک ردیف برداشته شد", removed:"یک ردیف حذف شد",
+              completed:"معامله تکمیل شد", cancelled:"معامله لغو شد", reopened:"معامله بازگشایی شد", active:"در جریان"};
+    var tl = (d.events || []).slice().reverse().map(function(v){
+      return '<li>' + esc(EV[v.kind] || v.kind) + (v.note ? " — " + esc(v.note) : "")
+           + '<br><span style="font-size:12px">' + when(v.created_at) + '</span></li>';
+    }).join("");
+
+    $("acBody").innerHTML =
+      '<div class="card">'
+      + '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">'
+      + '<h2 style="font-size:19px">' + esc(title(d)) + '</h2>'
+      + '<span class="pill s' + d.status + '">' + ST[d.status] + '</span>'
+      + '<span style="margin-inline-start:auto;font-size:12.5px;color:var(--muted);direction:ltr">' + esc(d.ref) + '</span></div>'
+      + '<div class="kv"><span>مقدار</span><b>' + (Number(d.fx_amount) > 0 ? fxn(d.fx_amount) + " " + unit : "—") + '</b></div>'
+      + '<div class="kv"><span>نرخ هر ' + esc(unit) + '</span><b>' + (Number(d.rate) > 0 ? nf(d.rate) + " تومان" : "اعلام نشده") + '</b></div>'
+      + '<div class="kv"><span>معادل تومانی</span><b>' + (Number(d.toman_amount) > 0 ? nf(d.toman_amount) + " تومان" : "—") + '</b></div>'
+      + '<div class="kv"><span>تاریخ ثبت</span><b>' + when(d.created_at) + '</b></div>'
+      + (d.admin_note ? '<div class="kv"><span>یادداشت دیاپی</span><b>' + esc(d.admin_note) + '</b></div>' : '')
+      + (d.customer_note ? '<div class="kv"><span>توضیح شما</span><b>' + esc(d.customer_note) + '</b></div>' : '')
+      + '</div>'
+
+      + (Number(d.rate) > 0
+          ? '<div class="card"><h3>وضعیت تسویه</h3>' + legs(d).map(meter).join("") + '</div>'
+          : '<div class="card"><p class="anote">این درخواست هنوز تأیید نشده است. به‌محض اعلام نرخ، جزئیات تسویه همین‌جا نشان داده می‌شود.</p></div>')
+
+      + (canReport
+          ? '<div class="card"><h3>اعلام واریز</h3>'
+            + '<p class="anote">اگر مبلغی واریز کرده‌اید اینجا بنویسید. تا تأیید دیاپی، روی مانده اثر نمی‌گذارد.</p>'
+            + '<form id="acRep"><div class="arow">'
+            + '<div><label for="acRepAmt">مبلغ (' + esc(myUnit) + ')</label><input id="acRepAmt" dir="ltr" inputmode="decimal"></div>'
+            + '<div><label for="acRepDate">تاریخ واریز</label><input id="acRepDate" type="date"></div>'
+            + '</div><label for="acRepNote">توضیح (اختیاری)</label><input id="acRepNote" maxlength="500" placeholder="شماره پیگیری، نام بانک…">'
+            + '<div class="abtns"><button class="btn btn-b btn-s" id="acRepBtn" type="submit">اعلام واریز</button></div>'
+            + '</form></div>'
+          : '')
+
+      + '<div class="card"><h3>ریز واریزها و حواله‌ها</h3>'
+      + (rows
+          ? '<div style="overflow-x:auto"><table><thead><tr><th>سمت</th><th>مبلغ</th><th>تاریخ</th><th>وضعیت</th><th>شرح</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+          : '<div class="ac-empty">هنوز ثبتی انجام نشده است.</div>')
+      + '</div>'
+
+      + (tl ? '<div class="card"><h3>تاریخچه</h3><ul class="tl">' + tl + '</ul></div>' : '');
+
+    var f = $("acRep");
+    if (f) f.addEventListener("submit", async function(e){
+      e.preventDefault();
+      var b = $("acRepBtn"), a = num($("acRepAmt").value);
+      if (a <= 0){ toast("مبلغ را وارد کنید", true); return; }
+      busy(b, true);
+      try {
+        openDeal = await rpc("dp_report_payment", {
+          p_deal_id: d.id, p_leg: myLeg, p_amount: a,
+          p_happened_at: $("acRepDate").value ? new Date($("acRepDate").value).toISOString() : null,
+          p_note: $("acRepNote").value
+        });
+        toast("اعلام شما ثبت شد؛ پس از تأیید دیاپی روی مانده اعمال می‌شود.");
+        paintDetail();
+        loadDeals();
+      } catch(x){ err(x); busy(b, false, "اعلام واریز"); }
+    });
+  }
+
+  async function loadDeals(){
+    deals = await rpc("dp_my_deals");
+    paintList();
+  }
+
+  async function boot(){
+    var t = await token();
+    if (!t){ acShow("acAuth"); return; }
+    try {
+      me = await rpc("dp_me");
+      paintMe();
+      acShow("acApp");
+      await loadDeals();
+    } catch(x){ err(x); acShow("acAuth"); }
+  }
+})();
+</script>
+
 </body>
 </html>
