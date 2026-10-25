@@ -1,0 +1,1514 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DIA PROD · دیاپرود</title>
+<meta name="description" content="DIA PROD — photography, video, content, websites and 3D animation for dental and surgical clinics. Persian · English · Italiano.">
+<link rel="alternate" hreflang="fa" href="?lang=fa">
+<link rel="alternate" hreflang="en" href="?lang=en">
+<link rel="alternate" hreflang="it" href="?lang=it">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&amp;display=swap">
+<style>
+body{margin:0;background:#000;color:#f5f5f7;font-family:Vazirmatn,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#f5f5f7}a:hover{color:#ffffff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:24px}
+.kick{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:#a1a1a6}
+.kick::before{content:"";width:8px;height:8px;border-radius:50%;background:#2997ff;box-shadow:0 0 12px rgba(41,151,255,.8)}
+.light .kick{color:#6e6e73}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 30px;border-radius:980px;font-size:16px;font-weight:600;text-decoration:none;transition:transform .35s cubic-bezier(.16,.84,.34,1),background .3s,border-color .3s}
+.btn:hover{transform:translateY(-2px)}
+.btn-solid{background:#f5f5f7;color:#000}
+.btn-solid:hover{background:#fff;color:#000}
+.btn-ghost{border:1px solid rgba(245,245,247,.34);color:#f5f5f7;background:rgba(245,245,247,.04)}
+.btn-ghost:hover{border-color:rgba(245,245,247,.7)}
+.navlink{font-size:14px;color:rgba(245,245,247,.75);text-decoration:none;padding:10px 14px;border-radius:980px;transition:color .2s,background .2s}
+.navlink:hover{color:#fff;background:rgba(255,255,255,.06)}
+
+/* motion */
+@keyframes rise{from{opacity:0;transform:translateY(34px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes glow{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.9;transform:scale(1.08)}}
+@keyframes scan{0%{transform:translateY(-10%)}100%{transform:translateY(1100%)}}
+@keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes slide{0%{opacity:0;transform:scale(1.06)}4%{opacity:1;transform:scale(1.02)}30%{opacity:1;transform:scale(1)}36%{opacity:0}100%{opacity:0}}
+@keyframes bar{0%{transform:scaleX(0)}33.33%{transform:scaleX(1)}100%{transform:scaleX(1)}}
+@keyframes barfill{0%,33.33%{transform:scaleX(0)}66.66%,100%{transform:scaleX(1)}}
+@keyframes barfill2{0%,66.66%{transform:scaleX(0)}100%{transform:scaleX(1)}}
+@keyframes wipe{0%,15%{left:78%}50%,65%{left:22%}100%{left:78%}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spinr{to{transform:rotate(-360deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes draw{0%{stroke-dashoffset:2600;fill-opacity:0}55%{stroke-dashoffset:0;fill-opacity:0}80%,100%{stroke-dashoffset:0;fill-opacity:1}}
+@keyframes wingR{0%,40%{opacity:0;transform:translateX(40px)}75%,100%{opacity:1;transform:none}}
+@keyframes wingL{0%,40%{opacity:0;transform:translateX(-40px)}75%,100%{opacity:1;transform:none}}
+@keyframes sweep{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes ring{0%{stroke-dashoffset:540}60%,100%{stroke-dashoffset:270}}
+@keyframes pulse{0%{transform:scale(.8);opacity:.7}100%{transform:scale(2.4);opacity:0}}
+
+.r1{animation:rise 1s cubic-bezier(.16,.84,.34,1) both}
+.d1{animation-delay:.15s}.d2{animation-delay:.3s}.d3{animation-delay:.45s}.d4{animation-delay:.6s}.d5{animation-delay:.75s}
+.rec{animation:blink 1.4s ease-in-out infinite}
+.glow{animation:glow 7s ease-in-out infinite}
+.scan{animation:scan 5s linear infinite}
+.marq{animation:marq 38s linear infinite}
+.s1{animation:slide 9s ease-in-out infinite}
+.s2{animation:slide 9s ease-in-out 3s infinite;opacity:0}
+.s3{animation:slide 9s ease-in-out 6s infinite;opacity:0}
+.b1{animation:bar 9s linear infinite;transform-origin:right}
+.b2{animation:barfill 9s linear infinite;transform-origin:right}
+.b3{animation:barfill2 9s linear infinite;transform-origin:right}
+.wipe{animation:wipe 4.5s cubic-bezier(.65,0,.35,1) infinite}
+.spin{animation:spin 14s linear infinite}
+.spinr{animation:spinr 20s linear infinite}
+.float{animation:float 5s ease-in-out infinite}
+.draw{stroke-dasharray:2600;animation:draw 3.2s cubic-bezier(.65,0,.35,1) .2s both}
+.wr{animation:wingR 3.2s cubic-bezier(.16,.84,.34,1) .2s both}
+.wl{animation:wingL 3.2s cubic-bezier(.16,.84,.34,1) .2s both}
+.sweep{background:linear-gradient(90deg,rgba(41,151,255,0) 0%,rgba(41,151,255,.9) 50%,rgba(41,151,255,0) 100%);background-size:200% 100%;animation:sweep 3.5s linear infinite}
+.ringa{stroke-dasharray:540;animation:ring 2.4s cubic-bezier(.65,0,.35,1) .4s both}
+.pulse{animation:pulse 2.2s ease-out infinite}
+
+@supports (animation-timeline: view()){
+  .rv{animation:rise linear both;animation-timeline:view();animation-range:entry 0% cover 28%}
+}
+
+.card{transition:transform .5s cubic-bezier(.16,.84,.34,1),border-color .4s,background .4s}
+.card:hover{transform:translateY(-6px)}
+.svc:hover{border-color:rgba(41,151,255,.55);background:#101014}
+.svc:hover .ic{background:#2997ff;color:#000}
+.ic{transition:background .4s,color .4s}
+.lcard:hover{border-color:#0071e3}
+.ct .arr{transition:transform .4s cubic-bezier(.16,.84,.34,1),color .3s}
+.ct:hover .arr{transform:translateX(-6px);color:#fff}
+.ct-wa:hover{border-color:rgba(37,211,102,.6)!important;background:rgba(37,211,102,.07)!important}
+.ct-em:hover{border-color:rgba(41,151,255,.6)!important;background:rgba(41,151,255,.07)!important}
+.ct-ig:hover{border-color:rgba(214,36,159,.6)!important;background:rgba(214,36,159,.07)!important}
+.ct:focus-visible{outline:2px solid #2997ff;outline-offset:3px}
+
+
+@media (prefers-reduced-motion:reduce){
+  .r1,.rec,.glow,.scan,.marq,.s1,.s2,.s3,.b1,.b2,.b3,.wipe,.spin,.spinr,.float,.draw,.wr,.wl,.sweep,.ringa,.pulse,.rv{animation:none!important;opacity:1}
+  .s2,.s3{opacity:0!important}
+}
+@media (max-width:900px){
+  .hero-grid,.two,.feat{grid-template-columns:minmax(0,1fr)!important}
+  .grid3,.grid4,.stats{grid-template-columns:minmax(0,1fr)!important}
+  .navlinks{display:none!important}
+  .phone-col{justify-content:center!important}
+  .h1{font-size:44px!important}
+  .h2{font-size:34px!important}
+  .sec{padding-block:80px!important}
+  .tc-hide{display:none!important}
+}
+@media (min-width:901px) and (max-width:1100px){
+  .grid4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .grid3{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+</style>
+
+<style>
+html.gate-open, html.gate-open body{overflow:hidden}
+#gate{position:fixed;inset:0;z-index:100;background:#000;color:#f5f5f7;display:flex;align-items:center;justify-content:center;padding:32px 20px;overflow:auto;
+  transition:opacity .7s cubic-bezier(.65,0,.35,1),transform .7s cubic-bezier(.65,0,.35,1),filter .7s}
+#gate.out{opacity:0;transform:scale(1.04);filter:blur(8px);pointer-events:none}
+#gate[hidden]{display:none}
+#gate .gglow{position:absolute;width:900px;height:900px;max-width:160vw;max-height:160vw;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(41,151,255,.20) 0%,rgba(41,151,255,.05) 42%,rgba(0,0,0,0) 70%);pointer-events:none;animation:glow 7s ease-in-out infinite}
+#gate .frame{position:absolute;inset:20px;pointer-events:none}
+#gate .frame i{position:absolute;width:44px;height:44px;border:0 solid rgba(245,245,247,.4)}
+#gate .frame i:nth-child(1){top:0;left:0;border-top-width:1px;border-left-width:1px}
+#gate .frame i:nth-child(2){top:0;right:0;border-top-width:1px;border-right-width:1px}
+#gate .frame i:nth-child(3){bottom:0;left:0;border-bottom-width:1px;border-left-width:1px}
+#gate .frame i:nth-child(4){bottom:0;right:0;border-bottom-width:1px;border-right-width:1px}
+#gate .inner{position:relative;width:100%;max-width:880px;display:flex;flex-direction:column;align-items:center;text-align:center}
+#gate .glogo{width:130px;height:auto;color:#f5f5f7;overflow:visible}
+#gate .ask{position:relative;height:44px;margin-top:44px;width:100%}
+#gate .ask span{position:absolute;inset:0;font-size:30px;font-weight:700;opacity:0;animation:askcycle 9s ease-in-out infinite}
+#gate .ask span:nth-child(2){animation-delay:3s}
+#gate .ask span:nth-child(3){animation-delay:6s}
+@keyframes askcycle{0%{opacity:0;transform:translateY(12px);filter:blur(4px)}6%,30%{opacity:1;transform:none;filter:none}36%,100%{opacity:0;transform:translateY(-12px);filter:blur(4px)}}
+#gate .sub{margin-top:10px;font-size:14px;color:#a1a1a6;letter-spacing:.04em}
+#gate .opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:40px;width:100%}
+#gate .opt{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;padding:30px 20px 26px;border-radius:26px;
+  border:1px solid rgba(245,245,247,.16);background:rgba(255,255,255,.03);animation:rise .9s cubic-bezier(.16,.84,.34,1) both;
+  transition:transform .45s cubic-bezier(.16,.84,.34,1),border-color .3s,background .3s}
+#gate .opt:nth-child(1){animation-delay:.9s}#gate .opt:nth-child(2){animation-delay:1.05s}#gate .opt:nth-child(3){animation-delay:1.2s}
+#gate .opt:hover{transform:translateY(-6px);border-color:rgba(41,151,255,.65);background:rgba(41,151,255,.08)}
+#gate .opt:focus-visible{outline:2px solid #2997ff;outline-offset:4px}
+#gate .code{font-size:12px;font-weight:600;letter-spacing:.14em;color:#69b4ff;padding:5px 12px;border-radius:980px;background:rgba(41,151,255,.12)}
+#gate .name{font-size:30px;font-weight:700;line-height:1.3}
+#gate .hint{font-size:14px;color:#a1a1a6}
+#gate .tag{margin-top:48px;font-size:12px;letter-spacing:.2em;color:rgba(245,245,247,.4)}
+.langbtn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:980px;
+  font-size:13px;font-weight:600;color:rgba(245,245,247,.85);border:1px solid rgba(245,245,247,.16);transition:border-color .3s,color .3s}
+.langbtn:hover{border-color:rgba(245,245,247,.5);color:#fff}
+.langbtn:focus-visible{outline:2px solid #2997ff;outline-offset:3px}
+[id$="-contact"]{scroll-margin-top:40px}
+[dir="ltr"] .ct:hover .arr{transform:translateX(6px)}
+@media (max-width:700px){#gate .opts{grid-template-columns:minmax(0,1fr)}#gate .opt{flex-direction:row;justify-content:space-between;padding:20px 22px}
+  #gate .name{font-size:24px}#gate .ask span{font-size:24px}#gate .glogo{width:100px}#gate .ask{margin-top:32px}}
+@media (max-width:520px){.lp header a[href$="-top"] > span{display:none}.lp header .btn{padding:0 14px!important;font-size:13px!important}.langbtn{padding:0 10px}}
+@media (prefers-reduced-motion:reduce){#gate .ask span,#gate .opt,#gate .gglow{animation:none!important}#gate .ask span{opacity:0}#gate .ask span:first-child{opacity:1}}
+</style>
+</head>
+<body>
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+  <div class="gglow" aria-hidden="true"></div>
+  <div class="frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div class="inner">
+    <svg class="glogo" viewBox="295 255 485 460" role="img" aria-label="DIA PROD">
+  <path class="draw" d="M 356.61 521.98 Q 471.60 521.77 542.74 521.67 Q 553.63 521.66 565.47 518.96 C 608.67 509.13 635.26 468.84 632.03 425.99 C 629.24 389.07 604.28 356.69 568.44 346.82 Q 554.44 342.97 537.75 342.96 L 356.63 342.07 L 356.61 263.24 Q 471.27 262.77 530.16 262.66 Q 552.65 262.62 564.28 264.25 C 604.97 269.95 642.66 290.34 668.15 322.82 Q 693.32 354.87 700.78 395.52 C 708.30 436.49 702.37 481.40 682.59 517.10 C 653.62 569.39 600.44 601.30 540.50 601.43 L 356.61 600.64 Z" fill="currentColor" stroke="currentColor" stroke-width="3"></path>
+  <path class="wr" d="M 712.45 384.37 L 774.10 346.19 L 774.74 527.38 L 712.25 487.65 Z" fill="currentColor"></path>
+  <path class="wl" d="M 299.54 366.41 L 359.00 386.92 L 359.00 489.10 L 299.13 522.42 Z" fill="currentColor"></path>
+  <text x="537" y="704" text-anchor="middle" fill="currentColor" font-size="56" letter-spacing="40" font-family="Vazirmatn, sans-serif" font-weight="400">DIA PROD</text>
+</svg>
+    <h1 id="gate-title" class="ask">
+      <span lang="fa" dir="rtl">زبان را انتخاب کنید</span>
+      <span lang="en">Choose your language</span>
+      <span lang="it">Scegli la lingua</span>
+    </h1>
+    <div class="sub">DIA PROD · Dental &amp; Surgical Clinics</div>
+    <div class="opts">
+      <button type="button" class="opt" data-lang="fa" lang="fa" dir="rtl"><span class="code">FA</span><span class="name">فارسی</span><span class="hint">ادامه به فارسی</span></button>
+      <button type="button" class="opt" data-lang="en" lang="en"><span class="code">EN</span><span class="name">English</span><span class="hint">Continue in English</span></button>
+      <button type="button" class="opt" data-lang="it" lang="it"><span class="code">IT</span><span class="name">Italiano</span><span class="hint">Continua in italiano</span></button>
+    </div>
+    <div class="tag">CREATE · CAPTURE · CONNECT</div>
+  </div>
+</div>
+<div class="lp" data-lang="fa" lang="fa" dir="rtl" hidden>
+
+
+<div style="background: #000; color: #f5f5f7; overflow: clip; position: relative">
+
+  
+  <header style="position: sticky; top: 0; z-index: 30; background: rgba(0,0,0,.62); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid rgba(245,245,247,.08)">
+    <div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px">
+      <a href="#fa-top" style="display: flex; align-items: center; gap: 12px; text-decoration: none" aria-label="دیاپرود">
+        <svg viewBox="295 258 485 348" width="36" height="26" aria-hidden="true" style="color: #f5f5f7"><path fill="currentColor" d="M 356.61 521.98 A 0.28 0.27 -0.0 0 1 356.89 521.71 Q 471.60 521.77 542.74 521.67 Q 553.63 521.66 565.47 518.96 C 608.67 509.13 635.26 468.84 632.03 425.99 C 629.24 389.07 604.28 356.69 568.44 346.82 Q 554.44 342.97 537.75 342.96 Q 357.76 342.92 357.51 342.92 A 0.86 0.85 -0.7 0 1 356.63 342.07 L 356.61 263.24 A 0.55 0.55 0.0 0 1 357.16 262.69 Q 471.27 262.77 530.16 262.66 Q 552.65 262.62 564.28 264.25 C 604.97 269.95 642.66 290.34 668.15 322.82 Q 693.32 354.87 700.78 395.52 C 708.30 436.49 702.37 481.40 682.59 517.10 C 653.62 569.39 600.44 601.30 540.50 601.43 Q 518.35 601.48 357.42 601.45 A 0.81 0.81 0.0 0 1 356.61 600.64 L 356.61 521.98 Z M 712.45 384.37 L 774.10 346.19 L 774.74 527.38 L 712.25 487.65 Z M 299.54 366.41 L 359.00 386.92 L 359.00 489.10 L 299.13 522.42 Z"></path></svg>
+        <span style="font-size: 14px; font-weight: 600; letter-spacing: .14em; color: #f5f5f7; direction: ltr">DIA PROD</span>
+      </a>
+      <nav class="navlinks" style="display: flex; align-items: center; gap: 4px" aria-label="بخش‌های صفحه">
+        <a class="navlink" href="#fa-services">خدمات</a>
+        <a class="navlink" href="#fa-three-d">انیمیشن سه‌بعدی</a>
+        <a class="navlink" href="#fa-process">روند همکاری</a>
+        <a class="navlink" href="#fa-offer">پیشنهاد ویژه</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 8px"><button type="button" class="langbtn" data-open-gate aria-label="تغییر زبان"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"></path></svg><span>فا</span></button>
+      <a class="btn btn-ghost" href="#fa-contact" style="min-height: 44px; padding: 0 22px; font-size: 14px">رزرو جلسه‌ی آشنایی</a></div>
+    </div>
+  </header>
+
+  
+  <section id="fa-top" style="position: relative; padding-block: 72px 96px">
+    <div class="glow" style="position: absolute; width: 900px; height: 900px; border-radius: 50%; top: -260px; left: -200px; background: radial-gradient(circle, rgba(41,151,255,.22) 0%, rgba(41,151,255,.06) 40%, rgba(0,0,0,0) 70%); pointer-events: none" aria-hidden="true"></div>
+
+    <div class="wrap" style="position: relative">
+      
+      <div class="tc-hide" style="position: absolute; inset: -24px 24px auto 24px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgba(245,245,247,.6)" aria-hidden="true">
+        <span style="display: inline-flex; align-items: center; gap: 8px"><span class="rec" style="width: 9px; height: 9px; border-radius: 50%; background: #ff453a; box-shadow: 0 0 12px rgba(255,69,58,.8)"></span>در حال ضبط</span>
+        <span style="direction: ltr; font-variant-numeric: tabular-nums; letter-spacing: .1em"><span class="tc">00:00:24:00</span></span>
+      </div>
+
+      <div class="hero-grid" style="display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,.85fr); gap: 56px; align-items: center; padding-top: 40px">
+        <div>
+          <div class="kick r1">ویژه‌ی کلینیک‌های دندانپزشکی و جراحی</div>
+          <h1 class="h1 r1 d1" style="margin: 22px 0 0; font-size: 68px; line-height: 1.28; font-weight: 800; letter-spacing: -.01em">کلینیک شما،<br>همان‌طور که شایسته‌اش است<br><span style="font-weight: 200; color: rgba(245,245,247,.72)">دیده شود.</span></h1>
+          <p class="r1 d2" style="margin: 26px 0 0; font-size: 19px; line-height: 2; color: rgba(245,245,247,.72); max-width: 560px">طراحی وب‌سایت، عکاسی، ریلز و تولید محتوای کامل، ویدیوی مصاحبه، قبل و بعد، فیلم‌برداری مراحل عمل و انیمیشن سه‌بعدی؛ همه یک‌جا، با تیم دیاپرود.</p>
+          <div class="r1 d3" style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px">
+            <a class="btn btn-solid" href="#fa-offer">اولین ویدیو با نصف قیمت</a>
+            <a class="btn btn-ghost" href="#fa-services">دیدن خدمات</a>
+          </div>
+          <div class="r1 d4" style="display: flex; flex-wrap: wrap; gap: 28px; margin-top: 48px; padding-top: 28px; border-top: 1px solid rgba(245,245,247,.12)">
+            <div><div style="font-size: 30px; font-weight: 300">۴ سال</div><div style="font-size: 13px; color: #a1a1a6">تجربه در عکاسی و فیلم‌برداری</div></div>
+            <div><div style="font-size: 30px; font-weight: 300">+۵۰</div><div style="font-size: 13px; color: #a1a1a6">ویدیوی تحویل‌شده</div></div>
+            <div><div style="font-size: 30px; font-weight: 300">+۵ میلیون</div><div style="font-size: 13px; color: #a1a1a6">بازدید برای محتوای مشتریان</div></div>
+          </div>
+        </div>
+
+        
+        <div class="phone-col r1 d3" style="display: flex; justify-content: flex-start">
+          <div class="float" style="position: relative; width: 320px; height: 650px; border-radius: 48px; padding: 12px; background: linear-gradient(160deg, #2c2c2e, #0a0a0b); box-shadow: 0 50px 120px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.08), inset 0 0 0 1px rgba(255,255,255,.06)" role="img" aria-label="نمونه‌ی ریلز کلینیک">
+            <div style="position: relative; width: 100%; height: 100%; border-radius: 38px; overflow: hidden; background: #050507">
+
+              
+              <div class="s1" style="position: absolute; inset: 0; background: radial-gradient(120% 80% at 30% 20%, #16324f 0%, #07090d 60%)">
+                <div style="position: absolute; left: 50%; top: 150px; transform: translateX(-50%); width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(180deg, #3a3f47, #1c1f24)"></div>
+                <div style="position: absolute; left: 50%; top: 278px; transform: translateX(-50%); width: 230px; height: 260px; border-radius: 115px 115px 0 0; background: linear-gradient(180deg, #e8eef5, #9aa6b4)"></div>
+                <div style="position: absolute; left: 50%; top: 278px; transform: translateX(-50%); width: 60px; height: 120px; background: linear-gradient(180deg, #2a3a52, #1a2638); clip-path: polygon(0 0, 100% 0, 50% 100%)"></div>
+                <div style="position: absolute; inset: auto 0 0 0; height: 220px; background: linear-gradient(0deg, rgba(0,0,0,.9), rgba(0,0,0,0))"></div>
+                <div style="position: absolute; right: 22px; left: 22px; bottom: 34px">
+                  <div style="font-size: 12px; color: #2997ff; font-weight: 600">معرفی پزشک</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; color: #fff">دکتر [نام پزشک]</div>
+                  <div style="font-size: 13px; color: rgba(245,245,247,.7); margin-top: 2px">متخصص ایمپلنت و زیبایی</div>
+                </div>
+              </div>
+
+              
+              <div class="s2" style="position: absolute; inset: 0; background: #0b0b0d">
+                <div style="position: absolute; inset: 0; background: radial-gradient(90% 60% at 50% 45%, #3a3226 0%, #121010 70%)"></div>
+                <div style="position: absolute; left: 50%; top: 250px; transform: translateX(-50%); display: flex; gap: 6px" aria-hidden="true">
+                  <span style="width: 34px; height: 52px; border-radius: 10px 10px 16px 16px; background: #c9b78f"></span>
+                  <span style="width: 40px; height: 60px; border-radius: 10px 10px 18px 18px; background: #bfa97c"></span>
+                  <span style="width: 40px; height: 60px; border-radius: 10px 10px 18px 18px; background: #c4ae80"></span>
+                  <span style="width: 34px; height: 52px; border-radius: 10px 10px 16px 16px; background: #b9a374"></span>
+                </div>
+                <div class="wipe" style="position: absolute; top: 0; bottom: 0; left: 78%; width: 2px; background: #fff; box-shadow: 0 0 18px rgba(255,255,255,.8)">
+                  <div style="position: absolute; top: 290px; left: 50%; transform: translate(-50%,-50%); width: 34px; height: 34px; border-radius: 50%; background: #fff"></div>
+                  <div style="position: absolute; inset: 0 auto 0 2px; width: 400px; background: radial-gradient(90% 60% at 0% 45%, #2a3644 0%, #0d1117 70%)"></div>
+                </div>
+                <div style="position: absolute; top: 76px; right: 20px; font-size: 12px; padding: 4px 12px; border-radius: 980px; background: rgba(0,0,0,.5); color: #fff">قبل</div>
+                <div style="position: absolute; top: 76px; left: 20px; font-size: 12px; padding: 4px 12px; border-radius: 980px; background: #2997ff; color: #000; font-weight: 600">بعد</div>
+                <div style="position: absolute; right: 22px; left: 22px; bottom: 34px">
+                  <div style="font-size: 12px; color: #2997ff; font-weight: 600">قبل و بعد درمان</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; color: #fff">نتیجه را ببینید</div>
+                  <div style="font-size: 13px; color: rgba(245,245,247,.7); margin-top: 2px">با رضایت کتبی بیمار</div>
+                </div>
+              </div>
+
+              
+              <div class="s3" style="position: absolute; inset: 0; background: radial-gradient(100% 70% at 50% 40%, #0e2340 0%, #030406 70%)">
+                <div style="position: absolute; left: 50%; top: 290px; width: 250px; height: 250px; margin: -125px 0 0 -125px">
+                  <div class="spin" style="position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(41,151,255,.5)"></div>
+                  <div class="spinr" style="position: absolute; inset: 30px; border-radius: 50%; border: 1px solid rgba(245,245,247,.14); border-top-color: #2997ff"></div>
+                  <svg class="float" viewBox="0 0 120 120" style="position: absolute; inset: 55px; width: 140px; height: 140px" fill="none" stroke="#f5f5f7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M40 30c6-6 14-5 20-2 6-3 14-4 20 2 6 7 4 18 1 26-2 6-3 12-4 20-1 9-4 16-8 16s-5-8-6-15c-1-5-2-8-3-8s-2 3-3 8c-1 7-2 15-6 15s-7-7-8-16c-1-8-2-14-4-20-3-8-5-19 1-26z"></path><path d="M60 92v18M54 100h12M55 106h10" stroke="#2997ff"></path></svg>
+                </div>
+                <div style="position: absolute; right: 22px; left: 22px; bottom: 34px">
+                  <div style="font-size: 12px; color: #2997ff; font-weight: 600">انیمیشن سه‌بعدی</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; color: #fff">روند کاشت ایمپلنت</div>
+                  <div style="font-size: 13px; color: rgba(245,245,247,.7); margin-top: 2px">گام‌به‌گام و قابل فهم برای بیمار</div>
+                </div>
+              </div>
+
+              
+              <div style="position: absolute; top: 18px; right: 16px; left: 16px; display: flex; gap: 5px" aria-hidden="true">
+                <div style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.25); overflow: hidden"><div class="b1" style="height: 100%; background: #fff"></div></div>
+                <div style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.25); overflow: hidden"><div class="b2" style="height: 100%; background: #fff"></div></div>
+                <div style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.25); overflow: hidden"><div class="b3" style="height: 100%; background: #fff"></div></div>
+              </div>
+              <div style="position: absolute; top: 34px; right: 16px; display: flex; align-items: center; gap: 8px" aria-hidden="true">
+                <span style="width: 26px; height: 26px; border-radius: 50%; background: #f5f5f7"></span>
+                <span style="font-size: 12px; font-weight: 600; color: #fff">کلینیک شما</span>
+              </div>
+              <div class="scan" style="position: absolute; inset: 0 0 auto 0; height: 60px; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.05), rgba(255,255,255,0)); pointer-events: none" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <div style="border-block: 1px solid rgba(245,245,247,.1); padding-block: 22px; overflow: hidden; direction: ltr" aria-hidden="true">
+    <div class="marq" style="display: flex; width: max-content; gap: 0">
+      <div style="display: flex; gap: 56px; padding-inline: 28px; font-size: 22px; font-weight: 300; color: rgba(245,245,247,.75); white-space: nowrap; direction: rtl">
+        <span>طراحی وب‌سایت</span><span style="color: #2997ff">●</span><span>عکاسی پزشکان و کلینیک</span><span style="color: #2997ff">●</span><span>ریلز اینستاگرام</span><span style="color: #2997ff">●</span><span>ویدیوی مصاحبه</span><span style="color: #2997ff">●</span><span>قبل و بعد درمان</span><span style="color: #2997ff">●</span><span>فیلم‌برداری مراحل عمل</span><span style="color: #2997ff">●</span><span>انیمیشن سه‌بعدی</span><span style="color: #2997ff">●</span>
+      </div>
+      <div style="display: flex; gap: 56px; padding-inline: 28px; font-size: 22px; font-weight: 300; color: rgba(245,245,247,.75); white-space: nowrap; direction: rtl">
+        <span>طراحی وب‌سایت</span><span style="color: #2997ff">●</span><span>عکاسی پزشکان و کلینیک</span><span style="color: #2997ff">●</span><span>ریلز اینستاگرام</span><span style="color: #2997ff">●</span><span>ویدیوی مصاحبه</span><span style="color: #2997ff">●</span><span>قبل و بعد درمان</span><span style="color: #2997ff">●</span><span>فیلم‌برداری مراحل عمل</span><span style="color: #2997ff">●</span><span>انیمیشن سه‌بعدی</span><span style="color: #2997ff">●</span>
+      </div>
+    </div>
+  </div>
+
+  
+  <section class="light sec" style="background: #f5f5f7; color: #1d1d1f; padding-block: 120px; border-radius: 36px 36px 0 0; margin-top: 64px">
+    <div class="wrap">
+      <div class="kick rv">چرا محتوای تصویری؟</div>
+      <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800; max-width: 820px">اعتماد بیمار، قبل از اولین تماس ساخته می‌شود.</h2>
+      <p class="rv" style="margin: 22px 0 0; font-size: 19px; line-height: 2; color: #48484a; max-width: 760px">بیمار امروز پیش از رزرو نوبت، صفحه‌ی اینستاگرام و وب‌سایت کلینیک را می‌بیند. کیفیت تصویری که از شما می‌بیند، همان تصویری است که از کیفیت درمان شما در ذهنش می‌ماند.</p>
+
+      <div class="grid3" style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; margin-top: 56px">
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 28px; padding: 36px">
+          <div style="font-size: 40px; font-weight: 200; color: #0071e3">۰۱</div>
+          <h3 style="margin: 18px 0 10px; font-size: 22px; font-weight: 700">چهره‌ی واقعی پزشک</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.95; color: #48484a">بیمار می‌خواهد پیش از نشستن روی صندلی، پزشکش را بشناسد. ویدیوی کوتاه از پزشک و تیم، فاصله را برمی‌دارد و ترس را کم می‌کند.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 28px; padding: 36px">
+          <div style="font-size: 40px; font-weight: 200; color: #0071e3">۰۲</div>
+          <h3 style="margin: 18px 0 10px; font-size: 22px; font-weight: 700">نتیجه‌ی قابل دیدن</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.95; color: #48484a">ویدیوی قبل و بعد و نمایش مراحل درمان، بهتر از هر توضیحی نشان می‌دهد که در کلینیک شما چه اتفاقی می‌افتد.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 28px; padding: 36px">
+          <div style="font-size: 40px; font-weight: 200; color: #0071e3">۰۳</div>
+          <h3 style="margin: 18px 0 10px; font-size: 22px; font-weight: 700">حضور منظم و حرفه‌ای</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.95; color: #48484a">صفحه‌ای که مرتب، یکدست و باکیفیت به‌روز می‌شود، کلینیک را از رقبا جدا می‌کند و بیمار تازه می‌آورد.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="fa-services" class="sec" style="background: #000; padding-block: 120px; border-radius: 36px 36px 0 0; margin-top: -36px; position: relative">
+    <div class="wrap">
+      <div class="kick rv">خدمات</div>
+      <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800; max-width: 820px">هر آنچه کلینیک برای دیده شدن لازم دارد.</h2>
+      <p class="rv" style="margin: 22px 0 0; font-size: 19px; line-height: 2; color: rgba(245,245,247,.7); max-width: 720px">هر خدمت را می‌توانید جداگانه سفارش دهید یا همه را در یک قرارداد ماهانه داشته باشید.</p>
+
+      <div class="grid4" style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; margin-top: 56px">
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M3 8h18M8 21h8M12 18v3"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">۰۱</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">طراحی وب‌سایت اختصاصی</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">سایتی سریع و سازگار با موبایل که پزشکان، خدمات و نمونه‌کارها را معرفی می‌کند و بیمار راحت نوبت می‌گیرد.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">۰۲</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">عکاسی برای سایت و اینستاگرام</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">پرتره‌ی پزشکان و کادر درمان، فضای کلینیک و تجهیزات؛ با نور و رنگ یکدست که هویت بصری شما را می‌سازد.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M10.5 9.5v5l4-2.5z"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">۰۳</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">ریلز و تولید محتوای کامل</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">برنامه‌ی محتوای ماهانه، سناریو، ضبط، تدوین و مدیریت صفحه؛ تا صفحه‌ی کلینیک همیشه فعال و حرفه‌ای باشد.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">۰۴</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">ویدیوی مصاحبه با پزشک</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">پزشک روش‌های درمان را به زبان ساده توضیح می‌دهد و به پرسش‌های رایج بیماران پاسخ می‌دهد.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M12 5v14M6.5 13.5l2-2 2 2M15 11l1.5 2.5L18 11"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">۰۵</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">ویدیوی قبل و بعد درمان</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">نمایش تفاوت واقعی پیش و پس از درمان، فقط با رضایت‌نامه‌ی کتبی بیمار و حفظ کامل حریم او.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A1.5 1.5 0 0 1 4.5 7H14a1.5 1.5 0 0 1 1.5 1.5v7A1.5 1.5 0 0 1 14 17H4.5A1.5 1.5 0 0 1 3 15.5z"></path><path d="M15.5 10.5L21 7.5v9l-5.5-3"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">۰۶</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">فیلم‌برداری مراحل انجام عمل</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">ضبط مستند مراحل درمان با رعایت کامل ضوابط اتاق عمل، و تدوین نسخه‌ای ملایم برای انتشار عمومی.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(41,151,255,.45); border-radius: 26px; padding: 30px; background: linear-gradient(160deg, #0b1a2e, #050608); display: flex; flex-direction: column; gap: 14px; grid-column: span 2">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+            <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #2997ff; color: #000; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"></path><path d="M12 12l8.5-4.75M12 12v9.5M12 12L3.5 7.25"></path></svg></div>
+            <span style="font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 980px; background: rgba(41,151,255,.16); color: #69b4ff">ویژه</span>
+          </div>
+          <div style="font-size: 13px; color: #a1a1a6">۰۷</div>
+          <h3 style="margin: 0; font-size: 24px; font-weight: 700">انیمیشن سه‌بعدی از کل روند درمان</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.9; color: rgba(245,245,247,.75); max-width: 520px">آنچه دوربین نمی‌تواند نشان دهد، انیمیشن نشان می‌دهد: از کاشت ایمپلنت تا مراحل جراحی، گام‌به‌گام، دقیق و بدون صحنه‌ی آزاردهنده.</p>
+          <a href="#fa-three-d" style="font-size: 15px; font-weight: 600; color: #69b4ff; text-decoration: none; margin-top: auto">بیشتر ببینید ←</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="fa-three-d" class="sec" style="padding-block: 120px; position: relative; background: radial-gradient(70% 60% at 30% 50%, #0b1f3a 0%, #000 70%)">
+    <div class="wrap feat" style="display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 64px; align-items: center">
+      <div>
+        <div class="kick rv">انیمیشن سه‌بعدی</div>
+        <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800">بیمار وقتی ببیند،<br><span style="font-weight: 200; color: rgba(245,245,247,.72)">کمتر می‌ترسد.</span></h2>
+        <p class="rv" style="margin: 24px 0 0; font-size: 18px; line-height: 2; color: rgba(245,245,247,.72); max-width: 540px">تیم انیمیشن دیاپرود کل روند درمان را به‌صورت سه‌بعدی می‌سازد. همین انیمیشن را می‌توانید هم در صفحه منتشر کنید، هم در اتاق مشاوره روی صفحه‌ی نمایش به بیمار نشان دهید.</p>
+        <div class="rv" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px">
+          <span style="font-size: 14px; padding: 8px 18px; border-radius: 980px; border: 1px solid rgba(245,245,247,.2)">کاشت ایمپلنت</span>
+          <span style="font-size: 14px; padding: 8px 18px; border-radius: 980px; border: 1px solid rgba(245,245,247,.2)">روکش و لمینت</span>
+          <span style="font-size: 14px; padding: 8px 18px; border-radius: 980px; border: 1px solid rgba(245,245,247,.2)">درمان ریشه</span>
+          <span style="font-size: 14px; padding: 8px 18px; border-radius: 980px; border: 1px solid rgba(245,245,247,.2)">مراحل جراحی</span>
+        </div>
+      </div>
+      <div class="rv" style="display: flex; justify-content: center">
+        <div style="position: relative; width: 440px; height: 440px; max-width: 100%" role="img" aria-label="نمایش انیمیشن سه‌بعدی دندان">
+          <div class="spin" style="position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(41,151,255,.45)"></div>
+          <div class="spinr" style="position: absolute; inset: 50px; border-radius: 50%; border: 1px solid rgba(245,245,247,.12); border-top-color: #2997ff; border-left-color: #2997ff"></div>
+          <div class="spin" style="position: absolute; inset: 100px; border-radius: 50%; border: 1px solid rgba(245,245,247,.08); border-bottom-color: rgba(245,245,247,.6)"></div>
+          <div style="position: absolute; left: 50%; top: 22px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: #2997ff"><span class="pulse" style="position: absolute; inset: 0; border-radius: 50%; background: #2997ff"></span></div>
+          <svg class="float" viewBox="0 0 120 130" style="position: absolute; left: 50%; top: 50%; width: 190px; height: 206px; margin: -103px 0 0 -95px" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M40 30c6-6 14-5 20-2 6-3 14-4 20 2 6 7 4 18 1 26-2 6-3 12-4 20-1 9-4 16-8 16s-5-8-6-15c-1-5-2-8-3-8s-2 3-3 8c-1 7-2 15-6 15s-7-7-8-16c-1-8-2-14-4-20-3-8-5-19 1-26z" stroke="#f5f5f7" stroke-width="1.4" fill="rgba(245,245,247,.04)"></path>
+            <path d="M48 40c4-2 8-2 12 0 4-2 8-2 12 0" stroke="rgba(245,245,247,.45)" stroke-width="1"></path>
+            <path d="M60 96v26M53 104h14M54 110h12M55 116h10" stroke="#2997ff" stroke-width="1.6"></path>
+          </svg>
+          <div style="position: absolute; right: -6px; top: 120px; font-size: 13px; padding: 8px 14px; border-radius: 14px; background: rgba(28,28,30,.8); border: 1px solid rgba(245,245,247,.12)">گام ۲ · قرار دادن پایه</div>
+          <div style="position: absolute; left: -6px; bottom: 110px; font-size: 13px; padding: 8px 14px; border-radius: 14px; background: rgba(28,28,30,.8); border: 1px solid rgba(245,245,247,.12)">نمای مقطعی لثه</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="fa-process" class="light sec" style="background: #f5f5f7; color: #1d1d1f; padding-block: 120px; border-radius: 36px 36px 0 0">
+    <div class="wrap">
+      <div class="kick rv">روند همکاری</div>
+      <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800">از اولین جلسه تا انتشار، در چهار گام.</h2>
+
+      <div class="rv" style="position: relative; height: 2px; margin-top: 64px; background: #d2d2d7; border-radius: 2px; overflow: hidden" aria-hidden="true"><div class="sweep" style="position: absolute; inset: 0"></div></div>
+
+      <div class="grid4" style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 20px; margin-top: 28px">
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 26px; padding: 30px">
+          <div style="font-size: 44px; font-weight: 200; color: #0071e3; line-height: 1">۱</div>
+          <h3 style="margin: 22px 0 10px; font-size: 20px; font-weight: 700">جلسه‌ی آشنایی</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: #48484a">خدمات کلینیک، بیماران هدف و سلیقه‌ی تصویری شما را می‌شناسیم.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 26px; padding: 30px">
+          <div style="font-size: 44px; font-weight: 200; color: #0071e3; line-height: 1">۲</div>
+          <h3 style="margin: 22px 0 10px; font-size: 20px; font-weight: 700">برنامه‌ی محتوا</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: #48484a">مشخص می‌کنیم چه چیزی، کجا و چه زمانی ضبط شود و هر محتوا با چه هدفی منتشر شود.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 26px; padding: 30px">
+          <div style="font-size: 44px; font-weight: 200; color: #0071e3; line-height: 1">۳</div>
+          <h3 style="margin: 22px 0 10px; font-size: 20px; font-weight: 700">ضبط در کلینیک</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: #48484a">در زمانی که برای شما مناسب است، بدون مختل کردن کار کلینیک و با کمترین مزاحمت برای بیماران.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 26px; padding: 30px">
+          <div style="font-size: 44px; font-weight: 200; color: #0071e3; line-height: 1">۴</div>
+          <h3 style="margin: 22px 0 10px; font-size: 20px; font-weight: 700">تدوین و تحویل</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: #48484a">تدوین، رنگ‌بندی، زیرنویس و طراحی؛ و پس از تأیید شما، تحویل یا انتشار مستقیم.</p>
+        </div>
+      </div>
+
+      <div class="two" style="display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; margin-top: 64px">
+        <div class="rv" style="display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid #d2d2d7">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
+          <div><div style="font-size: 18px; font-weight: 700">حریم خصوصی بیمار</div><div style="font-size: 15px; line-height: 1.9; color: #48484a; margin-top: 4px">هیچ تصویری از بیمار بدون رضایت‌نامه‌ی کتبی او ضبط یا منتشر نمی‌شود.</div></div>
+        </div>
+        <div class="rv" style="display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid #d2d2d7">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+          <div><div style="font-size: 18px; font-weight: 700">احترام به زمان کلینیک</div><div style="font-size: 15px; line-height: 1.9; color: #48484a; margin-top: 4px">برنامه‌ی ضبط با نوبت‌های شما هماهنگ می‌شود تا کار درمان متوقف نشود.</div></div>
+        </div>
+        <div class="rv" style="display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid #d2d2d7">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M4 12h16M12 4v16"></path></svg>
+          <div><div style="font-size: 18px; font-weight: 700">رعایت ضوابط اتاق عمل</div><div style="font-size: 15px; line-height: 1.9; color: #48484a; margin-top: 4px">با لباس مناسب، در فاصله‌ی ایمن و طبق دستور تیم جراحی کار می‌کنیم.</div></div>
+        </div>
+        <div class="rv" style="display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid #d2d2d7">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none" aria-hidden="true"><path d="M5 12l4 4 10-10"></path></svg>
+          <div><div style="font-size: 18px; font-weight: 700">تأیید پیش از انتشار</div><div style="font-size: 15px; line-height: 1.9; color: #48484a; margin-top: 4px">هیچ محتوایی بدون تأیید نهایی شما منتشر نمی‌شود.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="fa-offer" class="sec" style="background: #000; padding-block: 120px; border-radius: 36px 36px 0 0; margin-top: -36px; position: relative; overflow: clip">
+    <div class="glow" style="position: absolute; width: 800px; height: 800px; border-radius: 50%; top: -200px; right: -200px; background: radial-gradient(circle, rgba(41,151,255,.2) 0%, rgba(41,151,255,.05) 45%, rgba(0,0,0,0) 70%); pointer-events: none" aria-hidden="true"></div>
+    <div class="wrap two" style="position: relative; display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); gap: 64px; align-items: center">
+      <div>
+        <div class="kick rv">پیشنهاد شروع همکاری</div>
+        <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 56px; line-height: 1.3; font-weight: 800">اول کار ما را ببینید،<br><span style="font-weight: 200; color: rgba(245,245,247,.72)">بعد تصمیم بگیرید.</span></h2>
+        <p class="rv" style="margin: 24px 0 0; font-size: 19px; line-height: 2; color: rgba(245,245,247,.75); max-width: 560px">اولین ویدیوی کلینیک شما را با نصف قیمت می‌سازیم. اگر از کیفیت کار راضی بودید، همکاری را ادامه می‌دهیم.</p>
+        <ul class="rv" style="list-style: none; margin: 30px 0 0; padding: 0; max-width: 560px">
+          <li style="display: flex; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid rgba(245,245,247,.12); font-size: 16px; color: rgba(245,245,247,.75)"><span style="width: 6px; height: 6px; border-radius: 50%; background: #2997ff; flex: none"></span>شامل یک ریلز معرفی پزشک یا کلینیک</li>
+          <li style="display: flex; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid rgba(245,245,247,.12); font-size: 16px; color: rgba(245,245,247,.75)"><span style="width: 6px; height: 6px; border-radius: 50%; background: #2997ff; flex: none"></span>فقط برای اولین سفارش هر کلینیک</li>
+          <li style="display: flex; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid rgba(245,245,247,.12); border-bottom: 1px solid rgba(245,245,247,.12); font-size: 16px; color: rgba(245,245,247,.75)"><span style="width: 6px; height: 6px; border-radius: 50%; background: #2997ff; flex: none"></span>نیمی از مبلغ پیش از روز ضبط پرداخت می‌شود</li>
+        </ul>
+      </div>
+      <div class="rv" style="display: flex; justify-content: center">
+        <div style="position: relative; width: 300px; height: 300px">
+          <svg viewBox="0 0 200 200" width="300" height="300" aria-hidden="true" style="transform: rotate(-90deg)">
+            <circle cx="100" cy="100" r="86" fill="none" stroke="rgba(245,245,247,.1)" stroke-width="2"></circle>
+            <circle class="ringa" cx="100" cy="100" r="86" fill="none" stroke="#2997ff" stroke-width="3" stroke-linecap="round"></circle>
+          </svg>
+          <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center">
+            <div style="font-size: 84px; font-weight: 200; line-height: 1">۵۰٪</div>
+            <div style="font-size: 16px; color: #a1a1a6; margin-top: 8px">تخفیف اولین ویدیو</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap two" style="position: relative; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; margin-top: 72px">
+      <div class="card rv" style="border: 1px solid rgba(245,245,247,.14); border-radius: 26px; padding: 32px; background: rgba(255,255,255,.03)">
+        <h3 style="margin: 0 0 10px; font-size: 22px; font-weight: 700">سفارش تک‌جلسه‌ای</h3>
+        <p style="margin: 0; font-size: 16px; line-height: 1.9; color: rgba(245,245,247,.68)">برای یک نیاز مشخص: عکاسی تیم، یک ویدیوی معرفی، یک انیمیشن یا طراحی وب‌سایت.</p>
+      </div>
+      <div class="card rv" style="border: 1px solid rgba(41,151,255,.45); border-radius: 26px; padding: 32px; background: linear-gradient(160deg, rgba(41,151,255,.12), rgba(41,151,255,.02))">
+        <h3 style="margin: 0 0 10px; font-size: 22px; font-weight: 700">قرارداد ماهانه</h3>
+        <p style="margin: 0; font-size: 16px; line-height: 1.9; color: rgba(245,245,247,.72)">تولید و انتشار منظم محتوا در هر ماه، با برنامه‌ی ثابت و هزینه‌ی مقرون‌به‌صرفه‌تر.</p>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="sec" style="padding-block: 96px; border-top: 1px solid rgba(245,245,247,.08)">
+    <div class="wrap">
+      <div class="kick rv">درباره‌ی دیاپرود</div>
+      <p class="rv" style="margin: 18px 0 0; font-size: 26px; line-height: 1.8; font-weight: 300; max-width: 900px">دیاپرود یک تیم عکاسی، فیلم‌برداری و تولید محتواست. از ضبط تا تدوین، طراحی و انیمیشن سه‌بعدی، همه‌چیز در یک تیم انجام می‌شود تا کلینیک شما فقط با یک طرف سروکار داشته باشد.</p>
+      <div class="grid4 stats" style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 20px; margin-top: 48px">
+        <div class="rv" style="border-top: 1px solid rgba(245,245,247,.2); padding-top: 18px"><div style="font-size: 40px; font-weight: 200">۴ سال</div><div style="font-size: 14px; color: #a1a1a6; margin-top: 4px">تجربه در عکاسی و فیلم‌برداری</div></div>
+        <div class="rv" style="border-top: 1px solid rgba(245,245,247,.2); padding-top: 18px"><div style="font-size: 40px; font-weight: 200">+۵۰</div><div style="font-size: 14px; color: #a1a1a6; margin-top: 4px">ویدیوی تحویل‌شده</div></div>
+        <div class="rv" style="border-top: 1px solid rgba(245,245,247,.2); padding-top: 18px"><div style="font-size: 40px; font-weight: 200">+۵ میلیون</div><div style="font-size: 14px; color: #a1a1a6; margin-top: 4px">بازدید برای محتوای مشتریان</div></div>
+        <div class="rv" style="border-top: 1px solid rgba(245,245,247,.2); padding-top: 18px"><div style="font-size: 40px; font-weight: 200">میلان</div><div style="font-size: 14px; color: #a1a1a6; margin-top: 4px">هفته‌ی مد میلان ۲۰۲۳ و ۲۰۲۵</div></div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="fa-contact" class="sec" style="padding-block: 120px; position: relative; text-align: center">
+    <div class="glow" style="position: absolute; width: 700px; height: 700px; border-radius: 50%; left: 50%; top: 50%; margin: -350px 0 0 -350px; background: radial-gradient(circle, rgba(41,151,255,.18) 0%, rgba(0,0,0,0) 65%); pointer-events: none" aria-hidden="true"></div>
+    <div class="wrap" style="position: relative; display: flex; flex-direction: column; align-items: center">
+      <svg viewBox="295 255 485 460" width="150" height="142" style="color: #f5f5f7; overflow: visible" role="img" aria-label="لوگوی دیاپرود">
+        <path class="draw" d="M 356.61 521.98 Q 471.60 521.77 542.74 521.67 Q 553.63 521.66 565.47 518.96 C 608.67 509.13 635.26 468.84 632.03 425.99 C 629.24 389.07 604.28 356.69 568.44 346.82 Q 554.44 342.97 537.75 342.96 L 356.63 342.07 L 356.61 263.24 Q 471.27 262.77 530.16 262.66 Q 552.65 262.62 564.28 264.25 C 604.97 269.95 642.66 290.34 668.15 322.82 Q 693.32 354.87 700.78 395.52 C 708.30 436.49 702.37 481.40 682.59 517.10 C 653.62 569.39 600.44 601.30 540.50 601.43 L 356.61 600.64 Z" fill="currentColor" stroke="currentColor" stroke-width="3"></path>
+        <path class="wr" d="M 712.45 384.37 L 774.10 346.19 L 774.74 527.38 L 712.25 487.65 Z" fill="currentColor"></path>
+        <path class="wl" d="M 299.54 366.41 L 359.00 386.92 L 359.00 489.10 L 299.13 522.42 Z" fill="currentColor"></path>
+        <text x="537" y="704" text-anchor="middle" fill="currentColor" font-size="56" letter-spacing="40" font-family="Vazirmatn, sans-serif" font-weight="400" direction="ltr">DIA PROD</text>
+      </svg>
+      <h2 class="h2 rv" style="margin: 48px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800">بیایید کلینیک شما را دیدنی کنیم.</h2>
+      <p class="rv" style="margin: 18px 0 0; font-size: 19px; line-height: 2; color: rgba(245,245,247,.72); max-width: 620px">برای هماهنگی جلسه‌ی آشنایی و ساخت اولین ویدیو با نصف قیمت، در واتس‌اپ یا با ایمیل به ما پیام دهید.</p>
+      <div class="grid3" style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; margin-top: 48px; width: 100%; max-width: 960px; text-align: start">
+
+        <a class="card ct ct-wa rv" href="https://wa.me/393770903078?text=%D8%B3%D9%84%D8%A7%D9%85%D8%8C%20%D8%A8%D8%B1%D8%A7%DB%8C%20%D8%AC%D9%84%D8%B3%D9%87%E2%80%8C%DB%8C%20%D8%A2%D8%B4%D9%86%D8%A7%DB%8C%DB%8C%20%D8%A8%D8%A7%20%D8%AF%DB%8C%D8%A7%D9%BE%D8%B1%D9%88%D8%AF%20%D9%BE%DB%8C%D8%A7%D9%85%20%D9%85%DB%8C%E2%80%8C%D8%AF%D9%87%D9%85." target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 18px; padding: 28px; border-radius: 26px; border: 1px solid rgba(245,245,247,.14); background: rgba(255,255,255,.03); text-decoration: none; color: #f5f5f7">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <span style="width: 60px; height: 60px; border-radius: 18px; background: #25d366; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(37,211,102,.35)">
+              <svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true"><path fill="#fff" d="M16 3.2C8.9 3.2 3.2 8.9 3.2 16c0 2.3.6 4.5 1.7 6.4L3 29l6.8-1.8c1.8 1 3.9 1.5 6.2 1.5 7.1 0 12.8-5.7 12.8-12.8S23.1 3.2 16 3.2zm0 23.3c-2 0-3.9-.5-5.5-1.5l-.4-.2-4 1.1 1.1-3.9-.3-.4c-1.1-1.7-1.7-3.6-1.7-5.6 0-5.8 4.7-10.5 10.5-10.5S26.5 10.2 26.5 16 21.8 26.5 16 26.5z"></path><path fill="#fff" d="M21.8 18.4c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1c-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2s0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.5s0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.1 1.1-1.1 2.7 1.2 3.1 1.3 3.3c.2.2 2.3 3.5 5.5 4.9 2.7 1.1 3.3.9 3.9.8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"></path></svg>
+            </span>
+            <span class="arr" style="font-size: 22px; color: rgba(245,245,247,.45)">←</span>
+          </div>
+          <div>
+            <div style="font-size: 20px; font-weight: 700">واتس‌اپ</div>
+            <div style="font-size: 15px; color: rgba(245,245,247,.62); margin-top: 6px">سریع‌ترین راه برای رزرو جلسه</div>
+          </div>
+          <div style="font-size: 15px; font-weight: 500; color: #4be08a; direction: ltr; text-align: start">+39 377 090 3078</div>
+        </a>
+
+        <a class="card ct ct-em rv" href="mailto:studio@diaprod.it?subject=%D8%AC%D9%84%D8%B3%D9%87%E2%80%8C%DB%8C%20%D8%A2%D8%B4%D9%86%D8%A7%DB%8C%DB%8C%20%D8%A8%D8%A7%20%D8%AF%DB%8C%D8%A7%D9%BE%D8%B1%D9%88%D8%AF" style="display: flex; flex-direction: column; gap: 18px; padding: 28px; border-radius: 26px; border: 1px solid rgba(245,245,247,.14); background: rgba(255,255,255,.03); text-decoration: none; color: #f5f5f7">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <span style="width: 60px; height: 60px; border-radius: 18px; background: #2997ff; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(41,151,255,.35)">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="3"></rect><path d="M3.5 7l8.5 6 8.5-6"></path></svg>
+            </span>
+            <span class="arr" style="font-size: 22px; color: rgba(245,245,247,.45)">←</span>
+          </div>
+          <div>
+            <div style="font-size: 20px; font-weight: 700">ایمیل</div>
+            <div style="font-size: 15px; color: rgba(245,245,247,.62); margin-top: 6px">برای ارسال جزئیات و درخواست پیشنهاد قیمت</div>
+          </div>
+          <div style="font-size: 15px; font-weight: 500; color: #69b4ff; direction: ltr; text-align: start">studio@diaprod.it</div>
+        </a>
+
+        <a class="card ct ct-ig rv" href="https://instagram.com/diaprod.it" target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 18px; padding: 28px; border-radius: 26px; border: 1px solid rgba(245,245,247,.14); background: rgba(255,255,255,.03); text-decoration: none; color: #f5f5f7">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <span style="width: 60px; height: 60px; border-radius: 18px; background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(214,36,159,.35)">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.4" cy="6.6" r="1" fill="#fff" stroke="none"></circle></svg>
+            </span>
+            <span class="arr" style="font-size: 22px; color: rgba(245,245,247,.45)">←</span>
+          </div>
+          <div>
+            <div style="font-size: 20px; font-weight: 700">اینستاگرام</div>
+            <div style="font-size: 15px; color: rgba(245,245,247,.62); margin-top: 6px">نمونه‌کارها را ببینید و پیام دهید</div>
+          </div>
+          <div style="font-size: 15px; font-weight: 500; color: #f77fbe; direction: ltr; text-align: start">@diaprod.it</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top: 1px solid rgba(245,245,247,.08); padding-block: 28px">
+    <div class="wrap" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: #a1a1a6">
+      <span>دیاپرود · عکاسی · فیلم‌برداری · تولید محتوا</span>
+      <span style="direction: ltr; letter-spacing: .14em">CREATE · CAPTURE · CONNECT</span>
+    </div>
+  </footer>
+
+</div>
+
+</div>
+<div class="lp" data-lang="en" lang="en" dir="ltr" hidden>
+
+
+<div style="background: #000; color: #f5f5f7; overflow: clip; position: relative">
+
+  
+  <header style="position: sticky; top: 0; z-index: 30; background: rgba(0,0,0,.62); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid rgba(245,245,247,.08)">
+    <div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px">
+      <a href="#en-top" style="display: flex; align-items: center; gap: 12px; text-decoration: none" aria-label="DIA PROD">
+        <svg viewBox="295 258 485 348" width="36" height="26" aria-hidden="true" style="color: #f5f5f7"><path fill="currentColor" d="M 356.61 521.98 A 0.28 0.27 -0.0 0 1 356.89 521.71 Q 471.60 521.77 542.74 521.67 Q 553.63 521.66 565.47 518.96 C 608.67 509.13 635.26 468.84 632.03 425.99 C 629.24 389.07 604.28 356.69 568.44 346.82 Q 554.44 342.97 537.75 342.96 Q 357.76 342.92 357.51 342.92 A 0.86 0.85 -0.7 0 1 356.63 342.07 L 356.61 263.24 A 0.55 0.55 0.0 0 1 357.16 262.69 Q 471.27 262.77 530.16 262.66 Q 552.65 262.62 564.28 264.25 C 604.97 269.95 642.66 290.34 668.15 322.82 Q 693.32 354.87 700.78 395.52 C 708.30 436.49 702.37 481.40 682.59 517.10 C 653.62 569.39 600.44 601.30 540.50 601.43 Q 518.35 601.48 357.42 601.45 A 0.81 0.81 0.0 0 1 356.61 600.64 L 356.61 521.98 Z M 712.45 384.37 L 774.10 346.19 L 774.74 527.38 L 712.25 487.65 Z M 299.54 366.41 L 359.00 386.92 L 359.00 489.10 L 299.13 522.42 Z"></path></svg>
+        <span style="font-size: 14px; font-weight: 600; letter-spacing: .14em; color: #f5f5f7; direction: ltr">DIA PROD</span>
+      </a>
+      <nav class="navlinks" style="display: flex; align-items: center; gap: 4px" aria-label="Page sections">
+        <a class="navlink" href="#en-services">Services</a>
+        <a class="navlink" href="#en-three-d">3D animation</a>
+        <a class="navlink" href="#en-process">How we work</a>
+        <a class="navlink" href="#en-offer">Special offer</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 8px"><button type="button" class="langbtn" data-open-gate aria-label="Change language"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"></path></svg><span>EN</span></button>
+      <a class="btn btn-ghost" href="#en-contact" style="min-height: 44px; padding: 0 22px; font-size: 14px">Book an intro meeting</a></div>
+    </div>
+  </header>
+
+  
+  <section id="en-top" style="position: relative; padding-block: 72px 96px">
+    <div class="glow" style="position: absolute; width: 900px; height: 900px; border-radius: 50%; top: -260px; left: -200px; background: radial-gradient(circle, rgba(41,151,255,.22) 0%, rgba(41,151,255,.06) 40%, rgba(0,0,0,0) 70%); pointer-events: none" aria-hidden="true"></div>
+
+    <div class="wrap" style="position: relative">
+      
+      <div class="tc-hide" style="position: absolute; inset: -24px 24px auto 24px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgba(245,245,247,.6)" aria-hidden="true">
+        <span style="display: inline-flex; align-items: center; gap: 8px"><span class="rec" style="width: 9px; height: 9px; border-radius: 50%; background: #ff453a; box-shadow: 0 0 12px rgba(255,69,58,.8)"></span>Recording</span>
+        <span style="direction: ltr; font-variant-numeric: tabular-nums; letter-spacing: .1em"><span class="tc">00:00:24:00</span></span>
+      </div>
+
+      <div class="hero-grid" style="display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,.85fr); gap: 56px; align-items: center; padding-top: 40px">
+        <div>
+          <div class="kick r1">For dental and surgical clinics</div>
+          <h1 class="h1 r1 d1" style="margin: 22px 0 0; font-size: 68px; line-height: 1.28; font-weight: 800; letter-spacing: -.01em">Your clinic,<br>seen the way<br><span style="font-weight: 200; color: rgba(245,245,247,.72)">it deserves.</span></h1>
+          <p class="r1 d2" style="margin: 26px 0 0; font-size: 19px; line-height: 2; color: rgba(245,245,247,.72); max-width: 560px">Website design, photography, reels and full content production, doctor interviews, before & after, procedure filming and 3D animation — all in one place, with the DIA PROD team.</p>
+          <div class="r1 d3" style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px">
+            <a class="btn btn-solid" href="#en-offer">First video at half price</a>
+            <a class="btn btn-ghost" href="#en-services">See services</a>
+          </div>
+          <div class="r1 d4" style="display: flex; flex-wrap: wrap; gap: 28px; margin-top: 48px; padding-top: 28px; border-top: 1px solid rgba(245,245,247,.12)">
+            <div><div style="font-size: 30px; font-weight: 300">4 years</div><div style="font-size: 13px; color: #a1a1a6">of photo and video experience</div></div>
+            <div><div style="font-size: 30px; font-weight: 300">50+</div><div style="font-size: 13px; color: #a1a1a6">videos delivered</div></div>
+            <div><div style="font-size: 30px; font-weight: 300">5M+</div><div style="font-size: 13px; color: #a1a1a6">views generated for clients</div></div>
+          </div>
+        </div>
+
+        
+        <div class="phone-col r1 d3" style="display: flex; justify-content: flex-start">
+          <div class="float" style="position: relative; width: 320px; height: 650px; border-radius: 48px; padding: 12px; background: linear-gradient(160deg, #2c2c2e, #0a0a0b); box-shadow: 0 50px 120px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.08), inset 0 0 0 1px rgba(255,255,255,.06)" role="img" aria-label="Sample clinic reel">
+            <div style="position: relative; width: 100%; height: 100%; border-radius: 38px; overflow: hidden; background: #050507">
+
+              
+              <div class="s1" style="position: absolute; inset: 0; background: radial-gradient(120% 80% at 30% 20%, #16324f 0%, #07090d 60%)">
+                <div style="position: absolute; left: 50%; top: 150px; transform: translateX(-50%); width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(180deg, #3a3f47, #1c1f24)"></div>
+                <div style="position: absolute; left: 50%; top: 278px; transform: translateX(-50%); width: 230px; height: 260px; border-radius: 115px 115px 0 0; background: linear-gradient(180deg, #e8eef5, #9aa6b4)"></div>
+                <div style="position: absolute; left: 50%; top: 278px; transform: translateX(-50%); width: 60px; height: 120px; background: linear-gradient(180deg, #2a3a52, #1a2638); clip-path: polygon(0 0, 100% 0, 50% 100%)"></div>
+                <div style="position: absolute; inset: auto 0 0 0; height: 220px; background: linear-gradient(0deg, rgba(0,0,0,.9), rgba(0,0,0,0))"></div>
+                <div style="position: absolute; right: 22px; left: 22px; bottom: 34px">
+                  <div style="font-size: 12px; color: #2997ff; font-weight: 600">Meet the doctor</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; color: #fff">Dr. [Doctor's name]</div>
+                  <div style="font-size: 13px; color: rgba(245,245,247,.7); margin-top: 2px">Implant & cosmetic specialist</div>
+                </div>
+              </div>
+
+              
+              <div class="s2" style="position: absolute; inset: 0; background: #0b0b0d">
+                <div style="position: absolute; inset: 0; background: radial-gradient(90% 60% at 50% 45%, #3a3226 0%, #121010 70%)"></div>
+                <div style="position: absolute; left: 50%; top: 250px; transform: translateX(-50%); display: flex; gap: 6px" aria-hidden="true">
+                  <span style="width: 34px; height: 52px; border-radius: 10px 10px 16px 16px; background: #c9b78f"></span>
+                  <span style="width: 40px; height: 60px; border-radius: 10px 10px 18px 18px; background: #bfa97c"></span>
+                  <span style="width: 40px; height: 60px; border-radius: 10px 10px 18px 18px; background: #c4ae80"></span>
+                  <span style="width: 34px; height: 52px; border-radius: 10px 10px 16px 16px; background: #b9a374"></span>
+                </div>
+                <div class="wipe" style="position: absolute; top: 0; bottom: 0; left: 78%; width: 2px; background: #fff; box-shadow: 0 0 18px rgba(255,255,255,.8)">
+                  <div style="position: absolute; top: 290px; left: 50%; transform: translate(-50%,-50%); width: 34px; height: 34px; border-radius: 50%; background: #fff"></div>
+                  <div style="position: absolute; inset: 0 auto 0 2px; width: 400px; background: radial-gradient(90% 60% at 0% 45%, #2a3644 0%, #0d1117 70%)"></div>
+                </div>
+                <div style="position: absolute; top: 76px; right: 20px; font-size: 12px; padding: 4px 12px; border-radius: 980px; background: rgba(0,0,0,.5); color: #fff">Before</div>
+                <div style="position: absolute; top: 76px; left: 20px; font-size: 12px; padding: 4px 12px; border-radius: 980px; background: #2997ff; color: #000; font-weight: 600">After</div>
+                <div style="position: absolute; right: 22px; left: 22px; bottom: 34px">
+                  <div style="font-size: 12px; color: #2997ff; font-weight: 600">Before & after</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; color: #fff">See the result</div>
+                  <div style="font-size: 13px; color: rgba(245,245,247,.7); margin-top: 2px">With the patient's written consent</div>
+                </div>
+              </div>
+
+              
+              <div class="s3" style="position: absolute; inset: 0; background: radial-gradient(100% 70% at 50% 40%, #0e2340 0%, #030406 70%)">
+                <div style="position: absolute; left: 50%; top: 290px; width: 250px; height: 250px; margin: -125px 0 0 -125px">
+                  <div class="spin" style="position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(41,151,255,.5)"></div>
+                  <div class="spinr" style="position: absolute; inset: 30px; border-radius: 50%; border: 1px solid rgba(245,245,247,.14); border-top-color: #2997ff"></div>
+                  <svg class="float" viewBox="0 0 120 120" style="position: absolute; inset: 55px; width: 140px; height: 140px" fill="none" stroke="#f5f5f7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M40 30c6-6 14-5 20-2 6-3 14-4 20 2 6 7 4 18 1 26-2 6-3 12-4 20-1 9-4 16-8 16s-5-8-6-15c-1-5-2-8-3-8s-2 3-3 8c-1 7-2 15-6 15s-7-7-8-16c-1-8-2-14-4-20-3-8-5-19 1-26z"></path><path d="M60 92v18M54 100h12M55 106h10" stroke="#2997ff"></path></svg>
+                </div>
+                <div style="position: absolute; right: 22px; left: 22px; bottom: 34px">
+                  <div style="font-size: 12px; color: #2997ff; font-weight: 600">3D animation</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; color: #fff">Implant placement</div>
+                  <div style="font-size: 13px; color: rgba(245,245,247,.7); margin-top: 2px">Step by step, easy for patients to follow</div>
+                </div>
+              </div>
+
+              
+              <div style="position: absolute; top: 18px; right: 16px; left: 16px; display: flex; gap: 5px" aria-hidden="true">
+                <div style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.25); overflow: hidden"><div class="b1" style="height: 100%; background: #fff"></div></div>
+                <div style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.25); overflow: hidden"><div class="b2" style="height: 100%; background: #fff"></div></div>
+                <div style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.25); overflow: hidden"><div class="b3" style="height: 100%; background: #fff"></div></div>
+              </div>
+              <div style="position: absolute; top: 34px; right: 16px; display: flex; align-items: center; gap: 8px" aria-hidden="true">
+                <span style="width: 26px; height: 26px; border-radius: 50%; background: #f5f5f7"></span>
+                <span style="font-size: 12px; font-weight: 600; color: #fff">Your clinic</span>
+              </div>
+              <div class="scan" style="position: absolute; inset: 0 0 auto 0; height: 60px; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.05), rgba(255,255,255,0)); pointer-events: none" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <div style="border-block: 1px solid rgba(245,245,247,.1); padding-block: 22px; overflow: hidden; direction: ltr" aria-hidden="true">
+    <div class="marq" style="display: flex; width: max-content; gap: 0">
+      <div style="display: flex; gap: 56px; padding-inline: 28px; font-size: 22px; font-weight: 300; color: rgba(245,245,247,.75); white-space: nowrap; direction: ltr">
+        <span>Website design</span><span style="color: #2997ff">●</span><span>Doctor & clinic photography</span><span style="color: #2997ff">●</span><span>Instagram reels</span><span style="color: #2997ff">●</span><span>Interview videos</span><span style="color: #2997ff">●</span><span>Before & after</span><span style="color: #2997ff">●</span><span>Procedure filming</span><span style="color: #2997ff">●</span><span>3D animation</span><span style="color: #2997ff">●</span>
+      </div>
+      <div style="display: flex; gap: 56px; padding-inline: 28px; font-size: 22px; font-weight: 300; color: rgba(245,245,247,.75); white-space: nowrap; direction: ltr">
+        <span>Website design</span><span style="color: #2997ff">●</span><span>Doctor & clinic photography</span><span style="color: #2997ff">●</span><span>Instagram reels</span><span style="color: #2997ff">●</span><span>Interview videos</span><span style="color: #2997ff">●</span><span>Before & after</span><span style="color: #2997ff">●</span><span>Procedure filming</span><span style="color: #2997ff">●</span><span>3D animation</span><span style="color: #2997ff">●</span>
+      </div>
+    </div>
+  </div>
+
+  
+  <section class="light sec" style="background: #f5f5f7; color: #1d1d1f; padding-block: 120px; border-radius: 36px 36px 0 0; margin-top: 64px">
+    <div class="wrap">
+      <div class="kick rv">Why visual content?</div>
+      <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800; max-width: 820px">Patient trust is built before the first call.</h2>
+      <p class="rv" style="margin: 22px 0 0; font-size: 19px; line-height: 2; color: #48484a; max-width: 760px">Before booking, today's patients look at your clinic's Instagram and website. The quality of what they see there is the quality they expect from your treatment.</p>
+
+      <div class="grid3" style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; margin-top: 56px">
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 28px; padding: 36px">
+          <div style="font-size: 40px; font-weight: 200; color: #0071e3">01</div>
+          <h3 style="margin: 18px 0 10px; font-size: 22px; font-weight: 700">The real face of the doctor</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.95; color: #48484a">Patients want to know their doctor before they sit in the chair. A short video of the doctor and team closes the distance and eases the fear.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 28px; padding: 36px">
+          <div style="font-size: 40px; font-weight: 200; color: #0071e3">02</div>
+          <h3 style="margin: 18px 0 10px; font-size: 22px; font-weight: 700">Results people can see</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.95; color: #48484a">Before-and-after videos and treatment walkthroughs show what happens in your clinic better than any description.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 28px; padding: 36px">
+          <div style="font-size: 40px; font-weight: 200; color: #0071e3">03</div>
+          <h3 style="margin: 18px 0 10px; font-size: 22px; font-weight: 700">A steady, professional presence</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.95; color: #48484a">A page that's updated regularly, consistently and with care sets your clinic apart and brings in new patients.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="en-services" class="sec" style="background: #000; padding-block: 120px; border-radius: 36px 36px 0 0; margin-top: -36px; position: relative">
+    <div class="wrap">
+      <div class="kick rv">Services</div>
+      <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800; max-width: 820px">Everything a clinic needs to be seen.</h2>
+      <p class="rv" style="margin: 22px 0 0; font-size: 19px; line-height: 2; color: rgba(245,245,247,.7); max-width: 720px">Order any service on its own, or get everything in one monthly plan.</p>
+
+      <div class="grid4" style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; margin-top: 56px">
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M3 8h18M8 21h8M12 18v3"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">01</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Custom website design</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">A fast, mobile-friendly site that presents your doctors, services and results, and makes booking easy.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">02</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Photography for web and Instagram</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">Portraits of doctors and staff, the clinic space and equipment — with consistent light and colour that builds your visual identity.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M10.5 9.5v5l4-2.5z"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">03</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Reels & full content production</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">Monthly content plan, scripting, filming, editing and page management, so your clinic's page is always active and professional.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">04</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Doctor interview videos</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">The doctor explains treatments in plain language and answers patients' most common questions.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M12 5v14M6.5 13.5l2-2 2 2M15 11l1.5 2.5L18 11"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">05</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Before & after videos</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">The real difference before and after treatment — only with the patient's written consent and full respect for their privacy.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A1.5 1.5 0 0 1 4.5 7H14a1.5 1.5 0 0 1 1.5 1.5v7A1.5 1.5 0 0 1 14 17H4.5A1.5 1.5 0 0 1 3 15.5z"></path><path d="M15.5 10.5L21 7.5v9l-5.5-3"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">06</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Procedure filming</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">Documenting each stage of treatment in full compliance with operating-room protocols, with a gentler cut edited for public release.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(41,151,255,.45); border-radius: 26px; padding: 30px; background: linear-gradient(160deg, #0b1a2e, #050608); display: flex; flex-direction: column; gap: 14px; grid-column: span 2">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+            <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #2997ff; color: #000; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"></path><path d="M12 12l8.5-4.75M12 12v9.5M12 12L3.5 7.25"></path></svg></div>
+            <span style="font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 980px; background: rgba(41,151,255,.16); color: #69b4ff">Featured</span>
+          </div>
+          <div style="font-size: 13px; color: #a1a1a6">07</div>
+          <h3 style="margin: 0; font-size: 24px; font-weight: 700">3D animation of the full treatment</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.9; color: rgba(245,245,247,.75); max-width: 520px">What a camera can't show, animation can: from implant placement to surgical steps — step by step, precise, and nothing hard to watch.</p>
+          <a href="#en-three-d" style="font-size: 15px; font-weight: 600; color: #69b4ff; text-decoration: none; margin-top: auto">See more →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="en-three-d" class="sec" style="padding-block: 120px; position: relative; background: radial-gradient(70% 60% at 30% 50%, #0b1f3a 0%, #000 70%)">
+    <div class="wrap feat" style="display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 64px; align-items: center">
+      <div>
+        <div class="kick rv">3D animation</div>
+        <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800">When patients can see it,<br><span style="font-weight: 200; color: rgba(245,245,247,.72)">they're less afraid.</span></h2>
+        <p class="rv" style="margin: 24px 0 0; font-size: 18px; line-height: 2; color: rgba(245,245,247,.72); max-width: 540px">DIA PROD's animation team builds the entire treatment in 3D. Use the same animation on your social pages and on the screen in your consultation room.</p>
+        <div class="rv" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px">
+          <span style="font-size: 14px; padding: 8px 18px; border-radius: 980px; border: 1px solid rgba(245,245,247,.2)">Implant placement</span>
+          <span style="font-size: 14px; padding: 8px 18px; border-radius: 980px; border: 1px solid rgba(245,245,247,.2)">Crowns & veneers</span>
+          <span style="font-size: 14px; padding: 8px 18px; border-radius: 980px; border: 1px solid rgba(245,245,247,.2)">Root canal</span>
+          <span style="font-size: 14px; padding: 8px 18px; border-radius: 980px; border: 1px solid rgba(245,245,247,.2)">Surgical steps</span>
+        </div>
+      </div>
+      <div class="rv" style="display: flex; justify-content: center">
+        <div style="position: relative; width: 440px; height: 440px; max-width: 100%" role="img" aria-label="3D tooth animation preview">
+          <div class="spin" style="position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(41,151,255,.45)"></div>
+          <div class="spinr" style="position: absolute; inset: 50px; border-radius: 50%; border: 1px solid rgba(245,245,247,.12); border-top-color: #2997ff; border-left-color: #2997ff"></div>
+          <div class="spin" style="position: absolute; inset: 100px; border-radius: 50%; border: 1px solid rgba(245,245,247,.08); border-bottom-color: rgba(245,245,247,.6)"></div>
+          <div style="position: absolute; left: 50%; top: 22px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: #2997ff"><span class="pulse" style="position: absolute; inset: 0; border-radius: 50%; background: #2997ff"></span></div>
+          <svg class="float" viewBox="0 0 120 130" style="position: absolute; left: 50%; top: 50%; width: 190px; height: 206px; margin: -103px 0 0 -95px" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M40 30c6-6 14-5 20-2 6-3 14-4 20 2 6 7 4 18 1 26-2 6-3 12-4 20-1 9-4 16-8 16s-5-8-6-15c-1-5-2-8-3-8s-2 3-3 8c-1 7-2 15-6 15s-7-7-8-16c-1-8-2-14-4-20-3-8-5-19 1-26z" stroke="#f5f5f7" stroke-width="1.4" fill="rgba(245,245,247,.04)"></path>
+            <path d="M48 40c4-2 8-2 12 0 4-2 8-2 12 0" stroke="rgba(245,245,247,.45)" stroke-width="1"></path>
+            <path d="M60 96v26M53 104h14M54 110h12M55 116h10" stroke="#2997ff" stroke-width="1.6"></path>
+          </svg>
+          <div style="position: absolute; right: -6px; top: 120px; font-size: 13px; padding: 8px 14px; border-radius: 14px; background: rgba(28,28,30,.8); border: 1px solid rgba(245,245,247,.12)">Step 2 · Placing the post</div>
+          <div style="position: absolute; left: -6px; bottom: 110px; font-size: 13px; padding: 8px 14px; border-radius: 14px; background: rgba(28,28,30,.8); border: 1px solid rgba(245,245,247,.12)">Gum cross-section</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="en-process" class="light sec" style="background: #f5f5f7; color: #1d1d1f; padding-block: 120px; border-radius: 36px 36px 0 0">
+    <div class="wrap">
+      <div class="kick rv">How we work</div>
+      <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800">From first meeting to publishing, in four steps.</h2>
+
+      <div class="rv" style="position: relative; height: 2px; margin-top: 64px; background: #d2d2d7; border-radius: 2px; overflow: hidden" aria-hidden="true"><div class="sweep" style="position: absolute; inset: 0"></div></div>
+
+      <div class="grid4" style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 20px; margin-top: 28px">
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 26px; padding: 30px">
+          <div style="font-size: 44px; font-weight: 200; color: #0071e3; line-height: 1">1</div>
+          <h3 style="margin: 22px 0 10px; font-size: 20px; font-weight: 700">Intro meeting</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: #48484a">We get to know your clinic's services, target patients and visual taste.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 26px; padding: 30px">
+          <div style="font-size: 44px; font-weight: 200; color: #0071e3; line-height: 1">2</div>
+          <h3 style="margin: 22px 0 10px; font-size: 20px; font-weight: 700">Content plan</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: #48484a">We decide what to film, where and when, and what each piece of content is for.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 26px; padding: 30px">
+          <div style="font-size: 44px; font-weight: 200; color: #0071e3; line-height: 1">3</div>
+          <h3 style="margin: 22px 0 10px; font-size: 20px; font-weight: 700">Filming at your clinic</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: #48484a">At a time that suits you, without disrupting your work and with minimal disturbance to patients.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 26px; padding: 30px">
+          <div style="font-size: 44px; font-weight: 200; color: #0071e3; line-height: 1">4</div>
+          <h3 style="margin: 22px 0 10px; font-size: 20px; font-weight: 700">Editing & delivery</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: #48484a">Editing, colour grading, subtitles and design — then, once you approve, delivery or direct publishing.</p>
+        </div>
+      </div>
+
+      <div class="two" style="display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; margin-top: 64px">
+        <div class="rv" style="display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid #d2d2d7">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
+          <div><div style="font-size: 18px; font-weight: 700">Patient privacy</div><div style="font-size: 15px; line-height: 1.9; color: #48484a; margin-top: 4px">No image of a patient is recorded or published without their written consent.</div></div>
+        </div>
+        <div class="rv" style="display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid #d2d2d7">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+          <div><div style="font-size: 18px; font-weight: 700">Respect for your schedule</div><div style="font-size: 15px; line-height: 1.9; color: #48484a; margin-top: 4px">Filming is planned around your appointments, so treatment never stops.</div></div>
+        </div>
+        <div class="rv" style="display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid #d2d2d7">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M4 12h16M12 4v16"></path></svg>
+          <div><div style="font-size: 18px; font-weight: 700">Operating-room protocols</div><div style="font-size: 15px; line-height: 1.9; color: #48484a; margin-top: 4px">We work in proper attire, at a safe distance and under the surgical team's direction.</div></div>
+        </div>
+        <div class="rv" style="display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid #d2d2d7">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none" aria-hidden="true"><path d="M5 12l4 4 10-10"></path></svg>
+          <div><div style="font-size: 18px; font-weight: 700">Approval before publishing</div><div style="font-size: 15px; line-height: 1.9; color: #48484a; margin-top: 4px">Nothing is published without your final approval.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="en-offer" class="sec" style="background: #000; padding-block: 120px; border-radius: 36px 36px 0 0; margin-top: -36px; position: relative; overflow: clip">
+    <div class="glow" style="position: absolute; width: 800px; height: 800px; border-radius: 50%; top: -200px; right: -200px; background: radial-gradient(circle, rgba(41,151,255,.2) 0%, rgba(41,151,255,.05) 45%, rgba(0,0,0,0) 70%); pointer-events: none" aria-hidden="true"></div>
+    <div class="wrap two" style="position: relative; display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); gap: 64px; align-items: center">
+      <div>
+        <div class="kick rv">Introductory offer</div>
+        <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 56px; line-height: 1.3; font-weight: 800">See our work first,<br><span style="font-weight: 200; color: rgba(245,245,247,.72)">then decide.</span></h2>
+        <p class="rv" style="margin: 24px 0 0; font-size: 19px; line-height: 2; color: rgba(245,245,247,.75); max-width: 560px">We'll make your clinic's first video at half price. If you're happy with the quality, we continue working together.</p>
+        <ul class="rv" style="list-style: none; margin: 30px 0 0; padding: 0; max-width: 560px">
+          <li style="display: flex; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid rgba(245,245,247,.12); font-size: 16px; color: rgba(245,245,247,.75)"><span style="width: 6px; height: 6px; border-radius: 50%; background: #2997ff; flex: none"></span>One doctor or clinic intro reel</li>
+          <li style="display: flex; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid rgba(245,245,247,.12); font-size: 16px; color: rgba(245,245,247,.75)"><span style="width: 6px; height: 6px; border-radius: 50%; background: #2997ff; flex: none"></span>Only for each clinic's first order</li>
+          <li style="display: flex; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid rgba(245,245,247,.12); border-bottom: 1px solid rgba(245,245,247,.12); font-size: 16px; color: rgba(245,245,247,.75)"><span style="width: 6px; height: 6px; border-radius: 50%; background: #2997ff; flex: none"></span>Half the fee is paid before the shoot day</li>
+        </ul>
+      </div>
+      <div class="rv" style="display: flex; justify-content: center">
+        <div style="position: relative; width: 300px; height: 300px">
+          <svg viewBox="0 0 200 200" width="300" height="300" aria-hidden="true" style="transform: rotate(-90deg)">
+            <circle cx="100" cy="100" r="86" fill="none" stroke="rgba(245,245,247,.1)" stroke-width="2"></circle>
+            <circle class="ringa" cx="100" cy="100" r="86" fill="none" stroke="#2997ff" stroke-width="3" stroke-linecap="round"></circle>
+          </svg>
+          <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center">
+            <div style="font-size: 84px; font-weight: 200; line-height: 1">50%</div>
+            <div style="font-size: 16px; color: #a1a1a6; margin-top: 8px">off your first video</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap two" style="position: relative; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; margin-top: 72px">
+      <div class="card rv" style="border: 1px solid rgba(245,245,247,.14); border-radius: 26px; padding: 32px; background: rgba(255,255,255,.03)">
+        <h3 style="margin: 0 0 10px; font-size: 22px; font-weight: 700">One-off project</h3>
+        <p style="margin: 0; font-size: 16px; line-height: 1.9; color: rgba(245,245,247,.68)">For a specific need: team photos, an intro video, an animation or a website.</p>
+      </div>
+      <div class="card rv" style="border: 1px solid rgba(41,151,255,.45); border-radius: 26px; padding: 32px; background: linear-gradient(160deg, rgba(41,151,255,.12), rgba(41,151,255,.02))">
+        <h3 style="margin: 0 0 10px; font-size: 22px; font-weight: 700">Monthly plan</h3>
+        <p style="margin: 0; font-size: 16px; line-height: 1.9; color: rgba(245,245,247,.72)">Regular content production and publishing every month, on a fixed schedule and at a better rate.</p>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="sec" style="padding-block: 96px; border-top: 1px solid rgba(245,245,247,.08)">
+    <div class="wrap">
+      <div class="kick rv">About DIA PROD</div>
+      <p class="rv" style="margin: 18px 0 0; font-size: 26px; line-height: 1.8; font-weight: 300; max-width: 900px">DIA PROD is a photography, video and content production team. From filming to editing, design and 3D animation, everything happens in one team — so your clinic deals with just one partner.</p>
+      <div class="grid4 stats" style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 20px; margin-top: 48px">
+        <div class="rv" style="border-top: 1px solid rgba(245,245,247,.2); padding-top: 18px"><div style="font-size: 40px; font-weight: 200">4 years</div><div style="font-size: 14px; color: #a1a1a6; margin-top: 4px">of photo and video experience</div></div>
+        <div class="rv" style="border-top: 1px solid rgba(245,245,247,.2); padding-top: 18px"><div style="font-size: 40px; font-weight: 200">50+</div><div style="font-size: 14px; color: #a1a1a6; margin-top: 4px">videos delivered</div></div>
+        <div class="rv" style="border-top: 1px solid rgba(245,245,247,.2); padding-top: 18px"><div style="font-size: 40px; font-weight: 200">5M+</div><div style="font-size: 14px; color: #a1a1a6; margin-top: 4px">views generated for clients</div></div>
+        <div class="rv" style="border-top: 1px solid rgba(245,245,247,.2); padding-top: 18px"><div style="font-size: 40px; font-weight: 200">Milan</div><div style="font-size: 14px; color: #a1a1a6; margin-top: 4px">Milan Fashion Week 2023 & 2025</div></div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="en-contact" class="sec" style="padding-block: 120px; position: relative; text-align: center">
+    <div class="glow" style="position: absolute; width: 700px; height: 700px; border-radius: 50%; left: 50%; top: 50%; margin: -350px 0 0 -350px; background: radial-gradient(circle, rgba(41,151,255,.18) 0%, rgba(0,0,0,0) 65%); pointer-events: none" aria-hidden="true"></div>
+    <div class="wrap" style="position: relative; display: flex; flex-direction: column; align-items: center">
+      <svg viewBox="295 255 485 460" width="150" height="142" style="color: #f5f5f7; overflow: visible" role="img" aria-label="DIA PROD logo">
+        <path class="draw" d="M 356.61 521.98 Q 471.60 521.77 542.74 521.67 Q 553.63 521.66 565.47 518.96 C 608.67 509.13 635.26 468.84 632.03 425.99 C 629.24 389.07 604.28 356.69 568.44 346.82 Q 554.44 342.97 537.75 342.96 L 356.63 342.07 L 356.61 263.24 Q 471.27 262.77 530.16 262.66 Q 552.65 262.62 564.28 264.25 C 604.97 269.95 642.66 290.34 668.15 322.82 Q 693.32 354.87 700.78 395.52 C 708.30 436.49 702.37 481.40 682.59 517.10 C 653.62 569.39 600.44 601.30 540.50 601.43 L 356.61 600.64 Z" fill="currentColor" stroke="currentColor" stroke-width="3"></path>
+        <path class="wr" d="M 712.45 384.37 L 774.10 346.19 L 774.74 527.38 L 712.25 487.65 Z" fill="currentColor"></path>
+        <path class="wl" d="M 299.54 366.41 L 359.00 386.92 L 359.00 489.10 L 299.13 522.42 Z" fill="currentColor"></path>
+        <text x="537" y="704" text-anchor="middle" fill="currentColor" font-size="56" letter-spacing="40" font-family="Vazirmatn, sans-serif" font-weight="400" direction="ltr">DIA PROD</text>
+      </svg>
+      <h2 class="h2 rv" style="margin: 48px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800">Let's make your clinic worth watching.</h2>
+      <p class="rv" style="margin: 18px 0 0; font-size: 19px; line-height: 2; color: rgba(245,245,247,.72); max-width: 620px">To arrange an intro meeting and get your first video at half price, message us on WhatsApp or by email.</p>
+      <div class="grid3" style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; margin-top: 48px; width: 100%; max-width: 960px; text-align: start">
+
+        <a class="card ct ct-wa rv" href="https://wa.me/393770903078?text=Hi%2C%20I%27d%20like%20to%20book%20an%20intro%20meeting%20with%20DIA%20PROD." target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 18px; padding: 28px; border-radius: 26px; border: 1px solid rgba(245,245,247,.14); background: rgba(255,255,255,.03); text-decoration: none; color: #f5f5f7">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <span style="width: 60px; height: 60px; border-radius: 18px; background: #25d366; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(37,211,102,.35)">
+              <svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true"><path fill="#fff" d="M16 3.2C8.9 3.2 3.2 8.9 3.2 16c0 2.3.6 4.5 1.7 6.4L3 29l6.8-1.8c1.8 1 3.9 1.5 6.2 1.5 7.1 0 12.8-5.7 12.8-12.8S23.1 3.2 16 3.2zm0 23.3c-2 0-3.9-.5-5.5-1.5l-.4-.2-4 1.1 1.1-3.9-.3-.4c-1.1-1.7-1.7-3.6-1.7-5.6 0-5.8 4.7-10.5 10.5-10.5S26.5 10.2 26.5 16 21.8 26.5 16 26.5z"></path><path fill="#fff" d="M21.8 18.4c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1c-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2s0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.5s0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.1 1.1-1.1 2.7 1.2 3.1 1.3 3.3c.2.2 2.3 3.5 5.5 4.9 2.7 1.1 3.3.9 3.9.8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"></path></svg>
+            </span>
+            <span class="arr" style="font-size: 22px; color: rgba(245,245,247,.45)">→</span>
+          </div>
+          <div>
+            <div style="font-size: 20px; font-weight: 700">WhatsApp</div>
+            <div style="font-size: 15px; color: rgba(245,245,247,.62); margin-top: 6px">The fastest way to book a meeting</div>
+          </div>
+          <div style="font-size: 15px; font-weight: 500; color: #4be08a; direction: ltr; text-align: start">+39 377 090 3078</div>
+        </a>
+
+        <a class="card ct ct-em rv" href="mailto:studio@diaprod.it?subject=Intro%20meeting%20with%20DIA%20PROD" style="display: flex; flex-direction: column; gap: 18px; padding: 28px; border-radius: 26px; border: 1px solid rgba(245,245,247,.14); background: rgba(255,255,255,.03); text-decoration: none; color: #f5f5f7">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <span style="width: 60px; height: 60px; border-radius: 18px; background: #2997ff; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(41,151,255,.35)">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="3"></rect><path d="M3.5 7l8.5 6 8.5-6"></path></svg>
+            </span>
+            <span class="arr" style="font-size: 22px; color: rgba(245,245,247,.45)">→</span>
+          </div>
+          <div>
+            <div style="font-size: 20px; font-weight: 700">Email</div>
+            <div style="font-size: 15px; color: rgba(245,245,247,.62); margin-top: 6px">Send details or ask for a quote</div>
+          </div>
+          <div style="font-size: 15px; font-weight: 500; color: #69b4ff; direction: ltr; text-align: start">studio@diaprod.it</div>
+        </a>
+
+        <a class="card ct ct-ig rv" href="https://instagram.com/diaprod.it" target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 18px; padding: 28px; border-radius: 26px; border: 1px solid rgba(245,245,247,.14); background: rgba(255,255,255,.03); text-decoration: none; color: #f5f5f7">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <span style="width: 60px; height: 60px; border-radius: 18px; background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(214,36,159,.35)">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.4" cy="6.6" r="1" fill="#fff" stroke="none"></circle></svg>
+            </span>
+            <span class="arr" style="font-size: 22px; color: rgba(245,245,247,.45)">→</span>
+          </div>
+          <div>
+            <div style="font-size: 20px; font-weight: 700">Instagram</div>
+            <div style="font-size: 15px; color: rgba(245,245,247,.62); margin-top: 6px">See our work and send us a message</div>
+          </div>
+          <div style="font-size: 15px; font-weight: 500; color: #f77fbe; direction: ltr; text-align: start">@diaprod.it</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top: 1px solid rgba(245,245,247,.08); padding-block: 28px">
+    <div class="wrap" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: #a1a1a6">
+      <span>DIA PROD · Photography · Video · Content production</span>
+      <span style="direction: ltr; letter-spacing: .14em">CREATE · CAPTURE · CONNECT</span>
+    </div>
+  </footer>
+
+</div>
+
+</div>
+<div class="lp" data-lang="it" lang="it" dir="ltr" hidden>
+
+
+<div style="background: #000; color: #f5f5f7; overflow: clip; position: relative">
+
+  
+  <header style="position: sticky; top: 0; z-index: 30; background: rgba(0,0,0,.62); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid rgba(245,245,247,.08)">
+    <div class="wrap" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px">
+      <a href="#it-top" style="display: flex; align-items: center; gap: 12px; text-decoration: none" aria-label="DIA PROD">
+        <svg viewBox="295 258 485 348" width="36" height="26" aria-hidden="true" style="color: #f5f5f7"><path fill="currentColor" d="M 356.61 521.98 A 0.28 0.27 -0.0 0 1 356.89 521.71 Q 471.60 521.77 542.74 521.67 Q 553.63 521.66 565.47 518.96 C 608.67 509.13 635.26 468.84 632.03 425.99 C 629.24 389.07 604.28 356.69 568.44 346.82 Q 554.44 342.97 537.75 342.96 Q 357.76 342.92 357.51 342.92 A 0.86 0.85 -0.7 0 1 356.63 342.07 L 356.61 263.24 A 0.55 0.55 0.0 0 1 357.16 262.69 Q 471.27 262.77 530.16 262.66 Q 552.65 262.62 564.28 264.25 C 604.97 269.95 642.66 290.34 668.15 322.82 Q 693.32 354.87 700.78 395.52 C 708.30 436.49 702.37 481.40 682.59 517.10 C 653.62 569.39 600.44 601.30 540.50 601.43 Q 518.35 601.48 357.42 601.45 A 0.81 0.81 0.0 0 1 356.61 600.64 L 356.61 521.98 Z M 712.45 384.37 L 774.10 346.19 L 774.74 527.38 L 712.25 487.65 Z M 299.54 366.41 L 359.00 386.92 L 359.00 489.10 L 299.13 522.42 Z"></path></svg>
+        <span style="font-size: 14px; font-weight: 600; letter-spacing: .14em; color: #f5f5f7; direction: ltr">DIA PROD</span>
+      </a>
+      <nav class="navlinks" style="display: flex; align-items: center; gap: 4px" aria-label="Sezioni della pagina">
+        <a class="navlink" href="#it-services">Servizi</a>
+        <a class="navlink" href="#it-three-d">Animazione 3D</a>
+        <a class="navlink" href="#it-process">Come lavoriamo</a>
+        <a class="navlink" href="#it-offer">Offerta speciale</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 8px"><button type="button" class="langbtn" data-open-gate aria-label="Cambia lingua"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"></path></svg><span>IT</span></button>
+      <a class="btn btn-ghost" href="#it-contact" style="min-height: 44px; padding: 0 22px; font-size: 14px">Prenota un incontro</a></div>
+    </div>
+  </header>
+
+  
+  <section id="it-top" style="position: relative; padding-block: 72px 96px">
+    <div class="glow" style="position: absolute; width: 900px; height: 900px; border-radius: 50%; top: -260px; left: -200px; background: radial-gradient(circle, rgba(41,151,255,.22) 0%, rgba(41,151,255,.06) 40%, rgba(0,0,0,0) 70%); pointer-events: none" aria-hidden="true"></div>
+
+    <div class="wrap" style="position: relative">
+      
+      <div class="tc-hide" style="position: absolute; inset: -24px 24px auto 24px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgba(245,245,247,.6)" aria-hidden="true">
+        <span style="display: inline-flex; align-items: center; gap: 8px"><span class="rec" style="width: 9px; height: 9px; border-radius: 50%; background: #ff453a; box-shadow: 0 0 12px rgba(255,69,58,.8)"></span>In registrazione</span>
+        <span style="direction: ltr; font-variant-numeric: tabular-nums; letter-spacing: .1em"><span class="tc">00:00:24:00</span></span>
+      </div>
+
+      <div class="hero-grid" style="display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,.85fr); gap: 56px; align-items: center; padding-top: 40px">
+        <div>
+          <div class="kick r1">Per cliniche dentali e chirurgiche</div>
+          <h1 class="h1 r1 d1" style="margin: 22px 0 0; font-size: 68px; line-height: 1.28; font-weight: 800; letter-spacing: -.01em">La vostra clinica,<br>vista come<br><span style="font-weight: 200; color: rgba(245,245,247,.72)">merita.</span></h1>
+          <p class="r1 d2" style="margin: 26px 0 0; font-size: 19px; line-height: 2; color: rgba(245,245,247,.72); max-width: 560px">Sito web, fotografia, reel e produzione completa di contenuti, video-interviste, prima e dopo, riprese degli interventi e animazione 3D — tutto in un unico posto, con il team DIA PROD.</p>
+          <div class="r1 d3" style="display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px">
+            <a class="btn btn-solid" href="#it-offer">Primo video a metà prezzo</a>
+            <a class="btn btn-ghost" href="#it-services">Scopri i servizi</a>
+          </div>
+          <div class="r1 d4" style="display: flex; flex-wrap: wrap; gap: 28px; margin-top: 48px; padding-top: 28px; border-top: 1px solid rgba(245,245,247,.12)">
+            <div><div style="font-size: 30px; font-weight: 300">4 anni</div><div style="font-size: 13px; color: #a1a1a6">di esperienza in foto e video</div></div>
+            <div><div style="font-size: 30px; font-weight: 300">50+</div><div style="font-size: 13px; color: #a1a1a6">video consegnati</div></div>
+            <div><div style="font-size: 30px; font-weight: 300">5M+</div><div style="font-size: 13px; color: #a1a1a6">visualizzazioni per i clienti</div></div>
+          </div>
+        </div>
+
+        
+        <div class="phone-col r1 d3" style="display: flex; justify-content: flex-start">
+          <div class="float" style="position: relative; width: 320px; height: 650px; border-radius: 48px; padding: 12px; background: linear-gradient(160deg, #2c2c2e, #0a0a0b); box-shadow: 0 50px 120px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.08), inset 0 0 0 1px rgba(255,255,255,.06)" role="img" aria-label="Esempio di reel per la clinica">
+            <div style="position: relative; width: 100%; height: 100%; border-radius: 38px; overflow: hidden; background: #050507">
+
+              
+              <div class="s1" style="position: absolute; inset: 0; background: radial-gradient(120% 80% at 30% 20%, #16324f 0%, #07090d 60%)">
+                <div style="position: absolute; left: 50%; top: 150px; transform: translateX(-50%); width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(180deg, #3a3f47, #1c1f24)"></div>
+                <div style="position: absolute; left: 50%; top: 278px; transform: translateX(-50%); width: 230px; height: 260px; border-radius: 115px 115px 0 0; background: linear-gradient(180deg, #e8eef5, #9aa6b4)"></div>
+                <div style="position: absolute; left: 50%; top: 278px; transform: translateX(-50%); width: 60px; height: 120px; background: linear-gradient(180deg, #2a3a52, #1a2638); clip-path: polygon(0 0, 100% 0, 50% 100%)"></div>
+                <div style="position: absolute; inset: auto 0 0 0; height: 220px; background: linear-gradient(0deg, rgba(0,0,0,.9), rgba(0,0,0,0))"></div>
+                <div style="position: absolute; right: 22px; left: 22px; bottom: 34px">
+                  <div style="font-size: 12px; color: #2997ff; font-weight: 600">Conosci il medico</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; color: #fff">Dott. [Nome del medico]</div>
+                  <div style="font-size: 13px; color: rgba(245,245,247,.7); margin-top: 2px">Specialista in implantologia ed estetica</div>
+                </div>
+              </div>
+
+              
+              <div class="s2" style="position: absolute; inset: 0; background: #0b0b0d">
+                <div style="position: absolute; inset: 0; background: radial-gradient(90% 60% at 50% 45%, #3a3226 0%, #121010 70%)"></div>
+                <div style="position: absolute; left: 50%; top: 250px; transform: translateX(-50%); display: flex; gap: 6px" aria-hidden="true">
+                  <span style="width: 34px; height: 52px; border-radius: 10px 10px 16px 16px; background: #c9b78f"></span>
+                  <span style="width: 40px; height: 60px; border-radius: 10px 10px 18px 18px; background: #bfa97c"></span>
+                  <span style="width: 40px; height: 60px; border-radius: 10px 10px 18px 18px; background: #c4ae80"></span>
+                  <span style="width: 34px; height: 52px; border-radius: 10px 10px 16px 16px; background: #b9a374"></span>
+                </div>
+                <div class="wipe" style="position: absolute; top: 0; bottom: 0; left: 78%; width: 2px; background: #fff; box-shadow: 0 0 18px rgba(255,255,255,.8)">
+                  <div style="position: absolute; top: 290px; left: 50%; transform: translate(-50%,-50%); width: 34px; height: 34px; border-radius: 50%; background: #fff"></div>
+                  <div style="position: absolute; inset: 0 auto 0 2px; width: 400px; background: radial-gradient(90% 60% at 0% 45%, #2a3644 0%, #0d1117 70%)"></div>
+                </div>
+                <div style="position: absolute; top: 76px; right: 20px; font-size: 12px; padding: 4px 12px; border-radius: 980px; background: rgba(0,0,0,.5); color: #fff">Prima</div>
+                <div style="position: absolute; top: 76px; left: 20px; font-size: 12px; padding: 4px 12px; border-radius: 980px; background: #2997ff; color: #000; font-weight: 600">Dopo</div>
+                <div style="position: absolute; right: 22px; left: 22px; bottom: 34px">
+                  <div style="font-size: 12px; color: #2997ff; font-weight: 600">Prima e dopo</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; color: #fff">Guarda il risultato</div>
+                  <div style="font-size: 13px; color: rgba(245,245,247,.7); margin-top: 2px">Con il consenso scritto del paziente</div>
+                </div>
+              </div>
+
+              
+              <div class="s3" style="position: absolute; inset: 0; background: radial-gradient(100% 70% at 50% 40%, #0e2340 0%, #030406 70%)">
+                <div style="position: absolute; left: 50%; top: 290px; width: 250px; height: 250px; margin: -125px 0 0 -125px">
+                  <div class="spin" style="position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(41,151,255,.5)"></div>
+                  <div class="spinr" style="position: absolute; inset: 30px; border-radius: 50%; border: 1px solid rgba(245,245,247,.14); border-top-color: #2997ff"></div>
+                  <svg class="float" viewBox="0 0 120 120" style="position: absolute; inset: 55px; width: 140px; height: 140px" fill="none" stroke="#f5f5f7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M40 30c6-6 14-5 20-2 6-3 14-4 20 2 6 7 4 18 1 26-2 6-3 12-4 20-1 9-4 16-8 16s-5-8-6-15c-1-5-2-8-3-8s-2 3-3 8c-1 7-2 15-6 15s-7-7-8-16c-1-8-2-14-4-20-3-8-5-19 1-26z"></path><path d="M60 92v18M54 100h12M55 106h10" stroke="#2997ff"></path></svg>
+                </div>
+                <div style="position: absolute; right: 22px; left: 22px; bottom: 34px">
+                  <div style="font-size: 12px; color: #2997ff; font-weight: 600">Animazione 3D</div>
+                  <div style="font-size: 20px; font-weight: 700; margin-top: 4px; color: #fff">Inserimento dell'impianto</div>
+                  <div style="font-size: 13px; color: rgba(245,245,247,.7); margin-top: 2px">Passo dopo passo, chiaro per il paziente</div>
+                </div>
+              </div>
+
+              
+              <div style="position: absolute; top: 18px; right: 16px; left: 16px; display: flex; gap: 5px" aria-hidden="true">
+                <div style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.25); overflow: hidden"><div class="b1" style="height: 100%; background: #fff"></div></div>
+                <div style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.25); overflow: hidden"><div class="b2" style="height: 100%; background: #fff"></div></div>
+                <div style="flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.25); overflow: hidden"><div class="b3" style="height: 100%; background: #fff"></div></div>
+              </div>
+              <div style="position: absolute; top: 34px; right: 16px; display: flex; align-items: center; gap: 8px" aria-hidden="true">
+                <span style="width: 26px; height: 26px; border-radius: 50%; background: #f5f5f7"></span>
+                <span style="font-size: 12px; font-weight: 600; color: #fff">La vostra clinica</span>
+              </div>
+              <div class="scan" style="position: absolute; inset: 0 0 auto 0; height: 60px; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.05), rgba(255,255,255,0)); pointer-events: none" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <div style="border-block: 1px solid rgba(245,245,247,.1); padding-block: 22px; overflow: hidden; direction: ltr" aria-hidden="true">
+    <div class="marq" style="display: flex; width: max-content; gap: 0">
+      <div style="display: flex; gap: 56px; padding-inline: 28px; font-size: 22px; font-weight: 300; color: rgba(245,245,247,.75); white-space: nowrap; direction: ltr">
+        <span>Sito web</span><span style="color: #2997ff">●</span><span>Foto di medici e clinica</span><span style="color: #2997ff">●</span><span>Reel Instagram</span><span style="color: #2997ff">●</span><span>Video-interviste</span><span style="color: #2997ff">●</span><span>Prima e dopo</span><span style="color: #2997ff">●</span><span>Riprese degli interventi</span><span style="color: #2997ff">●</span><span>Animazione 3D</span><span style="color: #2997ff">●</span>
+      </div>
+      <div style="display: flex; gap: 56px; padding-inline: 28px; font-size: 22px; font-weight: 300; color: rgba(245,245,247,.75); white-space: nowrap; direction: ltr">
+        <span>Sito web</span><span style="color: #2997ff">●</span><span>Foto di medici e clinica</span><span style="color: #2997ff">●</span><span>Reel Instagram</span><span style="color: #2997ff">●</span><span>Video-interviste</span><span style="color: #2997ff">●</span><span>Prima e dopo</span><span style="color: #2997ff">●</span><span>Riprese degli interventi</span><span style="color: #2997ff">●</span><span>Animazione 3D</span><span style="color: #2997ff">●</span>
+      </div>
+    </div>
+  </div>
+
+  
+  <section class="light sec" style="background: #f5f5f7; color: #1d1d1f; padding-block: 120px; border-radius: 36px 36px 0 0; margin-top: 64px">
+    <div class="wrap">
+      <div class="kick rv">Perché i contenuti visivi?</div>
+      <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800; max-width: 820px">La fiducia del paziente nasce prima della prima telefonata.</h2>
+      <p class="rv" style="margin: 22px 0 0; font-size: 19px; line-height: 2; color: #48484a; max-width: 760px">Prima di prenotare, oggi i pazienti guardano il profilo Instagram e il sito della clinica. La qualità di ciò che vedono è la qualità che si aspettano dalle vostre cure.</p>
+
+      <div class="grid3" style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; margin-top: 56px">
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 28px; padding: 36px">
+          <div style="font-size: 40px; font-weight: 200; color: #0071e3">01</div>
+          <h3 style="margin: 18px 0 10px; font-size: 22px; font-weight: 700">Il volto vero del medico</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.95; color: #48484a">Il paziente vuole conoscere il medico prima di sedersi sulla poltrona. Un breve video del medico e del team accorcia le distanze e riduce la paura.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 28px; padding: 36px">
+          <div style="font-size: 40px; font-weight: 200; color: #0071e3">02</div>
+          <h3 style="margin: 18px 0 10px; font-size: 22px; font-weight: 700">Risultati visibili</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.95; color: #48484a">I video prima e dopo e il racconto delle fasi del trattamento mostrano cosa succede nella vostra clinica meglio di qualsiasi descrizione.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 28px; padding: 36px">
+          <div style="font-size: 40px; font-weight: 200; color: #0071e3">03</div>
+          <h3 style="margin: 18px 0 10px; font-size: 22px; font-weight: 700">Una presenza costante e professionale</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.95; color: #48484a">Una pagina aggiornata con regolarità, coerenza e qualità distingue la clinica dalla concorrenza e porta nuovi pazienti.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="it-services" class="sec" style="background: #000; padding-block: 120px; border-radius: 36px 36px 0 0; margin-top: -36px; position: relative">
+    <div class="wrap">
+      <div class="kick rv">Servizi</div>
+      <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800; max-width: 820px">Tutto ciò che serve a una clinica per farsi notare.</h2>
+      <p class="rv" style="margin: 22px 0 0; font-size: 19px; line-height: 2; color: rgba(245,245,247,.7); max-width: 720px">Potete ordinare ogni servizio singolarmente o averli tutti in un unico piano mensile.</p>
+
+      <div class="grid4" style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; margin-top: 56px">
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M3 8h18M8 21h8M12 18v3"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">01</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Sito web su misura</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">Un sito veloce e ottimizzato per smartphone che presenta medici, servizi e risultati, e rende facile prenotare.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">02</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Fotografia per sito e Instagram</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">Ritratti di medici e staff, ambienti e attrezzature — con luce e colori coerenti che costruiscono la vostra identità visiva.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M10.5 9.5v5l4-2.5z"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">03</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Reel e produzione completa di contenuti</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">Piano editoriale mensile, sceneggiatura, riprese, montaggio e gestione della pagina, perché il profilo della clinica sia sempre attivo e professionale.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">04</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Video-intervista al medico</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">Il medico spiega i trattamenti in modo semplice e risponde alle domande più frequenti dei pazienti.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M12 5v14M6.5 13.5l2-2 2 2M15 11l1.5 2.5L18 11"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">05</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Video prima e dopo</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">La differenza reale prima e dopo il trattamento — solo con il consenso scritto del paziente e nel pieno rispetto della sua privacy.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(245,245,247,.12); border-radius: 26px; padding: 30px; background: #0a0a0c; display: flex; flex-direction: column; gap: 14px">
+          <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #1c1c1e; color: #f5f5f7; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A1.5 1.5 0 0 1 4.5 7H14a1.5 1.5 0 0 1 1.5 1.5v7A1.5 1.5 0 0 1 14 17H4.5A1.5 1.5 0 0 1 3 15.5z"></path><path d="M15.5 10.5L21 7.5v9l-5.5-3"></path></svg></div>
+          <div style="font-size: 13px; color: #a1a1a6">06</div>
+          <h3 style="margin: 0; font-size: 20px; font-weight: 700">Riprese degli interventi</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: rgba(245,245,247,.68)">Documentiamo le fasi del trattamento nel pieno rispetto dei protocolli di sala operatoria, con una versione più delicata montata per la pubblicazione.</p>
+        </div>
+
+        <div class="card svc rv" style="border: 1px solid rgba(41,151,255,.45); border-radius: 26px; padding: 30px; background: linear-gradient(160deg, #0b1a2e, #050608); display: flex; flex-direction: column; gap: 14px; grid-column: span 2">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+            <div class="ic" style="width: 56px; height: 56px; border-radius: 16px; background: #2997ff; color: #000; display: flex; align-items: center; justify-content: center"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"></path><path d="M12 12l8.5-4.75M12 12v9.5M12 12L3.5 7.25"></path></svg></div>
+            <span style="font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 980px; background: rgba(41,151,255,.16); color: #69b4ff">In evidenza</span>
+          </div>
+          <div style="font-size: 13px; color: #a1a1a6">07</div>
+          <h3 style="margin: 0; font-size: 24px; font-weight: 700">Animazione 3D dell'intero trattamento</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.9; color: rgba(245,245,247,.75); max-width: 520px">Ciò che la telecamera non può mostrare, lo mostra l'animazione: dall'impianto alle fasi chirurgiche — passo dopo passo, precisa e senza immagini forti.</p>
+          <a href="#it-three-d" style="font-size: 15px; font-weight: 600; color: #69b4ff; text-decoration: none; margin-top: auto">Scopri di più →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="it-three-d" class="sec" style="padding-block: 120px; position: relative; background: radial-gradient(70% 60% at 30% 50%, #0b1f3a 0%, #000 70%)">
+    <div class="wrap feat" style="display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 64px; align-items: center">
+      <div>
+        <div class="kick rv">Animazione 3D</div>
+        <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800">Quando il paziente vede,<br><span style="font-weight: 200; color: rgba(245,245,247,.72)">ha meno paura.</span></h2>
+        <p class="rv" style="margin: 24px 0 0; font-size: 18px; line-height: 2; color: rgba(245,245,247,.72); max-width: 540px">Il team di animazione DIA PROD ricostruisce in 3D l'intero percorso di cura. La stessa animazione si può pubblicare sui social e mostrare al paziente sullo schermo della sala consulenze.</p>
+        <div class="rv" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px">
+          <span style="font-size: 14px; padding: 8px 18px; border-radius: 980px; border: 1px solid rgba(245,245,247,.2)">Implantologia</span>
+          <span style="font-size: 14px; padding: 8px 18px; border-radius: 980px; border: 1px solid rgba(245,245,247,.2)">Corone e faccette</span>
+          <span style="font-size: 14px; padding: 8px 18px; border-radius: 980px; border: 1px solid rgba(245,245,247,.2)">Devitalizzazione</span>
+          <span style="font-size: 14px; padding: 8px 18px; border-radius: 980px; border: 1px solid rgba(245,245,247,.2)">Fasi chirurgiche</span>
+        </div>
+      </div>
+      <div class="rv" style="display: flex; justify-content: center">
+        <div style="position: relative; width: 440px; height: 440px; max-width: 100%" role="img" aria-label="Anteprima animazione 3D del dente">
+          <div class="spin" style="position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(41,151,255,.45)"></div>
+          <div class="spinr" style="position: absolute; inset: 50px; border-radius: 50%; border: 1px solid rgba(245,245,247,.12); border-top-color: #2997ff; border-left-color: #2997ff"></div>
+          <div class="spin" style="position: absolute; inset: 100px; border-radius: 50%; border: 1px solid rgba(245,245,247,.08); border-bottom-color: rgba(245,245,247,.6)"></div>
+          <div style="position: absolute; left: 50%; top: 22px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: #2997ff"><span class="pulse" style="position: absolute; inset: 0; border-radius: 50%; background: #2997ff"></span></div>
+          <svg class="float" viewBox="0 0 120 130" style="position: absolute; left: 50%; top: 50%; width: 190px; height: 206px; margin: -103px 0 0 -95px" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M40 30c6-6 14-5 20-2 6-3 14-4 20 2 6 7 4 18 1 26-2 6-3 12-4 20-1 9-4 16-8 16s-5-8-6-15c-1-5-2-8-3-8s-2 3-3 8c-1 7-2 15-6 15s-7-7-8-16c-1-8-2-14-4-20-3-8-5-19 1-26z" stroke="#f5f5f7" stroke-width="1.4" fill="rgba(245,245,247,.04)"></path>
+            <path d="M48 40c4-2 8-2 12 0 4-2 8-2 12 0" stroke="rgba(245,245,247,.45)" stroke-width="1"></path>
+            <path d="M60 96v26M53 104h14M54 110h12M55 116h10" stroke="#2997ff" stroke-width="1.6"></path>
+          </svg>
+          <div style="position: absolute; right: -6px; top: 120px; font-size: 13px; padding: 8px 14px; border-radius: 14px; background: rgba(28,28,30,.8); border: 1px solid rgba(245,245,247,.12)">Fase 2 · Inserimento del perno</div>
+          <div style="position: absolute; left: -6px; bottom: 110px; font-size: 13px; padding: 8px 14px; border-radius: 14px; background: rgba(28,28,30,.8); border: 1px solid rgba(245,245,247,.12)">Sezione della gengiva</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="it-process" class="light sec" style="background: #f5f5f7; color: #1d1d1f; padding-block: 120px; border-radius: 36px 36px 0 0">
+    <div class="wrap">
+      <div class="kick rv">Come lavoriamo</div>
+      <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800">Dal primo incontro alla pubblicazione, in quattro passi.</h2>
+
+      <div class="rv" style="position: relative; height: 2px; margin-top: 64px; background: #d2d2d7; border-radius: 2px; overflow: hidden" aria-hidden="true"><div class="sweep" style="position: absolute; inset: 0"></div></div>
+
+      <div class="grid4" style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 20px; margin-top: 28px">
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 26px; padding: 30px">
+          <div style="font-size: 44px; font-weight: 200; color: #0071e3; line-height: 1">1</div>
+          <h3 style="margin: 22px 0 10px; font-size: 20px; font-weight: 700">Incontro conoscitivo</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: #48484a">Conosciamo i servizi della clinica, i pazienti a cui vi rivolgete e il vostro gusto visivo.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 26px; padding: 30px">
+          <div style="font-size: 44px; font-weight: 200; color: #0071e3; line-height: 1">2</div>
+          <h3 style="margin: 22px 0 10px; font-size: 20px; font-weight: 700">Piano dei contenuti</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: #48484a">Definiamo cosa riprendere, dove e quando, e con quale obiettivo pubblicare ogni contenuto.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 26px; padding: 30px">
+          <div style="font-size: 44px; font-weight: 200; color: #0071e3; line-height: 1">3</div>
+          <h3 style="margin: 22px 0 10px; font-size: 20px; font-weight: 700">Riprese in clinica</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: #48484a">Nell'orario più comodo per voi, senza interrompere il lavoro e con il minimo disturbo per i pazienti.</p>
+        </div>
+        <div class="card lcard rv" style="background: #fff; border: 1px solid #e5e5ea; border-radius: 26px; padding: 30px">
+          <div style="font-size: 44px; font-weight: 200; color: #0071e3; line-height: 1">4</div>
+          <h3 style="margin: 22px 0 10px; font-size: 20px; font-weight: 700">Montaggio e consegna</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.9; color: #48484a">Montaggio, color grading, sottotitoli e grafica — e, dopo la vostra approvazione, consegna o pubblicazione diretta.</p>
+        </div>
+      </div>
+
+      <div class="two" style="display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; margin-top: 64px">
+        <div class="rv" style="display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid #d2d2d7">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
+          <div><div style="font-size: 18px; font-weight: 700">Privacy del paziente</div><div style="font-size: 15px; line-height: 1.9; color: #48484a; margin-top: 4px">Nessuna immagine del paziente viene registrata o pubblicata senza il suo consenso scritto.</div></div>
+        </div>
+        <div class="rv" style="display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid #d2d2d7">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+          <div><div style="font-size: 18px; font-weight: 700">Rispetto dei vostri tempi</div><div style="font-size: 15px; line-height: 1.9; color: #48484a; margin-top: 4px">Le riprese si organizzano in base agli appuntamenti, così le cure non si fermano.</div></div>
+        </div>
+        <div class="rv" style="display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid #d2d2d7">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M4 12h16M12 4v16"></path></svg>
+          <div><div style="font-size: 18px; font-weight: 700">Protocolli di sala operatoria</div><div style="font-size: 15px; line-height: 1.9; color: #48484a; margin-top: 4px">Lavoriamo con abbigliamento adeguato, a distanza di sicurezza e seguendo le indicazioni dell'équipe.</div></div>
+        </div>
+        <div class="rv" style="display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid #d2d2d7">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#1d1d1f" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none" aria-hidden="true"><path d="M5 12l4 4 10-10"></path></svg>
+          <div><div style="font-size: 18px; font-weight: 700">Approvazione prima di pubblicare</div><div style="font-size: 15px; line-height: 1.9; color: #48484a; margin-top: 4px">Nessun contenuto viene pubblicato senza la vostra approvazione finale.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="it-offer" class="sec" style="background: #000; padding-block: 120px; border-radius: 36px 36px 0 0; margin-top: -36px; position: relative; overflow: clip">
+    <div class="glow" style="position: absolute; width: 800px; height: 800px; border-radius: 50%; top: -200px; right: -200px; background: radial-gradient(circle, rgba(41,151,255,.2) 0%, rgba(41,151,255,.05) 45%, rgba(0,0,0,0) 70%); pointer-events: none" aria-hidden="true"></div>
+    <div class="wrap two" style="position: relative; display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); gap: 64px; align-items: center">
+      <div>
+        <div class="kick rv">Offerta di benvenuto</div>
+        <h2 class="h2 rv" style="margin: 18px 0 0; font-size: 56px; line-height: 1.3; font-weight: 800">Prima guardate il nostro lavoro,<br><span style="font-weight: 200; color: rgba(245,245,247,.72)">poi decidete.</span></h2>
+        <p class="rv" style="margin: 24px 0 0; font-size: 19px; line-height: 2; color: rgba(245,245,247,.75); max-width: 560px">Realizziamo il primo video della vostra clinica a metà prezzo. Se siete soddisfatti della qualità, continuiamo insieme.</p>
+        <ul class="rv" style="list-style: none; margin: 30px 0 0; padding: 0; max-width: 560px">
+          <li style="display: flex; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid rgba(245,245,247,.12); font-size: 16px; color: rgba(245,245,247,.75)"><span style="width: 6px; height: 6px; border-radius: 50%; background: #2997ff; flex: none"></span>Un reel di presentazione del medico o della clinica</li>
+          <li style="display: flex; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid rgba(245,245,247,.12); font-size: 16px; color: rgba(245,245,247,.75)"><span style="width: 6px; height: 6px; border-radius: 50%; background: #2997ff; flex: none"></span>Solo per il primo ordine di ogni clinica</li>
+          <li style="display: flex; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid rgba(245,245,247,.12); border-bottom: 1px solid rgba(245,245,247,.12); font-size: 16px; color: rgba(245,245,247,.75)"><span style="width: 6px; height: 6px; border-radius: 50%; background: #2997ff; flex: none"></span>Metà dell'importo si paga prima del giorno delle riprese</li>
+        </ul>
+      </div>
+      <div class="rv" style="display: flex; justify-content: center">
+        <div style="position: relative; width: 300px; height: 300px">
+          <svg viewBox="0 0 200 200" width="300" height="300" aria-hidden="true" style="transform: rotate(-90deg)">
+            <circle cx="100" cy="100" r="86" fill="none" stroke="rgba(245,245,247,.1)" stroke-width="2"></circle>
+            <circle class="ringa" cx="100" cy="100" r="86" fill="none" stroke="#2997ff" stroke-width="3" stroke-linecap="round"></circle>
+          </svg>
+          <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center">
+            <div style="font-size: 84px; font-weight: 200; line-height: 1">50%</div>
+            <div style="font-size: 16px; color: #a1a1a6; margin-top: 8px">di sconto sul primo video</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap two" style="position: relative; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; margin-top: 72px">
+      <div class="card rv" style="border: 1px solid rgba(245,245,247,.14); border-radius: 26px; padding: 32px; background: rgba(255,255,255,.03)">
+        <h3 style="margin: 0 0 10px; font-size: 22px; font-weight: 700">Progetto singolo</h3>
+        <p style="margin: 0; font-size: 16px; line-height: 1.9; color: rgba(245,245,247,.68)">Per un'esigenza precisa: foto del team, un video di presentazione, un'animazione o un sito web.</p>
+      </div>
+      <div class="card rv" style="border: 1px solid rgba(41,151,255,.45); border-radius: 26px; padding: 32px; background: linear-gradient(160deg, rgba(41,151,255,.12), rgba(41,151,255,.02))">
+        <h3 style="margin: 0 0 10px; font-size: 22px; font-weight: 700">Piano mensile</h3>
+        <p style="margin: 0; font-size: 16px; line-height: 1.9; color: rgba(245,245,247,.72)">Produzione e pubblicazione regolare di contenuti ogni mese, con un calendario fisso e a un costo più conveniente.</p>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="sec" style="padding-block: 96px; border-top: 1px solid rgba(245,245,247,.08)">
+    <div class="wrap">
+      <div class="kick rv">Chi è DIA PROD</div>
+      <p class="rv" style="margin: 18px 0 0; font-size: 26px; line-height: 1.8; font-weight: 300; max-width: 900px">DIA PROD è un team di fotografia, video e produzione di contenuti. Dalle riprese al montaggio, dalla grafica all'animazione 3D, tutto si fa in un unico team — così la vostra clinica ha un solo interlocutore.</p>
+      <div class="grid4 stats" style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 20px; margin-top: 48px">
+        <div class="rv" style="border-top: 1px solid rgba(245,245,247,.2); padding-top: 18px"><div style="font-size: 40px; font-weight: 200">4 anni</div><div style="font-size: 14px; color: #a1a1a6; margin-top: 4px">di esperienza in foto e video</div></div>
+        <div class="rv" style="border-top: 1px solid rgba(245,245,247,.2); padding-top: 18px"><div style="font-size: 40px; font-weight: 200">50+</div><div style="font-size: 14px; color: #a1a1a6; margin-top: 4px">video consegnati</div></div>
+        <div class="rv" style="border-top: 1px solid rgba(245,245,247,.2); padding-top: 18px"><div style="font-size: 40px; font-weight: 200">5M+</div><div style="font-size: 14px; color: #a1a1a6; margin-top: 4px">visualizzazioni per i clienti</div></div>
+        <div class="rv" style="border-top: 1px solid rgba(245,245,247,.2); padding-top: 18px"><div style="font-size: 40px; font-weight: 200">Milano</div><div style="font-size: 14px; color: #a1a1a6; margin-top: 4px">Milano Fashion Week 2023 e 2025</div></div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="it-contact" class="sec" style="padding-block: 120px; position: relative; text-align: center">
+    <div class="glow" style="position: absolute; width: 700px; height: 700px; border-radius: 50%; left: 50%; top: 50%; margin: -350px 0 0 -350px; background: radial-gradient(circle, rgba(41,151,255,.18) 0%, rgba(0,0,0,0) 65%); pointer-events: none" aria-hidden="true"></div>
+    <div class="wrap" style="position: relative; display: flex; flex-direction: column; align-items: center">
+      <svg viewBox="295 255 485 460" width="150" height="142" style="color: #f5f5f7; overflow: visible" role="img" aria-label="Logo DIA PROD">
+        <path class="draw" d="M 356.61 521.98 Q 471.60 521.77 542.74 521.67 Q 553.63 521.66 565.47 518.96 C 608.67 509.13 635.26 468.84 632.03 425.99 C 629.24 389.07 604.28 356.69 568.44 346.82 Q 554.44 342.97 537.75 342.96 L 356.63 342.07 L 356.61 263.24 Q 471.27 262.77 530.16 262.66 Q 552.65 262.62 564.28 264.25 C 604.97 269.95 642.66 290.34 668.15 322.82 Q 693.32 354.87 700.78 395.52 C 708.30 436.49 702.37 481.40 682.59 517.10 C 653.62 569.39 600.44 601.30 540.50 601.43 L 356.61 600.64 Z" fill="currentColor" stroke="currentColor" stroke-width="3"></path>
+        <path class="wr" d="M 712.45 384.37 L 774.10 346.19 L 774.74 527.38 L 712.25 487.65 Z" fill="currentColor"></path>
+        <path class="wl" d="M 299.54 366.41 L 359.00 386.92 L 359.00 489.10 L 299.13 522.42 Z" fill="currentColor"></path>
+        <text x="537" y="704" text-anchor="middle" fill="currentColor" font-size="56" letter-spacing="40" font-family="Vazirmatn, sans-serif" font-weight="400" direction="ltr">DIA PROD</text>
+      </svg>
+      <h2 class="h2 rv" style="margin: 48px 0 0; font-size: 52px; line-height: 1.35; font-weight: 800">Rendiamo la vostra clinica da guardare.</h2>
+      <p class="rv" style="margin: 18px 0 0; font-size: 19px; line-height: 2; color: rgba(245,245,247,.72); max-width: 620px">Per fissare un incontro e ottenere il primo video a metà prezzo, scriveteci su WhatsApp o via email.</p>
+      <div class="grid3" style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; margin-top: 48px; width: 100%; max-width: 960px; text-align: start">
+
+        <a class="card ct ct-wa rv" href="https://wa.me/393770903078?text=Ciao%2C%20vorrei%20prenotare%20un%20incontro%20conoscitivo%20con%20DIA%20PROD." target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 18px; padding: 28px; border-radius: 26px; border: 1px solid rgba(245,245,247,.14); background: rgba(255,255,255,.03); text-decoration: none; color: #f5f5f7">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <span style="width: 60px; height: 60px; border-radius: 18px; background: #25d366; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(37,211,102,.35)">
+              <svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true"><path fill="#fff" d="M16 3.2C8.9 3.2 3.2 8.9 3.2 16c0 2.3.6 4.5 1.7 6.4L3 29l6.8-1.8c1.8 1 3.9 1.5 6.2 1.5 7.1 0 12.8-5.7 12.8-12.8S23.1 3.2 16 3.2zm0 23.3c-2 0-3.9-.5-5.5-1.5l-.4-.2-4 1.1 1.1-3.9-.3-.4c-1.1-1.7-1.7-3.6-1.7-5.6 0-5.8 4.7-10.5 10.5-10.5S26.5 10.2 26.5 16 21.8 26.5 16 26.5z"></path><path fill="#fff" d="M21.8 18.4c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1c-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2s0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.5s0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.1 1.1-1.1 2.7 1.2 3.1 1.3 3.3c.2.2 2.3 3.5 5.5 4.9 2.7 1.1 3.3.9 3.9.8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"></path></svg>
+            </span>
+            <span class="arr" style="font-size: 22px; color: rgba(245,245,247,.45)">→</span>
+          </div>
+          <div>
+            <div style="font-size: 20px; font-weight: 700">WhatsApp</div>
+            <div style="font-size: 15px; color: rgba(245,245,247,.62); margin-top: 6px">Il modo più rapido per prenotare</div>
+          </div>
+          <div style="font-size: 15px; font-weight: 500; color: #4be08a; direction: ltr; text-align: start">+39 377 090 3078</div>
+        </a>
+
+        <a class="card ct ct-em rv" href="mailto:studio@diaprod.it?subject=Incontro%20conoscitivo%20con%20DIA%20PROD" style="display: flex; flex-direction: column; gap: 18px; padding: 28px; border-radius: 26px; border: 1px solid rgba(245,245,247,.14); background: rgba(255,255,255,.03); text-decoration: none; color: #f5f5f7">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <span style="width: 60px; height: 60px; border-radius: 18px; background: #2997ff; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(41,151,255,.35)">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="3"></rect><path d="M3.5 7l8.5 6 8.5-6"></path></svg>
+            </span>
+            <span class="arr" style="font-size: 22px; color: rgba(245,245,247,.45)">→</span>
+          </div>
+          <div>
+            <div style="font-size: 20px; font-weight: 700">Email</div>
+            <div style="font-size: 15px; color: rgba(245,245,247,.62); margin-top: 6px">Per inviare dettagli o chiedere un preventivo</div>
+          </div>
+          <div style="font-size: 15px; font-weight: 500; color: #69b4ff; direction: ltr; text-align: start">studio@diaprod.it</div>
+        </a>
+
+        <a class="card ct ct-ig rv" href="https://instagram.com/diaprod.it" target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 18px; padding: 28px; border-radius: 26px; border: 1px solid rgba(245,245,247,.14); background: rgba(255,255,255,.03); text-decoration: none; color: #f5f5f7">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <span style="width: 60px; height: 60px; border-radius: 18px; background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(214,36,159,.35)">
+              <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.4" cy="6.6" r="1" fill="#fff" stroke="none"></circle></svg>
+            </span>
+            <span class="arr" style="font-size: 22px; color: rgba(245,245,247,.45)">→</span>
+          </div>
+          <div>
+            <div style="font-size: 20px; font-weight: 700">Instagram</div>
+            <div style="font-size: 15px; color: rgba(245,245,247,.62); margin-top: 6px">Guardate i nostri lavori e scriveteci</div>
+          </div>
+          <div style="font-size: 15px; font-weight: 500; color: #f77fbe; direction: ltr; text-align: start">@diaprod.it</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top: 1px solid rgba(245,245,247,.08); padding-block: 28px">
+    <div class="wrap" style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: #a1a1a6">
+      <span>DIA PROD · Fotografia · Video · Produzione di contenuti</span>
+      <span style="direction: ltr; letter-spacing: .14em">CREATE · CAPTURE · CONNECT</span>
+    </div>
+  </footer>
+
+</div>
+
+</div>
+<script>
+(function(){
+  var TITLES={"fa": "دیاپرود برای کلینیک‌ها", "en": "DIA PROD for Clinics", "it": "DIA PROD per le cliniche"}, gate=document.getElementById('gate'), root=document.documentElement;
+  function show(lang, push){
+    document.querySelectorAll('.lp').forEach(function(p){p.hidden=(p.getAttribute('data-lang')!==lang)});
+    root.lang=lang; root.dir=(lang==='fa'?'rtl':'ltr'); document.title=TITLES[lang];
+    if(push!==false){try{history.replaceState(null,'','?lang='+lang)}catch(e){}}
+    gate.classList.add('out'); root.classList.remove('gate-open'); window.scrollTo(0,0);
+    setTimeout(function(){gate.hidden=true},700);
+  }
+  function openGate(){
+    gate.hidden=false; root.classList.add('gate-open');
+    requestAnimationFrame(function(){gate.classList.remove('out')});
+    var b=gate.querySelector('.opt'); if(b) b.focus({preventScroll:true});
+  }
+  gate.querySelectorAll('.opt').forEach(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-lang'))})});
+  document.querySelectorAll('[data-open-gate]').forEach(function(b){b.addEventListener('click',openGate)});
+  var q=(location.search.match(/[?&]lang=(fa|en|it)/)||[])[1]||(location.hash.match(/^#(fa|en|it)$/)||[])[1];
+  if(q){gate.classList.add('out');gate.hidden=true;show(q,false);} else {root.classList.add('gate-open');}
+  var s=Date.now()-24000; function p(n){return String(n).padStart(2,'0')}
+  setInterval(function(){var ms=Date.now()-s,t=Math.floor(ms/1000),v=p(Math.floor(t/3600))+':'+p(Math.floor(t/60)%60)+':'+p(t%60)+':'+p(Math.floor((ms%1000)/40));
+    document.querySelectorAll('.tc').forEach(function(e){e.textContent=v})},120);
+})();
+</script>
+</body>
+</html>
